@@ -6,6 +6,7 @@ abstract class Routes {
 
   static const HOME = _Paths.HOME;
   static List<String> listRoutes = [];
+  static const RO_RECEIVED = _Paths.RO_RECEIVED;
 }
 
 abstract class RoutesList {
@@ -21,4 +22,5 @@ abstract class _Paths {
   _Paths._();
 
   static const HOME = '/home';
+  static const RO_RECEIVED = '/frmROReceived';
 }
