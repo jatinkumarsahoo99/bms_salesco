@@ -1,4 +1,5 @@
 import 'package:bms_salesco/app/controller/MainController.dart';
+import 'package:bms_salesco/app/modules/RoReceived/views/ro_received_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../widgets/LoadingScreen.dart';
@@ -30,6 +31,9 @@ class AuthGuard extends StatelessWidget {
           switch (childName) {
             case Routes.HOME:
               currentWidget = HomeView();
+              break;
+            case Routes.RO_RECEIVED:
+              currentWidget = RoReceivedView();
               break;
             default:
               currentWidget = const NoDataFoundPage();
