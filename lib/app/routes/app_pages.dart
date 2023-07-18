@@ -15,7 +15,7 @@ part 'app_routes.dart';
 class AppPages {
   AppPages._();
 
-  static const INITIAL = Routes.SAME_DAY_COLLECTION +
+  static const INITIAL = Routes.TAPE_I_D_CAMPAIGN +
       "?personalNo=kW5Bkf17%2FS5YF7ML28FmVg%3D%3D&loginCode=1BWIoBKeDl7qDSAAhxvXsQ%3D%3D&formName=OI8ukDpPPVN0I2BEXu2h4nuFu%2BZm1ZRpvP8NL4XCXzQ%3D";
 
   static final routes = [
@@ -36,7 +36,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.TAPE_I_D_CAMPAIGN,
-      page: () => const TapeIDCampaignView(),
+      page: () => AuthGuard(childName: _Paths.TAPE_I_D_CAMPAIGN),
       binding: TapeIDCampaignBinding(),
     ),
   ];

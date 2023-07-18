@@ -27,5 +27,5 @@ abstract class _Paths {
   static const HOME = '/home';
   static const CHANGE_R_O_NUMBER = '/Frmchangereference';
   static const SAME_DAY_COLLECTION = '/frmSamedayCancellation';
-  static const TAPE_I_D_CAMPAIGN = '/tape-i-d-campaign';
+  static const TAPE_I_D_CAMPAIGN = '/frmTapeIDCampaign';
 }
