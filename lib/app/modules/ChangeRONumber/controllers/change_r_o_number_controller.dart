@@ -1,13 +1,13 @@
 import 'package:get/get.dart';
 
+import '../../../data/PermissionModel.dart';
+import '../../../providers/Utils.dart';
+import '../../../routes/app_pages.dart';
+
 class ChangeRONumberController extends GetxController {
   //TODO: Implement ChangeRONumberController
 
   final count = 0.obs;
-  @override
-  void onInit() {
-    super.onInit();
-  }
 
   @override
   void onReady() {
@@ -20,4 +20,6 @@ class ChangeRONumberController extends GetxController {
   }
 
   void increment() => count.value++;
+
+  formHandler(btn) {}
 }
