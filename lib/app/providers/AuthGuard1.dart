@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import '../../widgets/LoadingScreen.dart';
 import '../../widgets/NoDataFoundPage.dart';
 import '../modules/ChangeRONumber/views/change_r_o_number_view.dart';
+import '../modules/SameDayCollection/views/same_day_collection_view.dart';
 import '../modules/home/views/home_view.dart';
 import '../routes/app_pages.dart';
 
@@ -37,6 +38,9 @@ class AuthGuard extends StatelessWidget {
               break;
             case Routes.CHANGE_R_O_NUMBER:
               currentWidget = const ChangeRONumberView();
+              break;
+            case Routes.SAME_DAY_COLLECTION:
+              currentWidget = const SameDayCollectionView();
               break;
             default:
               currentWidget = const NoDataFoundPage();
