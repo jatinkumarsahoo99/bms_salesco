@@ -1,5 +1,9 @@
 import 'package:bms_salesco/app/controller/MainController.dart';
+<<<<<<< HEAD
 import 'package:flutter/foundation.dart';
+=======
+import 'package:bms_salesco/app/modules/RoReceived/views/ro_received_view.dart';
+>>>>>>> e25ff7bcada156eb0270ef2737430acbb0581657
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../widgets/LoadingScreen.dart';
@@ -37,6 +41,7 @@ class AuthGuard extends StatelessWidget {
             case Routes.HOME:
               currentWidget = HomeView();
               break;
+<<<<<<< HEAD
             case Routes.CHANGE_R_O_NUMBER:
               currentWidget = const ChangeRONumberView();
               break;
@@ -45,6 +50,10 @@ class AuthGuard extends StatelessWidget {
               break;
             case Routes.TAPE_I_D_CAMPAIGN:
               currentWidget = const TapeIDCampaignView();
+=======
+            case Routes.RO_RECEIVED:
+              currentWidget = RoReceivedView();
+>>>>>>> e25ff7bcada156eb0270ef2737430acbb0581657
               break;
             default:
               currentWidget = const NoDataFoundPage();
