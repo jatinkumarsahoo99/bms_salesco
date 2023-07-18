@@ -1,11 +1,10 @@
+import 'package:bms_salesco/app/providers/AuthGuard1.dart';
 import 'package:get/get.dart';
 
 import '../modules/ChangeRONumber/bindings/change_r_o_number_binding.dart';
-import '../modules/ChangeRONumber/views/change_r_o_number_view.dart';
+import '../modules/RoReceived/bindings/ro_received_binding.dart';
 import '../modules/SameDayCollection/bindings/same_day_collection_binding.dart';
-import '../modules/SameDayCollection/views/same_day_collection_view.dart';
 import '../modules/TapeIDCampaign/bindings/tape_i_d_campaign_binding.dart';
-import '../modules/TapeIDCampaign/views/tape_i_d_campaign_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../providers/AuthGuard1.dart';
@@ -38,6 +37,11 @@ class AppPages {
       name: _Paths.TAPE_I_D_CAMPAIGN,
       page: () => AuthGuard(childName: _Paths.TAPE_I_D_CAMPAIGN),
       binding: TapeIDCampaignBinding(),
+    ),
+    GetPage(
+      name: _Paths.RO_RECEIVED,
+      page: () => AuthGuard(childName: _Paths.RO_RECEIVED),
+      binding: RoReceivedBinding(),
     ),
   ];
 }

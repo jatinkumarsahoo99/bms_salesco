@@ -9,6 +9,7 @@ abstract class Routes {
   static const CHANGE_R_O_NUMBER = _Paths.CHANGE_R_O_NUMBER;
   static const SAME_DAY_COLLECTION = _Paths.SAME_DAY_COLLECTION;
   static const TAPE_I_D_CAMPAIGN = _Paths.TAPE_I_D_CAMPAIGN;
+  static const RO_RECEIVED = _Paths.RO_RECEIVED;
 }
 
 abstract class RoutesList {
@@ -28,4 +29,5 @@ abstract class _Paths {
   static const CHANGE_R_O_NUMBER = '/Frmchangereference';
   static const SAME_DAY_COLLECTION = '/frmSamedayCancellation';
   static const TAPE_I_D_CAMPAIGN = '/frmTapeIDCampaign';
+  static const RO_RECEIVED = '/frmROReceived';
 }
