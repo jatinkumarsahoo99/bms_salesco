@@ -13,6 +13,8 @@ abstract class Routes {
   static const SAME_DAY_COLLECTION = _Paths.SAME_DAY_COLLECTION;
   static const TAPE_I_D_CAMPAIGN = _Paths.TAPE_I_D_CAMPAIGN;
   static const RO_RECEIVED = _Paths.RO_RECEIVED;
+  static const WORKFLOW_DEFINITION = _Paths.WORKFLOW_DEFINITION;
+  static const E_D_I_MAPPING = _Paths.E_D_I_MAPPING;
 }
 
 abstract class RoutesList {
@@ -25,6 +27,8 @@ abstract class RoutesList {
     _Paths.ASRUN_DETAILS_REPORT,
     _Paths.AUDIT_STATUS_REPORT,
     _Paths.DEAL_RECO_SUMMARY,
+    _Paths.E_D_I_MAPPING,
+    _Paths.WORKFLOW_DEFINITION,
   ];
 }
 
@@ -39,4 +43,6 @@ abstract class _Paths {
   static const ASRUN_DETAILS_REPORT = '/frmAsrundetailsReport';
   static const AUDIT_STATUS_REPORT = '/Frmauditstatusreport';
   static const DEAL_RECO_SUMMARY = '/FrmDealrecosummary';
+  static const WORKFLOW_DEFINITION = '/frmDP_ApprovalTrail';
+  static const E_D_I_MAPPING = '/frmEDIClientAgencyChannelMapping';
 }
