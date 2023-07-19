@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../widgets/LoadingScreen.dart';
 import '../../widgets/NoDataFoundPage.dart';
+import '../modules/Asrun_Details_Report/views/asrun_details_report_view.dart';
+import '../modules/Audit_Status_Report/views/audit_status_report_view.dart';
+import '../modules/Deal_Reco_Summary/views/deal_reco_summary_view.dart';
 import '../modules/home/views/home_view.dart';
 import '../routes/app_pages.dart';
 
@@ -30,6 +33,15 @@ class AuthGuard extends StatelessWidget {
           switch (childName) {
             case Routes.HOME:
               currentWidget = HomeView();
+              break;
+            case Routes.ASRUN_DETAILS_REPORT:
+              currentWidget = AsrunDetailsReportView();
+              break;
+            case Routes.AUDIT_STATUS_REPORT:
+              currentWidget = AuditStatusReportView();
+              break;
+            case Routes.DEAL_RECO_SUMMARY:
+              currentWidget = DealRecoSummaryView();
               break;
             default:
               currentWidget = const NoDataFoundPage();
