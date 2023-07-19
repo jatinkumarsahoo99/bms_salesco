@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bmsweb-salesco-deployment-new
+  namespace: bms-ns
+  labels:
+    app: bms-salesco-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bms-salesco-web
+  template:
+    metadata:
+      labels:
+        app: bms-salesco-web
+    spec:
+      containers:
+      - name: bms-admin-deployment-new
+        image: zeelakscontainer.azurecr.io/bms-web-salesco:image_version
+        imagePullPolicy: Always
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bms-salesco-web-new
+  namespace: bms-ns
+spec:
+  type: ClusterIP
+  ports:
+  - name: http
+    port: 80
+    targetPort: 3000
+  - name: https
+    port: 443
+    targetPort: 3000
+  selector:
+    app: bms-salesco-web
