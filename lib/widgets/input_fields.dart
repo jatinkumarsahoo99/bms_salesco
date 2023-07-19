@@ -24,32 +24,32 @@ class InputFields {
     return Padding(
       padding: const EdgeInsets.only(left: SizeDefine.paddingHorizontal, right: SizeDefine.paddingHorizontal, top: 6.0, bottom: 6.0),
       child: Obx(() => CupertinoTextField(
-        controller: controller,
-        textInputAction: TextInputAction.done,
-        // keyboardType: Validator.getKeyboardTyp(validateModel.fieldType.toLowerCase()),
-        style: const TextStyle(fontSize: 15),
-        inputFormatters: [LengthLimitingTextInputFormatter(SizeDefine.maxcharlimit)],
-        placeholder: hintTxt,
-        decoration: BoxDecoration(
-          color: ColorData.bgFormField,
-          borderRadius: BorderRadius.circular(15),
-        ),
-        obscureText: isPassVisible.value,
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-        onChanged: (newValue) {},
-        suffix: Padding(
-          padding: const EdgeInsets.only(right: 18.0),
-          child: InkWell(
-            onTap: () {
-              isPassVisible.value = !isPassVisible.value;
-            },
-            child: Icon(
-              (isPassVisible.value) ? CupertinoIcons.eye_solid : CupertinoIcons.eye_slash_fill,
-              color: ColorData.hintColor,
+            controller: controller,
+            textInputAction: TextInputAction.done,
+            // keyboardType: Validator.getKeyboardTyp(validateModel.fieldType.toLowerCase()),
+            style: const TextStyle(fontSize: 15),
+            inputFormatters: [LengthLimitingTextInputFormatter(SizeDefine.maxcharlimit)],
+            placeholder: hintTxt,
+            decoration: BoxDecoration(
+              color: ColorData.bgFormField,
+              borderRadius: BorderRadius.circular(15),
             ),
-          ),
-        ),
-      )),
+            obscureText: isPassVisible.value,
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+            onChanged: (newValue) {},
+            suffix: Padding(
+              padding: const EdgeInsets.only(right: 18.0),
+              child: InkWell(
+                onTap: () {
+                  isPassVisible.value = !isPassVisible.value;
+                },
+                child: Icon(
+                  (isPassVisible.value) ? CupertinoIcons.eye_solid : CupertinoIcons.eye_slash_fill,
+                  color: ColorData.hintColor,
+                ),
+              ),
+            ),
+          )),
     );
   }
 
@@ -115,9 +115,9 @@ class InputFields {
               textAlign: TextAlign.left,
               inputFormatters: inputformatters.isEmpty
                   ? [
-                LengthLimitingTextInputFormatter(SizeDefine.maxcharlimit),
-                FilteringTextInputFormatter.deny("  "),
-              ]
+                      LengthLimitingTextInputFormatter(SizeDefine.maxcharlimit),
+                      FilteringTextInputFormatter.deny("  "),
+                    ]
                   : inputformatters,
               controller: controller,
               style: TextStyle(fontSize: 12, color: (isEnable ?? true) ? Colors.black : Colors.grey),
@@ -188,7 +188,7 @@ class InputFields {
             txtColor: (isEnable ?? true) ? Colors.black : Colors.grey,
           ),
         },
-        Container(
+        SizedBox(
           // padding: const EdgeInsets.only(
           //     top: 6.0,
           //     bottom: 6.0),
@@ -214,62 +214,63 @@ class InputFields {
             onFieldSubmitted: onFieldSubmitted,
             inputFormatters: inputformatters.isEmpty
                 ? [
-              LengthLimitingTextInputFormatter(SizeDefine.maxcharlimit),
-              FilteringTextInputFormatter.deny("  "),
-              // FilteringTextInputFormatter.allow(RegExp(r"^(\w+ ?)*$")),
-            ]
+                    LengthLimitingTextInputFormatter(SizeDefine.maxcharlimit),
+                    FilteringTextInputFormatter.deny("  "),
+                    // FilteringTextInputFormatter.allow(RegExp(r"^(\w+ ?)*$")),
+                  ]
                 : inputformatters,
             controller: controller,
             style: TextStyle(fontSize: 12, color: (isEnable ?? true) ? Colors.black : Colors.grey),
             decoration: InputDecoration(
-                enabled: isEnable ?? true,
-                // prefixText: prefixText,
+              enabled: isEnable ?? true,
+              // prefixText: prefixText,
 
-                prefixIcon: prefixText != null
-                    ? SizedBox(
-                  child: Center(
-                    widthFactor: 0.0,
-                    child: Text(
-                      " $prefixText ",
-                      style: TextStyle(
-                        backgroundColor: Colors.grey.shade500,
-                        color: Colors.white,
-                        fontSize: 12,
+              prefixIcon: prefixText != null
+                  ? SizedBox(
+                      child: Center(
+                        widthFactor: 0.0,
+                        child: Text(
+                          " $prefixText ",
+                          style: TextStyle(
+                            backgroundColor: Colors.grey.shade500,
+                            color: Colors.white,
+                            fontSize: 12,
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                )
-                    : null,
-                prefixStyle: TextStyle(
-                  backgroundColor: Colors.grey.shade500,
-                  color: Colors.white,
-                  fontSize: 12,
-                ),
-                errorBorder: InputBorder.none,
-                counterText: "",
-                // hintText: "dd/MM/yyyy",
-                contentPadding: EdgeInsets.only(left: prefixText == null ? 10 : 0),
-                // labelText: hintTxt,
-                labelStyle: TextStyle(fontSize: SizeDefine.labelSize, color: (isEnable ?? true) ? Colors.black : Colors.grey),
-                border: InputBorder.none,
-                // suffixIcon: Icon(
-                //   Icons.calendar_today,
-                //   size: 14,
-                //   color: Colors.deepPurpleAccent,
-                // ),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.deepPurpleAccent),
-                  borderRadius: BorderRadius.circular(0),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.deepPurpleAccent),
-                  borderRadius: BorderRadius.circular(0),
-                ),
-                disabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.grey),
-                  borderRadius: BorderRadius.circular(0),
-                ),
-                floatingLabelBehavior: FloatingLabelBehavior.always),
+                    )
+                  : null,
+              prefixStyle: TextStyle(
+                backgroundColor: Colors.grey.shade500,
+                color: Colors.white,
+                fontSize: 12,
+              ),
+              errorBorder: InputBorder.none,
+              counterText: "",
+              // hintText: "dd/MM/yyyy",
+              contentPadding: EdgeInsets.only(left: prefixText == null ? 10 : 0),
+              // labelText: hintTxt,
+              labelStyle: TextStyle(fontSize: SizeDefine.labelSize, color: (isEnable ?? true) ? Colors.black : Colors.grey),
+              border: InputBorder.none,
+              // suffixIcon: Icon(
+              //   Icons.calendar_today,
+              //   size: 14,
+              //   color: Colors.deepPurpleAccent,
+              // ),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.deepPurpleAccent),
+                borderRadius: BorderRadius.circular(5),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.deepPurpleAccent),
+                borderRadius: BorderRadius.circular(5),
+              ),
+              disabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.grey),
+                borderRadius: BorderRadius.circular(5),
+              ),
+              floatingLabelBehavior: FloatingLabelBehavior.always,
+            ),
           ),
         ),
       ],
@@ -278,16 +279,16 @@ class InputFields {
 
   static Widget formFieldWidthWithValidation(
       {String? Function(String?)? validator,
-        required String hintTxt,
-        required double widthRatio,
-        required TextEditingController controller,
-        List<TextInputFormatter> inputformatters = const [],
-        Function(String)? onchanged,
-        bool margin = true,
-        bool? isEnable,
-        int? maxLen,
-        bool autoFocus = false,
-        bool istextCapitalized = false}) {
+      required String hintTxt,
+      required double widthRatio,
+      required TextEditingController controller,
+      List<TextInputFormatter> inputformatters = const [],
+      Function(String)? onchanged,
+      bool margin = true,
+      bool? isEnable,
+      int? maxLen,
+      bool autoFocus = false,
+      bool istextCapitalized = false}) {
     // var data = 0.obs;
 
     // var data = 0.obs;
@@ -355,12 +356,12 @@ class InputFields {
 
   static Widget formFieldOnSaved(
       {required String hintTxt,
-        required TextEditingController controller,
-        required Function function,
-        double? widthSize,
-        FocusNode? focusNode,
-        int? maxLen,
-        double? leftPadding}) {
+      required TextEditingController controller,
+      required Function function,
+      double? widthSize,
+      FocusNode? focusNode,
+      int? maxLen,
+      double? leftPadding}) {
     // var data = 0.obs;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -423,16 +424,16 @@ class InputFields {
 
   static Widget formFieldWidthNoSpace(
       {required String hintTxt,
-        required TextEditingController controller,
-        required double widthRatio,
-        double? height,
-        double? paddingLeft,
-        bool capital = false,
-        bool? isEnable,
-        int? maxLen,
-        bool autofocus = false,
-        FocusNode? focus,
-        Function? onChange}) {
+      required TextEditingController controller,
+      required double widthRatio,
+      double? height,
+      double? paddingLeft,
+      bool capital = false,
+      bool? isEnable,
+      int? maxLen,
+      bool autofocus = false,
+      FocusNode? focus,
+      Function? onChange}) {
     // var data = 0.obs;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -588,15 +589,15 @@ class InputFields {
 
   static Widget formField1WidthBox(
       {required String hintTxt,
-        required TextEditingController controller,
-        required double widthRatio,
-        double? height,
-        double? paddingLeft,
-        bool capital = false,
-        bool? isEnable,
-        int? maxLen,
-        FocusNode? focus,
-        Function? onChange}) {
+      required TextEditingController controller,
+      required double widthRatio,
+      double? height,
+      double? paddingLeft,
+      bool capital = false,
+      bool? isEnable,
+      int? maxLen,
+      FocusNode? focus,
+      Function? onChange}) {
     // var data = 0.obs;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -774,16 +775,16 @@ class InputFields {
 
   static Widget formFieldNumberMask1(
       {required String hintTxt,
-        required TextEditingController controller,
-        required double widthRatio,
-        double? height,
-        double? paddingLeft,
-        Function? onEditComplete,
-        Function? onChange,
-        FocusNode? focusNode,
-        int? maxLen,
-        bool? isEnable = true,
-        Function(String)? onchanged}) {
+      required TextEditingController controller,
+      required double widthRatio,
+      double? height,
+      double? paddingLeft,
+      Function? onEditComplete,
+      Function? onChange,
+      FocusNode? focusNode,
+      int? maxLen,
+      bool? isEnable = true,
+      Function(String)? onchanged}) {
     // var data = 0.obs;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -915,14 +916,14 @@ class InputFields {
   ///HH:MM:SS:FF
   ///23:59:59:29 max value will take
   static buildTimeDurationWidget(
-      String title,
-      TextEditingController controller, {
-        bool isEnable = true,
-        double widthRatio = .4,
-        void Function(String time)? onFocusChange,
-        bool isTime = true,
-        FocusNode? textFieldFN,
-      }) {
+    String title,
+    TextEditingController controller, {
+    bool isEnable = true,
+    double widthRatio = .4,
+    void Function(String time)? onFocusChange,
+    bool isTime = true,
+    FocusNode? textFieldFN,
+  }) {
     bool backSpaceEnter = false;
     setCursor(int index) {
       controller.value = TextEditingValue(
@@ -1105,15 +1106,15 @@ class InputFields {
   }
 
   static Widget buildDurationWidget(
-      String title,
-      TextEditingController controller, {
-        double widthRatio = .2,
-        int hourMax = 24,
-        int minutesMax = 59,
-        int secondMax = 59,
-        int framMax = 59,
-        bool isEnable = true,
-      }) {
+    String title,
+    TextEditingController controller, {
+    double widthRatio = .2,
+    int hourMax = 24,
+    int minutesMax = 59,
+    int secondMax = 59,
+    int framMax = 59,
+    bool isEnable = true,
+  }) {
     final textColor = isEnable ? Colors.black : Colors.grey;
     final borderColor = isEnable ? Colors.deepPurpleAccent : Colors.grey;
     double textSize = 12;
@@ -1162,13 +1163,13 @@ class InputFields {
 
   static Widget formFieldNumber(
       {required String hintTxt,
-        required TextEditingController controller,
-        double? widthRatio,
-        int? maxchar,
-        double? height,
-        bool? isNegativeReq = false,
-        bool? isUpDownReq = true,
-        double? paddingLeft}) {
+      required TextEditingController controller,
+      double? widthRatio,
+      int? maxchar,
+      double? height,
+      bool? isNegativeReq = false,
+      bool? isUpDownReq = true,
+      double? paddingLeft}) {
     // var data = 0.obs;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -1200,48 +1201,48 @@ class InputFields {
                 errorBorder: InputBorder.none,
                 suffixIcon: isUpDownReq!
                     ? Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    /*  InkWell(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          /*  InkWell(
                       child: Icon(Icons.arrow_drop_up_sharp,size: 18,),
                       onTap: () {
                         controller.text =
                             "${(int.tryParse(controller.text) ?? 0) + 1}";
                       },
                     ),*/
-                    SizedBox(
-                        width: 30,
-                        height: 12,
-                        child: IconButton(
-                          focusNode: FocusNode(canRequestFocus: false),
-                          padding: new EdgeInsets.all(0.0),
-                          icon: Icon(Icons.arrow_drop_up_sharp),
-                          onPressed: () {
-                            controller.text = "${(int.tryParse(controller.text) ?? 0) + 1}";
-                          },
-                        )),
-                    SizedBox(
-                        width: 30,
-                        height: 12,
-                        child: Center(
-                          child: IconButton(
-                            focusNode: FocusNode(canRequestFocus: false),
-                            padding: new EdgeInsets.all(0.0),
-                            alignment: Alignment.center,
-                            icon: Icon(Icons.arrow_drop_down_sharp),
-                            onPressed: () {
-                              if (isNegativeReq == true) {
-                                controller.text = "${(int.tryParse(controller.text) ?? 0) - 1}";
-                              } else {
-                                if ((controller.text != "" && !(int.tryParse(controller.text)?.isNegative)!) && controller.text != "0") {
-                                  controller.text = "${(int.tryParse(controller.text) ?? 0) - 1}";
-                                }
-                              }
-                            },
-                          ),
-                        )),
-                  ],
-                )
+                          SizedBox(
+                              width: 30,
+                              height: 12,
+                              child: IconButton(
+                                focusNode: FocusNode(canRequestFocus: false),
+                                padding: new EdgeInsets.all(0.0),
+                                icon: Icon(Icons.arrow_drop_up_sharp),
+                                onPressed: () {
+                                  controller.text = "${(int.tryParse(controller.text) ?? 0) + 1}";
+                                },
+                              )),
+                          SizedBox(
+                              width: 30,
+                              height: 12,
+                              child: Center(
+                                child: IconButton(
+                                  focusNode: FocusNode(canRequestFocus: false),
+                                  padding: new EdgeInsets.all(0.0),
+                                  alignment: Alignment.center,
+                                  icon: Icon(Icons.arrow_drop_down_sharp),
+                                  onPressed: () {
+                                    if (isNegativeReq == true) {
+                                      controller.text = "${(int.tryParse(controller.text) ?? 0) - 1}";
+                                    } else {
+                                      if ((controller.text != "" && !(int.tryParse(controller.text)?.isNegative)!) && controller.text != "0") {
+                                        controller.text = "${(int.tryParse(controller.text) ?? 0) - 1}";
+                                      }
+                                    }
+                                  },
+                                ),
+                              )),
+                        ],
+                      )
                     : null,
                 // hintText: "dd/MM/yyyy",
                 contentPadding: const EdgeInsets.only(left: 10),
@@ -1274,7 +1275,7 @@ class InputFields {
     required String hintTxt,
     required TextEditingController controller,
     Function(String)? onchanged,
-    double? padLeft,
+    double? padLeft = 0,
     bool? showbtn = true,
     List<TextInputFormatter> inputformatters = const [],
     num? width = 0.12,
@@ -1356,51 +1357,51 @@ class InputFields {
                   ),
                   suffixIcon: showbtn!
                       ? Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      InkWell(
-                        canRequestFocus: isEnabled ?? true,
-                        child: Icon(
-                          Icons.arrow_drop_up_sharp,
-                          size: 25,
-                          color: iconColor,
-                        ),
-                        onTap: () {
-                          if (isEnabled ?? true) {
-                            controller.text = "${(int.tryParse(controller.text) ?? 0) + 1}";
-                            onchanged!(controller.text);
-                          } else {
-                            print("Print tap");
-                          }
-                        },
-                      ),
-                      InkWell(
-                        canRequestFocus: (isEnabled ?? true),
-                        child: Icon(
-                          Icons.arrow_drop_down_sharp,
-                          size: 25,
-                          color: iconColor,
-                        ),
-                        onTap: () {
-                          if (isEnabled ?? true) {
-                            if (!isNegativeReq) {
-                              print("Click on negative>>>" + controller.text);
-                              if (controller.text != "0") {
-                                controller.text = "${(int.tryParse(controller.text) ?? 1) - 1}";
-                                onchanged!(controller.text);
-                              }
-                            } else {
-                              controller.text = "${(int.tryParse(controller.text) ?? 1) - 1}";
-                              onchanged!(controller.text);
-                            }
-                          } else {
-                            print("Print tap");
-                          }
-                        },
-                      ),
-                    ],
-                  )
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            InkWell(
+                              canRequestFocus: isEnabled ?? true,
+                              child: Icon(
+                                Icons.arrow_drop_up_sharp,
+                                size: 25,
+                                color: iconColor,
+                              ),
+                              onTap: () {
+                                if (isEnabled ?? true) {
+                                  controller.text = "${(int.tryParse(controller.text) ?? 0) + 1}";
+                                  onchanged!(controller.text);
+                                } else {
+                                  print("Print tap");
+                                }
+                              },
+                            ),
+                            InkWell(
+                              canRequestFocus: (isEnabled ?? true),
+                              child: Icon(
+                                Icons.arrow_drop_down_sharp,
+                                size: 25,
+                                color: iconColor,
+                              ),
+                              onTap: () {
+                                if (isEnabled ?? true) {
+                                  if (!isNegativeReq) {
+                                    print("Click on negative>>>" + controller.text);
+                                    if (controller.text != "0") {
+                                      controller.text = "${(int.tryParse(controller.text) ?? 1) - 1}";
+                                      onchanged!(controller.text);
+                                    }
+                                  } else {
+                                    controller.text = "${(int.tryParse(controller.text) ?? 1) - 1}";
+                                    onchanged!(controller.text);
+                                  }
+                                } else {
+                                  print("Print tap");
+                                }
+                              },
+                            ),
+                          ],
+                        )
                       : SizedBox(),
                 ),
                 controller: controller,
@@ -1500,51 +1501,51 @@ class InputFields {
                   ),
                   suffixIcon: showbtn!
                       ? Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      InkWell(
-                        canRequestFocus: isEnabled ?? true,
-                        child: Icon(
-                          Icons.arrow_drop_up_sharp,
-                          size: 25,
-                          color: iconColor,
-                        ),
-                        onTap: () {
-                          if (isEnabled ?? true) {
-                            controller.text = "${(int.tryParse(controller.text) ?? 0) + 1}";
-                            onchanged!(controller.text);
-                          } else {
-                            print("Print tap");
-                          }
-                        },
-                      ),
-                      InkWell(
-                        canRequestFocus: (isEnabled ?? true),
-                        child: Icon(
-                          Icons.arrow_drop_down_sharp,
-                          size: 25,
-                          color: iconColor,
-                        ),
-                        onTap: () {
-                          if (isEnabled ?? true) {
-                            if (!isNegativeReq) {
-                              print("Click on negative>>>" + controller.text);
-                              if (controller.text != "0") {
-                                controller.text = "${(int.tryParse(controller.text) ?? 1) - 1}";
-                                onchanged!(controller.text);
-                              }
-                            } else {
-                              controller.text = "${(int.tryParse(controller.text) ?? 1) - 1}";
-                              onchanged!(controller.text);
-                            }
-                          } else {
-                            print("Print tap");
-                          }
-                        },
-                      ),
-                    ],
-                  )
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            InkWell(
+                              canRequestFocus: isEnabled ?? true,
+                              child: Icon(
+                                Icons.arrow_drop_up_sharp,
+                                size: 25,
+                                color: iconColor,
+                              ),
+                              onTap: () {
+                                if (isEnabled ?? true) {
+                                  controller.text = "${(int.tryParse(controller.text) ?? 0) + 1}";
+                                  onchanged!(controller.text);
+                                } else {
+                                  print("Print tap");
+                                }
+                              },
+                            ),
+                            InkWell(
+                              canRequestFocus: (isEnabled ?? true),
+                              child: Icon(
+                                Icons.arrow_drop_down_sharp,
+                                size: 25,
+                                color: iconColor,
+                              ),
+                              onTap: () {
+                                if (isEnabled ?? true) {
+                                  if (!isNegativeReq) {
+                                    print("Click on negative>>>" + controller.text);
+                                    if (controller.text != "0") {
+                                      controller.text = "${(int.tryParse(controller.text) ?? 1) - 1}";
+                                      onchanged!(controller.text);
+                                    }
+                                  } else {
+                                    controller.text = "${(int.tryParse(controller.text) ?? 1) - 1}";
+                                    onchanged!(controller.text);
+                                  }
+                                } else {
+                                  print("Print tap");
+                                }
+                              },
+                            ),
+                          ],
+                        )
                       : SizedBox(),
                 ),
                 controller: controller,
@@ -1655,51 +1656,51 @@ class InputFields {
                   ),
                   suffixIcon: showbtn!
                       ? Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      GestureDetector(
-                        // canRequestFocus: isEnabled ?? true,
-                        child: Icon(
-                          Icons.arrow_drop_up_sharp,
-                          size: 25,
-                          color: iconColor,
-                        ),
-                        onTap: () {
-                          if (isEnabled ?? true) {
-                            controller.text = "${(int.tryParse(controller.text) ?? 0) + 1}";
-                            onchanged!(controller.text);
-                          } else {
-                            print("Print tap");
-                          }
-                        },
-                      ),
-                      GestureDetector(
-                        // canRequestFocus: (isEnabled ?? true),
-                        child: Icon(
-                          Icons.arrow_drop_down_sharp,
-                          size: 25,
-                          color: iconColor,
-                        ),
-                        onTap: () {
-                          if (isEnabled ?? true) {
-                            if (!isNegativeReq) {
-                              print("Click on negative>>>" + controller.text);
-                              if (controller.text != "0") {
-                                controller.text = "${(int.tryParse(controller.text) ?? 1) - 1}";
-                                onchanged!(controller.text);
-                              }
-                            } else {
-                              controller.text = "${(int.tryParse(controller.text) ?? 1) - 1}";
-                              onchanged!(controller.text);
-                            }
-                          } else {
-                            print("Print tap");
-                          }
-                        },
-                      ),
-                    ],
-                  )
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            GestureDetector(
+                              // canRequestFocus: isEnabled ?? true,
+                              child: Icon(
+                                Icons.arrow_drop_up_sharp,
+                                size: 25,
+                                color: iconColor,
+                              ),
+                              onTap: () {
+                                if (isEnabled ?? true) {
+                                  controller.text = "${(int.tryParse(controller.text) ?? 0) + 1}";
+                                  onchanged!(controller.text);
+                                } else {
+                                  print("Print tap");
+                                }
+                              },
+                            ),
+                            GestureDetector(
+                              // canRequestFocus: (isEnabled ?? true),
+                              child: Icon(
+                                Icons.arrow_drop_down_sharp,
+                                size: 25,
+                                color: iconColor,
+                              ),
+                              onTap: () {
+                                if (isEnabled ?? true) {
+                                  if (!isNegativeReq) {
+                                    print("Click on negative>>>" + controller.text);
+                                    if (controller.text != "0") {
+                                      controller.text = "${(int.tryParse(controller.text) ?? 1) - 1}";
+                                      onchanged!(controller.text);
+                                    }
+                                  } else {
+                                    controller.text = "${(int.tryParse(controller.text) ?? 1) - 1}";
+                                    onchanged!(controller.text);
+                                  }
+                                } else {
+                                  print("Print tap");
+                                }
+                              },
+                            ),
+                          ],
+                        )
                       : SizedBox(),
                 ),
                 controller: controller,
@@ -1769,11 +1770,11 @@ class InputFields {
 
   static Widget textAreaWidth(
       {required String hintTxt,
-        minlines = 3,
-        Function(String)? onchanged,
-        required TextEditingController controller,
-        required double widthRatio,
-        double? paddingLeft}) {
+      minlines = 3,
+      Function(String)? onchanged,
+      required TextEditingController controller,
+      required double widthRatio,
+      double? paddingLeft}) {
     // var data = 0.obs;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -1827,12 +1828,12 @@ class InputFields {
 
   static Widget formFieldDisable(
       {required String hintTxt,
-        required String value,
-        Color color = Colors.white,
-        double? widthRatio,
-        double? leftPad,
-        double? height,
-        bool margin = false}) {
+      required String value,
+      Color color = Colors.white,
+      double? widthRatio,
+      double? leftPad,
+      double? height,
+      bool margin = false}) {
     // var data = 0.obs;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -1947,13 +1948,13 @@ class InputFields {
 
   static Widget timeField(
       {required String hintTxt,
-        required String value,
-        required double widthRatio,
-        // required BuildContext context,
-        required VoidCallback callback,
-        required TextEditingController controller,
-        double? height,
-        double? paddingLeft}) {
+      required String value,
+      required double widthRatio,
+      // required BuildContext context,
+      required VoidCallback callback,
+      required TextEditingController controller,
+      double? height,
+      double? paddingLeft}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -2086,12 +2087,12 @@ class InputFields {
 
   static Widget formFieldDisableWidth1(
       {required String hintTxt,
-        required String value,
-        required double widthRatio,
-        double? height,
-        double? paddingLeft,
-        TextEditingController? controller,
-        Function? onEditComplete}) {
+      required String value,
+      required double widthRatio,
+      double? height,
+      double? paddingLeft,
+      TextEditingController? controller,
+      Function? onEditComplete}) {
     // var data = 0.obs;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -2151,14 +2152,14 @@ class InputFields {
 
   static Widget formFieldDisableWidth2(
       {required String hintTxt,
-        required String value,
-        required double widthRatio,
-        double? height,
-        double? paddingLeft,
-        int? maxChar,
-        FocusNode? focusNode,
-        TextEditingController? controller,
-        Function? onChange}) {
+      required String value,
+      required double widthRatio,
+      double? height,
+      double? paddingLeft,
+      int? maxChar,
+      FocusNode? focusNode,
+      TextEditingController? controller,
+      Function? onChange}) {
     // var data = 0.obs;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -2283,9 +2284,9 @@ class InputFields {
 class RangeTextInputFormatter24 extends TextInputFormatter {
   @override
   TextEditingValue formatEditUpdate(
-      TextEditingValue oldValue,
-      TextEditingValue newValue,
-      ) {
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
     if (newValue.text == '')
       return TextEditingValue();
     else if (int.parse(newValue.text) < 1) return TextEditingValue().copyWith(text: '1');
@@ -2297,9 +2298,9 @@ class RangeTextInputFormatter24 extends TextInputFormatter {
 class RangeTextInputFormatter60 extends TextInputFormatter {
   @override
   TextEditingValue formatEditUpdate(
-      TextEditingValue oldValue,
-      TextEditingValue newValue,
-      ) {
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
     if (newValue.text == '')
       return TextEditingValue();
     else if (int.parse(newValue.text) < 1) return TextEditingValue().copyWith(text: Utils.twoDigitsString('1'));
@@ -2344,9 +2345,9 @@ class DateTextFormatterWithSlash extends TextInputFormatter {
 
   @override
   TextEditingValue formatEditUpdate(
-      TextEditingValue oldValue,
-      TextEditingValue newValue,
-      ) {
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
     String separator = '/';
     var text = _format(
       newValue.text,
@@ -2364,10 +2365,10 @@ class DateTextFormatterWithSlash extends TextInputFormatter {
   }
 
   String _format(
-      String value,
-      String oldValue,
-      String separator,
-      ) {
+    String value,
+    String oldValue,
+    String separator,
+  ) {
     var isErasing = value.length < oldValue.length;
     var isComplete = value.length > _maxChars + 2;
 
@@ -2389,9 +2390,9 @@ class DateTextFormatterWithSlash extends TextInputFormatter {
   }
 
   TextSelection updateCursorPosition(
-      TextEditingValue oldValue,
-      String text,
-      ) {
+    TextEditingValue oldValue,
+    String text,
+  ) {
     var endOffset = max(
       oldValue.text.length - oldValue.selection.end,
       0,
@@ -2408,9 +2409,9 @@ class DateTextFormatterWithMinus extends TextInputFormatter {
 
   @override
   TextEditingValue formatEditUpdate(
-      TextEditingValue oldValue,
-      TextEditingValue newValue,
-      ) {
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
     String separator = '-';
     var text = _format(
       newValue.text,
@@ -2428,10 +2429,10 @@ class DateTextFormatterWithMinus extends TextInputFormatter {
   }
 
   String _format(
-      String value,
-      String oldValue,
-      String separator,
-      ) {
+    String value,
+    String oldValue,
+    String separator,
+  ) {
     var isErasing = value.length < oldValue.length;
     var isComplete = value.length > _maxChars + 2;
 
@@ -2453,9 +2454,9 @@ class DateTextFormatterWithMinus extends TextInputFormatter {
   }
 
   TextSelection updateCursorPosition(
-      TextEditingValue oldValue,
-      String text,
-      ) {
+    TextEditingValue oldValue,
+    String text,
+  ) {
     var endOffset = max(
       oldValue.text.length - oldValue.selection.end,
       0,
@@ -2472,9 +2473,9 @@ class TimeTextFormatterWithColun extends TextInputFormatter {
 
   @override
   TextEditingValue formatEditUpdate(
-      TextEditingValue oldValue,
-      TextEditingValue newValue,
-      ) {
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
     String separator = ':';
     var text = _format(
       newValue.text,
@@ -2492,10 +2493,10 @@ class TimeTextFormatterWithColun extends TextInputFormatter {
   }
 
   String _format(
-      String value,
-      String oldValue,
-      String separator,
-      ) {
+    String value,
+    String oldValue,
+    String separator,
+  ) {
     var isErasing = value.length < oldValue.length;
     var isComplete = value.length > _maxChars + 2;
     if (!isErasing && isComplete) {
@@ -2528,9 +2529,9 @@ class TimeTextFormatterWithColun extends TextInputFormatter {
   }
 
   TextSelection updateCursorPosition(
-      TextEditingValue oldValue,
-      String text,
-      ) {
+    TextEditingValue oldValue,
+    String text,
+  ) {
     var endOffset = max(
       oldValue.text.length - oldValue.selection.end,
       0,
