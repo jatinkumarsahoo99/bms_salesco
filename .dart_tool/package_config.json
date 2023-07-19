@@ -86,12 +86,6 @@
       "languageVersion": "2.12"
     },
     {
-      "name": "data_table_2",
-      "rootUri": "file:///Users/sanjayajena/.pub-cache/hosted/pub.dev/data_table_2-2.3.11",
-      "packageUri": "lib/",
-      "languageVersion": "2.17"
-    },
-    {
       "name": "dio",
       "rootUri": "file:///Users/sanjayajena/.pub-cache/hosted/pub.dev/dio-5.1.1",
       "packageUri": "lib/",
@@ -608,7 +602,7 @@
       "languageVersion": "2.18"
     }
   ],
-  "generated": "2023-07-17T13:27:41.652086Z",
+  "generated": "2023-07-19T06:32:58.847625Z",
   "generator": "pub",
   "generatorVersion": "2.19.6"
 }
