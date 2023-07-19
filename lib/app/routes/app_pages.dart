@@ -1,10 +1,12 @@
-import 'package:bms_salesco/app/providers/AuthGuard1.dart';
 import 'package:get/get.dart';
 
+import '../modules/EdiRoBooking/bindings/edi_ro_booking_binding.dart';
+import '../modules/EdiRoBooking/views/edi_ro_booking_view.dart';
 import '../modules/RoReceived/bindings/ro_received_binding.dart';
 import '../modules/RoReceived/views/ro_received_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
+import '../providers/AuthGuard1.dart';
 
 part 'app_routes.dart';
 
@@ -24,6 +26,11 @@ class AppPages {
       name: _Paths.RO_RECEIVED,
       page: () => AuthGuard(childName: _Paths.RO_RECEIVED),
       binding: RoReceivedBinding(),
+    ),
+    GetPage(
+      name: _Paths.EDI_RO_BOOKING,
+      page: () => const EdiRoBookingView(),
+      binding: EdiRoBookingBinding(),
     ),
   ];
 }

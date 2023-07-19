@@ -7,6 +7,7 @@ abstract class Routes {
   static const HOME = _Paths.HOME;
   static List<String> listRoutes = [];
   static const RO_RECEIVED = _Paths.RO_RECEIVED;
+  static const EDI_RO_BOOKING = _Paths.EDI_RO_BOOKING;
 }
 
 abstract class RoutesList {
@@ -23,4 +24,5 @@ abstract class _Paths {
 
   static const HOME = '/home';
   static const RO_RECEIVED = '/frmROReceived';
+  static const EDI_RO_BOOKING = '/frmXMLROEntry';
 }
