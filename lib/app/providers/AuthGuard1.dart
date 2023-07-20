@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../widgets/LoadingScreen.dart';
 import '../../widgets/NoDataFoundPage.dart';
+import '../modules/AutoTimeLock/views/auto_time_lock_view.dart';
 import '../modules/ChangeRONumber/views/change_r_o_number_view.dart';
 import '../modules/MarkROsFlag/views/mark_r_os_flag_view.dart';
 import '../modules/RoReceived/views/ro_received_view.dart';
@@ -57,6 +58,9 @@ class AuthGuard extends StatelessWidget {
               break;
             case Routes.MARK_R_OS_FLAG:
               currentWidget = MarkROsFlagView();
+              break;
+            case Routes.AUTO_TIME_LOCK:
+              currentWidget = AutoTimeLockView();
               break;
             default:
               currentWidget = const NoDataFoundPage();

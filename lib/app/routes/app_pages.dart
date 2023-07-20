@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
 
+import '../modules/AutoTimeLock/bindings/auto_time_lock_binding.dart';
+import '../modules/AutoTimeLock/views/auto_time_lock_view.dart';
 import '../modules/ChangeRONumber/bindings/change_r_o_number_binding.dart';
 import '../modules/MakeGoodReport/bindings/make_good_report_binding.dart';
 import '../modules/MakeGoodReport/views/make_good_report_view.dart';
@@ -17,7 +19,7 @@ part 'app_routes.dart';
 class AppPages {
   AppPages._();
 
-  static const INITIAL = Routes.MARK_R_OS_FLAG +
+  static const INITIAL = Routes.AUTO_TIME_LOCK +
       "?personalNo=kW5Bkf17%2FS5YF7ML28FmVg%3D%3D&loginCode=1BWIoBKeDl7qDSAAhxvXsQ%3D%3D&formName=OI8ukDpPPVN0I2BEXu2h4nuFu%2BZm1ZRpvP8NL4XCXzQ%3D";
 
   static final routes = [
@@ -55,6 +57,11 @@ class AppPages {
       name: _Paths.MARK_R_OS_FLAG,
       page: () => AuthGuard(childName: _Paths.MARK_R_OS_FLAG),
       binding: MarkROsFlagBinding(),
+    ),
+    GetPage(
+      name: _Paths.AUTO_TIME_LOCK,
+      page: () => AuthGuard(childName: _Paths.AUTO_TIME_LOCK),
+      binding: AutoTimeLockBinding(),
     ),
   ];
 }
