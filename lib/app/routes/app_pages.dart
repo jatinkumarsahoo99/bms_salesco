@@ -1,15 +1,14 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/foundation.dart';
 
+import '../modules/EdiRoBooking/bindings/edi_ro_booking_binding.dart';
+import '../modules/EdiRoBooking/views/edi_ro_booking_view.dart';
 import 'package:get/get.dart';
-import '../modules/Asrun_Details_Report/bindings/asrun_details_report_binding.dart';
-import '../modules/Audit_Status_Report/bindings/audit_status_report_binding.dart';
-
 
 import '../modules/AsrunDetailsReport/bindings/asrun_details_report_binding.dart';
 import '../modules/AuditStatusReport/bindings/audit_status_report_binding.dart';
 import '../modules/ChangeRONumber/bindings/change_r_o_number_binding.dart';
-import '../modules/Deal_Reco_Summary/bindings/deal_reco_summary_binding.dart';
+
 import '../modules/DealRecoSummary/bindings/deal_reco_summary_binding.dart';
 
 import '../modules/EDI_Mapping/bindings/e_d_i_mapping_binding.dart';
@@ -19,7 +18,7 @@ import '../modules/PeriodicDealUtilisationFormat2/bindings/periodic_deal_utilisa
 import '../modules/RoReceived/bindings/ro_received_binding.dart';
 import '../modules/SameDayCollection/bindings/same_day_collection_binding.dart';
 import '../modules/TapeIDCampaign/bindings/tape_i_d_campaign_binding.dart';
-import '../modules/Workflow_Definition/bindings/workflow_definition_binding.dart';
+
 import '../modules/Update_Executive/bindings/update_executive_binding.dart';
 import '../modules/Update_Executive/views/update_executive_view.dart';
 import '../modules/UserGroupsForDealWorkflow/bindings/user_groups_for_deal_workflow_binding.dart';
@@ -35,7 +34,7 @@ class AppPages {
 
   static const INITIAL = kReleaseMode
       ? Routes.HOME
-      : Routes.COMMERCIAL_LANGUAGE_SPECIFICATION +
+      : Routes.EDI_RO_BOOKING +
           "?personalNo=kW5Bkf17%2FS5YF7ML28FmVg%3D%3D&loginCode=1BWIoBKeDl7qDSAAhxvXsQ%3D%3D&formName=OI8ukDpPPVN0I2BEXu2h4nuFu%2BZm1ZRpvP8NL4XCXzQ%3D";
   static final routes = [
     GetPage(
@@ -83,12 +82,21 @@ class AppPages {
       binding: RoReceivedBinding(),
     ),
     GetPage(
+      name: _Paths.EDI_RO_BOOKING,
+      page: () => const EdiRoBookingView(),
+      binding: EdiRoBookingBinding(),
+    ),
+    GetPage(
       name: _Paths.WORKFLOW_DEFINITION,
       page: () => AuthGuard(childName: _Paths.WORKFLOW_DEFINITION),
+      // WorkflowDefinitionView(),
+      binding: WorkflowDefinitionBinding(),
     ),
     GetPage(
       name: _Paths.E_D_I_MAPPING,
       page: () => AuthGuard(childName: _Paths.E_D_I_MAPPING),
+      // EDIMappingView(),
+      binding: EDIMappingBinding(),
     ),
     GetPage(
       name: _Paths.COMMERCIAL_CREATION_AUTO,
@@ -102,25 +110,26 @@ class AppPages {
     GetPage(
       name: _Paths.ON_SPOT_BOOKING_SKY_MEDIA,
       page: () => AuthGuard(childName: _Paths.ON_SPOT_BOOKING_SKY_MEDIA),
-          // OnSpotBookingSkyMediaView(),
+      // OnSpotBookingSkyMediaView(),
       binding: OnSpotBookingSkyMediaBinding(),
     ),
     GetPage(
       name: _Paths.PERIODIC_DEAL_UTILISATION_FORMAT2,
-      page: () => AuthGuard(childName: _Paths.PERIODIC_DEAL_UTILISATION_FORMAT2),
-          // PeriodicDealUtilisationFormat2View(),
+      page: () =>
+          AuthGuard(childName: _Paths.PERIODIC_DEAL_UTILISATION_FORMAT2),
+      // PeriodicDealUtilisationFormat2View(),
       binding: PeriodicDealUtilisationFormat2Binding(),
     ),
     GetPage(
       name: _Paths.UPDATE_EXECUTIVE,
       page: () => AuthGuard(childName: _Paths.UPDATE_EXECUTIVE),
-       // UpdateExecutiveView(),
+      // UpdateExecutiveView(),
       binding: UpdateExecutiveBinding(),
     ),
     GetPage(
       name: _Paths.USER_GROUPS_FOR_DEAL_WORKFLOW,
       page: () => AuthGuard(childName: _Paths.USER_GROUPS_FOR_DEAL_WORKFLOW),
-       // UserGroupsForDealWorkflowView(),
+      // UserGroupsForDealWorkflowView(),
       binding: UserGroupsForDealWorkflowBinding(),
     ),
   ];

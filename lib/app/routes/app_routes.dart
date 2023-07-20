@@ -13,6 +13,7 @@ abstract class Routes {
   static const SAME_DAY_COLLECTION = _Paths.SAME_DAY_COLLECTION;
   static const TAPE_I_D_CAMPAIGN = _Paths.TAPE_I_D_CAMPAIGN;
   static const RO_RECEIVED = _Paths.RO_RECEIVED;
+  static const EDI_RO_BOOKING = _Paths.EDI_RO_BOOKING;
   static const WORKFLOW_DEFINITION = _Paths.WORKFLOW_DEFINITION;
   static const E_D_I_MAPPING = _Paths.E_D_I_MAPPING;
   static const COMMERCIAL_CREATION_AUTO = _Paths.COMMERCIAL_CREATION_AUTO;
@@ -49,6 +50,7 @@ abstract class _Paths {
   static const SAME_DAY_COLLECTION = '/frmSamedayCancellation';
   static const TAPE_I_D_CAMPAIGN = '/Routes.HOME';
   static const RO_RECEIVED = '/frmROReceived';
+  static const EDI_RO_BOOKING = '/frmXMLROEntry';
   static const ASRUN_DETAILS_REPORT = '/frmAsrundetailsReport';
   static const AUDIT_STATUS_REPORT = '/Frmauditstatusreport';
   static const DEAL_RECO_SUMMARY = '/FrmDealrecosummary';
