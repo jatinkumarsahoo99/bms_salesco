@@ -15,6 +15,9 @@ abstract class Routes {
   static const RO_RECEIVED = _Paths.RO_RECEIVED;
   static const WORKFLOW_DEFINITION = _Paths.WORKFLOW_DEFINITION;
   static const E_D_I_MAPPING = _Paths.E_D_I_MAPPING;
+  static const COMMERCIAL_CREATION_AUTO = _Paths.COMMERCIAL_CREATION_AUTO;
+  static const COMMERCIAL_LANGUAGE_SPECIFICATION =
+      _Paths.COMMERCIAL_LANGUAGE_SPECIFICATION;
   static const ON_SPOT_BOOKING_SKY_MEDIA = _Paths.ON_SPOT_BOOKING_SKY_MEDIA;
   static const PERIODIC_DEAL_UTILISATION_FORMAT2 =
       _Paths.PERIODIC_DEAL_UTILISATION_FORMAT2;
@@ -51,6 +54,9 @@ abstract class _Paths {
   static const DEAL_RECO_SUMMARY = '/FrmDealrecosummary';
   static const WORKFLOW_DEFINITION = '/frmDP_ApprovalTrail';
   static const E_D_I_MAPPING = '/frmEDIClientAgencyChannelMapping';
+  static const COMMERCIAL_CREATION_AUTO = '/commercial-creation-auto';
+  static const COMMERCIAL_LANGUAGE_SPECIFICATION =
+      '/commercial-language-specification';
   static const ON_SPOT_BOOKING_SKY_MEDIA = '/frmDigiTextBooking';
   static const PERIODIC_DEAL_UTILISATION_FORMAT2 =
       '/frmPeriodicDealUtilisation';

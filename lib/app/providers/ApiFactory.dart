@@ -18,6 +18,9 @@ class ApiFactory {
   static String BASE_URL = Const.getBaseSalescoAPIUrl();
   static String BASE_URL_COMMON = Const.getBaseCommonAPIUrl();
   static String BASE_URL_LOGIN = Const.getBaseLoginAPIUrl();
+  static String LOGIN_URL =
+  (kReleaseMode ? Const.getWebLoginUrl() : "http://localhost:9991");
+
 
   // api-login-bms-dev.zeeconnect.in
   // api-common-bms-dev.zeeconnect.in
