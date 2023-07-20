@@ -8,8 +8,13 @@
             "name": "salesco",
             "request": "launch",
             "type": "dart",
-            "args": ["--web-browser-flag", "--disable-web-security"
-            ]
+            "flutterMode": "debug",
+            "args": [
+                "-d",
+                "chrome",
+                "--web-port=9992",
+                "--web-browser-flag=--disable-web-security",
+            ],
         },
         {
             "name": "salesco (profile mode)",

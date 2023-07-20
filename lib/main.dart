@@ -18,7 +18,7 @@ import 'app/routes/app_pages.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   FlutterError.onError = (FlutterErrorDetails details) {
-    FlutterError.presentError(details);
+    // FlutterError.presentError(details);
     // Logger.sendError(error: details,stackTrace: details.stack,severity: Severity.critical);
   };
 
@@ -42,8 +42,7 @@ Future<void> main() async {
       initialBinding: BinderData(),
       initialRoute: AppPages.INITIAL,
       onInit: () {
-        Get.find<MainController>().environmentModel =
-            EnvironmentModel.fromJson(jsonDecode(data));
+        Get.find<MainController>().environmentModel = EnvironmentModel.fromJson(jsonDecode(data));
         print("Keyvault JSON DATA 1>>>" + jsonEncode(Get.find<MainController>().environmentModel?.toJson()));
       },
       getPages: AppPages.routes,

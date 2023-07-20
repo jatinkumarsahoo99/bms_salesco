@@ -188,7 +188,7 @@ class InputFields {
             txtColor: (isEnable ?? true) ? Colors.black : Colors.grey,
           ),
         },
-        Container(
+        SizedBox(
           // padding: const EdgeInsets.only(
           //     top: 6.0,
           //     bottom: 6.0),
@@ -222,54 +222,55 @@ class InputFields {
             controller: controller,
             style: TextStyle(fontSize: 12, color: (isEnable ?? true) ? Colors.black : Colors.grey),
             decoration: InputDecoration(
-                enabled: isEnable ?? true,
-                // prefixText: prefixText,
+              enabled: isEnable ?? true,
+              // prefixText: prefixText,
 
-                prefixIcon: prefixText != null
-                    ? SizedBox(
-                        child: Center(
-                          widthFactor: 0.0,
-                          child: Text(
-                            " $prefixText ",
-                            style: TextStyle(
-                              backgroundColor: Colors.grey.shade500,
-                              color: Colors.white,
-                              fontSize: 12,
-                            ),
+              prefixIcon: prefixText != null
+                  ? SizedBox(
+                      child: Center(
+                        widthFactor: 0.0,
+                        child: Text(
+                          " $prefixText ",
+                          style: TextStyle(
+                            backgroundColor: Colors.grey.shade500,
+                            color: Colors.white,
+                            fontSize: 12,
                           ),
                         ),
-                      )
-                    : null,
-                prefixStyle: TextStyle(
-                  backgroundColor: Colors.grey.shade500,
-                  color: Colors.white,
-                  fontSize: 12,
-                ),
-                errorBorder: InputBorder.none,
-                counterText: "",
-                // hintText: "dd/MM/yyyy",
-                contentPadding: EdgeInsets.only(left: prefixText == null ? 10 : 0),
-                // labelText: hintTxt,
-                labelStyle: TextStyle(fontSize: SizeDefine.labelSize, color: (isEnable ?? true) ? Colors.black : Colors.grey),
-                border: InputBorder.none,
-                // suffixIcon: Icon(
-                //   Icons.calendar_today,
-                //   size: 14,
-                //   color: Colors.deepPurpleAccent,
-                // ),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.deepPurpleAccent),
-                  borderRadius: BorderRadius.circular(0),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.deepPurpleAccent),
-                  borderRadius: BorderRadius.circular(0),
-                ),
-                disabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.grey),
-                  borderRadius: BorderRadius.circular(0),
-                ),
-                floatingLabelBehavior: FloatingLabelBehavior.always),
+                      ),
+                    )
+                  : null,
+              prefixStyle: TextStyle(
+                backgroundColor: Colors.grey.shade500,
+                color: Colors.white,
+                fontSize: 12,
+              ),
+              errorBorder: InputBorder.none,
+              counterText: "",
+              // hintText: "dd/MM/yyyy",
+              contentPadding: EdgeInsets.only(left: prefixText == null ? 10 : 0),
+              // labelText: hintTxt,
+              labelStyle: TextStyle(fontSize: SizeDefine.labelSize, color: (isEnable ?? true) ? Colors.black : Colors.grey),
+              border: InputBorder.none,
+              // suffixIcon: Icon(
+              //   Icons.calendar_today,
+              //   size: 14,
+              //   color: Colors.deepPurpleAccent,
+              // ),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.deepPurpleAccent),
+                borderRadius: BorderRadius.circular(5),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.deepPurpleAccent),
+                borderRadius: BorderRadius.circular(5),
+              ),
+              disabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.grey),
+                borderRadius: BorderRadius.circular(5),
+              ),
+              floatingLabelBehavior: FloatingLabelBehavior.always,
+            ),
           ),
         ),
       ],
