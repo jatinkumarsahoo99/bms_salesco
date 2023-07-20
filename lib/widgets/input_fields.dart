@@ -259,15 +259,15 @@ class InputFields {
               // ),
               enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.deepPurpleAccent),
-                borderRadius: BorderRadius.circular(5),
+                borderRadius: BorderRadius.circular(0),
               ),
               focusedBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.deepPurpleAccent),
-                borderRadius: BorderRadius.circular(5),
+                borderRadius: BorderRadius.circular(0),
               ),
               disabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.grey),
-                borderRadius: BorderRadius.circular(5),
+                borderRadius: BorderRadius.circular(0),
               ),
               floatingLabelBehavior: FloatingLabelBehavior.always,
             ),

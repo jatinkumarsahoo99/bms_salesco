@@ -17,7 +17,8 @@ import '../controllers/workflow_definition_controller.dart';
 class WorkflowDefinitionView extends GetView<WorkflowDefinitionController> {
    WorkflowDefinitionView({Key? key}) : super(key: key);
 
-   WorkflowDefinitionController controllerX = Get.put<WorkflowDefinitionController>(WorkflowDefinitionController());
+   WorkflowDefinitionController controllerX =
+   Get.put<WorkflowDefinitionController>(WorkflowDefinitionController());
 
   @override
   Widget build(BuildContext context) {
