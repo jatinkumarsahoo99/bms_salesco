@@ -11,7 +11,7 @@ import 'package:get/get.dart';
 import '../controllers/ro_received_controller.dart';
 
 class RoReceivedView extends GetView<RoReceivedController> {
-  const RoReceivedView({Key? key}) : super(key: key);
+   RoReceivedView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
