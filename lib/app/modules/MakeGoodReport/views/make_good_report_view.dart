@@ -1,3 +1,4 @@
+import 'package:bms_salesco/widgets/CheckBoxWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -27,53 +28,86 @@ class MakeGoodReportView extends GetView<MakeGoodReportController> {
           child: Column(
             children: [
               ///Controllers
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
+              Wrap(
+                // crossAxisAlignment: CrossAxisAlignment.end,
+                spacing: 10,
+                runSpacing: 10,
                 children: [
                   Obx(() {
                     return DropDownField.formDropDown1WidthMap(
                       controller.locationList.value,
                       controller.handleOnChangedLocation,
                       "Location",
-                      .2,
+                      .3,
                       autoFocus: true,
                       selected: controller.selectedLocation,
                       inkWellFocusNode: controller.locationFN,
                       isEnable: controller.bottomControllsEnable.value,
                     );
                   }),
-                  const SizedBox(width: 10),
                   Obx(() {
                     return DropDownField.formDropDown1WidthMap(
                       controller.channelList.value,
                       (v) => controller.selectedChannel = v,
                       "Channel",
-                      .2,
+                      .3,
                       selected: controller.selectedChannel,
                       isEnable: controller.bottomControllsEnable.value,
                     );
                   }),
-                  const SizedBox(width: 10),
-                  Obx(() {
-                    return DateWithThreeTextField(
-                      title: "Effective Date",
-                      mainTextController: controller.effectiveDateTC,
-                      widthRation: 0.15,
-                      onFocusChange: (date) {
-                        controller.weekDaysTC.text = DateFormat('EEEE').format(DateFormat("dd-MM-yyyy").parse(date));
-                      },
-                      isEnable: controller.bottomControllsEnable.value,
-                      startDate: DateTime.now(),
-                    );
-                  }),
-                  const SizedBox(width: 10),
-                  InputFields.formField1(
-                    hintTxt: "Weekday",
-                    controller: controller.weekDaysTC,
-                    isEnable: false,
+                  DateWithThreeTextField(
+                    title: "From Date",
+                    mainTextController: controller.effectiveDateTC,
+                    widthRation: 0.15,
+                    isEnable: controller.bottomControllsEnable.value,
+                    startDate: DateTime.now(),
                   ),
-                  const SizedBox(width: 10),
-                  FormButton(btnText: "Display", callback: controller.handleGenerateButton)
+                  DateWithThreeTextField(
+                    title: "To Date",
+                    mainTextController: controller.effectiveDateTC,
+                    widthRation: 0.15,
+                    isEnable: controller.bottomControllsEnable.value,
+                    startDate: DateTime.now(),
+                  ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      DropDownField.formDropDown1WidthMap(
+                        controller.channelList.value,
+                        (v) => controller.selectedChannel = v,
+                        "Client",
+                        .83,
+                        selected: controller.selectedChannel,
+                        isEnable: controller.bottomControllsEnable.value,
+                      ),
+                      SizedBox(width: 10),
+                      CheckBoxWidget1(title: "All Clients")
+                    ],
+                  ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      DropDownField.formDropDown1WidthMap(
+                        controller.channelList.value,
+                        (v) => controller.selectedChannel = v,
+                        "Agency",
+                        .3,
+                        selected: controller.selectedChannel,
+                        isEnable: controller.bottomControllsEnable.value,
+                      ),
+                      SizedBox(width: 10),
+                      DropDownField.formDropDown1WidthMap(
+                        controller.channelList.value,
+                        (v) => controller.selectedChannel = v,
+                        "Brand",
+                        .3,
+                        selected: controller.selectedChannel,
+                        isEnable: controller.bottomControllsEnable.value,
+                      ),
+                      SizedBox(width: 10),
+                      FormButton(btnText: "Report", callback: controller.handleGenerateButton),
+                    ],
+                  ),
                 ],
               ),
 
@@ -120,57 +154,6 @@ class MakeGoodReportView extends GetView<MakeGoodReportController> {
                             ),
                     );
                   },
-                ),
-              ),
-
-              ///bottom controlls buttons
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    InputFields.numbers(
-                      hintTxt: "Common.Dur.Sec For 30 Mins Prog.",
-                      inputformatters: [
-                        FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
-                      ],
-                      controller: controller.counterTC,
-                      padLeft: 5,
-                      isNegativeReq: false,
-                      width: .17,
-                    ),
-                    // SizedBox(
-                    //   width: context.width * .17,
-                    //   child: Obx(() {
-                    //     return NumericStepButton(
-                    //       counter: controller.count.value,
-                    //       onChanged: (val) {
-                    //         controller.count.value = val;
-                    //       },
-                    //       hint: "Common.Dur.Sec For 30 Mins Prog.",
-                    //       isEnable: controller.bottomControllsEnable.value,
-                    //     );
-                    //   }),
-                    // ),
-                    // const SizedBox(width: 10),
-                    Obx(() {
-                      return Row(
-                        children: List.generate(
-                          controller.buttonsList.length,
-                          (index) => Padding(
-                            padding: const EdgeInsets.only(left: 10),
-                            child: FormButton(
-                              btnText: controller.buttonsList[index],
-                              callback: controller.bottomControllsEnable.value
-                                  ? () => controller.handleBottonButtonsTap(controller.buttonsList[index])
-                                  : null,
-                            ),
-                          ),
-                        ).toList(),
-                      );
-                    }),
-                  ],
                 ),
               ),
 
