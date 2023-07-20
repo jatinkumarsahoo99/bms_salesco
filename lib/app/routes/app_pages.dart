@@ -1,26 +1,16 @@
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
-
 import '../modules/Asrun_Details_Report/bindings/asrun_details_report_binding.dart';
-import '../modules/Asrun_Details_Report/views/asrun_details_report_view.dart';
 import '../modules/Audit_Status_Report/bindings/audit_status_report_binding.dart';
-import '../modules/Audit_Status_Report/views/audit_status_report_view.dart';
 import '../modules/ChangeRONumber/bindings/change_r_o_number_binding.dart';
-import '../modules/CommercialCreationAuto/bindings/CommercialCreationAutoBinding.dart';
-import '../modules/CommercialCreationAuto/views/CommercialCreationAutoView.dart';
-import '../modules/CommercialLanguageSpecification/bindings/CommercialLanguageSpecificationBinding.dart';
-import '../modules/CommercialLanguageSpecification/views/CommercialLanguageSpecificationView.dart';
 import '../modules/Deal_Reco_Summary/bindings/deal_reco_summary_binding.dart';
-import '../modules/Deal_Reco_Summary/views/deal_reco_summary_view.dart';
 import '../modules/EDI_Mapping/bindings/e_d_i_mapping_binding.dart';
-import '../modules/EDI_Mapping/views/e_d_i_mapping_view.dart';
 import '../modules/RoReceived/bindings/ro_received_binding.dart';
 import '../modules/SameDayCollection/bindings/same_day_collection_binding.dart';
 import '../modules/TapeIDCampaign/bindings/tape_i_d_campaign_binding.dart';
 import '../modules/Workflow_Definition/bindings/workflow_definition_binding.dart';
-import '../modules/Workflow_Definition/views/workflow_definition_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
-import '../providers/AuthGuard1.dart';
 import '../providers/AuthGuard1.dart';
 
 part 'app_routes.dart';
@@ -28,8 +18,10 @@ part 'app_routes.dart';
 class AppPages {
   AppPages._();
 
-  static const INITIAL = Routes.E_D_I_MAPPING +
-      "?personalNo=kW5Bkf17%2FS5YF7ML28FmVg%3D%3D&loginCode=1BWIoBKeDl7qDSAAhxvXsQ%3D%3D&formName=OI8ukDpPPVN0I2BEXu2h4nuFu%2BZm1ZRpvP8NL4XCXzQ%3D";
+  static const INITIAL = kReleaseMode
+      ? Routes.HOME
+      : Routes.COMMERCIAL_LANGUAGE_SPECIFICATION +
+          "?personalNo=kW5Bkf17%2FS5YF7ML28FmVg%3D%3D&loginCode=1BWIoBKeDl7qDSAAhxvXsQ%3D%3D&formName=OI8ukDpPPVN0I2BEXu2h4nuFu%2BZm1ZRpvP8NL4XCXzQ%3D";
   static final routes = [
     GetPage(
       name: _Paths.HOME,
@@ -78,25 +70,19 @@ class AppPages {
     GetPage(
       name: _Paths.WORKFLOW_DEFINITION,
       page: () => AuthGuard(childName: _Paths.WORKFLOW_DEFINITION),
-      // WorkflowDefinitionView(),
-      binding: WorkflowDefinitionBinding(),
     ),
     GetPage(
       name: _Paths.E_D_I_MAPPING,
       page: () => AuthGuard(childName: _Paths.E_D_I_MAPPING),
-      // EDIMappingView(),
-      binding: EDIMappingBinding(),
     ),
     GetPage(
       name: _Paths.COMMERCIAL_CREATION_AUTO,
       page: () => AuthGuard(childName: _Paths.COMMERCIAL_CREATION_AUTO),
-      // binding: CommercialCreationAutoBinding(),
     ),
     GetPage(
       name: _Paths.COMMERCIAL_LANGUAGE_SPECIFICATION,
-      page: () => AuthGuard(childName: _Paths.COMMERCIAL_LANGUAGE_SPECIFICATION),
-      // page: () => CommercialLanguageSpecificationView(),
-      // binding: CommercialLanguageSpecificationBinding(),
+      page: () =>
+          AuthGuard(childName: _Paths.COMMERCIAL_LANGUAGE_SPECIFICATION),
     ),
   ];
 }
