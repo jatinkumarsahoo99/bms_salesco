@@ -5,6 +5,10 @@ import '../modules/Asrun_Details_Report/views/asrun_details_report_view.dart';
 import '../modules/Audit_Status_Report/bindings/audit_status_report_binding.dart';
 import '../modules/Audit_Status_Report/views/audit_status_report_view.dart';
 import '../modules/ChangeRONumber/bindings/change_r_o_number_binding.dart';
+import '../modules/CommercialCreationAuto/bindings/CommercialCreationAutoBinding.dart';
+import '../modules/CommercialCreationAuto/views/CommercialCreationAutoView.dart';
+import '../modules/CommercialLanguageSpecification/bindings/CommercialLanguageSpecificationBinding.dart';
+import '../modules/CommercialLanguageSpecification/views/CommercialLanguageSpecificationView.dart';
 import '../modules/Deal_Reco_Summary/bindings/deal_reco_summary_binding.dart';
 import '../modules/Deal_Reco_Summary/views/deal_reco_summary_view.dart';
 import '../modules/EDI_Mapping/bindings/e_d_i_mapping_binding.dart';
@@ -73,15 +77,26 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.WORKFLOW_DEFINITION,
-      page: () =>   AuthGuard(childName: _Paths.WORKFLOW_DEFINITION),
-          // WorkflowDefinitionView(),
+      page: () => AuthGuard(childName: _Paths.WORKFLOW_DEFINITION),
+      // WorkflowDefinitionView(),
       binding: WorkflowDefinitionBinding(),
     ),
     GetPage(
       name: _Paths.E_D_I_MAPPING,
-      page: () =>  AuthGuard(childName: _Paths.E_D_I_MAPPING),
-          // EDIMappingView(),
+      page: () => AuthGuard(childName: _Paths.E_D_I_MAPPING),
+      // EDIMappingView(),
       binding: EDIMappingBinding(),
+    ),
+    GetPage(
+      name: _Paths.COMMERCIAL_CREATION_AUTO,
+      page: () => AuthGuard(childName: _Paths.COMMERCIAL_CREATION_AUTO),
+      // binding: CommercialCreationAutoBinding(),
+    ),
+    GetPage(
+      name: _Paths.COMMERCIAL_LANGUAGE_SPECIFICATION,
+      page: () => AuthGuard(childName: _Paths.COMMERCIAL_LANGUAGE_SPECIFICATION),
+      // page: () => CommercialLanguageSpecificationView(),
+      // binding: CommercialLanguageSpecificationBinding(),
     ),
   ];
 }

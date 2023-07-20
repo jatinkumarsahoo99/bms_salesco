@@ -15,6 +15,9 @@ abstract class Routes {
   static const RO_RECEIVED = _Paths.RO_RECEIVED;
   static const WORKFLOW_DEFINITION = _Paths.WORKFLOW_DEFINITION;
   static const E_D_I_MAPPING = _Paths.E_D_I_MAPPING;
+  static const COMMERCIAL_CREATION_AUTO = _Paths.COMMERCIAL_CREATION_AUTO;
+  static const COMMERCIAL_LANGUAGE_SPECIFICATION =
+      _Paths.COMMERCIAL_LANGUAGE_SPECIFICATION;
 }
 
 abstract class RoutesList {
@@ -45,4 +48,7 @@ abstract class _Paths {
   static const DEAL_RECO_SUMMARY = '/FrmDealrecosummary';
   static const WORKFLOW_DEFINITION = '/frmDP_ApprovalTrail';
   static const E_D_I_MAPPING = '/frmEDIClientAgencyChannelMapping';
+  static const COMMERCIAL_CREATION_AUTO = '/commercial-creation-auto';
+  static const COMMERCIAL_LANGUAGE_SPECIFICATION =
+      '/commercial-language-specification';
 }

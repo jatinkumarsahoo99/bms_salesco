@@ -1,4 +1,5 @@
 import 'package:bms_salesco/app/controller/MainController.dart';
+import 'package:bms_salesco/app/modules/CommercialLanguageSpecification/controllers/CommercialLanguageSpecificationController.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -6,6 +7,8 @@ import '../../widgets/LoadingScreen.dart';
 import '../../widgets/NoDataFoundPage.dart';
 import '../modules/Asrun_Details_Report/views/asrun_details_report_view.dart';
 import '../modules/Audit_Status_Report/views/audit_status_report_view.dart';
+import '../modules/CommercialCreationAuto/views/CommercialCreationAutoView.dart';
+import '../modules/CommercialLanguageSpecification/views/CommercialLanguageSpecificationView.dart';
 import '../modules/Deal_Reco_Summary/views/deal_reco_summary_view.dart';
 import '../modules/ChangeRONumber/views/change_r_o_number_view.dart';
 import '../modules/EDI_Mapping/views/e_d_i_mapping_view.dart';
@@ -69,6 +72,12 @@ class AuthGuard extends StatelessWidget {
               break;
             case Routes.E_D_I_MAPPING:
               currentWidget = EDIMappingView();
+              break;
+            case Routes.COMMERCIAL_CREATION_AUTO:
+              currentWidget = CommercialCreationAutoView();
+              break;
+            case Routes.COMMERCIAL_LANGUAGE_SPECIFICATION:
+              currentWidget = CommercialLanguageSpecificationView();
               break;
             default:
               currentWidget = const NoDataFoundPage();
