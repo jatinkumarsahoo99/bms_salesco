@@ -4,19 +4,21 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../widgets/LoadingScreen.dart';
 import '../../widgets/NoDataFoundPage.dart';
-import '../modules/Asrun_Details_Report/views/asrun_details_report_view.dart';
-import '../modules/Audit_Status_Report/views/audit_status_report_view.dart';
-import '../modules/Deal_Reco_Summary/views/deal_reco_summary_view.dart';
+
+import '../modules/AsrunDetailsReport/views/asrun_details_report_view.dart';
+import '../modules/AuditStatusReport/views/audit_status_report_view.dart';
 import '../modules/ChangeRONumber/views/change_r_o_number_view.dart';
+import '../modules/DealRecoSummary/views/deal_reco_summary_view.dart';
 import '../modules/EDI_Mapping/views/e_d_i_mapping_view.dart';
-import '../modules/On_Spot_Booking_Sky_Media/views/on_spot_booking_sky_media_view.dart';
-import '../modules/Periodic_Deal_Utilisation_Format2/views/periodic_deal_utilisation_format2_view.dart';
+
+import '../modules/OnSpotBookingSkyMedia/views/on_spot_booking_sky_media_view.dart';
+import '../modules/PeriodicDealUtilisationFormat2/views/periodic_deal_utilisation_format2_view.dart';
 import '../modules/RoReceived/views/ro_received_view.dart';
 import '../modules/SameDayCollection/views/same_day_collection_view.dart';
 import '../modules/TapeIDCampaign/views/tape_i_d_campaign_view.dart';
 import '../modules/Update_Executive/views/update_executive_view.dart';
-import '../modules/User_Groups_For_Deal_Workflow/views/user_groups_for_deal_workflow_view.dart';
-import '../modules/Workflow_Definition/views/workflow_definition_view.dart';
+import '../modules/UserGroupsForDealWorkflow/views/user_groups_for_deal_workflow_view.dart';
+import '../modules/WorkflowDefinition/views/workflow_definition_view.dart';
 import '../modules/home/views/home_view.dart';
 import '../routes/app_pages.dart';
 
