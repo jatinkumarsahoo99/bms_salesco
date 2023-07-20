@@ -10,6 +10,8 @@ abstract class Routes {
   static const SAME_DAY_COLLECTION = _Paths.SAME_DAY_COLLECTION;
   static const TAPE_I_D_CAMPAIGN = _Paths.TAPE_I_D_CAMPAIGN;
   static const RO_RECEIVED = _Paths.RO_RECEIVED;
+  static const MAKE_GOOD_REPORT = _Paths.MAKE_GOOD_REPORT;
+  static const MARK_R_OS_FLAG = _Paths.MARK_R_OS_FLAG;
 }
 
 abstract class RoutesList {
@@ -30,4 +32,6 @@ abstract class _Paths {
   static const SAME_DAY_COLLECTION = '/frmSamedayCancellation';
   static const TAPE_I_D_CAMPAIGN = '/frmTapeIDCampaign';
   static const RO_RECEIVED = '/frmROReceived';
+  static const MAKE_GOOD_REPORT = '/frmmakegoodreport';
+  static const MARK_R_OS_FLAG = '/frmMarkROsFlag';
 }

@@ -1,10 +1,12 @@
 import 'package:bms_salesco/app/controller/MainController.dart';
+import 'package:bms_salesco/app/modules/MakeGoodReport/views/make_good_report_view.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../widgets/LoadingScreen.dart';
 import '../../widgets/NoDataFoundPage.dart';
 import '../modules/ChangeRONumber/views/change_r_o_number_view.dart';
+import '../modules/MarkROsFlag/views/mark_r_os_flag_view.dart';
 import '../modules/RoReceived/views/ro_received_view.dart';
 import '../modules/SameDayCollection/views/same_day_collection_view.dart';
 import '../modules/TapeIDCampaign/views/tape_i_d_campaign_view.dart';
@@ -49,6 +51,12 @@ class AuthGuard extends StatelessWidget {
               break;
             case Routes.RO_RECEIVED:
               currentWidget = RoReceivedView();
+              break;
+            case Routes.MAKE_GOOD_REPORT:
+              currentWidget = MakeGoodReportView();
+              break;
+            case Routes.MARK_R_OS_FLAG:
+              currentWidget = MarkROsFlagView();
               break;
             default:
               currentWidget = const NoDataFoundPage();

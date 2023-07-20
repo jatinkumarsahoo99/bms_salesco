@@ -1,19 +1,23 @@
-import 'package:bms_salesco/app/providers/AuthGuard1.dart';
 import 'package:get/get.dart';
 
 import '../modules/ChangeRONumber/bindings/change_r_o_number_binding.dart';
+import '../modules/MakeGoodReport/bindings/make_good_report_binding.dart';
+import '../modules/MakeGoodReport/views/make_good_report_view.dart';
+import '../modules/MarkROsFlag/bindings/mark_r_os_flag_binding.dart';
+import '../modules/MarkROsFlag/views/mark_r_os_flag_view.dart';
 import '../modules/RoReceived/bindings/ro_received_binding.dart';
 import '../modules/SameDayCollection/bindings/same_day_collection_binding.dart';
 import '../modules/TapeIDCampaign/bindings/tape_i_d_campaign_binding.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
+import '../providers/AuthGuard1.dart';
 
 part 'app_routes.dart';
 
 class AppPages {
   AppPages._();
 
-  static const INITIAL = Routes.CHANGE_R_O_NUMBER +
+  static const INITIAL = Routes.MARK_R_OS_FLAG +
       "?personalNo=kW5Bkf17%2FS5YF7ML28FmVg%3D%3D&loginCode=1BWIoBKeDl7qDSAAhxvXsQ%3D%3D&formName=OI8ukDpPPVN0I2BEXu2h4nuFu%2BZm1ZRpvP8NL4XCXzQ%3D";
 
   static final routes = [
@@ -41,6 +45,16 @@ class AppPages {
       name: _Paths.RO_RECEIVED,
       page: () => AuthGuard(childName: _Paths.RO_RECEIVED),
       binding: RoReceivedBinding(),
+    ),
+    GetPage(
+      name: _Paths.MAKE_GOOD_REPORT,
+      page: () => AuthGuard(childName: _Paths.MAKE_GOOD_REPORT),
+      binding: MakeGoodReportBinding(),
+    ),
+    GetPage(
+      name: _Paths.MARK_R_OS_FLAG,
+      page: () => AuthGuard(childName: _Paths.MARK_R_OS_FLAG),
+      binding: MarkROsFlagBinding(),
     ),
   ];
 }
