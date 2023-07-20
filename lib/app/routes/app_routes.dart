@@ -14,6 +14,7 @@ abstract class Routes {
   static const MARK_R_OS_FLAG = _Paths.MARK_R_OS_FLAG;
   static const AUTO_TIME_LOCK = _Paths.AUTO_TIME_LOCK;
   static const MONTHLY_REPORT = _Paths.MONTHLY_REPORT;
+  static const GEO_PROGRAM_UPDATE = _Paths.GEO_PROGRAM_UPDATE;
 }
 
 abstract class RoutesList {
@@ -38,4 +39,5 @@ abstract class _Paths {
   static const MARK_R_OS_FLAG = '/frmMarkROsFlag';
   static const AUTO_TIME_LOCK = '/frmAutoLock';
   static const MONTHLY_REPORT = '/frmmonthlyreport';
+  static const GEO_PROGRAM_UPDATE = '/Frmdealedi';
 }

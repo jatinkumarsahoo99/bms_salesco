@@ -7,6 +7,7 @@ import '../../widgets/LoadingScreen.dart';
 import '../../widgets/NoDataFoundPage.dart';
 import '../modules/AutoTimeLock/views/auto_time_lock_view.dart';
 import '../modules/ChangeRONumber/views/change_r_o_number_view.dart';
+import '../modules/GeoProgramUpdate/views/geo_program_update_view.dart';
 import '../modules/MarkROsFlag/views/mark_r_os_flag_view.dart';
 import '../modules/MonthlyReport/views/monthly_report_view.dart';
 import '../modules/RoReceived/views/ro_received_view.dart';
@@ -65,6 +66,9 @@ class AuthGuard extends StatelessWidget {
               break;
             case Routes.MONTHLY_REPORT:
               currentWidget = MonthlyReportView();
+              break;
+            case Routes.GEO_PROGRAM_UPDATE:
+              currentWidget = GeoProgramUpdateView();
               break;
             default:
               currentWidget = const NoDataFoundPage();

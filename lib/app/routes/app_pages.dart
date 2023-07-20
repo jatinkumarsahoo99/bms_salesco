@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import '../modules/AutoTimeLock/bindings/auto_time_lock_binding.dart';
 import '../modules/AutoTimeLock/views/auto_time_lock_view.dart';
 import '../modules/ChangeRONumber/bindings/change_r_o_number_binding.dart';
+import '../modules/GeoProgramUpdate/bindings/geo_program_update_binding.dart';
+import '../modules/GeoProgramUpdate/views/geo_program_update_view.dart';
 import '../modules/MakeGoodReport/bindings/make_good_report_binding.dart';
 import '../modules/MakeGoodReport/views/make_good_report_view.dart';
 import '../modules/MarkROsFlag/bindings/mark_r_os_flag_binding.dart';
@@ -21,7 +23,7 @@ part 'app_routes.dart';
 class AppPages {
   AppPages._();
 
-  static const INITIAL = Routes.MAKE_GOOD_REPORT +
+  static const INITIAL = Routes.GEO_PROGRAM_UPDATE +
       "?personalNo=kW5Bkf17%2FS5YF7ML28FmVg%3D%3D&loginCode=1BWIoBKeDl7qDSAAhxvXsQ%3D%3D&formName=OI8ukDpPPVN0I2BEXu2h4nuFu%2BZm1ZRpvP8NL4XCXzQ%3D";
 
   static final routes = [
@@ -69,6 +71,11 @@ class AppPages {
       name: _Paths.MONTHLY_REPORT,
       page: () => AuthGuard(childName: _Paths.MONTHLY_REPORT),
       binding: MonthlyReportBinding(),
+    ),
+    GetPage(
+      name: _Paths.GEO_PROGRAM_UPDATE,
+      page: () => AuthGuard(childName: _Paths.GEO_PROGRAM_UPDATE),
+      binding: GeoProgramUpdateBinding(),
     ),
   ];
 }
