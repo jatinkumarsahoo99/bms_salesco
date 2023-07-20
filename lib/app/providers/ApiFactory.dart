@@ -3,22 +3,21 @@
 import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 
+import 'Const.dart';
+
 // import '../modules/OperationalFPC/DailyFPCModel.dart';
 
 class ApiFactory {
   static String userId = "";
   static String LOCAL_URL = "http://localhost:9999";
   static String Enviroment = const String.fromEnvironment('ENV', defaultValue: 'dev');
-  // static String SERVER_URL = "https://bmswebfrontend-uat.azurewebsites.net";
-  static String WEB_URL = Enviroment.toLowerCase() == "uat" ? "https://app-admin-bms-uat.zeeconnect.in" : "https://app-admin-bms-dev.zeeconnect.in";
-  static String WEB_URL_COMMON =
-      Enviroment.toLowerCase() == "uat" ? "https://app-common-bms-uat.zeeconnect.in" : "https://app-common-bms-dev.zeeconnect.in";
 
-  static String BASE_URL = Enviroment.toLowerCase() == "uat" ? "https://api-admin-bms-uat.zeeconnect.in" : "https://api-admin-bms-dev.zeeconnect.in";
-  static String BASE_URL_COMMON =
-      Enviroment.toLowerCase() == "uat" ? "https://api-common-bms-uat.zeeconnect.in" : "https://api-common-bms-dev.zeeconnect.in";
-  static String BASE_URL_LOGIN =
-      Enviroment.toLowerCase() == "uat" ? "https://api-login-bms-uat.zeeconnect.in" : "https://api-login-bms-dev.zeeconnect.in";
+  static String WEB_URL = Const.getWebSalescoUrl();
+  static String WEB_URL_COMMON = Const.getWebCommonUrl();
+
+  static String BASE_URL = Const.getBaseSalescoAPIUrl();
+  static String BASE_URL_COMMON = Const.getBaseCommonAPIUrl();
+  static String BASE_URL_LOGIN = Const.getBaseLoginAPIUrl();
 
   // api-login-bms-dev.zeeconnect.in
   // api-common-bms-dev.zeeconnect.in

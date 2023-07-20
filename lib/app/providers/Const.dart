@@ -123,6 +123,19 @@ class Const {
     }
   }
 
+  static String getBaseSalescoAPIUrl() {
+    switch (ApiFactory.Enviroment.toLowerCase()) {
+      case "prod":
+        return "https://api-salesco-bms.zeeconnect.in";
+      case "uat":
+        return "https://api-salesco-bms-dev.zeeconnect.in";
+      case "dev":
+        return "https://api-salesco-bms-dev.zeeconnect.in";
+      default:
+        return "https://api-salesco-bms-dev.zeeconnect.in";
+    }
+  }
+
   static String getWebLoginUrl() {
     switch (ApiFactory.Enviroment.toLowerCase()) {
       case "prod":
@@ -184,6 +197,19 @@ class Const {
         return "https://app-scheduling-bms-dev.zeeconnect.in";
       default:
         return "https://app-scheduling-bms-dev.zeeconnect.in";
+    }
+  }
+
+  static String getWebSalescoUrl() {
+    switch (ApiFactory.Enviroment.toLowerCase()) {
+      case "prod":
+        return "https://salesco-bms.zeeconnect.in";
+      case "uat":
+        return "https://app-salesco-bms-uat.zeeconnect.in";
+      case "dev":
+        return "https://app-salesco-bms-dev.zeeconnect.in";
+      default:
+        return "https://app-salesco-bms-dev.zeeconnect.in";
     }
   }
 
