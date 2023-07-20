@@ -51,9 +51,9 @@ abstract class _Paths {
   static const DEAL_RECO_SUMMARY = '/FrmDealrecosummary';
   static const WORKFLOW_DEFINITION = '/frmDP_ApprovalTrail';
   static const E_D_I_MAPPING = '/frmEDIClientAgencyChannelMapping';
-  static const ON_SPOT_BOOKING_SKY_MEDIA = '/on-spot-booking-sky-media';
+  static const ON_SPOT_BOOKING_SKY_MEDIA = '/frmDigiTextBooking';
   static const PERIODIC_DEAL_UTILISATION_FORMAT2 =
-      '/periodic-deal-utilisation-format2';
-  static const UPDATE_EXECUTIVE = '/update-executive';
-  static const USER_GROUPS_FOR_DEAL_WORKFLOW = '/user-groups-for-deal-workflow';
+      '/frmPeriodicDealUtilisation';
+  static const UPDATE_EXECUTIVE = '/rate';
+  static const USER_GROUPS_FOR_DEAL_WORKFLOW = '/frmDP_UserGroups';
 }
