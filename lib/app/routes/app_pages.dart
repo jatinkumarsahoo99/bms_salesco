@@ -7,6 +7,8 @@ import '../modules/MakeGoodReport/bindings/make_good_report_binding.dart';
 import '../modules/MakeGoodReport/views/make_good_report_view.dart';
 import '../modules/MarkROsFlag/bindings/mark_r_os_flag_binding.dart';
 import '../modules/MarkROsFlag/views/mark_r_os_flag_view.dart';
+import '../modules/MonthlyReport/bindings/monthly_report_binding.dart';
+import '../modules/MonthlyReport/views/monthly_report_view.dart';
 import '../modules/RoReceived/bindings/ro_received_binding.dart';
 import '../modules/SameDayCollection/bindings/same_day_collection_binding.dart';
 import '../modules/TapeIDCampaign/bindings/tape_i_d_campaign_binding.dart';
@@ -19,7 +21,7 @@ part 'app_routes.dart';
 class AppPages {
   AppPages._();
 
-  static const INITIAL = Routes.AUTO_TIME_LOCK +
+  static const INITIAL = Routes.MONTHLY_REPORT +
       "?personalNo=kW5Bkf17%2FS5YF7ML28FmVg%3D%3D&loginCode=1BWIoBKeDl7qDSAAhxvXsQ%3D%3D&formName=OI8ukDpPPVN0I2BEXu2h4nuFu%2BZm1ZRpvP8NL4XCXzQ%3D";
 
   static final routes = [
@@ -62,6 +64,11 @@ class AppPages {
       name: _Paths.AUTO_TIME_LOCK,
       page: () => AuthGuard(childName: _Paths.AUTO_TIME_LOCK),
       binding: AutoTimeLockBinding(),
+    ),
+    GetPage(
+      name: _Paths.MONTHLY_REPORT,
+      page: () => AuthGuard(childName: _Paths.MONTHLY_REPORT),
+      binding: MonthlyReportBinding(),
     ),
   ];
 }

@@ -8,6 +8,7 @@ import '../../widgets/NoDataFoundPage.dart';
 import '../modules/AutoTimeLock/views/auto_time_lock_view.dart';
 import '../modules/ChangeRONumber/views/change_r_o_number_view.dart';
 import '../modules/MarkROsFlag/views/mark_r_os_flag_view.dart';
+import '../modules/MonthlyReport/views/monthly_report_view.dart';
 import '../modules/RoReceived/views/ro_received_view.dart';
 import '../modules/SameDayCollection/views/same_day_collection_view.dart';
 import '../modules/TapeIDCampaign/views/tape_i_d_campaign_view.dart';
@@ -61,6 +62,9 @@ class AuthGuard extends StatelessWidget {
               break;
             case Routes.AUTO_TIME_LOCK:
               currentWidget = AutoTimeLockView();
+              break;
+            case Routes.MONTHLY_REPORT:
+              currentWidget = MonthlyReportView();
               break;
             default:
               currentWidget = const NoDataFoundPage();

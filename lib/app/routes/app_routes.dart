@@ -13,6 +13,7 @@ abstract class Routes {
   static const MAKE_GOOD_REPORT = _Paths.MAKE_GOOD_REPORT;
   static const MARK_R_OS_FLAG = _Paths.MARK_R_OS_FLAG;
   static const AUTO_TIME_LOCK = _Paths.AUTO_TIME_LOCK;
+  static const MONTHLY_REPORT = _Paths.MONTHLY_REPORT;
 }
 
 abstract class RoutesList {
@@ -35,5 +36,6 @@ abstract class _Paths {
   static const RO_RECEIVED = '/frmROReceived';
   static const MAKE_GOOD_REPORT = '/frmmakegoodreport';
   static const MARK_R_OS_FLAG = '/frmMarkROsFlag';
-  static const AUTO_TIME_LOCK = '/auto-time-lock';
+  static const AUTO_TIME_LOCK = '/frmAutoLock';
+  static const MONTHLY_REPORT = '/frmmonthlyreport';
 }

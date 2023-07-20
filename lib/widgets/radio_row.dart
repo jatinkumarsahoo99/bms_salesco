@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 
 class RadioRow extends StatefulWidget {
-  const RadioRow(
-      {Key? key, required this.items, required this.groupValue, this.onchange})
-      : super(key: key);
+  const RadioRow({Key? key, required this.items, required this.groupValue, this.onchange}) : super(key: key);
   final List items;
   final String groupValue;
   final Function? onchange;
@@ -22,6 +20,7 @@ class _RadioRowState extends State<RadioRow> {
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisSize: MainAxisSize.min,
       children: widget.items
           .map(
             (e) => Padding(
