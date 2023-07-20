@@ -54,6 +54,6 @@ abstract class _Paths {
   static const ON_SPOT_BOOKING_SKY_MEDIA = '/frmDigiTextBooking';
   static const PERIODIC_DEAL_UTILISATION_FORMAT2 =
       '/frmPeriodicDealUtilisation';
-  static const UPDATE_EXECUTIVE = '/rate';
+  static const UPDATE_EXECUTIVE = '/frmbreakpatternxmlgenration';
   static const USER_GROUPS_FOR_DEAL_WORKFLOW = '/frmDP_UserGroups';
 }
