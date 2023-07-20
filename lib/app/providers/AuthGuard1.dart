@@ -10,12 +10,21 @@ import '../modules/Audit_Status_Report/views/audit_status_report_view.dart';
 import '../modules/CommercialCreationAuto/views/CommercialCreationAutoView.dart';
 import '../modules/CommercialLanguageSpecification/views/CommercialLanguageSpecificationView.dart';
 import '../modules/Deal_Reco_Summary/views/deal_reco_summary_view.dart';
+
+import '../modules/AsrunDetailsReport/views/asrun_details_report_view.dart';
+import '../modules/AuditStatusReport/views/audit_status_report_view.dart';
 import '../modules/ChangeRONumber/views/change_r_o_number_view.dart';
+import '../modules/DealRecoSummary/views/deal_reco_summary_view.dart';
 import '../modules/EDI_Mapping/views/e_d_i_mapping_view.dart';
+
+import '../modules/OnSpotBookingSkyMedia/views/on_spot_booking_sky_media_view.dart';
+import '../modules/PeriodicDealUtilisationFormat2/views/periodic_deal_utilisation_format2_view.dart';
 import '../modules/RoReceived/views/ro_received_view.dart';
 import '../modules/SameDayCollection/views/same_day_collection_view.dart';
 import '../modules/TapeIDCampaign/views/tape_i_d_campaign_view.dart';
-import '../modules/Workflow_Definition/views/workflow_definition_view.dart';
+import '../modules/Update_Executive/views/update_executive_view.dart';
+import '../modules/UserGroupsForDealWorkflow/views/user_groups_for_deal_workflow_view.dart';
+import '../modules/WorkflowDefinition/views/workflow_definition_view.dart';
 import '../modules/home/views/home_view.dart';
 import '../routes/app_pages.dart';
 
@@ -69,6 +78,18 @@ class AuthGuard extends StatelessWidget {
               break;
             case Routes.WORKFLOW_DEFINITION:
               currentWidget = WorkflowDefinitionView();
+              break;
+            case Routes.ON_SPOT_BOOKING_SKY_MEDIA:
+              currentWidget = OnSpotBookingSkyMediaView();
+              break;
+            case Routes.PERIODIC_DEAL_UTILISATION_FORMAT2:
+              currentWidget = PeriodicDealUtilisationFormat2View();
+              break;
+            case Routes.UPDATE_EXECUTIVE:
+              currentWidget = UpdateExecutiveView();
+              break;
+            case Routes.USER_GROUPS_FOR_DEAL_WORKFLOW:
+              currentWidget = UserGroupsForDealWorkflowView();
               break;
             case Routes.E_D_I_MAPPING:
               currentWidget = EDIMappingView();

@@ -1,14 +1,29 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/foundation.dart';
+
 import 'package:get/get.dart';
 import '../modules/Asrun_Details_Report/bindings/asrun_details_report_binding.dart';
 import '../modules/Audit_Status_Report/bindings/audit_status_report_binding.dart';
+
+
+import '../modules/AsrunDetailsReport/bindings/asrun_details_report_binding.dart';
+import '../modules/AuditStatusReport/bindings/audit_status_report_binding.dart';
 import '../modules/ChangeRONumber/bindings/change_r_o_number_binding.dart';
 import '../modules/Deal_Reco_Summary/bindings/deal_reco_summary_binding.dart';
+import '../modules/DealRecoSummary/bindings/deal_reco_summary_binding.dart';
+
 import '../modules/EDI_Mapping/bindings/e_d_i_mapping_binding.dart';
+import '../modules/EDI_Mapping/views/e_d_i_mapping_view.dart';
+import '../modules/OnSpotBookingSkyMedia/bindings/on_spot_booking_sky_media_binding.dart';
+import '../modules/PeriodicDealUtilisationFormat2/bindings/periodic_deal_utilisation_format2_binding.dart';
 import '../modules/RoReceived/bindings/ro_received_binding.dart';
 import '../modules/SameDayCollection/bindings/same_day_collection_binding.dart';
 import '../modules/TapeIDCampaign/bindings/tape_i_d_campaign_binding.dart';
 import '../modules/Workflow_Definition/bindings/workflow_definition_binding.dart';
+import '../modules/Update_Executive/bindings/update_executive_binding.dart';
+import '../modules/Update_Executive/views/update_executive_view.dart';
+import '../modules/UserGroupsForDealWorkflow/bindings/user_groups_for_deal_workflow_binding.dart';
+import '../modules/WorkflowDefinition/bindings/workflow_definition_binding.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../providers/AuthGuard1.dart';
@@ -83,6 +98,30 @@ class AppPages {
       name: _Paths.COMMERCIAL_LANGUAGE_SPECIFICATION,
       page: () =>
           AuthGuard(childName: _Paths.COMMERCIAL_LANGUAGE_SPECIFICATION),
+    ),
+    GetPage(
+      name: _Paths.ON_SPOT_BOOKING_SKY_MEDIA,
+      page: () => AuthGuard(childName: _Paths.ON_SPOT_BOOKING_SKY_MEDIA),
+          // OnSpotBookingSkyMediaView(),
+      binding: OnSpotBookingSkyMediaBinding(),
+    ),
+    GetPage(
+      name: _Paths.PERIODIC_DEAL_UTILISATION_FORMAT2,
+      page: () => AuthGuard(childName: _Paths.PERIODIC_DEAL_UTILISATION_FORMAT2),
+          // PeriodicDealUtilisationFormat2View(),
+      binding: PeriodicDealUtilisationFormat2Binding(),
+    ),
+    GetPage(
+      name: _Paths.UPDATE_EXECUTIVE,
+      page: () => AuthGuard(childName: _Paths.UPDATE_EXECUTIVE),
+       // UpdateExecutiveView(),
+      binding: UpdateExecutiveBinding(),
+    ),
+    GetPage(
+      name: _Paths.USER_GROUPS_FOR_DEAL_WORKFLOW,
+      page: () => AuthGuard(childName: _Paths.USER_GROUPS_FOR_DEAL_WORKFLOW),
+       // UserGroupsForDealWorkflowView(),
+      binding: UserGroupsForDealWorkflowBinding(),
     ),
   ];
 }

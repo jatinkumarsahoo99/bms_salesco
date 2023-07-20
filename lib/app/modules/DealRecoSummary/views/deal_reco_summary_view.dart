@@ -72,15 +72,18 @@ class DealRecoSummaryView extends GetView<DealRecoSummaryController> {
                       ),
 
 
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            top: 14.0, left: 10, right: 10),
-                        child: FormButtonWrapper(
-                          btnText: "Generate",
-                          callback: () {
-                            // controllerX.callGetRetrieve();
-                          },
-                          showIcon: false,
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width*0.09,
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              top: 14.0, left: 10, right: 10),
+                          child: FormButtonWrapper(
+                            btnText: "Generate",
+                            callback: () {
+                              // controllerX.callGetRetrieve();
+                            },
+                            showIcon: false,
+                          ),
                         ),
                       ),
 
@@ -103,15 +106,18 @@ class DealRecoSummaryView extends GetView<DealRecoSummaryController> {
                       ),
 
 
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            top: 14.0, left: 10, right: 10),
-                        child: FormButtonWrapper(
-                          btnText: "Clear",
-                          callback: () {
-                            // controllerX.callGetRetrieve();
-                          },
-                          showIcon: false,
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width*0.09,
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              top: 14.0, left: 10, right: 10),
+                          child: FormButtonWrapper(
+                            btnText: "Clear",
+                            callback: () {
+                              // controllerX.callGetRetrieve();
+                            },
+                            showIcon: false,
+                          ),
                         ),
                       ),
 
@@ -134,15 +140,18 @@ class DealRecoSummaryView extends GetView<DealRecoSummaryController> {
                       ),
 
 
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            top: 14.0, left: 10, right: 10),
-                        child: FormButtonWrapper(
-                          btnText: "Exit",
-                          callback: () {
-                            // controllerX.callGetRetrieve();
-                          },
-                          showIcon: false,
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width*0.09,
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              top: 14.0, left: 10, right: 10),
+                          child: FormButtonWrapper(
+                            btnText: "Exit",
+                            callback: () {
+                              // controllerX.callGetRetrieve();
+                            },
+                            showIcon: false,
+                          ),
                         ),
                       ),
 

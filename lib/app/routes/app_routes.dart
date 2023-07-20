@@ -18,6 +18,12 @@ abstract class Routes {
   static const COMMERCIAL_CREATION_AUTO = _Paths.COMMERCIAL_CREATION_AUTO;
   static const COMMERCIAL_LANGUAGE_SPECIFICATION =
       _Paths.COMMERCIAL_LANGUAGE_SPECIFICATION;
+  static const ON_SPOT_BOOKING_SKY_MEDIA = _Paths.ON_SPOT_BOOKING_SKY_MEDIA;
+  static const PERIODIC_DEAL_UTILISATION_FORMAT2 =
+      _Paths.PERIODIC_DEAL_UTILISATION_FORMAT2;
+  static const UPDATE_EXECUTIVE = _Paths.UPDATE_EXECUTIVE;
+  static const USER_GROUPS_FOR_DEAL_WORKFLOW =
+      _Paths.USER_GROUPS_FOR_DEAL_WORKFLOW;
 }
 
 abstract class RoutesList {
@@ -41,7 +47,7 @@ abstract class _Paths {
   static const HOME = '/home';
   static const CHANGE_R_O_NUMBER = '/Frmchangereference';
   static const SAME_DAY_COLLECTION = '/frmSamedayCancellation';
-  static const TAPE_I_D_CAMPAIGN = '/frmTapeIDCampaign';
+  static const TAPE_I_D_CAMPAIGN = '/Routes.HOME';
   static const RO_RECEIVED = '/frmROReceived';
   static const ASRUN_DETAILS_REPORT = '/frmAsrundetailsReport';
   static const AUDIT_STATUS_REPORT = '/Frmauditstatusreport';
@@ -51,4 +57,9 @@ abstract class _Paths {
   static const COMMERCIAL_CREATION_AUTO = '/commercial-creation-auto';
   static const COMMERCIAL_LANGUAGE_SPECIFICATION =
       '/commercial-language-specification';
+  static const ON_SPOT_BOOKING_SKY_MEDIA = '/frmDigiTextBooking';
+  static const PERIODIC_DEAL_UTILISATION_FORMAT2 =
+      '/frmPeriodicDealUtilisation';
+  static const UPDATE_EXECUTIVE = '/rate';
+  static const USER_GROUPS_FOR_DEAL_WORKFLOW = '/frmDP_UserGroups';
 }
