@@ -18,9 +18,7 @@ class ApiFactory {
   static String BASE_URL = Const.getBaseSalescoAPIUrl();
   static String BASE_URL_COMMON = Const.getBaseCommonAPIUrl();
   static String BASE_URL_LOGIN = Const.getBaseLoginAPIUrl();
-  static String LOGIN_URL =
-  (kReleaseMode ? Const.getWebLoginUrl() : "http://localhost:9991");
-
+  static String LOGIN_URL = (kReleaseMode ? Const.getWebLoginUrl() : "http://localhost:9991");
 
   // api-login-bms-dev.zeeconnect.in
   // api-common-bms-dev.zeeconnect.in
@@ -555,4 +553,16 @@ class ApiFactory {
   static String MODULE_FORM_TRANSACTION_GET_MODULE_LIST(String moduleCode) =>
       "$BASE_URL/api/ModuleFormTransaction/GetModuleFormDetails?ModuleCode=$moduleCode";
   ///////////////////////// END MODULE FORM TRANSACTION API//////
+  ///
+  ///
+  ///
+  ///
+  ///
+  ///
+  ///////////////////////// CHANGE-RO-NUMBER-START//////
+  static String get CHANGE_RO_NUMBER_ON_LOAD => "$BASE_URL/api/ChangeRONumber/GetLocation";
+  static String get CHANGE_RO_NUMBER_UPDATE_DATA => "$BASE_URL/api/ChangeRONumber/ShowDeal";
+  static String CHANGE_RO_NUMBER_ON_LEAVE_LOCATION(String locationCode) => "$BASE_URL/api/ChangeRONumber/GetChannel?LocationCode=$locationCode";
+
+  ///////////////////////// CHANGE-RO-NUMBER-END//////
 }
