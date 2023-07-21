@@ -1,6 +1,21 @@
+import 'package:get/get.dart';
+
+import '../modules/AutoTimeLock/bindings/auto_time_lock_binding.dart';
+import '../modules/AutoTimeLock/views/auto_time_lock_view.dart';
+import '../modules/ChangeRONumber/bindings/change_r_o_number_binding.dart';
+import '../modules/GeoProgramUpdate/bindings/geo_program_update_binding.dart';
+import '../modules/GeoProgramUpdate/views/geo_program_update_view.dart';
+import '../modules/MakeGoodReport/bindings/make_good_report_binding.dart';
+import '../modules/MakeGoodReport/views/make_good_report_view.dart';
+import '../modules/MarkROsFlag/bindings/mark_r_os_flag_binding.dart';
+import '../modules/MarkROsFlag/views/mark_r_os_flag_view.dart';
+import '../modules/MonthlyReport/bindings/monthly_report_binding.dart';
+import '../modules/MonthlyReport/views/monthly_report_view.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/foundation.dart';
 
+import '../modules/EdiRoBooking/bindings/edi_ro_booking_binding.dart';
+import '../modules/EdiRoBooking/views/edi_ro_booking_view.dart';
 import 'package:get/get.dart';
 
 
@@ -82,12 +97,46 @@ class AppPages {
       binding: RoReceivedBinding(),
     ),
     GetPage(
+      name: _Paths.MAKE_GOOD_REPORT,
+      page: () => AuthGuard(childName: _Paths.MAKE_GOOD_REPORT),
+      binding: MakeGoodReportBinding(),
+    ),
+    GetPage(
+      name: _Paths.MARK_R_OS_FLAG,
+      page: () => AuthGuard(childName: _Paths.MARK_R_OS_FLAG),
+      binding: MarkROsFlagBinding(),
+    ),
+    GetPage(
+      name: _Paths.AUTO_TIME_LOCK,
+      page: () => AuthGuard(childName: _Paths.AUTO_TIME_LOCK),
+      binding: AutoTimeLockBinding(),
+    ),
+    GetPage(
+      name: _Paths.MONTHLY_REPORT,
+      page: () => AuthGuard(childName: _Paths.MONTHLY_REPORT),
+      binding: MonthlyReportBinding(),
+    ),
+    GetPage(
+      name: _Paths.GEO_PROGRAM_UPDATE,
+      page: () => AuthGuard(childName: _Paths.GEO_PROGRAM_UPDATE),
+      binding: GeoProgramUpdateBinding(),
+    ),
+    GetPage(
+      name: _Paths.EDI_RO_BOOKING,
+      page: () => const EdiRoBookingView(),
+      binding: EdiRoBookingBinding(),
+    ),
+    GetPage(
       name: _Paths.WORKFLOW_DEFINITION,
       page: () => AuthGuard(childName: _Paths.WORKFLOW_DEFINITION),
+      // WorkflowDefinitionView(),
+      binding: WorkflowDefinitionBinding(),
     ),
     GetPage(
       name: _Paths.E_D_I_MAPPING,
       page: () => AuthGuard(childName: _Paths.E_D_I_MAPPING),
+      // EDIMappingView(),
+      binding: EDIMappingBinding(),
     ),
     GetPage(
       name: _Paths.COMMERCIAL_CREATION_AUTO,
@@ -95,31 +144,30 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.COMMERCIAL_LANGUAGE_SPECIFICATION,
-      page: () =>
-          AuthGuard(childName: _Paths.COMMERCIAL_LANGUAGE_SPECIFICATION),
+      page: () => AuthGuard(childName: _Paths.COMMERCIAL_LANGUAGE_SPECIFICATION),
     ),
     GetPage(
       name: _Paths.ON_SPOT_BOOKING_SKY_MEDIA,
       page: () => AuthGuard(childName: _Paths.ON_SPOT_BOOKING_SKY_MEDIA),
-          // OnSpotBookingSkyMediaView(),
+      // OnSpotBookingSkyMediaView(),
       binding: OnSpotBookingSkyMediaBinding(),
     ),
     GetPage(
       name: _Paths.PERIODIC_DEAL_UTILISATION_FORMAT2,
       page: () => AuthGuard(childName: _Paths.PERIODIC_DEAL_UTILISATION_FORMAT2),
-          // PeriodicDealUtilisationFormat2View(),
+      // PeriodicDealUtilisationFormat2View(),
       binding: PeriodicDealUtilisationFormat2Binding(),
     ),
     GetPage(
       name: _Paths.UPDATE_EXECUTIVE,
       page: () => AuthGuard(childName: _Paths.UPDATE_EXECUTIVE),
-       // UpdateExecutiveView(),
+      // UpdateExecutiveView(),
       binding: UpdateExecutiveBinding(),
     ),
     GetPage(
       name: _Paths.USER_GROUPS_FOR_DEAL_WORKFLOW,
       page: () => AuthGuard(childName: _Paths.USER_GROUPS_FOR_DEAL_WORKFLOW),
-       // UserGroupsForDealWorkflowView(),
+      // UserGroupsForDealWorkflowView(),
       binding: UserGroupsForDealWorkflowBinding(),
     ),
   ];

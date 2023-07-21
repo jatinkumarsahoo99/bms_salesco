@@ -1,10 +1,17 @@
 import 'package:bms_salesco/app/controller/MainController.dart';
+import 'package:bms_salesco/app/modules/MakeGoodReport/views/make_good_report_view.dart';
 import 'package:bms_salesco/app/modules/CommercialLanguageSpecification/controllers/CommercialLanguageSpecificationController.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../widgets/LoadingScreen.dart';
 import '../../widgets/NoDataFoundPage.dart';
+
+import '../modules/AutoTimeLock/views/auto_time_lock_view.dart';
+import '../modules/ChangeRONumber/views/change_r_o_number_view.dart';
+import '../modules/GeoProgramUpdate/views/geo_program_update_view.dart';
+import '../modules/MarkROsFlag/views/mark_r_os_flag_view.dart';
+import '../modules/MonthlyReport/views/monthly_report_view.dart';
 
 import '../modules/CommercialCreationAuto/views/CommercialCreationAutoView.dart';
 import '../modules/CommercialLanguageSpecification/views/CommercialLanguageSpecificationView.dart';
@@ -74,6 +81,21 @@ class AuthGuard extends StatelessWidget {
               break;
             case Routes.RO_RECEIVED:
               currentWidget = RoReceivedView();
+              break;
+            case Routes.MAKE_GOOD_REPORT:
+              currentWidget = MakeGoodReportView();
+              break;
+            case Routes.MARK_R_OS_FLAG:
+              currentWidget = MarkROsFlagView();
+              break;
+            case Routes.AUTO_TIME_LOCK:
+              currentWidget = AutoTimeLockView();
+              break;
+            case Routes.MONTHLY_REPORT:
+              currentWidget = MonthlyReportView();
+              break;
+            case Routes.GEO_PROGRAM_UPDATE:
+              currentWidget = GeoProgramUpdateView();
               break;
             case Routes.WORKFLOW_DEFINITION:
               currentWidget = WorkflowDefinitionView();
