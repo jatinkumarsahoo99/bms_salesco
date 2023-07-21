@@ -54,9 +54,8 @@ abstract class _Paths {
   static const DEAL_RECO_SUMMARY = '/FrmDealrecosummary';
   static const WORKFLOW_DEFINITION = '/frmDP_ApprovalTrail';
   static const E_D_I_MAPPING = '/frmEDIClientAgencyChannelMapping';
-  static const COMMERCIAL_CREATION_AUTO = '/commercial-creation-auto';
-  static const COMMERCIAL_LANGUAGE_SPECIFICATION =
-      '/commercial-language-specification';
+  static const COMMERCIAL_CREATION_AUTO = '/frmCommercialMasterAutoCreate';
+  static const COMMERCIAL_LANGUAGE_SPECIFICATION = '/frmCommercialLanguageSpec';
   static const ON_SPOT_BOOKING_SKY_MEDIA = '/frmDigiTextBooking';
   static const PERIODIC_DEAL_UTILISATION_FORMAT2 =
       '/frmPeriodicDealUtilisation';

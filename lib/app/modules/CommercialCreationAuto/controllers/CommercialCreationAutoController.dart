@@ -1,9 +1,14 @@
 import 'package:get/get.dart';
+import 'package:pluto_grid/pluto_grid.dart';
+
+import '../../../data/DropDownValue.dart';
 
 class CommercialCreationAutoController extends GetxController {
-  //TODO: Implement CommercialCreationAutoController
 
-  final count = 0.obs;
+  RxList<DropDownValue> providerList=RxList([]);
+  RxList<DropDownValue> tableList=RxList([]);
+  PlutoGridStateManager? stateManager;
+
   @override
   void onInit() {
     super.onInit();
@@ -14,7 +19,4 @@ class CommercialCreationAutoController extends GetxController {
     super.onReady();
   }
 
-  @override
-  void onClose() {}
-  void increment() => count.value++;
 }
