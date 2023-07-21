@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 
 import '../../../../widgets/DateTime/DateWithThreeTextField.dart';
 import '../../../../widgets/FormButton.dart';
+import '../../../../widgets/gridFromMap.dart';
 import '../../../../widgets/input_fields.dart';
 import '../../../controller/HomeController.dart';
 import '../../../providers/SizeDefine.dart';
@@ -57,8 +58,22 @@ class TapeIDCampaignView extends GetView<TapeIDCampaignController> {
                           leftPad: 0),
                       InputFields.formFieldDisable1(
                           hintTxt: "Agency Tape ID", value: controller.loadModel?.tapeIdDetails.agencytapeid ?? "", widthRatio: .15, leftPad: 0),
-                      DateWithThreeTextField(title: "Start Date", mainTextController: controller.startDateTC, widthRation: .15),
-                      DateWithThreeTextField(title: "End Date", mainTextController: controller.endDateTC, widthRation: .15),
+                      DateWithThreeTextField(
+                        title: "Start Date",
+                        mainTextController: controller.startDateTC,
+                        widthRation: .15,
+                        startDate: DateTime.now(),
+                        endDate:
+                            DateTime(controller.now.year, controller.now.month, (DateTime(controller.now.year, controller.now.month + 1, 0).day)),
+                      ),
+                      DateWithThreeTextField(
+                        title: "End Date",
+                        mainTextController: controller.endDateTC,
+                        widthRation: .15,
+                        startDate: DateTime.now(),
+                        endDate:
+                            DateTime(controller.now.year, controller.now.month, (DateTime(controller.now.year, controller.now.month + 1, 0).day)),
+                      ),
                       InputFields.formFieldDisable1(
                           hintTxt: "Created By", value: controller.loadModel?.tapeIdDetails.loginName ?? "", widthRatio: .15, leftPad: 0),
                     ],
@@ -109,12 +124,18 @@ class TapeIDCampaignView extends GetView<TapeIDCampaignController> {
                               visible: controller.selectedTab.value == 0,
                               replacement: (controller.history?.historyDetails ?? []).isEmpty
                                   ? const SizedBox()
-                                  : DataGridFromMap1(
+                                  : DataGridFromMap3(
+                                      checkBoxColumnKey: [],
                                       mapData: controller.history?.historyDetails.map((e) => e.toJson()).toList() ?? [],
                                     ),
                               child: (controller.loadModel?.tapeIdDetails.locationLst ?? []).isEmpty
                                   ? const SizedBox()
-                                  : DataGridFromMap1(
+                                  : DataGridFromMap3(
+                                      checkBoxColumnKey: ["selectRow"],
+                                      checkBoxStrComparison: "true",
+                                      uncheckCheckBoxStr: "false",
+                                      // onActionKeyPress: ,
+                                      actionOnPress: (position, isSpaceCalled) {},
                                       mapData: controller.loadModel?.tapeIdDetails.locationLst.map((e) => e.toJson()).toList() ?? [],
                                     ),
                             ),

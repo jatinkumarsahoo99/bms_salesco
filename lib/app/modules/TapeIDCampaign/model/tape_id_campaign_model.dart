@@ -103,7 +103,7 @@ class LocationLst {
       _data['startDate'] = startDate;
       _data['endDate'] = endDate;
     } else {
-      _data['selectRow'] = selectRow;
+      _data['selectRow'] = selectRow.toString();
       _data['locationName'] = locationName;
       _data['channelName'] = channelName;
       _data['startDate'] = startDate;

@@ -3,6 +3,7 @@ import 'package:bms_salesco/app/providers/ApiFactory.dart';
 import 'package:bms_salesco/widgets/LoadingDialog.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 import '../../../data/PermissionModel.dart';
 import '../../../providers/Utils.dart';
@@ -14,6 +15,7 @@ class TapeIDCampaignController extends GetxController {
   var tapeIDTC = TextEditingController(), startDateTC = TextEditingController(), endDateTC = TextEditingController();
   // var activityMonth = "", client = "", agency = "", brand = "", caption = "", duration = "", agencyTapeID = "", createdBy = "";
   String selectedValuUI = "selectedValuUI", activityMonth = "";
+  DateTime now = DateTime.now();
 
   var selectedTab = 0.obs;
   TapeIDCampaignLoadModel? loadModel;
@@ -59,7 +61,7 @@ class TapeIDCampaignController extends GetxController {
         fun: (resp) {
           Get.back();
           if (resp is Map<String, dynamic> && resp['tapeIdDetails'] != null) {
-            activityMonth = "202307";
+            activityMonth = DateFormat("yyyyMM").format(DateTime.now());
             loadModel = TapeIDCampaignLoadModel.fromJson(resp);
             if (selectedTab.value == 0) {
               updateUI();
