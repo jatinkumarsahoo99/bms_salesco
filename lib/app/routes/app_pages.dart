@@ -2,14 +2,13 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/foundation.dart';
 
 import 'package:get/get.dart';
-import '../modules/Asrun_Details_Report/bindings/asrun_details_report_binding.dart';
-import '../modules/Audit_Status_Report/bindings/audit_status_report_binding.dart';
+
 
 
 import '../modules/AsrunDetailsReport/bindings/asrun_details_report_binding.dart';
 import '../modules/AuditStatusReport/bindings/audit_status_report_binding.dart';
 import '../modules/ChangeRONumber/bindings/change_r_o_number_binding.dart';
-import '../modules/Deal_Reco_Summary/bindings/deal_reco_summary_binding.dart';
+
 import '../modules/DealRecoSummary/bindings/deal_reco_summary_binding.dart';
 
 import '../modules/EDI_Mapping/bindings/e_d_i_mapping_binding.dart';
@@ -19,7 +18,7 @@ import '../modules/PeriodicDealUtilisationFormat2/bindings/periodic_deal_utilisa
 import '../modules/RoReceived/bindings/ro_received_binding.dart';
 import '../modules/SameDayCollection/bindings/same_day_collection_binding.dart';
 import '../modules/TapeIDCampaign/bindings/tape_i_d_campaign_binding.dart';
-import '../modules/Workflow_Definition/bindings/workflow_definition_binding.dart';
+
 import '../modules/Update_Executive/bindings/update_executive_binding.dart';
 import '../modules/Update_Executive/views/update_executive_view.dart';
 import '../modules/UserGroupsForDealWorkflow/bindings/user_groups_for_deal_workflow_binding.dart';
