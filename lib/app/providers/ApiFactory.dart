@@ -563,6 +563,15 @@ class ApiFactory {
   static String get CHANGE_RO_NUMBER_ON_LOAD => "$BASE_URL/api/ChangeRONumber/GetLocation";
   static String get CHANGE_RO_NUMBER_UPDATE_DATA => "$BASE_URL/api/ChangeRONumber/ShowDeal";
   static String CHANGE_RO_NUMBER_ON_LEAVE_LOCATION(String locationCode) => "$BASE_URL/api/ChangeRONumber/GetChannel?LocationCode=$locationCode";
-
   ///////////////////////// CHANGE-RO-NUMBER-END//////
+  ///
+  ///
+  ///
+  ///
+  ///////////////////////// TAPE-ID-CAMPAIGN-START//////
+  static String TAPE_ID_CAMPAIGN_ON_LEAVE(String tapeID) => "$BASE_URL/api/TapeIDCampaign/TapeIdDetails?TapeId=$tapeID";
+  static String TAPE_ID_CAMPAIGN_GET_HISTORY(String tapeID) => "$BASE_URL/api/TapeIDCampaign/TapeIdHistoryDetails?TapeId=$tapeID";
+  static String get TAPE_ID_CAMPAIGN_UPDATE_HISTORY => "$BASE_URL/api/TapeIDCampaign/TapeIdHistoryUpdate";
+  static String get TAPE_ID_CAMPAIGN_SAVE_RECORD => "$BASE_URL/api/TapeIDCampaign//Save";
+  ///////////////////////// TAPE-ID-CAMPAIGN-END//////
 }

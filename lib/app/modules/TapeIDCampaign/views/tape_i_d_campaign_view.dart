@@ -1,3 +1,4 @@
+import 'package:bms_salesco/widgets/gridFromMap1.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -24,28 +25,45 @@ class TapeIDCampaignView extends GetView<TapeIDCampaignController> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Wrap(
-                spacing: 10,
-                runSpacing: 5,
-                children: [
-                  InputFields.formField1(
-                    hintTxt: "Enter Tape ID",
-                    controller: TextEditingController(),
-                    width: .15,
-                    autoFocus: true,
-                    padLeft: 0,
-                  ),
-                  InputFields.formFieldDisable1(hintTxt: "Activity Month", value: "value", widthRatio: .15, leftPad: 0),
-                  InputFields.formFieldDisable1(hintTxt: "Client", value: "value", widthRatio: .15, leftPad: 0),
-                  InputFields.formFieldDisable1(hintTxt: "Agency", value: "value", widthRatio: .15, leftPad: 0),
-                  InputFields.formFieldDisable1(hintTxt: "Brand", value: "value", widthRatio: .15, leftPad: 0),
-                  InputFields.formFieldDisable1(hintTxt: "Caption", value: "value", widthRatio: .15, leftPad: 0),
-                  InputFields.formFieldDisable1(hintTxt: "Duration", value: "value", widthRatio: .15, leftPad: 0),
-                  InputFields.formFieldDisable1(hintTxt: "Agency Tape ID", value: "value", widthRatio: .15, leftPad: 0),
-                  DateWithThreeTextField(title: "Start Date", mainTextController: TextEditingController(), widthRation: .15),
-                  DateWithThreeTextField(title: "End Date", mainTextController: TextEditingController(), widthRation: .15),
-                  InputFields.formFieldDisable1(hintTxt: "Created By", value: "value", widthRatio: .15, leftPad: 0),
-                ],
+              GetBuilder(
+                init: controller,
+                id: controller.selectedValuUI,
+                builder: (_) {
+                  return Wrap(
+                    spacing: 10,
+                    runSpacing: 5,
+                    children: [
+                      InputFields.formField1(
+                        hintTxt: "Enter Tape ID",
+                        controller: controller.tapeIDTC,
+                        width: .15,
+                        autoFocus: true,
+                        padLeft: 0,
+                        focusNode: controller.tapeIdFN,
+                      ),
+                      InputFields.formFieldDisable1(hintTxt: "Activity Month", value: controller.activityMonth, widthRatio: .15, leftPad: 0),
+                      InputFields.formFieldDisable1(
+                          hintTxt: "Client", value: controller.loadModel?.tapeIdDetails.clientName ?? "", widthRatio: .15, leftPad: 0),
+                      InputFields.formFieldDisable1(
+                          hintTxt: "Agency", value: controller.loadModel?.tapeIdDetails.agencyName ?? "", widthRatio: .15, leftPad: 0),
+                      InputFields.formFieldDisable1(
+                          hintTxt: "Brand", value: controller.loadModel?.tapeIdDetails.brandName ?? "", widthRatio: .15, leftPad: 0),
+                      InputFields.formFieldDisable1(
+                          hintTxt: "Caption", value: controller.loadModel?.tapeIdDetails.commercialCaption ?? "", widthRatio: .15, leftPad: 0),
+                      InputFields.formFieldDisable1(
+                          hintTxt: "Duration",
+                          value: controller.loadModel?.tapeIdDetails.commercialDuration.toString() ?? "",
+                          widthRatio: .15,
+                          leftPad: 0),
+                      InputFields.formFieldDisable1(
+                          hintTxt: "Agency Tape ID", value: controller.loadModel?.tapeIdDetails.agencytapeid ?? "", widthRatio: .15, leftPad: 0),
+                      DateWithThreeTextField(title: "Start Date", mainTextController: controller.startDateTC, widthRation: .15),
+                      DateWithThreeTextField(title: "End Date", mainTextController: controller.endDateTC, widthRation: .15),
+                      InputFields.formFieldDisable1(
+                          hintTxt: "Created By", value: controller.loadModel?.tapeIdDetails.loginName ?? "", widthRatio: .15, leftPad: 0),
+                    ],
+                  );
+                },
               ),
               Expanded(
                 child: Padding(
@@ -53,35 +71,55 @@ class TapeIDCampaignView extends GetView<TapeIDCampaignController> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CupertinoSlidingSegmentedControl(
-                        onValueChanged: (value) {},
-                        children: <int, Widget>{
-                          0: Text(
-                            'Location & Channel',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: SizeDefine.fontSizeTab,
+                      Obx(() {
+                        return CupertinoSlidingSegmentedControl(
+                          onValueChanged: (value) {
+                            controller.selectedTab.value = value ?? 0;
+                          },
+                          children: <int, Widget>{
+                            0: Text(
+                              'Location & Channel',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: SizeDefine.fontSizeTab,
+                              ),
                             ),
-                          ),
-                          1: Text(
-                            'History',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: SizeDefine.fontSizeTab,
+                            1: Text(
+                              'History',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: SizeDefine.fontSizeTab,
+                              ),
                             ),
-                          ),
-                        },
-                        groupValue: 0,
-                      ),
+                          },
+                          groupValue: controller.selectedTab.value,
+                        );
+                      }),
                       SizedBox(height: 10),
                       Expanded(
-                        child: Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: Colors.grey,
+                        child: Obx(() {
+                          return Container(
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: Colors.grey,
+                              ),
                             ),
-                          ),
-                        ),
+                            child: Visibility(
+                              visible: controller.selectedTab.value == 0,
+                              replacement: (controller.history?.historyDetails ?? []).isEmpty
+                                  ? const SizedBox()
+                                  : DataGridFromMap1(
+                                      mapData: controller.history?.historyDetails.map((e) => e.toJson()).toList() ?? [],
+                                    ),
+                              child: (controller.loadModel?.tapeIdDetails.locationLst ?? []).isEmpty
+                                  ? const SizedBox()
+                                  : DataGridFromMap1(
+                                      mapData: controller.loadModel?.tapeIdDetails.locationLst.map((e) => e.toJson()).toList() ?? [],
+                                    ),
+                            ),
+                          );
+                        }),
                       ),
                     ],
                   ),
