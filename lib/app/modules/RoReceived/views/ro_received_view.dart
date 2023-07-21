@@ -11,7 +11,7 @@ import 'package:get/get.dart';
 import '../controllers/ro_received_controller.dart';
 
 class RoReceivedView extends GetView<RoReceivedController> {
-  const RoReceivedView({Key? key}) : super(key: key);
+   RoReceivedView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,6 +35,7 @@ class RoReceivedView extends GetView<RoReceivedController> {
                   height: 10,
                 ),
                 Wrap(
+                  crossAxisAlignment: WrapCrossAlignment.end,
                   runSpacing: 5,
                   spacing: Get.width * 0.01,
                   children: [
@@ -115,11 +116,15 @@ class RoReceivedView extends GetView<RoReceivedController> {
                       width: Get.width * 0.24,
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.end,
+                        mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Radio(value: "1", groupValue: "1", onChanged: (value) {}),
+                              InkWell(
+                                child: Icon(Icons.radio_button_off_outlined),
+                              ),
                               Text(
                                 "Additional",
                                 style: TextStyle(fontSize: SizeDefine.labelSize1),
@@ -127,8 +132,11 @@ class RoReceivedView extends GetView<RoReceivedController> {
                             ],
                           ),
                           Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Radio(value: "2", groupValue: "1", onChanged: (value) {}),
+                              InkWell(
+                                child: Icon(Icons.radio_button_off_outlined),
+                              ),
                               Text(
                                 "Cancellation",
                                 style: TextStyle(fontSize: SizeDefine.labelSize1),

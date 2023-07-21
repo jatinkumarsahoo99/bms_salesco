@@ -2527,7 +2527,7 @@ class DropDownField {
                   focusNode: inkWellFocusNode,
                   canRequestFocus: (isEnable ?? true),
                   onFocusChange: onFocusChange,
-                  borderRadius: BorderRadius.circular(5),
+                  // borderRadius: BorderRadius.circular(5),
                   onTap: (!isEnable!)
                       ? null
                       : () {
@@ -2566,7 +2566,7 @@ class DropDownField {
                             showMenu(
                               context: context,
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
+                                borderRadius: BorderRadius.circular(0),
                               ),
                               useRootNavigator: true,
                               position: RelativeRect.fromLTRB(left, top, right, 0.0),
@@ -2669,7 +2669,7 @@ class DropDownField {
                       border: Border.all(
                         color: iconLineColor,
                       ),
-                      borderRadius: BorderRadius.circular(5),
+                      // borderRadius: BorderRadius.circular(5),
                     ),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
