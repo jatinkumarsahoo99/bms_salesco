@@ -4,6 +4,7 @@ import 'package:bms_salesco/widgets/LoadingDialog.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:pluto_grid/pluto_grid.dart';
 
 import '../../../data/PermissionModel.dart';
 import '../../../providers/Utils.dart';
@@ -16,6 +17,8 @@ class TapeIDCampaignController extends GetxController {
   // var activityMonth = "", client = "", agency = "", brand = "", caption = "", duration = "", agencyTapeID = "", createdBy = "";
   String selectedValuUI = "selectedValuUI", activityMonth = "";
   DateTime now = DateTime.now();
+  PlutoGridStateManager? locationChannelManager, historyManager;
+  int lastLocationChannelEditIdx = 0, historyEditIdx = 0;
 
   var selectedTab = 0.obs;
   TapeIDCampaignLoadModel? loadModel;
@@ -39,12 +42,17 @@ class TapeIDCampaignController extends GetxController {
   }
 
   clearPage() {
+    locationChannelManager = null;
+    historyManager = null;
     tapeIDTC.clear();
     history = null;
     startDateTC.clear();
+    lastLocationChannelEditIdx = 0;
+    historyEditIdx = 0;
     endDateTC.clear();
     activityMonth = "";
     loadModel = null;
+    tapeIdFN.requestFocus();
     updateUI();
   }
 
@@ -61,12 +69,17 @@ class TapeIDCampaignController extends GetxController {
         fun: (resp) {
           Get.back();
           if (resp is Map<String, dynamic> && resp['tapeIdDetails'] != null) {
-            activityMonth = DateFormat("yyyyMM").format(DateTime.now());
             loadModel = TapeIDCampaignLoadModel.fromJson(resp);
-            if (selectedTab.value == 0) {
-              updateUI();
+            activityMonth = DateFormat("yyyyMM").format(DateTime.now());
+            if (loadModel?.tapeIdDetails.agencyName == null) {
+              loadModel = null;
+              LoadingDialog.showErrorDialog("Tape id not found.");
+            } else {
+              if (selectedTab.value == 0) {
+                updateUI();
+              }
+              getHistory();
             }
-            getHistory();
           } else {
             LoadingDialog.showErrorDialog(resp.toString());
           }
@@ -112,19 +125,42 @@ class TapeIDCampaignController extends GetxController {
   saveRecord() {
     if (loadModel == null || history == null) {
       LoadingDialog.showErrorDialog("Please load data first");
-    } else if (loadModel?.tapeIdDetails.locationLst.any((e) => e.selectRow) ?? false) {
+    } else if (loadModel?.tapeIdDetails.locationLst?.any((e) => e.selectRow ?? false) ?? false) {
       LoadingDialog.call();
       Get.find<ConnectorControl>().POSTMETHOD(
         api: ApiFactory.TAPE_ID_CAMPAIGN_SAVE_RECORD,
         fun: (resp) {
           Get.back();
-          LoadingDialog.callDataSaved(msg: resp.toString());
+          if (resp != null && resp is Map<String, dynamic> && resp['saveTape'] != null) {
+            if (!(resp['saveTape']['isError'] as bool)) {
+              LoadingDialog.callDataSaved(
+                msg: resp['saveTape']['genericMessage'].toString(),
+                callback: () {
+                  clearPage();
+                },
+              );
+            } else {
+              LoadingDialog.callDataSaved(
+                msg: resp['saveTape']['errorMessage'].toString(),
+                callback: () {
+                  clearPage();
+                },
+              );
+            }
+          } else {
+            LoadingDialog.showErrorDialog(resp.toString());
+          }
         },
         json: {
-          "exportTapeCode": "",
+          "exportTapeCode": tapeIDTC.text,
           "brandCode": loadModel?.tapeIdDetails.brandCode,
           "activityMonth": activityMonth,
-          "data": loadModel?.tapeIdDetails.locationLst.map((e) => e.toJson(fromSave: true)).toList() ?? [],
+          "tapeSaveLst": loadModel?.tapeIdDetails.locationLst
+                  ?.where((element) => element.selectRow ?? false)
+                  .toList()
+                  .map((e) => e.toJson(fromSave: true))
+                  .toList() ??
+              [],
         },
       );
     } else {
@@ -133,7 +169,15 @@ class TapeIDCampaignController extends GetxController {
         api: ApiFactory.TAPE_ID_CAMPAIGN_UPDATE_HISTORY,
         fun: (resp) {
           Get.back();
-          LoadingDialog.callDataSaved(msg: resp.toString());
+          if (resp != null && resp is Map<String, dynamic> && resp['tapeIdHistoryUpdate'] != null) {
+            if (!(resp['tapeIdHistoryUpdate']['isError'] as bool)) {
+              LoadingDialog.callDataSaved(msg: resp['tapeIdHistoryUpdate']['genericMessage'].toString());
+            } else {
+              LoadingDialog.showErrorDialog(resp['tapeIdHistoryUpdate']['errorMessage'].toString());
+            }
+          } else {
+            LoadingDialog.showErrorDialog(resp.toString());
+          }
         },
         json: history?.historyDetails.map((e) => e.toJson(fromSave: true)).toList(),
       );

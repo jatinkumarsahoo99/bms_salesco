@@ -1,8 +1,12 @@
+import 'dart:html';
+
 import 'package:bms_salesco/widgets/gridFromMap1.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:pluto_grid/pluto_grid.dart';
 
 import '../../../../widgets/DateTime/DateWithThreeTextField.dart';
 import '../../../../widgets/FormButton.dart';
@@ -125,18 +129,82 @@ class TapeIDCampaignView extends GetView<TapeIDCampaignController> {
                               replacement: (controller.history?.historyDetails ?? []).isEmpty
                                   ? const SizedBox()
                                   : DataGridFromMap3(
-                                      checkBoxColumnKey: [],
+                                      checkBoxColumnKey: ["isActive"],
+                                      actionIconKey: ["isActive"],
+                                      checkBoxStrComparison: "true",
+                                      uncheckCheckBoxStr: "false",
+                                      colorCallback: (row) => (row.row.cells.containsValue(controller.historyManager?.currentCell))
+                                          ? Colors.deepPurple.shade200
+                                          : Colors.white,
+                                      onload: (event) {
+                                        controller.historyManager = event.stateManager;
+                                        event.stateManager.setSelectingMode(PlutoGridSelectingMode.row);
+                                        event.stateManager.setSelecting(true);
+                                        event.stateManager.moveScrollByRow(PlutoMoveDirection.down, controller.historyEditIdx);
+                                        event.stateManager.setCurrentCell(
+                                          event.stateManager.getRowByIdx(controller.historyEditIdx)?.cells['isActive'],
+                                          controller.historyEditIdx,
+                                        );
+                                      },
+                                      onEdit: (event) {
+                                        controller.historyEditIdx = event.rowIdx;
+                                        controller.history?.historyDetails[event.rowIdx].isActive = (event.value == "true");
+                                      },
+                                      actionOnPress: (position, isSpaceCalled) {
+                                        if (isSpaceCalled) {
+                                          controller.historyEditIdx = position.rowIdx ?? 0;
+                                          controller.historyManager!.changeCellValue(
+                                            controller.historyManager!.currentCell!,
+                                            controller.historyManager!.currentCell!.value == "true" ? "false" : "true",
+                                            force: true,
+                                            callOnChangedEvent: true,
+                                            notify: true,
+                                          );
+                                        }
+                                      },
                                       mapData: controller.history?.historyDetails.map((e) => e.toJson()).toList() ?? [],
                                     ),
                               child: (controller.loadModel?.tapeIdDetails.locationLst ?? []).isEmpty
                                   ? const SizedBox()
                                   : DataGridFromMap3(
+                                      colorCallback: (row) => (row.row.cells.containsValue(controller.locationChannelManager?.currentCell))
+                                          ? Colors.deepPurple.shade200
+                                          : Colors.white,
+                                      onload: (event) {
+                                        controller.locationChannelManager = event.stateManager;
+                                        event.stateManager.setSelectingMode(PlutoGridSelectingMode.row);
+                                        event.stateManager.setSelecting(true);
+                                        event.stateManager.moveScrollByRow(PlutoMoveDirection.down, controller.lastLocationChannelEditIdx);
+                                        event.stateManager.setCurrentCell(
+                                            event.stateManager.getRowByIdx(controller.lastLocationChannelEditIdx)?.cells['selectRow'],
+                                            controller.lastLocationChannelEditIdx);
+                                      },
                                       checkBoxColumnKey: ["selectRow"],
+                                      actionIconKey: ["selectRow"],
                                       checkBoxStrComparison: "true",
                                       uncheckCheckBoxStr: "false",
-                                      // onActionKeyPress: ,
-                                      actionOnPress: (position, isSpaceCalled) {},
-                                      mapData: controller.loadModel?.tapeIdDetails.locationLst.map((e) => e.toJson()).toList() ?? [],
+                                      onEdit: (event) {
+                                        controller.lastLocationChannelEditIdx = event.rowIdx;
+                                        controller.loadModel?.tapeIdDetails.locationLst?[event.rowIdx].selectRow = (event.value == "true");
+                                        controller.loadModel?.tapeIdDetails.locationLst?[event.rowIdx].startDate =
+                                            DateFormat("dd-MMM-yyyy").format(DateFormat("dd-MM-yyyy").parse(controller.startDateTC.text));
+                                        controller.loadModel?.tapeIdDetails.locationLst?[event.rowIdx].endDate =
+                                            DateFormat("dd-MMM-yyyy").format(DateFormat("dd-MM-yyyy").parse(controller.endDateTC.text));
+                                        controller.selectedTab.refresh();
+                                      },
+                                      actionOnPress: (position, isSpaceCalled) {
+                                        if (isSpaceCalled) {
+                                          controller.lastLocationChannelEditIdx = position.rowIdx ?? 0;
+                                          controller.locationChannelManager!.changeCellValue(
+                                            controller.locationChannelManager!.currentCell!,
+                                            controller.locationChannelManager!.currentCell!.value == "true" ? "false" : "true",
+                                            force: true,
+                                            callOnChangedEvent: true,
+                                            notify: true,
+                                          );
+                                        }
+                                      },
+                                      mapData: controller.loadModel?.tapeIdDetails.locationLst?.map((e) => e.toJson()).toList() ?? [],
                                     ),
                             ),
                           );

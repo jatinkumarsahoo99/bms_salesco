@@ -27,15 +27,15 @@ class TapeIdDetails {
     required this.brandCode,
     required this.locationLst,
   });
-  late final String clientName;
-  late final String agencyName;
-  late final String brandName;
-  late final String commercialCaption;
-  late final int commercialDuration;
-  late final String agencytapeid;
-  late final String loginName;
-  late final String brandCode;
-  late final List<LocationLst> locationLst;
+  String? clientName;
+  String? agencyName;
+  String? brandName;
+  String? commercialCaption;
+  int? commercialDuration;
+  String? agencytapeid;
+  String? loginName;
+  String? brandCode;
+  List<LocationLst>? locationLst;
 
   TapeIdDetails.fromJson(Map<String, dynamic> json) {
     clientName = json['clientName'];
@@ -59,7 +59,7 @@ class TapeIdDetails {
     _data['agencytapeid'] = agencytapeid;
     _data['loginName'] = loginName;
     _data['brandCode'] = brandCode;
-    _data['locationLst'] = locationLst.map((e) => e.toJson()).toList();
+    _data['locationLst'] = locationLst?.map((e) => e.toJson()).toList();
     return _data;
   }
 }
@@ -74,13 +74,13 @@ class LocationLst {
     required this.locationCode,
     required this.channelCode,
   });
-  late final bool selectRow;
-  late final String locationName;
-  late final String channelName;
-  late final String startDate;
-  late final String endDate;
-  late final String locationCode;
-  late final String channelCode;
+  bool? selectRow;
+  String? locationName;
+  String? channelName;
+  String? startDate;
+  String? endDate;
+  String? locationCode;
+  String? channelCode;
 
   LocationLst.fromJson(Map<String, dynamic> json) {
     selectRow = json['selectRow'];
@@ -103,7 +103,7 @@ class LocationLst {
       _data['startDate'] = startDate;
       _data['endDate'] = endDate;
     } else {
-      _data['selectRow'] = selectRow.toString();
+      _data['selectRow'] = (selectRow ?? false).toString();
       _data['locationName'] = locationName;
       _data['channelName'] = channelName;
       _data['startDate'] = startDate;
@@ -144,15 +144,15 @@ class HistoryDetails {
     required this.activityMonth,
     required this.isActive,
   });
-  late final int id;
-  late final String locationName;
-  late final String channelName;
-  late final String brandName;
-  late final String exportTapeCode;
-  late final String startDate;
-  late final String endDate;
-  late final int activityMonth;
-  late final bool isActive;
+  int? id;
+  String? locationName;
+  String? channelName;
+  String? brandName;
+  String? exportTapeCode;
+  String? startDate;
+  String? endDate;
+  int? activityMonth;
+  bool? isActive;
 
   HistoryDetails.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -172,6 +172,7 @@ class HistoryDetails {
       _data['id'] = id;
       _data['isActive'] = isActive;
     } else {
+      _data['isActive'] = (isActive ?? false).toString();
       _data['id'] = id;
       _data['locationName'] = locationName;
       _data['channelName'] = channelName;
@@ -180,7 +181,6 @@ class HistoryDetails {
       _data['startDate'] = startDate;
       _data['endDate'] = endDate;
       _data['activityMonth'] = activityMonth;
-      _data['isActive'] = isActive;
     }
     return _data;
   }
