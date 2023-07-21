@@ -21,6 +21,8 @@ class ChangeRONumberController extends GetxController {
   formHandler(btn) {
     if (btn == "Clear") {
       clearPage();
+    } else if (btn == "Update") {
+      updateRecord();
     }
   }
 
@@ -97,7 +99,11 @@ class ChangeRONumberController extends GetxController {
         },
         failed: (resp) {
           closeDialogIfOpen();
-          LoadingDialog.showErrorDialog(resp.toString());
+          if (resp is Map<String, dynamic> && resp['status'] == "failure") {
+            LoadingDialog.showErrorDialog(resp['message'].toString());
+          } else {
+            LoadingDialog.showErrorDialog(resp.toString());
+          }
         },
       );
     }
@@ -121,12 +127,20 @@ class ChangeRONumberController extends GetxController {
               locationList.refresh();
             }
           } else {
-            LoadingDialog.showErrorDialog(resp.toString());
+            if (resp is Map<String, dynamic> && resp['status'] == "failure") {
+              LoadingDialog.showErrorDialog(resp['message'].toString());
+            } else {
+              LoadingDialog.showErrorDialog(resp.toString());
+            }
           }
         },
         failed: (resp) {
           closeDialogIfOpen();
-          LoadingDialog.showErrorDialog(resp.toString());
+          if (resp is Map<String, dynamic> && resp['status'] == "failure") {
+            LoadingDialog.showErrorDialog(resp['message'].toString());
+          } else {
+            LoadingDialog.showErrorDialog(resp.toString());
+          }
         });
   }
 
