@@ -41,6 +41,8 @@ class _DateWithThreeTextFieldState extends State<DateWithThreeTextField> {
   late List<TextEditingController> textCtr;
   late List<FocusNode> focus;
   var iconFocusNode = FocusNode();
+  DateTime? selectedDateTime;
+  String originalDate = "";
 
   DateTime? dateTime;
   late DateFormat requireFormatDateStr;
@@ -50,6 +52,7 @@ class _DateWithThreeTextFieldState extends State<DateWithThreeTextField> {
 
   @override
   void initState() {
+    selectedDateTime = widget.intailDate;
     focus = List.generate(3, (index) => FocusNode());
     textCtr = List.generate(3, (index) => TextEditingController());
     maxDays = [
@@ -323,7 +326,7 @@ class _DateWithThreeTextFieldState extends State<DateWithThreeTextField> {
                     ? () {
                         showDatePicker(
                           context: context,
-                          initialDate: widget.intailDate ?? DateTime.now(),
+                          initialDate: selectedDateTime ?? DateTime.now(),
                           firstDate: widget.startDate ?? DateTime(2011),
                           lastDate: widget.endDate ?? DateTime(2050),
                         ).then(
@@ -429,6 +432,9 @@ class _DateWithThreeTextFieldState extends State<DateWithThreeTextField> {
     var now = DateTime.now();
     List<String?> tempDate = widget.mainTextController.text.split(widget.splitType);
     if (tempDate.length == 3) {
+      if (originalDate.isEmpty) {
+        originalDate = widget.mainTextController.text;
+      }
       tempDate = widget.mainTextController.text.split(widget.splitType);
       textCtr[0].text = (tempDate[0] ?? now.day.toString()); //DD
       textCtr[1].text = (getMonthsFromIndex(int.tryParse(tempDate[1] ?? "0") ?? 0)); //MMM
@@ -437,6 +443,9 @@ class _DateWithThreeTextFieldState extends State<DateWithThreeTextField> {
       textCtr[0].text = now.day.toString();
       textCtr[1].text = getMonthsFromIndex(now.month);
       textCtr[2].text = now.year.toString();
+      if (originalDate.isEmpty) {
+        originalDate = "${now.day}-${now.month}-${now.year}";
+      }
     }
   }
 
@@ -450,7 +459,15 @@ class _DateWithThreeTextFieldState extends State<DateWithThreeTextField> {
     }
     int tempMonth = getMonthINTFromMonthStr(textCtr[1].text);
     String time = textCtr[0].text + widget.splitType + (tempMonth >= 10 ? tempMonth.toString() : "0$tempMonth") + widget.splitType + textCtr[2].text;
-    widget.mainTextController.text = time;
+    selectedDateTime = DateFormat("dd-MM-yyyy").parse(time);
+
+    if ((widget.endDate != null && DateFormat("dd-MM-yyyy").parse(time).isAfter(widget.endDate!)) ||
+        (widget.startDate != null && DateFormat("dd-MM-yyyy").parse(time).isBefore(widget.startDate!))) {
+      widget.mainTextController.text = originalDate;
+      assignNewValeToEditTextField();
+    } else {
+      widget.mainTextController.text = time;
+    }
   }
 
   incrementDecrementOnKeyBoardEvent(int index, int maxNo, {bool up = true}) {
