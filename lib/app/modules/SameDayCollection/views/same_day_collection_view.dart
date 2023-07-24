@@ -83,6 +83,9 @@ class SameDayCollectionView extends GetView<SameDayCollectionController> {
                             mode: PlutoGridMode.selectWithOneTap,
                             checkBoxColumnKey: ["cancel"],
                             actionIconKey: ['cancel'],
+                            specificWidth: {
+                              "clientname": 200,
+                            },
                             onload: (event) {
                               controller.manager = event.stateManager;
                               event.stateManager.setSelectingMode(PlutoGridSelectingMode.row);

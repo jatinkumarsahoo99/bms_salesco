@@ -334,8 +334,10 @@ class DataGridFromMap3 extends StatelessWidget {
     this.previousWidgetFN,
     this.focusNode,
     this.gridStyle,
+    this.specificWidth,
   }) : super(key: key);
   final FocusNode? previousWidgetFN;
+  final Map<String, double>? specificWidth;
   PlutoGridStyleConfig? gridStyle;
   final List<String>? enableColumnDoubleTap;
   final Function(int columnInd, int rowIdx)? onActionKeyPress;
@@ -500,7 +502,9 @@ class DataGridFromMap3 extends StatelessWidget {
           enableEditingMode: editKeys != null && editKeys!.contains(key),
           enableDropToResize: true,
           enableContextMenu: false,
-          width: Utils.getColumnSize(key: key, value: mapData[0][key]),
+          minWidth:
+              specificWidth != null && specificWidth!.containsKey(key) ? specificWidth![key]! : Utils.getColumnSize(key: key, value: mapData[0][key]),
+          // width: Utils.getColumnSize(key: key, value: mapData[0][key]),
           enableAutoEditing: false,
           hide: showonly == null
               ? (hideKeys != null && hideKeys!.contains(key)) ||
