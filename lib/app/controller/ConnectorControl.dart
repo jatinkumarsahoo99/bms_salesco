@@ -213,7 +213,10 @@ class ConnectorControl extends GetConnect {
       print("API NAME:>" + api);
       service.Response response = await dio.post(
         api,
-        options: Options(headers: {
+        options: Options(
+            /*receiveTimeout: Duration(milliseconds: 36000),
+            sendTimeout: Duration(milliseconds: 36000),*/
+            headers: {
           "Authorization": "Bearer " + ((Get.find<MainController>().user != null) ? Get.find<MainController>().user?.token ?? "" : ""),
           "PersonnelNo": ((Get.find<MainController>().user != null) ? Aes.encrypt(Get.find<MainController>().user?.personnelNo ?? "") : ""),
           "Userid": ((Get.find<MainController>().user != null) ? Aes.encrypt(Get.find<MainController>().user?.logincode ?? "") : "")

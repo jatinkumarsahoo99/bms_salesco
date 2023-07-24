@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import '../../../../widgets/DateTime/DateWithThreeTextField.dart';
 import '../../../../widgets/FormButton.dart';
 import '../../../../widgets/dropdown.dart';
+import '../../../../widgets/gridFromMap.dart';
 import '../../../controller/HomeController.dart';
 import '../../../controller/MainController.dart';
 import '../../../data/PermissionModel.dart';
@@ -25,17 +26,17 @@ class AsrunDetailsReportView extends GetView<AsrunDetailsReportController> {
           width: size.width * 0.94,
           child: Dialog(
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(3.0),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  AppBar(
+                 /* AppBar(
                     title: Text('Asrun Details Report'),
                     centerTitle: true,
                     backgroundColor: Colors.deepPurple,
-                  ),
+                  ),*/
                   SizedBox(
-                    height: 5,
+                    height: 2,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -48,19 +49,54 @@ class AsrunDetailsReportView extends GetView<AsrunDetailsReportController> {
                               controllerX.locationList.value??[],
                                   (value) {
                                 controllerX.selectedLocation = value;
-                              }, "Location", .61,
+                              }, "Location", .41,
                               isEnable: controllerX.isEnable,
                               selected: controllerX.selectedLocation,
                               dialogHeight: Get.height * .7,
                               autoFocus: true,),),
+                            Padding(
+                              padding:
+                              const EdgeInsets.only(top: 3.0),
+                              child: Row(
+                                children: [
+                                  SizedBox(
+                                    width: MediaQuery.of(context).size.width*0.15,
+                                  ),
+                                  Obx(()=>Checkbox(
+                                    value: controllerX.checked.value,
+                                    onChanged: (bool? value) {
+                                      controllerX.checked.value = value!;
+                                      if(value!){
+                                        for (var element in controllerX
+                                            .channelList) {
+                                          element.ischecked = true;
+                                        }
+                                        controllerX.update(['updateList']);
+                                      }else{
+                                        for (var element in controllerX
+                                            .channelList) {
+                                          element.ischecked = false;
+                                        }
+                                        controllerX.update(['updateList']);
+                                      }
 
+                                    },
+                                  )) ,
+                                  Text(
+                                    "Channel",
+                                    style: TextStyle(fontSize: 12),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            SizedBox(height: 3),
                             Container(
-                              height: MediaQuery.of(context).size.height * .2,
-                              width: MediaQuery.of(context).size.width*0.61,
+                              height: MediaQuery.of(context).size.height * .17,
+                              width: MediaQuery.of(context).size.width*0.41,
                               // margin: EdgeInsets.symmetric(vertical: 10),
                               child: GetBuilder<
                                   AsrunDetailsReportController>(
-                                id: "updateTable1",
+                                id: "updateList",
                                 builder: (control) {
                                   return Stack(
                                     children: [
@@ -73,28 +109,28 @@ class AsrunDetailsReportView extends GetView<AsrunDetailsReportController> {
                                           BorderRadius.circular(
                                               0),
                                         ),
-                                        margin:
-                                        EdgeInsets.only(top: 8),
+                                        margin: EdgeInsets.only(top: 1,left: 0,bottom: 0,right: 0),
                                         child: ListView.builder(
                                           controller:
                                           ScrollController(),
-                                          itemCount:10,
+                                          itemCount:controllerX.channelList.length,
                                           itemBuilder:
                                               (context, int index) {
                                             return Padding(
-                                              padding: const EdgeInsets.only(left: 8.0,right: 8,bottom: 1,top: 1),
+                                              padding: const EdgeInsets.only(left: 5.0,right: 5,bottom: 0,top: 0),
                                               child: Row(
                                                 children: [
                                                   Checkbox(
-                                                    value: false,
+                                                    value: controllerX.channelList[index].ischecked,
                                                     onChanged:
                                                         (bool? value) {
-
+                                                          controllerX.channelList[index].ischecked = value;
+                                                          controllerX.update(['updateList']);
                                                     },
                                                   ),
                                                   Expanded(
                                                     child: Text(
-                                                      "ZEE",
+                                                      controllerX.channelList[index].channelName?? "ZEE",
                                                       style: TextStyle(
                                                           fontSize: 12,fontWeight: FontWeight.bold),
                                                     ),
@@ -121,13 +157,13 @@ class AsrunDetailsReportView extends GetView<AsrunDetailsReportController> {
                           children: [
                             DateWithThreeTextField(
                               title: "From Date",
-                              mainTextController: TextEditingController(),
+                              mainTextController: controllerX.frmDate,
                               widthRation: .1,
                               isEnable: controllerX.isEnable,
                             ),
                             DateWithThreeTextField(
                               title: "To Date",
-                              mainTextController: TextEditingController(),
+                              mainTextController: controllerX.toDate,
                               widthRation: .1,
                               isEnable: controllerX.isEnable,
                             ),
@@ -137,7 +173,7 @@ class AsrunDetailsReportView extends GetView<AsrunDetailsReportController> {
                               child: FormButtonWrapper(
                                 btnText: "Genrate",
                                 callback: () {
-                                  // controllerX.callGetRetrieve();
+                                  controllerX.fetchGetGenerate();
                                 },
                                 showIcon: false,
                               ),
@@ -149,9 +185,9 @@ class AsrunDetailsReportView extends GetView<AsrunDetailsReportController> {
                     ],
                   ),
                   Expanded(
-                    flex: 9,
+                    // flex: 9,
                     child: Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.all(3.0),
                       child: Container(
                         decoration: BoxDecoration(
                             border: Border.all(color: Colors.black)),
@@ -161,7 +197,17 @@ class AsrunDetailsReportView extends GetView<AsrunDetailsReportController> {
                               return Container(
                                   decoration: BoxDecoration(
                                       border: Border.all(color: Colors.black)),
-
+                                child: (controllerX.asrunDetailsReportModel != null &&
+                                    controllerX.asrunDetailsReportModel!.generate != null &&
+                                    controllerX.asrunDetailsReportModel!.generate!.length >0
+                                )?DataGridFromMap(
+                                  showSrNo: false,
+                                  mapData: (controllerX.asrunDetailsReportModel!.generate
+                                      ?.map((e) => e.toJson())
+                                      .toList())!,
+                                  // mapData: (controllerX.dataList)!,
+                                  widthRatio: Get.width / 9 - 1,
+                                ):Container(),
                               );
                             }
                         ),

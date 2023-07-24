@@ -558,6 +558,27 @@ class ApiFactory {
   static String MODULE_FORM_TRANSACTION_GET_MODULE_LIST(String moduleCode) =>
       "$BASE_URL/api/ModuleFormTransaction/GetModuleFormDetails?ModuleCode=$moduleCode";
   ///////////////////////// END MODULE FORM TRANSACTION API//////
+
+
+
+///////////////////////////// Asrun Details Report ///////////////////////////////
+
+  static String get ASRUN_DETAILS_REPORT_LOAD => "$BASE_URL/api/AsrundetailsReport/AsrundetailsReportLoad";
+  static String get ASRUN_DETAILS_REPORT_GENERATE => "$BASE_URL/api/AsrundetailsReport/GenerateReport";
+
+////////////////////////////// Audit Status Report ////////////////////////////////////////////////
+
+  static String get AUDIT_STATUS_REPORT_LOAD => "$BASE_URL/api/AuditStatusReport/auditstatusreport_Load";
+  static String get AUDIT_STATUS_REPORT_GENERATE_TOLIST => "$BASE_URL/api/AuditStatusReport/GenrateOTList";
+  static String get AUDIT_STATUS_REPORT_GENERATE_AUDIT => "$BASE_URL/api/AuditStatusReport/GenrateAudit";
+
+  ////////////////////////////// EDIMAPPING ////////////////////////////////
+
+  static String get EDI_MAPPING_CLIENT_SEARCH => "$BASE_URL/api/EDIMapping/GetClientMasterSearch?TextClientMaster=";
+  static String get EDI_MAPPING_AGENT_SEARCH => "$BASE_URL/api/EDIMapping/GetAgencyMasterSearch?TextAgencyMaster=";
+  static String get EDI_MAPPING_CHANNEL_SEARCH => "$BASE_URL/api/EDIMapping/GetChannelMasterSearch?TextChannelMaster=";
+
+
   ///
   ///
   ///
