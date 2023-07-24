@@ -573,6 +573,20 @@ class ApiFactory {
   ///
   ///
   ///
+  ///
+  ///
+  ///////////////////////// SAME-DAY-COLLECTION-START//////
+  static String get SAME_DAY_COLLECTION_ON_LOAD => "$BASE_URL/api/SameDayCancellation/GetLocation";
+  static String get SAME_DAY_COLLECTION_SAVE_DATA => "$BASE_URL/api/SameDayCancellation/Save";
+  static String SAME_DAY_COLLECTION_ON_LEAVE_LOCATION(String locationCode) =>
+      "$BASE_URL/api/SameDayCancellation/GetChannel?LocationCode=$locationCode";
+  static String SAME_DAY_COLLECTION_SHOW_DATA(String locationCode, String channelCode) =>
+      "$BASE_URL/api/SameDayCancellation/Show?LocationCode=$locationCode&Channelcode=$channelCode";
+  ///////////////////////// SAME-DAY-COLLECTION-END//////
+  ///
+  ///
+  ///
+  ///
   ///////////////////////// TAPE-ID-CAMPAIGN-START//////
   static String TAPE_ID_CAMPAIGN_ON_LEAVE(String tapeID) => "$BASE_URL/api/TapeIDCampaign/TapeIdDetails?TapeId=$tapeID";
   static String TAPE_ID_CAMPAIGN_GET_HISTORY(String tapeID) => "$BASE_URL/api/TapeIDCampaign/TapeIdHistoryDetails?TapeId=$tapeID";
