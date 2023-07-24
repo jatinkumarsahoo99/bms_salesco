@@ -128,26 +128,31 @@ class ApiFactory {
   }
 
   /////////////////////////////////////////////////////////
-  //////////////////////////// Link Song To Program Template /////////////////////////////////
+  //////////////////////////// RO RECIEVED /////////////////////////////////
 
-  static String LINK_PROGRAM_TO_SONG_GET_LOCATION = "$BASE_URL/api/LinkProgramToSongTemplate/GetLocationListForUser";
+  static String RO_RECEIVED_LOAD = "$BASE_URL/api/ROReceived/OnLoadRoReceived";
 
-  static String LINK_PROGRAM_TO_SONG_GET_CHANNEL({
+  static String RO_RECEIVED_LOAD_GET_CHANNEL({
     required String locationCode,
   }) {
-    return "$BASE_URL/api/LinkProgramToSongTemplate/GetChannelListForUserAndLocation?LocationCode=$locationCode";
+    return "$BASE_URL/api/ROReceived/OnLeaveLocation?LocationCode=$locationCode";
   }
 
-  static String LINK_PROGRAM_TO_SONG_GetProgramSongTemplate({
+  static String RO_RECEIVED_DATE_LEAVE({
+    required String date,
+  }) {
+    return "$BASE_URL/api/ROReceived/OnLeaveEffectDate?EffectiveDate=$date";
+  }
+
+  static String RO_RECEIVED_LOAD_LEAVE_CHANNEL({
     required String locationCode,
     required String channelCode,
-    required String fromDate,
-    required String toDate,
+    required String clientCode,
   }) {
-    return "$BASE_URL/api/LinkProgramToSongTemplate/GetProgramSongTemplate?LocationCode=$locationCode&ChannelCode=$channelCode&FromDate=$fromDate&ToDate=$toDate";
+    return "$BASE_URL/api/ROReceived/OnLeaveClient?ClientCode=$clientCode&LocationCode=$locationCode&ChannelCode=$channelCode";
   }
 
-  static String LINK_PROGRAM_TO_SONG_SAVE = "$BASE_URL/api/LinkProgramToSongTemplate/Save";
+  static String RO_RECEIVED_SAVE = "$BASE_URL/api/ROReceived/SaveRecords";
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////// Create Break Pattern ///////////////////////////////////////////
