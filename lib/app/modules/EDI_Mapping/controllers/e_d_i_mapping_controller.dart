@@ -10,9 +10,34 @@ class EDIMappingController extends GetxController {
   RxList<DropDownValue> locationList = RxList([]);
   RxList<DropDownValue> channelList = RxList([]);
   RxString selectValue=RxString("");
-  DropDownValue? selectedLocation;
+  DropDownValue? selectedClient;
+  DropDownValue? selectedAgency;
   DropDownValue? selectedChannel;
-  DropDownValue? selectedProduct;
+
+  bool isClient = false;
+  bool isAgency = false;
+  bool isChannel = false;
+
+  checkRadio(String val){
+    if(val == "Client"){
+      isClient= true;
+       isAgency = false;
+       isChannel = false;
+      update(['top']);
+    }else if(val == "Agency"){
+      isClient= false;
+      isAgency = true;
+      isChannel = false;
+      update(['top']);
+    }else{
+      isClient= false;
+      isAgency = false;
+      isChannel = true;
+      update(['top']);
+    }
+  }
+
+
   @override
   void onInit() {
     super.onInit();

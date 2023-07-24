@@ -30,6 +30,14 @@ abstract class Routes {
   static const RATE_CARDFROM_DEAL_WORKFLOW = _Paths.RATE_CARDFROM_DEAL_WORKFLOW;
   static const ZONE_WISE_INVENTORY_UTILIZATION = _Paths.ZONE_WISE_INVENTORY_UTILIZATION;
   static const RESCHEDULE_IMPORT = _Paths.RESCHEDULE_IMPORT;
+  static const AMAGI_SPOT_PLANNING = _Paths.AMAGI_SPOT_PLANNING;
+  static const AMAGI_SPOTS_REPLACEMENT = _Paths.AMAGI_SPOTS_REPLACEMENT;
+  static const AMAGI_STATUS_REPORT = _Paths.AMAGI_STATUS_REPORT;
+  static const INTERNATIONAL_SALES_REPORT = _Paths.INTERNATIONAL_SALES_REPORT;
+  static const PRODUCT_LEVEL1 = _Paths.PRODUCT_LEVEL1;
+  static const PRODUCT_LEVEL2 = _Paths.PRODUCT_LEVEL2;
+  static const PRODUCT_LEVEL3 = _Paths.PRODUCT_LEVEL3;
+  static const PRODUCT_MASTER = _Paths.PRODUCT_MASTER;
 }
 
 abstract class RoutesList {
@@ -44,6 +52,18 @@ abstract class RoutesList {
     _Paths.DEAL_RECO_SUMMARY,
     _Paths.E_D_I_MAPPING,
     _Paths.WORKFLOW_DEFINITION,
+    _Paths.PRODUCT_MASTER,
+    _Paths.AMAGI_STATUS_REPORT,
+    _Paths.AMAGI_SPOT_PLANNING,
+    _Paths.AMAGI_SPOTS_REPLACEMENT,
+    _Paths.INTERNATIONAL_SALES_REPORT,
+    _Paths.ON_SPOT_BOOKING_SKY_MEDIA,
+    _Paths.PERIODIC_DEAL_UTILISATION_FORMAT2,
+    _Paths.UPDATE_EXECUTIVE,
+    _Paths.USER_GROUPS_FOR_DEAL_WORKFLOW,
+    _Paths.PRODUCT_LEVEL1,
+    _Paths.PRODUCT_LEVEL2,
+    _Paths.PRODUCT_LEVEL3,
   ];
 }
 
@@ -70,9 +90,17 @@ abstract class _Paths {
   static const COMMERCIAL_LANGUAGE_SPECIFICATION = '/commercial-language-specification';
   static const ON_SPOT_BOOKING_SKY_MEDIA = '/frmDigiTextBooking';
   static const PERIODIC_DEAL_UTILISATION_FORMAT2 = '/frmPeriodicDealUtilisation';
-  static const UPDATE_EXECUTIVE = '/rate';
+  static const UPDATE_EXECUTIVE = '/frmbreakpatternxmlgenration';
   static const USER_GROUPS_FOR_DEAL_WORKFLOW = '/frmDP_UserGroups';
   static const RATE_CARDFROM_DEAL_WORKFLOW = '/frmDP_RateCard';
   static const ZONE_WISE_INVENTORY_UTILIZATION = '/frmZoneWiseInventory';
   static const RESCHEDULE_IMPORT = '/frmRescheduleImport';
+  static const AMAGI_SPOT_PLANNING = '/frmAma_Planning';
+  static const AMAGI_SPOTS_REPLACEMENT = '/amagi-spots-replacement';
+  static const AMAGI_STATUS_REPORT = '/frmAmagiSTatus';
+  static const INTERNATIONAL_SALES_REPORT = '/international-sales-report';
+  static const PRODUCT_LEVEL1 = '/frmProductLevel1';
+  static const PRODUCT_LEVEL2 = '/frmProductLevel2';
+  static const PRODUCT_LEVEL3 = '/frmProductLevel3';
+  static const PRODUCT_MASTER = '/frmProductMaster';
 }
