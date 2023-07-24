@@ -22,14 +22,14 @@ abstract class Routes {
   static const WORKFLOW_DEFINITION = _Paths.WORKFLOW_DEFINITION;
   static const E_D_I_MAPPING = _Paths.E_D_I_MAPPING;
   static const COMMERCIAL_CREATION_AUTO = _Paths.COMMERCIAL_CREATION_AUTO;
-  static const COMMERCIAL_LANGUAGE_SPECIFICATION =
-      _Paths.COMMERCIAL_LANGUAGE_SPECIFICATION;
+  static const COMMERCIAL_LANGUAGE_SPECIFICATION = _Paths.COMMERCIAL_LANGUAGE_SPECIFICATION;
   static const ON_SPOT_BOOKING_SKY_MEDIA = _Paths.ON_SPOT_BOOKING_SKY_MEDIA;
-  static const PERIODIC_DEAL_UTILISATION_FORMAT2 =
-      _Paths.PERIODIC_DEAL_UTILISATION_FORMAT2;
+  static const PERIODIC_DEAL_UTILISATION_FORMAT2 = _Paths.PERIODIC_DEAL_UTILISATION_FORMAT2;
   static const UPDATE_EXECUTIVE = _Paths.UPDATE_EXECUTIVE;
-  static const USER_GROUPS_FOR_DEAL_WORKFLOW =
-      _Paths.USER_GROUPS_FOR_DEAL_WORKFLOW;
+  static const USER_GROUPS_FOR_DEAL_WORKFLOW = _Paths.USER_GROUPS_FOR_DEAL_WORKFLOW;
+  static const RATE_CARDFROM_DEAL_WORKFLOW = _Paths.RATE_CARDFROM_DEAL_WORKFLOW;
+  static const ZONE_WISE_INVENTORY_UTILIZATION = _Paths.ZONE_WISE_INVENTORY_UTILIZATION;
+  static const RESCHEDULE_IMPORT = _Paths.RESCHEDULE_IMPORT;
   static const AMAGI_SPOT_PLANNING = _Paths.AMAGI_SPOT_PLANNING;
   static const AMAGI_SPOTS_REPLACEMENT = _Paths.AMAGI_SPOTS_REPLACEMENT;
   static const AMAGI_STATUS_REPORT = _Paths.AMAGI_STATUS_REPORT;
@@ -64,8 +64,6 @@ abstract class RoutesList {
     _Paths.PRODUCT_LEVEL1,
     _Paths.PRODUCT_LEVEL2,
     _Paths.PRODUCT_LEVEL3,
-
-
   ];
 }
 
@@ -89,13 +87,14 @@ abstract class _Paths {
   static const WORKFLOW_DEFINITION = '/frmDP_ApprovalTrail';
   static const E_D_I_MAPPING = '/frmEDIClientAgencyChannelMapping';
   static const COMMERCIAL_CREATION_AUTO = '/commercial-creation-auto';
-  static const COMMERCIAL_LANGUAGE_SPECIFICATION =
-      '/commercial-language-specification';
+  static const COMMERCIAL_LANGUAGE_SPECIFICATION = '/commercial-language-specification';
   static const ON_SPOT_BOOKING_SKY_MEDIA = '/frmDigiTextBooking';
-  static const PERIODIC_DEAL_UTILISATION_FORMAT2 =
-      '/frmPeriodicDealUtilisation';
+  static const PERIODIC_DEAL_UTILISATION_FORMAT2 = '/frmPeriodicDealUtilisation';
   static const UPDATE_EXECUTIVE = '/frmbreakpatternxmlgenration';
   static const USER_GROUPS_FOR_DEAL_WORKFLOW = '/frmDP_UserGroups';
+  static const RATE_CARDFROM_DEAL_WORKFLOW = '/frmDP_RateCard';
+  static const ZONE_WISE_INVENTORY_UTILIZATION = '/frmZoneWiseInventory';
+  static const RESCHEDULE_IMPORT = '/frmRescheduleImport';
   static const AMAGI_SPOT_PLANNING = '/frmAma_Planning';
   static const AMAGI_SPOTS_REPLACEMENT = '/amagi-spots-replacement';
   static const AMAGI_STATUS_REPORT = '/frmAmagiSTatus';

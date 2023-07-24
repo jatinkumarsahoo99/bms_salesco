@@ -1,5 +1,6 @@
 import 'package:bms_salesco/widgets/DateTime/DateWithThreeTextField.dart';
 import 'package:bms_salesco/widgets/gridFromMap.dart';
+import 'package:bms_salesco/widgets/input_fields.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -9,10 +10,11 @@ import '../../../../widgets/FormButton.dart';
 import '../../../../widgets/dropdown.dart';
 import '../../../controller/HomeController.dart';
 import '../../../providers/Utils.dart';
-import '../controllers/same_day_collection_controller.dart';
 
-class SameDayCollectionView extends GetView<SameDayCollectionController> {
-  const SameDayCollectionView({Key? key}) : super(key: key);
+import '../controllers/rate_cardfrom_deal_workflow_controller.dart';
+
+class RateCardfromDealWorkflowView extends GetView<RateCardfromDealWorkflowController> {
+  const RateCardfromDealWorkflowView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,20 +50,18 @@ class SameDayCollectionView extends GetView<SameDayCollectionController> {
                       selected: controller.selectedChannel,
                     );
                   }),
-                  DateWithThreeTextField(
-                    title: "From",
-                    mainTextController: controller.fromTC,
+                  InputFields.formField1(
+                    hintTxt: "Path",
+                    controller: TextEditingController(),
                   ),
                   FormButton(
                     btnText: "Show",
                     callback: controller.showData,
                   ),
-                  Obx(() {
-                    return FormButton(
-                      btnText: !controller.checkedAll.value ? "Check All" : "Clear All",
-                      callback: controller.handleCheckAndUncheck,
-                    );
-                  }),
+                  FormButton(
+                    btnText: "Load",
+                    callback: controller.handleCheckAndUncheck,
+                  ),
                 ],
               ),
             ),
