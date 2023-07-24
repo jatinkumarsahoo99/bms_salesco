@@ -53,6 +53,7 @@ class ChangeRONumberView extends GetView<ChangeRONumberController> {
                           .16,
                           autoFocus: true,
                           selected: controller.selectedLocation,
+                          inkWellFocusNode: controller.locationFN,
                         );
                       }),
                       Obx(() {
