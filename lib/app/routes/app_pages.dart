@@ -1,39 +1,23 @@
 import 'package:get/get.dart';
 
-import '../modules/AutoTimeLock/bindings/auto_time_lock_binding.dart';
-import '../modules/AutoTimeLock/views/auto_time_lock_view.dart';
-import '../modules/ChangeRONumber/bindings/change_r_o_number_binding.dart';
-import '../modules/GeoProgramUpdate/bindings/geo_program_update_binding.dart';
-import '../modules/GeoProgramUpdate/views/geo_program_update_view.dart';
-import '../modules/MakeGoodReport/bindings/make_good_report_binding.dart';
-import '../modules/MakeGoodReport/views/make_good_report_view.dart';
-import '../modules/MarkROsFlag/bindings/mark_r_os_flag_binding.dart';
-import '../modules/MarkROsFlag/views/mark_r_os_flag_view.dart';
-import '../modules/MonthlyReport/bindings/monthly_report_binding.dart';
-import '../modules/MonthlyReport/views/monthly_report_view.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/foundation.dart';
-
-import '../modules/EdiRoBooking/bindings/edi_ro_booking_binding.dart';
-import '../modules/EdiRoBooking/views/edi_ro_booking_view.dart';
-import 'package:get/get.dart';
-
 import '../modules/AsrunDetailsReport/bindings/asrun_details_report_binding.dart';
 import '../modules/AuditStatusReport/bindings/audit_status_report_binding.dart';
+import '../modules/AutoTimeLock/bindings/auto_time_lock_binding.dart';
 import '../modules/ChangeRONumber/bindings/change_r_o_number_binding.dart';
-
 import '../modules/DealRecoSummary/bindings/deal_reco_summary_binding.dart';
-
 import '../modules/EDI_Mapping/bindings/e_d_i_mapping_binding.dart';
-import '../modules/EDI_Mapping/views/e_d_i_mapping_view.dart';
+import '../modules/EdiRoBooking/bindings/edi_ro_booking_binding.dart';
+import '../modules/EdiRoBooking/views/edi_ro_booking_view.dart';
+import '../modules/GeoProgramUpdate/bindings/geo_program_update_binding.dart';
+import '../modules/MakeGoodReport/bindings/make_good_report_binding.dart';
+import '../modules/MarkROsFlag/bindings/mark_r_os_flag_binding.dart';
+import '../modules/MonthlyReport/bindings/monthly_report_binding.dart';
 import '../modules/OnSpotBookingSkyMedia/bindings/on_spot_booking_sky_media_binding.dart';
 import '../modules/PeriodicDealUtilisationFormat2/bindings/periodic_deal_utilisation_format2_binding.dart';
 import '../modules/RoReceived/bindings/ro_received_binding.dart';
 import '../modules/SameDayCollection/bindings/same_day_collection_binding.dart';
 import '../modules/TapeIDCampaign/bindings/tape_i_d_campaign_binding.dart';
-
 import '../modules/Update_Executive/bindings/update_executive_binding.dart';
-import '../modules/Update_Executive/views/update_executive_view.dart';
 import '../modules/UserGroupsForDealWorkflow/bindings/user_groups_for_deal_workflow_binding.dart';
 import '../modules/WorkflowDefinition/bindings/workflow_definition_binding.dart';
 import '../modules/home/bindings/home_binding.dart';
@@ -141,8 +125,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.COMMERCIAL_LANGUAGE_SPECIFICATION,
-      page: () =>
-          AuthGuard(childName: _Paths.COMMERCIAL_LANGUAGE_SPECIFICATION),
+      page: () => AuthGuard(childName: _Paths.COMMERCIAL_LANGUAGE_SPECIFICATION),
     ),
     GetPage(
       name: _Paths.ON_SPOT_BOOKING_SKY_MEDIA,
@@ -152,8 +135,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.PERIODIC_DEAL_UTILISATION_FORMAT2,
-      page: () =>
-          AuthGuard(childName: _Paths.PERIODIC_DEAL_UTILISATION_FORMAT2),
+      page: () => AuthGuard(childName: _Paths.PERIODIC_DEAL_UTILISATION_FORMAT2),
       // PeriodicDealUtilisationFormat2View(),
       binding: PeriodicDealUtilisationFormat2Binding(),
     ),
