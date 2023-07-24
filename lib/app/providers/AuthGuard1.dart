@@ -23,12 +23,15 @@ import '../modules/EDI_Mapping/views/e_d_i_mapping_view.dart';
 
 import '../modules/OnSpotBookingSkyMedia/views/on_spot_booking_sky_media_view.dart';
 import '../modules/PeriodicDealUtilisationFormat2/views/periodic_deal_utilisation_format2_view.dart';
+import '../modules/RateCardfromDealWorkflow/views/rate_cardfrom_deal_workflow_view.dart';
+import '../modules/RescheduleImport/views/reschedule_import_view.dart';
 import '../modules/RoReceived/views/ro_received_view.dart';
 import '../modules/SameDayCollection/views/same_day_collection_view.dart';
 import '../modules/TapeIDCampaign/views/tape_i_d_campaign_view.dart';
 import '../modules/Update_Executive/views/update_executive_view.dart';
 import '../modules/UserGroupsForDealWorkflow/views/user_groups_for_deal_workflow_view.dart';
 import '../modules/WorkflowDefinition/views/workflow_definition_view.dart';
+import '../modules/ZoneWiseInventoryUtilization/views/zone_wise_inventory_utilization_view.dart';
 import '../modules/home/views/home_view.dart';
 import '../routes/app_pages.dart';
 
@@ -118,6 +121,15 @@ class AuthGuard extends StatelessWidget {
               break;
             case Routes.COMMERCIAL_LANGUAGE_SPECIFICATION:
               currentWidget = CommercialLanguageSpecificationView();
+              break;
+            case Routes.RATE_CARDFROM_DEAL_WORKFLOW:
+              currentWidget = RateCardfromDealWorkflowView();
+              break;
+            case Routes.ZONE_WISE_INVENTORY_UTILIZATION:
+              currentWidget = ZoneWiseInventoryUtilizationView();
+              break;
+            case Routes.RESCHEDULE_IMPORT:
+              currentWidget = RescheduleImportView();
               break;
             default:
               currentWidget = const NoDataFoundPage();

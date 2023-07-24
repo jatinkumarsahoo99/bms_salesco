@@ -14,12 +14,18 @@ import '../modules/MarkROsFlag/bindings/mark_r_os_flag_binding.dart';
 import '../modules/MonthlyReport/bindings/monthly_report_binding.dart';
 import '../modules/OnSpotBookingSkyMedia/bindings/on_spot_booking_sky_media_binding.dart';
 import '../modules/PeriodicDealUtilisationFormat2/bindings/periodic_deal_utilisation_format2_binding.dart';
+import '../modules/RateCardfromDealWorkflow/bindings/rate_cardfrom_deal_workflow_binding.dart';
+import '../modules/RateCardfromDealWorkflow/views/rate_cardfrom_deal_workflow_view.dart';
+import '../modules/RescheduleImport/bindings/reschedule_import_binding.dart';
+import '../modules/RescheduleImport/views/reschedule_import_view.dart';
 import '../modules/RoReceived/bindings/ro_received_binding.dart';
 import '../modules/SameDayCollection/bindings/same_day_collection_binding.dart';
 import '../modules/TapeIDCampaign/bindings/tape_i_d_campaign_binding.dart';
 import '../modules/Update_Executive/bindings/update_executive_binding.dart';
 import '../modules/UserGroupsForDealWorkflow/bindings/user_groups_for_deal_workflow_binding.dart';
 import '../modules/WorkflowDefinition/bindings/workflow_definition_binding.dart';
+import '../modules/ZoneWiseInventoryUtilization/bindings/zone_wise_inventory_utilization_binding.dart';
+import '../modules/ZoneWiseInventoryUtilization/views/zone_wise_inventory_utilization_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../providers/AuthGuard1.dart';
@@ -29,7 +35,7 @@ part 'app_routes.dart';
 class AppPages {
   AppPages._();
 
-  static const INITIAL = Routes.SAME_DAY_COLLECTION +
+  static const INITIAL = Routes.RESCHEDULE_IMPORT +
       "?personalNo=kW5Bkf17%2FS5YF7ML28FmVg%3D%3D&loginCode=1BWIoBKeDl7qDSAAhxvXsQ%3D%3D&formName=OI8ukDpPPVN0I2BEXu2h4nuFu%2BZm1ZRpvP8NL4XCXzQ%3D";
 
   static final routes = [
@@ -150,6 +156,24 @@ class AppPages {
       page: () => AuthGuard(childName: _Paths.USER_GROUPS_FOR_DEAL_WORKFLOW),
       // UserGroupsForDealWorkflowView(),
       binding: UserGroupsForDealWorkflowBinding(),
+    ),
+    GetPage(
+      name: _Paths.RATE_CARDFROM_DEAL_WORKFLOW,
+      page: () => AuthGuard(childName: _Paths.RATE_CARDFROM_DEAL_WORKFLOW),
+      // page: () => const RateCardfromDealWorkflowView(),
+      binding: RateCardfromDealWorkflowBinding(),
+    ),
+    GetPage(
+      name: _Paths.ZONE_WISE_INVENTORY_UTILIZATION,
+      // page: () => const ZoneWiseInventoryUtilizationView(),
+      page: () => AuthGuard(childName: _Paths.ZONE_WISE_INVENTORY_UTILIZATION),
+      binding: ZoneWiseInventoryUtilizationBinding(),
+    ),
+    GetPage(
+      name: _Paths.RESCHEDULE_IMPORT,
+      page: () => AuthGuard(childName: _Paths.RESCHEDULE_IMPORT),
+      // page: () => const RescheduleImportView(),
+      binding: RescheduleImportBinding(),
     ),
   ];
 }
