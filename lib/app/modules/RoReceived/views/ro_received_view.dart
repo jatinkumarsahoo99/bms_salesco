@@ -4,14 +4,16 @@ import 'package:bms_salesco/widgets/DateTime/DateWithThreeTextField.dart';
 import 'package:bms_salesco/widgets/FormButton.dart';
 import 'package:bms_salesco/widgets/dropdown.dart';
 import 'package:bms_salesco/widgets/input_fields.dart';
+import 'package:excel/excel.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 
 import '../controllers/ro_received_controller.dart';
 
-class RoReceivedView extends GetView<RoReceivedController> {
-   RoReceivedView({Key? key}) : super(key: key);
+class RoReceivedView extends StatelessWidget {
+  RoReceivedView({Key? key}) : super(key: key);
+  final controller = Get.put<RoReceivedController>(RoReceivedController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,11 +29,11 @@ class RoReceivedView extends GetView<RoReceivedController> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 AppBar(
-                  title: Text('RO Received'),
+                  title: const Text('RO Received'),
                   centerTitle: true,
                   backgroundColor: Colors.deepPurple,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 Wrap(
@@ -39,123 +41,179 @@ class RoReceivedView extends GetView<RoReceivedController> {
                   runSpacing: 5,
                   spacing: Get.width * 0.01,
                   children: [
-                    DropDownField.formDropDown1WidthMap(
-                      [],
-                      (valeu) {},
-                      "Location",
-                      .24,
-                      autoFocus: true,
+                    Obx(
+                      () => DropDownField.formDropDown1WidthMap(
+                        controller.locations.value,
+                        (value) {
+                          controller.selectedLocation = value;
+                          controller.getChannel(value.key);
+                        },
+                        "Location",
+                        .24,
+                        autoFocus: true,
+                      ),
                     ),
-                    DropDownField.formDropDown1WidthMap(
-                      [],
-                      (valeu) {},
-                      "Channel",
-                      .24,
-                      autoFocus: true,
+                    Obx(
+                      () => DropDownField.formDropDown1WidthMap(
+                        controller.channels.value,
+                        (value) {
+                          controller.selectedChannel = value;
+                        },
+                        "Channel",
+                        .24,
+                        autoFocus: true,
+                      ),
                     ),
-                    DropDownField.formDropDown1WidthMap(
-                      [],
-                      (valeu) {},
-                      "Client",
-                      .24,
-                      autoFocus: true,
+                    Obx(
+                      () => DropDownField.formDropDown1WidthMap(
+                        controller.clients.value,
+                        (value) {
+                          controller.selectedClient = value;
+                          controller.clientLeave();
+                        },
+                        "Client",
+                        .24,
+                        autoFocus: true,
+                      ),
                     ),
-                    DropDownField.formDropDown1WidthMap(
-                      [],
-                      (valeu) {},
-                      "Agency",
-                      .24,
-                      autoFocus: true,
+                    Obx(
+                      () => DropDownField.formDropDown1WidthMap(
+                        controller.agencies.value,
+                        (valeu) {
+                          controller.selectedAgency = valeu;
+                        },
+                        "Agency",
+                        .24,
+                        autoFocus: true,
+                      ),
                     ),
-                    DropDownField.formDropDown1WidthMap(
-                      [],
-                      (valeu) {},
-                      "Brand",
-                      .24,
-                      autoFocus: true,
+                    Obx(
+                      () => DropDownField.formDropDown1WidthMap(
+                        controller.brands.value,
+                        (valeu) {
+                          controller.selectedBrand = valeu;
+                        },
+                        "Brand",
+                        .24,
+                        autoFocus: true,
+                      ),
                     ),
                     InputFields.formField1(
                       hintTxt: "RO Number",
-                      controller: TextEditingController(),
+                      controller: controller.roNumber,
                       width: 0.24,
                     ),
                     DateWithThreeTextField(
                       title: "RO Rec. Date",
-                      mainTextController: TextEditingController(),
+                      mainTextController: controller.roRecDate,
                       widthRation: .115,
                     ),
                     DateWithThreeTextField(
                       title: "Eff. Date",
-                      mainTextController: TextEditingController(),
+                      mainTextController: controller.effDate,
+                      onFocusChange: (date) {
+                        print(date);
+                        controller.activityMonth.text =
+                            date.split("-")[2] + date.split("-")[1];
+                        // controller.dateLeave(date);
+                      },
                       widthRation: .115,
                     ),
-                    InputFields.formField1(hintTxt: "Activity Month", controller: TextEditingController(), width: 0.24, isEnable: false),
+                    InputFields.formField1(
+                        hintTxt: "Activity Month",
+                        controller: controller.activityMonth,
+                        width: 0.24,
+                        isEnable: false),
                     InputFields.numbers(
                       hintTxt: "RO Amount",
                       padLeft: 0,
-                      controller: TextEditingController(),
+                      controller: controller.roAmount,
                       width: 0.115,
                     ),
                     InputFields.numbers(
                       padLeft: 0,
                       hintTxt: "Valuation RO Amount",
-                      controller: TextEditingController(),
+                      controller: controller.roValAmount,
                       width: 0.115,
                     ),
                     InputFields.formField1(
                       hintTxt: "FCT",
-                      controller: TextEditingController(),
+                      controller: controller.fct,
                       width: 0.24,
                     ),
                     InputFields.formField1(
                       hintTxt: "Remarks",
-                      controller: TextEditingController(),
+                      controller: controller.remark,
                       width: 0.24,
                     ),
-                    SizedBox(
-                      width: Get.width * 0.24,
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              InkWell(
-                                child: Icon(Icons.radio_button_off_outlined),
-                              ),
-                              Text(
-                                "Additional",
-                                style: TextStyle(fontSize: SizeDefine.labelSize1),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              InkWell(
-                                child: Icon(Icons.radio_button_off_outlined),
-                              ),
-                              Text(
-                                "Cancellation",
-                                style: TextStyle(fontSize: SizeDefine.labelSize1),
-                              )
-                            ],
-                          )
-                        ],
+                    Obx(
+                      () => SizedBox(
+                        width: Get.width * 0.24,
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                InkWell(
+                                  child: Icon(controller.additional.value
+                                      ? Icons.radio_button_checked_outlined
+                                      : Icons.radio_button_off_outlined),
+                                  onTap: () {
+                                    controller.additional.value = true;
+                                  },
+                                ),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                Text(
+                                  "Additional",
+                                  style: TextStyle(
+                                      fontSize: SizeDefine.labelSize1),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                InkWell(
+                                  child: Icon(!controller.additional.value
+                                      ? Icons.radio_button_checked_outlined
+                                      : Icons.radio_button_off_outlined),
+                                  onTap: () {
+                                    controller.additional.value = false;
+                                  },
+                                ),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                Text(
+                                  "Cancellation",
+                                  style: TextStyle(
+                                      fontSize: SizeDefine.labelSize1),
+                                )
+                              ],
+                            )
+                          ],
+                        ),
                       ),
                     ),
-                    DropDownField.formDropDown1WidthMap(
-                      [],
-                      (valeu) {},
-                      "Revenue Type",
-                      .24,
-                      autoFocus: true,
+                    Obx(
+                      () => DropDownField.formDropDown1WidthMap(
+                        controller.revenueType.value,
+                        (valeu) {
+                          controller.selectedRevenue = valeu;
+                        },
+                        "Revenue Type",
+                        .24,
+                        autoFocus: true,
+                      ),
                     ),
                   ],
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 Align(
@@ -175,7 +233,11 @@ class RoReceivedView extends GetView<RoReceivedController> {
                               // mainAxisSize: MainAxisSize.min,
                               children: [
                                 for (var btn in btncontroller.buttons!) ...{
-                                  FormButtonWrapper(btnText: btn["name"], callback: () {}
+                                  FormButtonWrapper(
+                                      btnText: btn["name"],
+                                      callback: () {
+                                        btnHandler(btn["name"]);
+                                      }
                                       //  ((Utils.btnAccessHandler(btn['name'], controller.formPermissions!) == null))
                                       //     ? null
                                       //     : () => controller.formHandler(btn['name']),
@@ -199,5 +261,14 @@ class RoReceivedView extends GetView<RoReceivedController> {
         ),
       ),
     );
+  }
+
+  btnHandler(save) {
+    switch (save) {
+      case "Save":
+        controller.save();
+        break;
+      default:
+    }
   }
 }

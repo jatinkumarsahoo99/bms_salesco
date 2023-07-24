@@ -159,7 +159,7 @@ class ApiFactory {
     return "$BASE_URL/api/ROReceived/OnLeaveEffectDate?EffectiveDate=$date";
   }
 
-  static String RO_RECEIVED_LOAD_LEAVE_CHANNEL({
+  static String RO_RECEIVED_LEAVE_CLIENT({
     required String locationCode,
     required String channelCode,
     required String clientCode,
