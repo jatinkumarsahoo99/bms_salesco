@@ -152,6 +152,7 @@ class AuditStatusReportView  extends StatelessWidget  {
                                           children: [
                                             Obx(()=>  Checkbox(
                                               value: controllerX.checked.value,
+                                              side: const BorderSide(color: Colors.deepPurpleAccent),
                                               onChanged: (bool? value) {
                                                 controllerX.checked.value = value!;
                                                 if(value!){
@@ -209,6 +210,7 @@ class AuditStatusReportView  extends StatelessWidget  {
                                                         children: [
                                                           Checkbox(
                                                             value: controllerX.channelList[index].ischecked,
+                                                            side: const BorderSide(color: Colors.deepPurpleAccent),
                                                             onChanged:
                                                                 (bool? value) {
                                                                   controllerX.channelList[index].ischecked = value;

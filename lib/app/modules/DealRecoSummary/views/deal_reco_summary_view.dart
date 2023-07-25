@@ -44,7 +44,6 @@ class DealRecoSummaryView extends GetView<DealRecoSummaryController> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-
                     Padding(
                       padding: const EdgeInsets.only(left: 8.0),
                       child: FocusTraversalGroup(
@@ -208,8 +207,6 @@ class DealRecoSummaryView extends GetView<DealRecoSummaryController> {
                     ),
                   ],
                 ),
-
-
                 Expanded(
                   flex: 9,
                   child: Padding(
@@ -245,7 +242,6 @@ class DealRecoSummaryView extends GetView<DealRecoSummaryController> {
                     ),
                   ),
                 ),
-
                 /// bottom common buttons
               ],
             ),
