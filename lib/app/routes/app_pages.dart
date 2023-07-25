@@ -4,8 +4,6 @@ import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:get/get.dart';
 
-import '../modules/AsrunDetailsReport/bindings/asrun_details_report_binding.dart';
-import '../modules/AuditStatusReport/bindings/audit_status_report_binding.dart';
 import '../modules/AmagiSpotPlanning/bindings/amagi_spot_planning_binding.dart';
 import '../modules/AmagiSpotPlanning/views/amagi_spot_planning_view.dart';
 import '../modules/AmagiSpotsReplacement/bindings/amagi_spots_replacement_binding.dart';
@@ -13,18 +11,22 @@ import '../modules/AmagiSpotsReplacement/views/amagi_spots_replacement_view.dart
 import '../modules/AmagiStatusReport/bindings/amagi_status_report_binding.dart';
 import '../modules/AmagiStatusReport/views/amagi_status_report_view.dart';
 import '../modules/AsrunDetailsReport/bindings/asrun_details_report_binding.dart';
+import '../modules/AsrunDetailsReport/bindings/asrun_details_report_binding.dart';
+import '../modules/AuditStatusReport/bindings/audit_status_report_binding.dart';
 import '../modules/AuditStatusReport/bindings/audit_status_report_binding.dart';
 import '../modules/AutoTimeLock/bindings/auto_time_lock_binding.dart';
 import '../modules/ChangeRONumber/bindings/change_r_o_number_binding.dart';
+import '../modules/ChangeRONumber/bindings/change_r_o_number_binding.dart';
+import '../modules/CommercialCreationAutoDetails/bindings/commercial_creation_auto_details_binding.dart';
+import '../modules/CommercialCreationAutoDetails/views/CommercialCreationAutoDetailsView.dart';
+import '../modules/DealRecoSummary/bindings/deal_reco_summary_binding.dart';
 import '../modules/DealRecoSummary/bindings/deal_reco_summary_binding.dart';
 import '../modules/EDI_Mapping/bindings/e_d_i_mapping_binding.dart';
-import '../modules/EdiRoBooking/bindings/edi_ro_booking_binding.dart';
-import '../modules/EdiRoBooking/views/edi_ro_booking_view.dart';
-import '../modules/ChangeRONumber/bindings/change_r_o_number_binding.dart';
-import '../modules/DealRecoSummary/bindings/deal_reco_summary_binding.dart';
 import '../modules/EDI_Mapping/bindings/e_d_i_mapping_binding.dart';
 import '../modules/EDI_Mapping/views/e_d_i_mapping_view.dart';
 import '../modules/EdiRoBooking/bindings/edi_ro_booking_binding.dart';
+import '../modules/EdiRoBooking/bindings/edi_ro_booking_binding.dart';
+import '../modules/EdiRoBooking/views/edi_ro_booking_view.dart';
 import '../modules/EdiRoBooking/views/edi_ro_booking_view.dart';
 import '../modules/GeoProgramUpdate/bindings/geo_program_update_binding.dart';
 import '../modules/GeoProgramUpdate/views/geo_program_update_view.dart';
@@ -38,10 +40,6 @@ import '../modules/NewShortContentForm/views/new_short_content_form_view.dart';
 import '../modules/MonthlyReport/views/monthly_report_view.dart';
 import '../modules/OnSpotBookingSkyMedia/bindings/on_spot_booking_sky_media_binding.dart';
 import '../modules/PeriodicDealUtilisationFormat2/bindings/periodic_deal_utilisation_format2_binding.dart';
-import '../modules/RateCardfromDealWorkflow/bindings/rate_cardfrom_deal_workflow_binding.dart';
-import '../modules/RateCardfromDealWorkflow/views/rate_cardfrom_deal_workflow_view.dart';
-import '../modules/RescheduleImport/bindings/reschedule_import_binding.dart';
-import '../modules/RescheduleImport/views/reschedule_import_view.dart';
 import '../modules/ProductLevel1/bindings/product_level1_binding.dart';
 import '../modules/ProductLevel1/views/product_level1_view.dart';
 import '../modules/ProductLevel2/bindings/product_level2_binding.dart';
@@ -50,6 +48,10 @@ import '../modules/ProductLevel3/bindings/product_level3_binding.dart';
 import '../modules/ProductLevel3/views/product_level3_view.dart';
 import '../modules/ProductMaster/bindings/product_master_binding.dart';
 import '../modules/ProductMaster/views/product_master_view.dart';
+import '../modules/RateCardfromDealWorkflow/bindings/rate_cardfrom_deal_workflow_binding.dart';
+import '../modules/RateCardfromDealWorkflow/views/rate_cardfrom_deal_workflow_view.dart';
+import '../modules/RescheduleImport/bindings/reschedule_import_binding.dart';
+import '../modules/RescheduleImport/views/reschedule_import_view.dart';
 import '../modules/RoReceived/bindings/ro_received_binding.dart';
 import '../modules/SameDayCollection/bindings/same_day_collection_binding.dart';
 import '../modules/TapeIDCampaign/bindings/tape_i_d_campaign_binding.dart';
@@ -70,9 +72,8 @@ class AppPages {
 
   static const INITIAL = kReleaseMode
       ? Routes.HOME
-      : Routes.ASRUN_DETAILS_REPORT +
-          "?personalNo=R9vVPL7er1Os/usemWG/Iw==&loginCode=0iGe3vK5h2KGjfSKZTpmsQ==&formName=OI8ukDpPPVN0I2BEXu2h4nuFu%2BZm1ZRpvP8NL4XCXzQ%3D";
-
+      : Routes.COMMERCIAL_CREATION_AUTO_DETAILS +
+          "?personalNo=kW5Bkf17%2FS5YF7ML28FmVg%3D%3D&loginCode=1BWIoBKeDl7qDSAAhxvXsQ%3D%3D&formName=OI8ukDpPPVN0I2BEXu2h4nuFu%2BZm1ZRpvP8NL4XCXzQ%3D";
   static final routes = [
     GetPage(
       name: _Paths.ASRUN_DETAILS_REPORT,
@@ -161,7 +162,8 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.COMMERCIAL_LANGUAGE_SPECIFICATION,
-      page: () => AuthGuard(childName: _Paths.COMMERCIAL_LANGUAGE_SPECIFICATION),
+      page: () =>
+          AuthGuard(childName: _Paths.COMMERCIAL_LANGUAGE_SPECIFICATION),
     ),
     GetPage(
       name: _Paths.ON_SPOT_BOOKING_SKY_MEDIA,
@@ -171,7 +173,8 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.PERIODIC_DEAL_UTILISATION_FORMAT2,
-      page: () => AuthGuard(childName: _Paths.PERIODIC_DEAL_UTILISATION_FORMAT2),
+      page: () =>
+          AuthGuard(childName: _Paths.PERIODIC_DEAL_UTILISATION_FORMAT2),
       // PeriodicDealUtilisationFormat2View(),
       binding: PeriodicDealUtilisationFormat2Binding(),
     ),
@@ -262,6 +265,10 @@ class AppPages {
       page: () => AuthGuard(childName: _Paths.PRODUCT_MASTER),
       // ProductMasterView(),
       binding: ProductMasterBinding(),
+    ),
+    GetPage(
+      name: _Paths.COMMERCIAL_CREATION_AUTO_DETAILS,
+      page: () => AuthGuard(childName:_Paths.COMMERCIAL_CREATION_AUTO_DETAILS),
     ),
   ];
 }

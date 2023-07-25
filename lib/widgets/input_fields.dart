@@ -692,7 +692,7 @@ class InputFields {
       controller.text = isTime ? "00:00:00" : "00:00:00:00";
     }
     return Padding(
-        padding: EdgeInsets.only(left: paddingLeft ?? 10),
+        padding: EdgeInsets.only(left: paddingLeft ?? 10,top: 1.5),
         child: buildTimeDurationWidget(
           hintTxt,
           controller,
