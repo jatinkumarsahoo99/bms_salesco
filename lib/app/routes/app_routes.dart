@@ -28,8 +28,7 @@ abstract class Routes {
   static const PERIODIC_DEAL_UTILISATION_FORMAT2 =
       _Paths.PERIODIC_DEAL_UTILISATION_FORMAT2;
   static const UPDATE_EXECUTIVE = _Paths.UPDATE_EXECUTIVE;
-  static const USER_GROUPS_FOR_DEAL_WORKFLOW =
-      _Paths.USER_GROUPS_FOR_DEAL_WORKFLOW;
+  // static const USER_GROUPS_FOR_DEAL_WORKFLOW = _Paths.USER_GROUPS_FOR_DEAL_WORKFLOW;
   static const USER_GROUPS_FOR_DEAL_WORKFLOW = _Paths.USER_GROUPS_FOR_DEAL_WORKFLOW;
   static const NEW_SHORT_CONTENT_FORM = _Paths.NEW_SHORT_CONTENT_FORM;
   static const VIEW_OLD_DEAL = _Paths.VIEW_OLD_DEAL;
@@ -101,9 +100,6 @@ abstract class _Paths {
       '/frmCommercialLanguageSpec';
   static const ON_SPOT_BOOKING_SKY_MEDIA = '/frmDigiTextBooking';
   static const PERIODIC_DEAL_UTILISATION_FORMAT2 = '/frmPeriodicDealUtilisation';
-  static const UPDATE_EXECUTIVE = '/rate';
-  static const PERIODIC_DEAL_UTILISATION_FORMAT2 =
-      '/frmPeriodicDealUtilisation';
   static const UPDATE_EXECUTIVE = '/frmbreakpatternxmlgenration';
   static const USER_GROUPS_FOR_DEAL_WORKFLOW = '/frmDP_UserGroups';
   static const NEW_SHORT_CONTENT_FORM = '/new_short_content_form';
