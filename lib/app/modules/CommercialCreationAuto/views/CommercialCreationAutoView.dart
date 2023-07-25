@@ -35,7 +35,7 @@ class CommercialCreationAutoView
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Obx(() => DropDownField.formDropDown1WidthMap(
-                    controllerX.providerList.value,
+                    controllerX.loadModel?.value?.loadData?.lstProviders??[],
                         (data) {
                     },
                     "Providers",
@@ -52,13 +52,13 @@ class CommercialCreationAutoView
                 // init: CreateBreakPatternController(),
                 builder: (controller) {
                   print("Called this Update >>>listUpdate");
-                  if (controller.tableList != null &&
-                      ((controller.tableList.length ?? 0) > 0)) {
+                  if (controller.loadModel?.value?.loadData?.lstNewMedia != null &&
+                      ((controller.loadModel?.value?.loadData?.lstNewMedia?.length ?? 0) > 0)) {
                     return Expanded(
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 10),
                         child: DataGridFromMap(
-                          mapData: (controller.tableList
+                          mapData: (controller.loadModel?.value?.loadData?.lstNewMedia
                               ?.map((e) => e.toJson())
                               .toList())!,
                           widthRatio: (Get.width / 9) + 5,

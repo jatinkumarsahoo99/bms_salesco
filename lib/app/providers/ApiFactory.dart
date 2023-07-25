@@ -608,10 +608,26 @@ class ApiFactory {
   ///
   ///
   ///
+  ///
   ///////////////////////// TAPE-ID-CAMPAIGN-START//////
   static String TAPE_ID_CAMPAIGN_ON_LEAVE(String tapeID) => "$BASE_URL/api/TapeIDCampaign/TapeIdDetails?TapeId=$tapeID";
   static String TAPE_ID_CAMPAIGN_GET_HISTORY(String tapeID) => "$BASE_URL/api/TapeIDCampaign/TapeIdHistoryDetails?TapeId=$tapeID";
   static String get TAPE_ID_CAMPAIGN_UPDATE_HISTORY => "$BASE_URL/api/TapeIDCampaign/TapeIdHistoryUpdate";
   static String get TAPE_ID_CAMPAIGN_SAVE_RECORD => "$BASE_URL/api/TapeIDCampaign/Save";
   ///////////////////////// TAPE-ID-CAMPAIGN-END//////
+  ///
+  ///
+  ///
+  ///
+  ///
+  ///////////////////////// COMERCIAL CREATION AUTO/////////
+  static String COMMERCIAL_CREATION_GET_LOAD() => "$BASE_URL/api/CommercialMasterAuto/GetLoad";
+  static String COMMERCIAL_CREATION_PROVIDER_LIST(String provider) => "$BASE_URL/api/CommercialMasterAuto/GetProviderSelect?Provider=$provider";
+  static String COMMERCIAL_CREATION_CLIENT_LEAVE(String clientMaster) => "$BASE_URL/api/CommercialMasterAuto/GetClientMasterLeave?ClientMaster=$clientMaster";
+  static String COMMERCIAL_CREATION_CLIENT_LIST() => "$BASE_URL/api/CommercialMasterAuto/GetClientMaster?SearchText=";
+  static String COMMERCIAL_CREATION_SHOW_ACID(String acid) => "$BASE_URL/api/CommercialMasterAuto/GetShowACID?acid=$acid";
+  static String COMMERCIAL_CREATION_REVENUE_TYPE_SELECT(String revenue) => "$BASE_URL/api/CommercialMasterAuto/GetrevenuetypeSelect?revenuetype=$revenue";
+  static String COMMERCIAL_CREATION_EOM_SELECT(String som,String eom) => "$BASE_URL/api/CommercialMasterAuto/GetEOMSelect?EOM=$som&SOM=$eom";
+  static String COMMERCIAL_CREATION_SAVE() => "$BASE_URL/api/CommercialMasterAuto/PostSave";
+  ///////////////////////// End: COMERCIAL CREATION AUTO ////////////
 }

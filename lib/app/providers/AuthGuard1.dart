@@ -2,7 +2,6 @@ import 'package:bms_salesco/app/controller/MainController.dart';
 import 'package:bms_salesco/app/modules/AmagiSpotPlanning/views/amagi_spot_planning_view.dart';
 import 'package:bms_salesco/app/modules/AmagiSpotsReplacement/views/amagi_spots_replacement_view.dart';
 import 'package:bms_salesco/app/modules/MakeGoodReport/views/make_good_report_view.dart';
-import 'package:bms_salesco/app/modules/CommercialLanguageSpecification/controllers/CommercialLanguageSpecificationController.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -12,6 +11,7 @@ import '../../widgets/NoDataFoundPage.dart';
 import '../modules/AmagiStatusReport/views/amagi_status_report_view.dart';
 import '../modules/AutoTimeLock/views/auto_time_lock_view.dart';
 import '../modules/ChangeRONumber/views/change_r_o_number_view.dart';
+import '../modules/CommercialCreationAutoDetails/views/CommercialCreationAutoDetailsView.dart';
 import '../modules/GeoProgramUpdate/views/geo_program_update_view.dart';
 import '../modules/InternationalSalesReport/views/international_sales_report_view.dart';
 import '../modules/MarkROsFlag/views/mark_r_os_flag_view.dart';
@@ -22,7 +22,6 @@ import '../modules/CommercialLanguageSpecification/views/CommercialLanguageSpeci
 
 import '../modules/AsrunDetailsReport/views/asrun_details_report_view.dart';
 import '../modules/AuditStatusReport/views/audit_status_report_view.dart';
-import '../modules/ChangeRONumber/views/change_r_o_number_view.dart';
 import '../modules/DealRecoSummary/views/deal_reco_summary_view.dart';
 import '../modules/EDI_Mapping/views/e_d_i_mapping_view.dart';
 
@@ -164,7 +163,9 @@ class AuthGuard extends StatelessWidget {
             case Routes.PRODUCT_LEVEL1:
               currentWidget = ProductLevel1View();
               break;
-
+            case Routes.COMMERCIAL_CREATION_AUTO_DETAILS:
+              currentWidget = CommercialCreationAutoDetailsView();
+              break;
             default:
               currentWidget = const NoDataFoundPage();
           }
