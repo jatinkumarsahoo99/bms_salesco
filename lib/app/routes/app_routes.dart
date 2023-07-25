@@ -30,6 +30,10 @@ abstract class Routes {
   static const UPDATE_EXECUTIVE = _Paths.UPDATE_EXECUTIVE;
   static const USER_GROUPS_FOR_DEAL_WORKFLOW =
       _Paths.USER_GROUPS_FOR_DEAL_WORKFLOW;
+  static const USER_GROUPS_FOR_DEAL_WORKFLOW = _Paths.USER_GROUPS_FOR_DEAL_WORKFLOW;
+  static const NEW_SHORT_CONTENT_FORM = _Paths.NEW_SHORT_CONTENT_FORM;
+  static const VIEW_OLD_DEAL = _Paths.VIEW_OLD_DEAL;
+
   static const RATE_CARDFROM_DEAL_WORKFLOW = _Paths.RATE_CARDFROM_DEAL_WORKFLOW;
   static const ZONE_WISE_INVENTORY_UTILIZATION =
       _Paths.ZONE_WISE_INVENTORY_UTILIZATION;
@@ -96,10 +100,15 @@ abstract class _Paths {
   static const COMMERCIAL_LANGUAGE_SPECIFICATION =
       '/frmCommercialLanguageSpec';
   static const ON_SPOT_BOOKING_SKY_MEDIA = '/frmDigiTextBooking';
+  static const PERIODIC_DEAL_UTILISATION_FORMAT2 = '/frmPeriodicDealUtilisation';
+  static const UPDATE_EXECUTIVE = '/rate';
   static const PERIODIC_DEAL_UTILISATION_FORMAT2 =
       '/frmPeriodicDealUtilisation';
   static const UPDATE_EXECUTIVE = '/frmbreakpatternxmlgenration';
   static const USER_GROUPS_FOR_DEAL_WORKFLOW = '/frmDP_UserGroups';
+  static const NEW_SHORT_CONTENT_FORM = '/new_short_content_form';
+  static const VIEW_OLD_DEAL = '/frmviewdeal';
+
   static const RATE_CARDFROM_DEAL_WORKFLOW = '/frmDP_RateCard';
   static const ZONE_WISE_INVENTORY_UTILIZATION = '/frmZoneWiseInventory';
   static const RESCHEDULE_IMPORT = '/frmRescheduleImport';

@@ -40,7 +40,7 @@ import '../modules/Update_Executive/views/update_executive_view.dart';
 import '../modules/UserGroupsForDealWorkflow/views/user_groups_for_deal_workflow_view.dart';
 import '../modules/WorkflowDefinition/views/workflow_definition_view.dart';
 import '../modules/ZoneWiseInventoryUtilization/views/zone_wise_inventory_utilization_view.dart';
-import '../modules/home/views/home_view.dart';
+
 import '../routes/app_pages.dart';
 
 class AuthGuard extends StatelessWidget {
@@ -67,9 +67,6 @@ class AuthGuard extends StatelessWidget {
         }
         if (controller.loginVal.value == 1) {
           switch (childName) {
-            case Routes.HOME:
-              currentWidget = HomeView();
-              break;
             case Routes.ASRUN_DETAILS_REPORT:
               currentWidget = AsrunDetailsReportView();
               break;

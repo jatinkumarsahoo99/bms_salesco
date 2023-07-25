@@ -144,12 +144,24 @@ class ApiFactory {
     return "$BASE_URL/api/ROReceived/OnLeaveEffectDate?EffectiveDate=$date";
   }
 
-  static String RO_RECEIVED_LOAD_LEAVE_CHANNEL({
+  static String RO_RECEIVED_RETRIVE({
+    required String receivedCode,
+  }) =>
+      "$BASE_URL/api/ROReceived/RetriveRecords?Code=$receivedCode";
+
+  static String RO_RECEIVED_LEAVE_CLIENT({
     required String locationCode,
     required String channelCode,
     required String clientCode,
   }) {
     return "$BASE_URL/api/ROReceived/OnLeaveClient?ClientCode=$clientCode&LocationCode=$locationCode&ChannelCode=$channelCode";
+  }
+
+  static String RO_RECEIVED_DELETE({
+    required String id,
+    required String remark,
+  }) {
+    return "$BASE_URL/api/ROReceived/DeleteRecords?IntID=$id&Remarks=$remark";
   }
 
   static String RO_RECEIVED_SAVE = "$BASE_URL/api/ROReceived/SaveRecords";
@@ -577,6 +589,15 @@ class ApiFactory {
   static String get EDI_MAPPING_CLIENT_SEARCH => "$BASE_URL/api/EDIMapping/GetClientMasterSearch?TextClientMaster=";
   static String get EDI_MAPPING_AGENT_SEARCH => "$BASE_URL/api/EDIMapping/GetAgencyMasterSearch?TextAgencyMaster=";
   static String get EDI_MAPPING_CHANNEL_SEARCH => "$BASE_URL/api/EDIMapping/GetChannelMasterSearch?TextChannelMaster=";
+
+  ///////////////////////////////////// DealRecoSummary ////////////////////////////////////////////////////
+
+  static String get DEAL_RECO_SUMMARY_LOAD => "$BASE_URL/api/DealReCoSummary/Dealrecosummary_Load";
+  static String get DEAL_RECO_SUMMARY_GET_CLIENT => "$BASE_URL/api/DealReCoSummary/GetClient?locationName=";
+  static String get DEAL_RECO_SUMMARY_GET_AGENCY => "$BASE_URL/api/DealReCoSummary/GetAgency";
+  static String get DEAL_RECO_SUMMARY_GET_DEAL => "$BASE_URL/api/DealReCoSummary/GetDeal";
+  static String get DEAL_RECO_SUMMARY_GET_DEAL_LEAVE => "$BASE_URL/api/DealReCoSummary/DealLeave";
+  static String get DEAL_RECO_SUMMARY_GENERATE => "$BASE_URL/api/DealReCoSummary/GetGenrate";
 
 
   ///
