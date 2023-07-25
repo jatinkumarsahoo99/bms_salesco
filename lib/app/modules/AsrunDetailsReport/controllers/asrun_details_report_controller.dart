@@ -38,7 +38,7 @@ class AsrunDetailsReportController extends GetxController {
         // "https://jsonkeeper.com/b/D537"
         fun: ( map) {
           // Get.back();
-          print(">>>>>>"+map.toString());
+          // print(">>>>>>"+map.toString());
           if(map is Map && map.containsKey('pageload') && map['pageload'] != null){
             locationList.clear();
             channelList.clear();
@@ -91,7 +91,7 @@ class AsrunDetailsReportController extends GetxController {
         "todate": DateFormat('yyyy-MM-ddTHH:mm:ss').format(
             DateFormat("dd-MM-yyyy").parse(toDate.text)),
       };
-      print(">>>>>postData>>>"+(postData).toString());
+      // print(">>>>>postData>>>"+(postData).toString());
       Get.find<ConnectorControl>().POSTMETHOD(
           api: ApiFactory.ASRUN_DETAILS_REPORT_GENERATE,
           json: postData,

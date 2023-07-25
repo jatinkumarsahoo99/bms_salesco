@@ -45,7 +45,7 @@ class AuditStatusReportController extends GetxController {
         // "https://jsonkeeper.com/b/D537"
         fun: ( map) {
           // Get.back();
-          print(">>>>>>"+map.toString());
+          // print(">>>>>>"+map.toString());
           if(map is Map && map.containsKey('pageload') && map['pageload'] != null){
             locationList.clear();
             channelList.clear();
@@ -95,13 +95,13 @@ class AuditStatusReportController extends GetxController {
         "date":DateFormat('yyyy-MM-ddTHH:mm:ss').format(
             DateFormat("dd-MM-yyyy").parse(dateController.text))
       };
-      print(">>>>>postData>>>"+(postData).toString());
+      // print(">>>>>postData>>>"+(postData).toString());
       Get.find<ConnectorControl>().POSTMETHOD(
           api: ApiFactory.AUDIT_STATUS_REPORT_GENERATE_AUDIT,
           json: postData,
           fun: (map) {
             Get.back();
-            print("map>>>"+ jsonEncode(map).toString());
+            // print("map>>>"+ jsonEncode(map).toString());
             if(map is Map && map.containsKey('audit') && map['audit'] != null
                 && map['audit'].length >0 ){
               auditStatusReportModel = AuditStatusReportModel.fromJson(map as Map<String,dynamic>);

@@ -18,7 +18,7 @@ class ExportData {
       var excel = Excel.createExcel();
       Sheet sheetObject = excel[screenName];
       excel.setDefaultSheet(screenName);
-      sheetObject.appendRow((jsonList![0]).keys.toList());
+      sheetObject.appendRow((jsonList![0]).keys.listData());
       for (var element in jsonList!) {
         sheetObject.appendRow((element as Map).values.toList());
       }
