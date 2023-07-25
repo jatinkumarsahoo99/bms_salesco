@@ -144,12 +144,24 @@ class ApiFactory {
     return "$BASE_URL/api/ROReceived/OnLeaveEffectDate?EffectiveDate=$date";
   }
 
+  static String RO_RECEIVED_RETRIVE({
+    required String receivedCode,
+  }) =>
+      "$BASE_URL/api/ROReceived/RetriveRecords?Code=$receivedCode";
+
   static String RO_RECEIVED_LEAVE_CLIENT({
     required String locationCode,
     required String channelCode,
     required String clientCode,
   }) {
     return "$BASE_URL/api/ROReceived/OnLeaveClient?ClientCode=$clientCode&LocationCode=$locationCode&ChannelCode=$channelCode";
+  }
+
+  static String RO_RECEIVED_DELETE({
+    required String id,
+    required String remark,
+  }) {
+    return "$BASE_URL/api/ROReceived/DeleteRecords?IntID=$id&Remarks=$remark";
   }
 
   static String RO_RECEIVED_SAVE = "$BASE_URL/api/ROReceived/SaveRecords";
