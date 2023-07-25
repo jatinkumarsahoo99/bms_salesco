@@ -1,21 +1,21 @@
 class AuditStatusGenerateToList {
-  List<ToList>? toList;
+  List<ToList>? listData;
 
-  AuditStatusGenerateToList({this.toList});
+  AuditStatusGenerateToList({this.listData});
 
   AuditStatusGenerateToList.fromJson(Map<String, dynamic> json) {
     if (json['toList'] != null) {
-      toList = <ToList>[];
+      listData = <ToList>[];
       json['toList'].forEach((v) {
-        toList!.add(new ToList.fromJson(v));
+        listData!.add(new ToList.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.toList != null) {
-      data['toList'] = this.toList!.map((v) => v.toJson()).toList();
+    if (this.listData != null) {
+      data['toList'] = this.listData!.map((v) => v.toJson()).toList();
     }
     return data;
   }

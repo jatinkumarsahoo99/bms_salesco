@@ -578,6 +578,15 @@ class ApiFactory {
   static String get EDI_MAPPING_AGENT_SEARCH => "$BASE_URL/api/EDIMapping/GetAgencyMasterSearch?TextAgencyMaster=";
   static String get EDI_MAPPING_CHANNEL_SEARCH => "$BASE_URL/api/EDIMapping/GetChannelMasterSearch?TextChannelMaster=";
 
+  ///////////////////////////////////// DealRecoSummary ////////////////////////////////////////////////////
+
+  static String get DEAL_RECO_SUMMARY_LOAD => "$BASE_URL/api/DealReCoSummary/Dealrecosummary_Load";
+  static String get DEAL_RECO_SUMMARY_GET_CLIENT => "$BASE_URL/api/DealReCoSummary/GetClient?locationName=";
+  static String get DEAL_RECO_SUMMARY_GET_AGENCY => "$BASE_URL/api/DealReCoSummary/GetAgency";
+  static String get DEAL_RECO_SUMMARY_GET_DEAL => "$BASE_URL/api/DealReCoSummary/GetDeal";
+  static String get DEAL_RECO_SUMMARY_GET_DEAL_LEAVE => "$BASE_URL/api/DealReCoSummary/DealLeave";
+  static String get DEAL_RECO_SUMMARY_GENERATE => "$BASE_URL/api/DealReCoSummary/GetGenrate";
+
 
   ///
   ///
