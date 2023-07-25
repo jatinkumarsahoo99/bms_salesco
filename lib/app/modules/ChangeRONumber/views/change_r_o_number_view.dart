@@ -1,19 +1,16 @@
-import 'package:bms_salesco/widgets/DropDowns/list_drop_down.dart';
 import 'package:bms_salesco/widgets/dropdown.dart';
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
 
 import '../../../../widgets/FormButton.dart';
 import '../../../../widgets/input_fields.dart';
-import '../../../controller/HomeController.dart';
-import '../../../providers/Utils.dart';
 import '../controllers/change_r_o_number_controller.dart';
 
 class ChangeRONumberView extends GetView<ChangeRONumberController> {
   const ChangeRONumberView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    controller;
     return Scaffold(
       body: Center(
         child: SizedBox(
@@ -48,32 +45,39 @@ class ChangeRONumberView extends GetView<ChangeRONumberController> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      DropDownField.formDropDown1WidthMap(
-                        [],
-                        (p0) {},
-                        "Location",
-                        .16,
-                        autoFocus: true,
-                      ),
-                      DropDownField.formDropDown1WidthMap(
-                        [],
-                        (p0) => null,
-                        "Channel",
-                        .16,
-                      ),
+                      Obx(() {
+                        return DropDownField.formDropDown1WidthMap(
+                          controller.locationList.value,
+                          controller.handleOnChangedLocation,
+                          "Location",
+                          .16,
+                          autoFocus: true,
+                          selected: controller.selectedLocation,
+                          inkWellFocusNode: controller.locationFN,
+                        );
+                      }),
+                      Obx(() {
+                        return DropDownField.formDropDown1WidthMap(
+                          controller.channelList.value,
+                          (val) => controller.selectedChannel = val,
+                          "Channel",
+                          .16,
+                          selected: controller.selectedChannel,
+                        );
+                      }),
                     ],
                   ),
                 ),
                 SizedBox(height: 20),
                 InputFields.formField1(
                   hintTxt: "Booking No",
-                  controller: TextEditingController(),
+                  controller: controller.bookingNoCtr,
                   width: .4,
                 ),
                 SizedBox(height: 20),
                 InputFields.formField1(
                   hintTxt: "Booking Reference Number",
-                  controller: TextEditingController(),
+                  controller: controller.bookingRefNumber,
                   width: .4,
                 ),
                 SizedBox(height: 20),
