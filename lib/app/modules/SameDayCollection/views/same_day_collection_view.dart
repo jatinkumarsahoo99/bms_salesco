@@ -3,6 +3,7 @@ import 'package:bms_salesco/widgets/gridFromMap.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:pluto_grid/pluto_grid.dart';
 
 import '../../../../widgets/FormButton.dart';
 import '../../../../widgets/dropdown.dart';
@@ -25,35 +26,42 @@ class SameDayCollectionView extends GetView<SameDayCollectionController> {
               padding: const EdgeInsets.only(left: 16, top: 8),
               child: Wrap(
                 spacing: 10,
-                // runAlignment: WrapAlignment.end,
-                // alignment: WrapAlignment.end,
                 crossAxisAlignment: WrapCrossAlignment.end,
                 children: [
-                  DropDownField.formDropDown1WidthMap(
-                    [],
-                    (p0) => null,
-                    "Location",
-                    .15,
-                    autoFocus: true,
-                  ),
-                  DropDownField.formDropDown1WidthMap(
-                    [],
-                    (p0) => null,
-                    "Channell",
-                    .15,
-                  ),
+                  Obx(() {
+                    return DropDownField.formDropDown1WidthMap(
+                      controller.locationList.value,
+                      controller.handleOnChangedLocation,
+                      "Location",
+                      .15,
+                      autoFocus: true,
+                      selected: controller.selectedLocation,
+                      inkWellFocusNode: controller.locationFN,
+                    );
+                  }),
+                  Obx(() {
+                    return DropDownField.formDropDown1WidthMap(
+                      controller.channelList.value,
+                      (val) => controller.selectedChannel = val,
+                      "Channel",
+                      .15,
+                      selected: controller.selectedChannel,
+                    );
+                  }),
                   DateWithThreeTextField(
                     title: "From",
-                    mainTextController: TextEditingController(),
+                    mainTextController: controller.fromTC,
                   ),
                   FormButton(
                     btnText: "Show",
-                    callback: () {},
+                    callback: controller.showData,
                   ),
-                  FormButton(
-                    btnText: "Check All",
-                    callback: () {},
-                  ),
+                  Obx(() {
+                    return FormButton(
+                      btnText: !controller.checkedAll.value ? "Check All" : "Clear All",
+                      callback: controller.handleCheckAndUncheck,
+                    );
+                  }),
                 ],
               ),
             ),
@@ -71,8 +79,44 @@ class SameDayCollectionView extends GetView<SameDayCollectionController> {
                         : null,
                     child: controller.dataTableList.isEmpty
                         ? null
-                        : DataGridFromMap(
-                            mapData: controller.dataTableList.value,
+                        : DataGridFromMap3(
+                            mode: PlutoGridMode.selectWithOneTap,
+                            checkBoxColumnKey: ["cancel"],
+                            actionIconKey: ['cancel'],
+                            specificWidth: {
+                              "clientname": 200,
+                            },
+                            onload: (event) {
+                              controller.manager = event.stateManager;
+                              event.stateManager.setSelectingMode(PlutoGridSelectingMode.row);
+                              event.stateManager.setSelecting(true);
+                              event.stateManager.moveScrollByRow(PlutoMoveDirection.down, controller.lastSelctedIdx);
+                              event.stateManager.setCurrentCell(
+                                event.stateManager.getRowByIdx(controller.lastSelctedIdx)?.cells['isActive'],
+                                controller.lastSelctedIdx,
+                              );
+                            },
+                            actionOnPress: (position, isSpaceCalled) {
+                              if (isSpaceCalled) {
+                                controller.lastSelctedIdx = position.rowIdx ?? 0;
+                                controller.manager!.changeCellValue(
+                                  controller.manager!.currentCell!,
+                                  controller.manager!.currentCell!.value == "true" ? "false" : "true",
+                                  force: true,
+                                  callOnChangedEvent: true,
+                                  notify: true,
+                                );
+                              }
+                            },
+                            colorCallback: (row) =>
+                                (row.row.cells.containsValue(controller.manager?.currentCell)) ? Colors.deepPurple.shade200 : Colors.white,
+                            onEdit: (event) {
+                              controller.lastSelctedIdx = event.rowIdx;
+                              controller.dataTableList[event.rowIdx].cancel = (event.value == "true");
+                            },
+                            uncheckCheckBoxStr: "false",
+                            checkBoxStrComparison: "true",
+                            mapData: controller.dataTableList.value.map((e) => e.toJson()).toList(),
                           ),
                   );
                 },

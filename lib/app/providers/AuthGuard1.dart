@@ -1,4 +1,6 @@
 import 'package:bms_salesco/app/controller/MainController.dart';
+import 'package:bms_salesco/app/modules/AmagiSpotPlanning/views/amagi_spot_planning_view.dart';
+import 'package:bms_salesco/app/modules/AmagiSpotsReplacement/views/amagi_spots_replacement_view.dart';
 import 'package:bms_salesco/app/modules/MakeGoodReport/views/make_good_report_view.dart';
 import 'package:bms_salesco/app/modules/CommercialLanguageSpecification/controllers/CommercialLanguageSpecificationController.dart';
 import 'package:flutter/foundation.dart';
@@ -6,9 +8,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../widgets/LoadingScreen.dart';
 import '../../widgets/NoDataFoundPage.dart';
+
+import '../modules/AmagiStatusReport/views/amagi_status_report_view.dart';
 import '../modules/AutoTimeLock/views/auto_time_lock_view.dart';
 import '../modules/ChangeRONumber/views/change_r_o_number_view.dart';
 import '../modules/GeoProgramUpdate/views/geo_program_update_view.dart';
+import '../modules/InternationalSalesReport/views/international_sales_report_view.dart';
 import '../modules/MarkROsFlag/views/mark_r_os_flag_view.dart';
 import '../modules/MonthlyReport/views/monthly_report_view.dart';
 
@@ -23,12 +28,20 @@ import '../modules/EDI_Mapping/views/e_d_i_mapping_view.dart';
 
 import '../modules/OnSpotBookingSkyMedia/views/on_spot_booking_sky_media_view.dart';
 import '../modules/PeriodicDealUtilisationFormat2/views/periodic_deal_utilisation_format2_view.dart';
+import '../modules/RateCardfromDealWorkflow/views/rate_cardfrom_deal_workflow_view.dart';
+import '../modules/RescheduleImport/views/reschedule_import_view.dart';
+import '../modules/ProductLevel1/views/product_level1_view.dart';
+import '../modules/ProductLevel2/views/product_level2_view.dart';
+import '../modules/ProductLevel3/views/product_level3_view.dart';
+import '../modules/ProductMaster/views/product_master_view.dart';
 import '../modules/RoReceived/views/ro_received_view.dart';
 import '../modules/SameDayCollection/views/same_day_collection_view.dart';
 import '../modules/TapeIDCampaign/views/tape_i_d_campaign_view.dart';
 import '../modules/Update_Executive/views/update_executive_view.dart';
 import '../modules/UserGroupsForDealWorkflow/views/user_groups_for_deal_workflow_view.dart';
 import '../modules/WorkflowDefinition/views/workflow_definition_view.dart';
+import '../modules/ZoneWiseInventoryUtilization/views/zone_wise_inventory_utilization_view.dart';
+
 import '../routes/app_pages.dart';
 
 class AuthGuard extends StatelessWidget {
@@ -115,6 +128,40 @@ class AuthGuard extends StatelessWidget {
             case Routes.COMMERCIAL_LANGUAGE_SPECIFICATION:
               currentWidget = CommercialLanguageSpecificationView();
               break;
+            case Routes.RATE_CARDFROM_DEAL_WORKFLOW:
+              currentWidget = RateCardfromDealWorkflowView();
+              break;
+            case Routes.ZONE_WISE_INVENTORY_UTILIZATION:
+              currentWidget = ZoneWiseInventoryUtilizationView();
+              break;
+            case Routes.RESCHEDULE_IMPORT:
+              currentWidget = RescheduleImportView();
+              break;
+            case Routes.AMAGI_SPOT_PLANNING:
+              currentWidget = AmagiSpotPlanningView();
+              break;
+            case Routes.AMAGI_SPOTS_REPLACEMENT:
+              currentWidget = AmagiSpotsReplacementView();
+              break;
+            case Routes.AMAGI_STATUS_REPORT:
+              currentWidget = AmagiStatusReportView();
+              break;
+            case Routes.INTERNATIONAL_SALES_REPORT:
+              currentWidget = InternationalSalesReportView();
+              break;
+            case Routes.PRODUCT_MASTER:
+              currentWidget = ProductMasterView();
+              break;
+            case Routes.PRODUCT_LEVEL3:
+              currentWidget = ProductLevel3View();
+              break;
+            case Routes.PRODUCT_LEVEL2:
+              currentWidget = ProductLevel2View();
+              break;
+            case Routes.PRODUCT_LEVEL1:
+              currentWidget = ProductLevel1View();
+              break;
+
             default:
               currentWidget = const NoDataFoundPage();
           }

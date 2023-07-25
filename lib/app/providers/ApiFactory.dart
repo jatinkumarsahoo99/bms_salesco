@@ -570,6 +570,36 @@ class ApiFactory {
   static String MODULE_FORM_TRANSACTION_GET_MODULE_LIST(String moduleCode) =>
       "$BASE_URL/api/ModuleFormTransaction/GetModuleFormDetails?ModuleCode=$moduleCode";
   ///////////////////////// END MODULE FORM TRANSACTION API//////
+
+
+
+///////////////////////////// Asrun Details Report ///////////////////////////////
+
+  static String get ASRUN_DETAILS_REPORT_LOAD => "$BASE_URL/api/AsrundetailsReport/AsrundetailsReportLoad";
+  static String get ASRUN_DETAILS_REPORT_GENERATE => "$BASE_URL/api/AsrundetailsReport/GenerateReport";
+
+////////////////////////////// Audit Status Report ////////////////////////////////////////////////
+
+  static String get AUDIT_STATUS_REPORT_LOAD => "$BASE_URL/api/AuditStatusReport/auditstatusreport_Load";
+  static String get AUDIT_STATUS_REPORT_GENERATE_TOLIST => "$BASE_URL/api/AuditStatusReport/GenrateOTList";
+  static String get AUDIT_STATUS_REPORT_GENERATE_AUDIT => "$BASE_URL/api/AuditStatusReport/GenrateAudit";
+
+  ////////////////////////////// EDIMAPPING ////////////////////////////////
+
+  static String get EDI_MAPPING_CLIENT_SEARCH => "$BASE_URL/api/EDIMapping/GetClientMasterSearch?TextClientMaster=";
+  static String get EDI_MAPPING_AGENT_SEARCH => "$BASE_URL/api/EDIMapping/GetAgencyMasterSearch?TextAgencyMaster=";
+  static String get EDI_MAPPING_CHANNEL_SEARCH => "$BASE_URL/api/EDIMapping/GetChannelMasterSearch?TextChannelMaster=";
+
+  ///////////////////////////////////// DealRecoSummary ////////////////////////////////////////////////////
+
+  static String get DEAL_RECO_SUMMARY_LOAD => "$BASE_URL/api/DealReCoSummary/Dealrecosummary_Load";
+  static String get DEAL_RECO_SUMMARY_GET_CLIENT => "$BASE_URL/api/DealReCoSummary/GetClient?locationName=";
+  static String get DEAL_RECO_SUMMARY_GET_AGENCY => "$BASE_URL/api/DealReCoSummary/GetAgency";
+  static String get DEAL_RECO_SUMMARY_GET_DEAL => "$BASE_URL/api/DealReCoSummary/GetDeal";
+  static String get DEAL_RECO_SUMMARY_GET_DEAL_LEAVE => "$BASE_URL/api/DealReCoSummary/DealLeave";
+  static String get DEAL_RECO_SUMMARY_GENERATE => "$BASE_URL/api/DealReCoSummary/GetGenrate";
+
+
   ///
   ///
   ///
@@ -581,6 +611,20 @@ class ApiFactory {
   static String get CHANGE_RO_NUMBER_UPDATE_DATA => "$BASE_URL/api/ChangeRONumber/ShowDeal";
   static String CHANGE_RO_NUMBER_ON_LEAVE_LOCATION(String locationCode) => "$BASE_URL/api/ChangeRONumber/GetChannel?LocationCode=$locationCode";
   ///////////////////////// CHANGE-RO-NUMBER-END//////
+  ///
+  ///
+  ///
+  ///
+  ///
+  ///
+  ///////////////////////// SAME-DAY-COLLECTION-START//////
+  static String get SAME_DAY_COLLECTION_ON_LOAD => "$BASE_URL/api/SameDayCancellation/GetLocation";
+  static String get SAME_DAY_COLLECTION_SAVE_DATA => "$BASE_URL/api/SameDayCancellation/Save";
+  static String SAME_DAY_COLLECTION_ON_LEAVE_LOCATION(String locationCode) =>
+      "$BASE_URL/api/SameDayCancellation/GetChannel?LocationCode=$locationCode";
+  static String SAME_DAY_COLLECTION_SHOW_DATA(String locationCode, String channelCode) =>
+      "$BASE_URL/api/SameDayCancellation/Show?LocationCode=$locationCode&Channelcode=$channelCode";
+  ///////////////////////// SAME-DAY-COLLECTION-END//////
   ///
   ///
   ///

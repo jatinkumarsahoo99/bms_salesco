@@ -21,13 +21,14 @@ class ChangeRONumberController extends GetxController {
   formHandler(btn) {
     if (btn == "Clear") {
       clearPage();
-    } else if (btn == "Update") {
+    } else if (btn == "Change") {
       updateRecord();
     }
   }
 
   clearPage() {
     bookingNoCtr.clear();
+    bookingRefNumber.clear();
     selectedLocation = null;
     selectedChannel = null;
     locationList.refresh();
@@ -50,8 +51,9 @@ class ChangeRONumberController extends GetxController {
         api: ApiFactory.CHANGE_RO_NUMBER_UPDATE_DATA,
         fun: (resp) {
           closeDialogIfOpen();
+          Get.back();
           if (resp != null && resp is Map<String, dynamic> && resp['result'] != null) {
-            if (!(resp['isError'] as bool)) {
+            if (!(resp['result']['isError'] as bool)) {
               LoadingDialog.callDataSaved(
                 msg: resp['result']['errorMessage'].toString(),
                 callback: () {
@@ -59,7 +61,12 @@ class ChangeRONumberController extends GetxController {
                 },
               );
             } else {
-              LoadingDialog.showErrorDialog(resp['result']['errorMessage'].toString());
+              LoadingDialog.callDataSaved(
+                msg: resp['result']['errorMessage'].toString(),
+                callback: () {
+                  clearPage();
+                },
+              );
             }
           } else {
             LoadingDialog.showErrorDialog(resp.toString());
