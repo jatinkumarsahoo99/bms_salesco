@@ -224,6 +224,12 @@
       "languageVersion": "2.15"
     },
     {
+      "name": "google_fonts",
+      "rootUri": "file:///C:/Users/vc.nitish.gupta/AppData/Local/Pub/Cache/hosted/pub.dev/google_fonts-4.0.4",
+      "packageUri": "lib/",
+      "languageVersion": "2.14"
+    },
+    {
       "name": "http",
       "rootUri": "file:///C:/Users/vc.nitish.gupta/AppData/Local/Pub/Cache/hosted/pub.dev/http-0.13.5",
       "packageUri": "lib/",
@@ -608,7 +614,7 @@
       "languageVersion": "2.18"
     }
   ],
-  "generated": "2023-07-24T13:10:24.194354Z",
+  "generated": "2023-07-25T10:46:19.895077Z",
   "generator": "pub",
   "generatorVersion": "2.19.6"
 }
