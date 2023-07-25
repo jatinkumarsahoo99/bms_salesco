@@ -12,6 +12,8 @@ import '../modules/GeoProgramUpdate/bindings/geo_program_update_binding.dart';
 import '../modules/MakeGoodReport/bindings/make_good_report_binding.dart';
 import '../modules/MarkROsFlag/bindings/mark_r_os_flag_binding.dart';
 import '../modules/MonthlyReport/bindings/monthly_report_binding.dart';
+import '../modules/NewShortContentForm/bindings/new_short_content_form_binding.dart';
+import '../modules/NewShortContentForm/views/new_short_content_form_view.dart';
 import '../modules/OnSpotBookingSkyMedia/bindings/on_spot_booking_sky_media_binding.dart';
 import '../modules/PeriodicDealUtilisationFormat2/bindings/periodic_deal_utilisation_format2_binding.dart';
 import '../modules/RoReceived/bindings/ro_received_binding.dart';
@@ -19,9 +21,9 @@ import '../modules/SameDayCollection/bindings/same_day_collection_binding.dart';
 import '../modules/TapeIDCampaign/bindings/tape_i_d_campaign_binding.dart';
 import '../modules/Update_Executive/bindings/update_executive_binding.dart';
 import '../modules/UserGroupsForDealWorkflow/bindings/user_groups_for_deal_workflow_binding.dart';
+import '../modules/ViewOldDeal/bindings/view_old_deal_binding.dart';
+import '../modules/ViewOldDeal/views/view_old_deal_view.dart';
 import '../modules/WorkflowDefinition/bindings/workflow_definition_binding.dart';
-import '../modules/home/bindings/home_binding.dart';
-import '../modules/home/views/home_view.dart';
 import '../providers/AuthGuard1.dart';
 
 part 'app_routes.dart';
@@ -29,15 +31,10 @@ part 'app_routes.dart';
 class AppPages {
   AppPages._();
 
-  static const INITIAL = Routes.RO_RECEIVED +
+  static const INITIAL = Routes.VIEW_OLD_DEAL +
       "?personalNo=kW5Bkf17%2FS5YF7ML28FmVg%3D%3D&loginCode=1BWIoBKeDl7qDSAAhxvXsQ%3D%3D&formName=OI8ukDpPPVN0I2BEXu2h4nuFu%2BZm1ZRpvP8NL4XCXzQ%3D";
 
   static final routes = [
-    GetPage(
-      name: _Paths.HOME,
-      page: () => HomeView(),
-      binding: HomeBinding(),
-    ),
     GetPage(
       name: _Paths.ASRUN_DETAILS_REPORT,
       page: () =>
@@ -150,6 +147,16 @@ class AppPages {
       page: () => AuthGuard(childName: _Paths.USER_GROUPS_FOR_DEAL_WORKFLOW),
       // UserGroupsForDealWorkflowView(),
       binding: UserGroupsForDealWorkflowBinding(),
+    ),
+    GetPage(
+      name: _Paths.NEW_SHORT_CONTENT_FORM,
+      page: () => const NewShortContentFormView(),
+      binding: NewShortContentFormBinding(),
+    ),
+    GetPage(
+      name: _Paths.VIEW_OLD_DEAL,
+      page: () => const ViewOldDealView(),
+      binding: ViewOldDealBinding(),
     ),
   ];
 }
