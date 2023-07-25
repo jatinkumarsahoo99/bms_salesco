@@ -1,5 +1,6 @@
 import 'package:bms_salesco/widgets/DateTime/DateWithThreeTextField.dart';
 import 'package:bms_salesco/widgets/gridFromMap.dart';
+import 'package:bms_salesco/widgets/input_fields.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -9,10 +10,10 @@ import '../../../../widgets/FormButton.dart';
 import '../../../../widgets/dropdown.dart';
 import '../../../controller/HomeController.dart';
 import '../../../providers/Utils.dart';
-import '../controllers/same_day_collection_controller.dart';
+import '../controllers/zone_wise_inventory_utilization_controller.dart';
 
-class SameDayCollectionView extends GetView<SameDayCollectionController> {
-  const SameDayCollectionView({Key? key}) : super(key: key);
+class ZoneWiseInventoryUtilizationView extends GetView<ZoneWiseInventoryUtilizationController> {
+  const ZoneWiseInventoryUtilizationView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,6 +27,7 @@ class SameDayCollectionView extends GetView<SameDayCollectionController> {
               padding: const EdgeInsets.only(left: 16, top: 8),
               child: Wrap(
                 spacing: 10,
+                runSpacing: 5,
                 crossAxisAlignment: WrapCrossAlignment.end,
                 children: [
                   Obx(() {
@@ -49,19 +51,37 @@ class SameDayCollectionView extends GetView<SameDayCollectionController> {
                     );
                   }),
                   DateWithThreeTextField(
-                    title: "From",
+                    title: "From Date",
                     mainTextController: controller.fromTC,
+                    widthRation: .15,
                   ),
+                  DateWithThreeTextField(
+                    title: "To Date",
+                    mainTextController: controller.fromTC,
+                    widthRation: .15,
+                  ),
+                  InputFields.formFieldNumberMask(
+                    hintTxt: "From Time",
+                    controller: TextEditingController(),
+                    widthRatio: .15,
+                  ),
+                  InputFields.formFieldNumberMask(
+                    hintTxt: "To Time",
+                    controller: TextEditingController(),
+                    widthRatio: .15,
+                  ),
+                  // InputFields.formField1(
+                  //   hintTxt: "Path",
+                  //   controller: TextEditingController(),
+                  // ),
                   FormButton(
-                    btnText: "Show",
+                    btnText: "Generate",
                     callback: controller.showData,
                   ),
-                  Obx(() {
-                    return FormButton(
-                      btnText: !controller.checkedAll.value ? "Check All" : "Clear All",
-                      callback: controller.handleCheckAndUncheck,
-                    );
-                  }),
+                  // FormButton(
+                  //   btnText: "Load",
+                  //   callback: controller.handleCheckAndUncheck,
+                  // ),
                 ],
               ),
             ),
@@ -69,7 +89,7 @@ class SameDayCollectionView extends GetView<SameDayCollectionController> {
               child: Obx(
                 () {
                   return Container(
-                    margin: EdgeInsets.all(16),
+                    margin: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                     decoration: controller.dataTableList.isEmpty
                         ? BoxDecoration(
                             border: Border.all(
@@ -132,7 +152,7 @@ class SameDayCollectionView extends GetView<SameDayCollectionController> {
                   builder: (btncontroller) {
                     if (btncontroller.buttons != null) {
                       return Padding(
-                        padding: const EdgeInsets.only(left: 16, bottom: 10),
+                        padding: const EdgeInsets.only(left: 16, bottom: 0),
                         child: SizedBox(
                           height: 40,
                           child: Wrap(
