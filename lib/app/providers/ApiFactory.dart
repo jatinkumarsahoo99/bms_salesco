@@ -559,8 +559,6 @@ class ApiFactory {
       "$BASE_URL/api/ModuleFormTransaction/GetModuleFormDetails?ModuleCode=$moduleCode";
   ///////////////////////// END MODULE FORM TRANSACTION API//////
 
-
-
 ///////////////////////////// Asrun Details Report ///////////////////////////////
 
   static String get ASRUN_DETAILS_REPORT_LOAD => "$BASE_URL/api/AsrundetailsReport/AsrundetailsReportLoad";
@@ -577,7 +575,6 @@ class ApiFactory {
   static String get EDI_MAPPING_CLIENT_SEARCH => "$BASE_URL/api/EDIMapping/GetClientMasterSearch?TextClientMaster=";
   static String get EDI_MAPPING_AGENT_SEARCH => "$BASE_URL/api/EDIMapping/GetAgencyMasterSearch?TextAgencyMaster=";
   static String get EDI_MAPPING_CHANNEL_SEARCH => "$BASE_URL/api/EDIMapping/GetChannelMasterSearch?TextChannelMaster=";
-
 
   ///
   ///
@@ -614,4 +611,19 @@ class ApiFactory {
   static String get TAPE_ID_CAMPAIGN_UPDATE_HISTORY => "$BASE_URL/api/TapeIDCampaign/TapeIdHistoryUpdate";
   static String get TAPE_ID_CAMPAIGN_SAVE_RECORD => "$BASE_URL/api/TapeIDCampaign/Save";
   ///////////////////////// TAPE-ID-CAMPAIGN-END//////
+  ///
+  ///
+  ///
+  ///
+  ///
+  ///////////////////////// MAKE-GOOD-REPORT-START//////
+  static String get MAKE_GOOD_REPORT_GET_LOCATION => "$BASE_URL/api/MakeGoodReport/GetLocation";
+  static String get MAKE_GOOD_REPORT_GET_CHANNEL => "$BASE_URL/api/MakeGoodReport/GetChannel";
+  static String MAKE_GOOD_REPORT_GET_CLIENT(String locationName, String channelName, String fromDate, String toDate) =>
+      "$BASE_URL/api/MakeGoodReport/GetClient?LocationName=$locationName&ChannelName=$channelName&Fromdate=$fromDate&ToDate=$toDate";
+  static String MAKE_GOOD_REPORT_GET_AGENCY(String locationName, String channelName, String clientName) =>
+      "$BASE_URL/api/MakeGoodReport/GetAgency?LocationName=$locationName&ChannelName=$channelName&Clientname=$clientName";
+  static String get MAKE_GOOD_REPORT_GET_BRAND => "$BASE_URL/api/MakeGoodReport/GetBrand";
+  static String get MAKE_GOOD_REPORT_GET_GENERATE => "$BASE_URL/api/MakeGoodReport/Generate";
+  ///////////////////////// MAKE-GOOD-REPORT-END//////
 }

@@ -7,12 +7,11 @@ import 'Const.dart';
 class Logger {
   static void write(String log, {bool isError = false}) {
     Future.microtask(() {
-      sendTrace(trace: log);
+      // sendTrace(trace: log);
     });
   }
 
-  static Future<void> sendError(
-      {required error, StackTrace? stackTrace, Severity? severity}) async {
+  static Future<void> sendError({required error, StackTrace? stackTrace, Severity? severity}) async {
     print('Sending telemetry...');
 
     try {
@@ -28,19 +27,13 @@ class Logger {
         processor: processor,
       );
       telemetryClient.context.applicationVersion = Const.appVersion;
-      telemetryClient.context.user.id =
-          Get.find<MainController>().user?.employeeId ?? "";
+      telemetryClient.context.user.id = Get.find<MainController>().user?.employeeId ?? "";
       telemetryClient.context.properties['Module'] = 'Admin';
-      telemetryClient.context.properties['UserName'] =
-          Get.find<MainController>().user?.employeeName ?? "";
-      telemetryClient.context.properties['PersonalNo'] =
-          Get.find<MainController>().user?.personnelNo ?? "";
-      telemetryClient.context.properties['JobTitle'] =
-          Get.find<MainController>().user?.jobTitle ?? "";
-      telemetryClient.context.properties['LoginName'] =
-          Get.find<MainController>().user?.loginName ?? "";
-      telemetryClient.context.properties['MailId'] =
-          Get.find<MainController>().user?.mailId ?? "";
+      telemetryClient.context.properties['UserName'] = Get.find<MainController>().user?.employeeName ?? "";
+      telemetryClient.context.properties['PersonalNo'] = Get.find<MainController>().user?.personnelNo ?? "";
+      telemetryClient.context.properties['JobTitle'] = Get.find<MainController>().user?.jobTitle ?? "";
+      telemetryClient.context.properties['LoginName'] = Get.find<MainController>().user?.loginName ?? "";
+      telemetryClient.context.properties['MailId'] = Get.find<MainController>().user?.mailId ?? "";
 
       telemetryClient.trackError(
         severity: severity ?? Severity.error,
@@ -61,7 +54,7 @@ class Logger {
     }
   }
 
-  static Future<void> sendRequest({required Map<String,dynamic> map}) async {
+  static Future<void> sendRequest({required Map<String, dynamic> map}) async {
     print('Sending telemetry...');
 
     try {
@@ -77,19 +70,13 @@ class Logger {
         processor: processor,
       );
       telemetryClient.context.applicationVersion = Const.appVersion;
-      telemetryClient.context.user.id =
-          Get.find<MainController>().user?.employeeId ?? "";
+      telemetryClient.context.user.id = Get.find<MainController>().user?.employeeId ?? "";
       telemetryClient.context.properties['Module'] = 'Admin';
-      telemetryClient.context.properties['UserName'] =
-          Get.find<MainController>().user?.employeeName ?? "";
-      telemetryClient.context.properties['PersonalNo'] =
-          Get.find<MainController>().user?.personnelNo ?? "";
-      telemetryClient.context.properties['JobTitle'] =
-          Get.find<MainController>().user?.jobTitle ?? "";
-      telemetryClient.context.properties['LoginName'] =
-          Get.find<MainController>().user?.loginName ?? "";
-      telemetryClient.context.properties['MailId'] =
-          Get.find<MainController>().user?.mailId ?? "";
+      telemetryClient.context.properties['UserName'] = Get.find<MainController>().user?.employeeName ?? "";
+      telemetryClient.context.properties['PersonalNo'] = Get.find<MainController>().user?.personnelNo ?? "";
+      telemetryClient.context.properties['JobTitle'] = Get.find<MainController>().user?.jobTitle ?? "";
+      telemetryClient.context.properties['LoginName'] = Get.find<MainController>().user?.loginName ?? "";
+      telemetryClient.context.properties['MailId'] = Get.find<MainController>().user?.mailId ?? "";
 
       telemetryClient.trackRequest(
         id: "Test",
@@ -126,19 +113,13 @@ class Logger {
         processor: processor,
       );
       telemetryClient.context.applicationVersion = Const.appVersion;
-      telemetryClient.context.user.id =
-          Get.find<MainController>().user?.employeeId ?? "";
+      telemetryClient.context.user.id = Get.find<MainController>().user?.employeeId ?? "";
       telemetryClient.context.properties['Module'] = 'Admin';
-      telemetryClient.context.properties['UserName'] =
-          Get.find<MainController>().user?.employeeName ?? "";
-      telemetryClient.context.properties['PersonalNo'] =
-          Get.find<MainController>().user?.personnelNo ?? "";
-      telemetryClient.context.properties['JobTitle'] =
-          Get.find<MainController>().user?.jobTitle ?? "";
-      telemetryClient.context.properties['LoginName'] =
-          Get.find<MainController>().user?.loginName ?? "";
-      telemetryClient.context.properties['MailId'] =
-          Get.find<MainController>().user?.mailId ?? "";
+      telemetryClient.context.properties['UserName'] = Get.find<MainController>().user?.employeeName ?? "";
+      telemetryClient.context.properties['PersonalNo'] = Get.find<MainController>().user?.personnelNo ?? "";
+      telemetryClient.context.properties['JobTitle'] = Get.find<MainController>().user?.jobTitle ?? "";
+      telemetryClient.context.properties['LoginName'] = Get.find<MainController>().user?.loginName ?? "";
+      telemetryClient.context.properties['MailId'] = Get.find<MainController>().user?.mailId ?? "";
 
       telemetryClient.trackEvent(
         name: event,
@@ -155,8 +136,7 @@ class Logger {
     }
   }
 
-  static Future<void> sendPageView(
-      {required String pageView, Severity? trace}) async {
+  static Future<void> sendPageView({required String pageView, Severity? trace}) async {
     print('Sending telemetry...');
 
     try {
@@ -172,19 +152,13 @@ class Logger {
         processor: processor,
       );
       telemetryClient.context.applicationVersion = Const.appVersion;
-      telemetryClient.context.user.id =
-          Get.find<MainController>().user?.employeeId ?? "";
+      telemetryClient.context.user.id = Get.find<MainController>().user?.employeeId ?? "";
       telemetryClient.context.properties['Module'] = 'Admin';
-      telemetryClient.context.properties['UserName'] =
-          Get.find<MainController>().user?.employeeName ?? "";
-      telemetryClient.context.properties['PersonalNo'] =
-          Get.find<MainController>().user?.personnelNo ?? "";
-      telemetryClient.context.properties['JobTitle'] =
-          Get.find<MainController>().user?.jobTitle ?? "";
-      telemetryClient.context.properties['LoginName'] =
-          Get.find<MainController>().user?.loginName ?? "";
-      telemetryClient.context.properties['MailId'] =
-          Get.find<MainController>().user?.mailId ?? "";
+      telemetryClient.context.properties['UserName'] = Get.find<MainController>().user?.employeeName ?? "";
+      telemetryClient.context.properties['PersonalNo'] = Get.find<MainController>().user?.personnelNo ?? "";
+      telemetryClient.context.properties['JobTitle'] = Get.find<MainController>().user?.jobTitle ?? "";
+      telemetryClient.context.properties['LoginName'] = Get.find<MainController>().user?.loginName ?? "";
+      telemetryClient.context.properties['MailId'] = Get.find<MainController>().user?.mailId ?? "";
       telemetryClient.trackPageView(
         name: pageView,
         additionalProperties: <String, Object>{
@@ -216,19 +190,13 @@ class Logger {
         processor: processor,
       );
       telemetryClient.context.applicationVersion = Const.appVersion;
-      telemetryClient.context.user.id =
-          Get.find<MainController>().user?.employeeId ?? "";
+      telemetryClient.context.user.id = Get.find<MainController>().user?.employeeId ?? "";
       telemetryClient.context.properties['Module'] = 'Admin';
-      telemetryClient.context.properties['UserName'] =
-          Get.find<MainController>().user?.employeeName ?? "";
-      telemetryClient.context.properties['PersonalNo'] =
-          Get.find<MainController>().user?.personnelNo ?? "";
-      telemetryClient.context.properties['JobTitle'] =
-          Get.find<MainController>().user?.jobTitle ?? "";
-      telemetryClient.context.properties['LoginName'] =
-          Get.find<MainController>().user?.loginName ?? "";
-      telemetryClient.context.properties['MailId'] =
-          Get.find<MainController>().user?.mailId ?? "";
+      telemetryClient.context.properties['UserName'] = Get.find<MainController>().user?.employeeName ?? "";
+      telemetryClient.context.properties['PersonalNo'] = Get.find<MainController>().user?.personnelNo ?? "";
+      telemetryClient.context.properties['JobTitle'] = Get.find<MainController>().user?.jobTitle ?? "";
+      telemetryClient.context.properties['LoginName'] = Get.find<MainController>().user?.loginName ?? "";
+      telemetryClient.context.properties['MailId'] = Get.find<MainController>().user?.mailId ?? "";
 
       telemetryClient.trackTrace(
         severity: type ?? Severity.verbose,
@@ -288,19 +256,13 @@ class Logger {
         ..user.id = 'Sanjaya';
 */
       telemetryClient.context.applicationVersion = Const.appVersion;
-      telemetryClient.context.user.id =
-          Get.find<MainController>().user?.employeeId ?? "";
+      telemetryClient.context.user.id = Get.find<MainController>().user?.employeeId ?? "";
       telemetryClient.context.properties['Module'] = 'Admin';
-      telemetryClient.context.properties['UserName'] =
-          Get.find<MainController>().user?.employeeName ?? "";
-      telemetryClient.context.properties['PersonalNo'] =
-          Get.find<MainController>().user?.personnelNo ?? "";
-      telemetryClient.context.properties['JobTitle'] =
-          Get.find<MainController>().user?.jobTitle ?? "";
-      telemetryClient.context.properties['LoginName'] =
-          Get.find<MainController>().user?.loginName ?? "";
-      telemetryClient.context.properties['MailId'] =
-          Get.find<MainController>().user?.mailId ?? "";
+      telemetryClient.context.properties['UserName'] = Get.find<MainController>().user?.employeeName ?? "";
+      telemetryClient.context.properties['PersonalNo'] = Get.find<MainController>().user?.personnelNo ?? "";
+      telemetryClient.context.properties['JobTitle'] = Get.find<MainController>().user?.jobTitle ?? "";
+      telemetryClient.context.properties['LoginName'] = Get.find<MainController>().user?.loginName ?? "";
+      telemetryClient.context.properties['MailId'] = Get.find<MainController>().user?.mailId ?? "";
       // All the above helper properties do is provide a convenient means of setting key/value pairs inside
       // context.properties, which is the second way to set properties and is demonstrated here.
       // telemetryClient.context.properties['custom'] = 'a custom property value';
