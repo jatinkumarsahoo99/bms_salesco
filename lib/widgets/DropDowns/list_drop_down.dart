@@ -7,82 +7,138 @@ import 'package:get/utils.dart';
 
 import '../../app/providers/SizeDefine.dart';
 
-class ListDropDown extends StatefulWidget {
+class ListDropDown2 extends StatelessWidget {
   final List<DropDownValue> items;
   final String title;
-  final double widthRatio;
-  final FocusNode? focusNode;
-  final void Function(bool)? onFocusChange;
-  final bool autoFocus;
-  final DropDownValue? selected;
-  final bool isEnable;
-  final GlobalKey? widgetKey;
-  final double? dialogWidth;
-  final double dialogHeight;
-  const ListDropDown({
+  final double? widthRatio, dialogWidth, dialogHeight;
+  final bool? autoFocus;
+  const ListDropDown2({
     super.key,
     required this.items,
     required this.title,
-    this.widthRatio = .15,
-    this.focusNode,
-    this.onFocusChange,
-    this.autoFocus = false,
-    this.selected,
-    this.isEnable = true,
-    this.widgetKey,
+    this.widthRatio,
+    this.autoFocus,
     this.dialogWidth,
-    this.dialogHeight = 200,
+    this.dialogHeight,
   });
 
   @override
-  State<ListDropDown> createState() => _ListDropDownState();
-}
-
-class _ListDropDownState extends State<ListDropDown> {
-  late bool hasCurrentFocus;
-  bool isDropDownOpen = false;
-  late GlobalKey widgetKey;
-  @override
-  void initState() {
-    hasCurrentFocus = widget.autoFocus;
-    widgetKey = widget.widgetKey ?? GlobalKey();
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      key: widgetKey,
-      width: context.width * widget.widthRatio,
-      height: 50,
-      child: InkWell(
-        onTap: () {
-          var isLoading = false.obs;
-          final RenderBox renderBox = widgetKey.currentContext?.findRenderObject() as RenderBox;
-          final offset = renderBox.localToGlobal(Offset.zero);
-          final left = offset.dx;
-          final top = offset.dy + renderBox.size.height;
-          final right = left + renderBox.size.width;
-          final width = renderBox.size.width;
-          var tempList = RxList<DropDownValue>([]);
-          tempList.addAll(widget.items);
-          showMenu(
-            context: context,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(0),
-            ),
-            useRootNavigator: true,
-            position: RelativeRect.fromLTRB(left, top, right, 0.0),
-            constraints: BoxConstraints.expand(
-              width: widget.dialogWidth ?? width,
-              height: widget.dialogHeight,
-            ),
-            items: [
-              PopupMenuItem(child: TextFormField()),
-            ],
-          );
-        },
+    return InkWell(
+      autofocus: autoFocus ?? false,
+      child: Ink(
+        width: context.width * (widthRatio ?? .15),
+        height: 50,
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: Colors.deepPurpleAccent,
+          ),
+        ),
       ),
+      onTap: () {
+        final RenderBox renderBox = context.findRenderObject() as RenderBox;
+        final offset = renderBox.localToGlobal(Offset.zero);
+        final left = offset.dx;
+        final top = offset.dy + renderBox.size.height;
+        final right = left + renderBox.size.width;
+        final width = renderBox.size.width;
+        showMenu(
+          context: context,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(0),
+          ),
+          useRootNavigator: true,
+          position: RelativeRect.fromLTRB(left, top, right, 0.0),
+          constraints: BoxConstraints.expand(
+            width: dialogWidth ?? width,
+            height: dialogHeight ?? 200,
+          ),
+          items: [
+            CustomPopupMenuItem(
+              textStyle: TextStyle(color: Colors.black, fontSize: SizeDefine.fontSizeInputField),
+              child: Container(
+                padding: const EdgeInsets.all(8),
+                height: (dialogHeight ?? 200) - 20,
+                child: Column(
+                  children: [
+                    /// search
+                    TextFormField(
+                      decoration: const InputDecoration(
+                        contentPadding: EdgeInsets.all(12),
+                        isDense: true,
+                        isCollapsed: true,
+                        hintText: "Search",
+                      ),
+                      autofocus: true,
+                      style: TextStyle(
+                        fontSize: SizeDefine.fontSizeInputField,
+                      ),
+                      onChanged: ((value) {
+                        // if (value.isNotEmpty) {
+                        //   tempList.clear();
+                        //   for (var i = 0; i < items.length; i++) {
+                        //     if (items[i].value!.toLowerCase().contains(value.toLowerCase())) {
+                        //       tempList.add(items[i]);
+                        //     }
+                        //   }
+                        // }
+                      }),
+                      inputFormatters: [
+                        FilteringTextInputFormatter.deny("  "),
+                      ],
+                    ),
+
+                    /// progreesbar
+                    // Obx(() {
+                    //   return Visibility(
+                    //     visible: isLoading.value,
+                    //     child: const LinearProgressIndicator(
+                    //       minHeight: 3,
+                    //     ),
+                    //   );
+                    // }),
+
+                    const SizedBox(height: 5),
+
+                    /// list
+                    Expanded(
+                      child: Obx(
+                        () {
+                          return ListView(
+                            shrinkWrap: true,
+                            children: tempList
+                                .map(
+                                  (element) => InkWell(
+                                    onTap: () {
+                                      Navigator.pop(context);
+                                      selected = element;
+                                      re(() {});
+                                      callback(element);
+                                      FocusScope.of(context).requestFocus(inkWellFocusNode);
+                                    },
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(vertical: 8),
+                                      child: Text(
+                                        element.value ?? "null",
+                                        style: TextStyle(
+                                          fontSize: SizeDefine.dropDownFontSize - 1,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                )
+                                .toList(),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            )
+          ],
+        );
+      },
     );
   }
 }

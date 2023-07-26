@@ -49,7 +49,7 @@ class ChangeRONumberView extends GetView<ChangeRONumberController> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      ListDropDown(
+                      ListDropDown2(
                         title: "Location",
                         autoFocus: true,
                         widthRatio: .16,
@@ -61,6 +61,22 @@ class ChangeRONumberView extends GetView<ChangeRONumberController> {
                           DropDownValue(
                             key: "12",
                             value: "nitish1",
+                          ),
+                          DropDownValue(
+                            key: "12",
+                            value: "nitish2",
+                          ),
+                          DropDownValue(
+                            key: "12",
+                            value: "nitish2",
+                          ),
+                          DropDownValue(
+                            key: "12",
+                            value: "nitish2",
+                          ),
+                          DropDownValue(
+                            key: "12",
+                            value: "nitish2",
                           ),
                           DropDownValue(
                             key: "12",
