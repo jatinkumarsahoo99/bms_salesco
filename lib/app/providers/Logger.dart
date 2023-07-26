@@ -1,4 +1,5 @@
 import 'package:azure_application_insights/azure_application_insights.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart';
 import '../controller/MainController.dart';
@@ -7,7 +8,9 @@ import 'Const.dart';
 class Logger {
   static void write(String log, {bool isError = false}) {
     Future.microtask(() {
-      // sendTrace(trace: log);
+      if (kReleaseMode) {
+        sendTrace(trace: log);
+      }
     });
   }
 
