@@ -48,7 +48,7 @@ class AppPages {
 
   static const INITIAL = kReleaseMode
       ? Routes.HOME
-      : Routes.CHANGE_R_O_NUMBER +
+      : Routes.DESIGN +
           "?personalNo=R9vVPL7er1Os/usemWG/Iw==&loginCode=0iGe3vK5h2KGjfSKZTpmsQ==&formName=OI8ukDpPPVN0I2BEXu2h4nuFu%2BZm1ZRpvP8NL4XCXzQ%3D";
   static final routes = [
     GetPage(
@@ -138,8 +138,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.COMMERCIAL_LANGUAGE_SPECIFICATION,
-      page: () =>
-          AuthGuard(childName: _Paths.COMMERCIAL_LANGUAGE_SPECIFICATION),
+      page: () => AuthGuard(childName: _Paths.COMMERCIAL_LANGUAGE_SPECIFICATION),
     ),
     GetPage(
       name: _Paths.ON_SPOT_BOOKING_SKY_MEDIA,
@@ -149,8 +148,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.PERIODIC_DEAL_UTILISATION_FORMAT2,
-      page: () =>
-          AuthGuard(childName: _Paths.PERIODIC_DEAL_UTILISATION_FORMAT2),
+      page: () => AuthGuard(childName: _Paths.PERIODIC_DEAL_UTILISATION_FORMAT2),
       // PeriodicDealUtilisationFormat2View(),
       binding: PeriodicDealUtilisationFormat2Binding(),
     ),

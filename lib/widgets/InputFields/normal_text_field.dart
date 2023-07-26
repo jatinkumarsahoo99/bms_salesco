@@ -36,7 +36,7 @@ class NormalTextField extends StatelessWidget {
           contentPadding: const EdgeInsets.only(right: 10),
           prefixIcon: const Icon(Icons.crisis_alert_sharp, size: 16),
           prefixIconColor: Colors.deepPurpleAccent,
-          label: Text(label ?? ""),
+          labelText: label ?? "",
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
             borderSide: BorderSide(
@@ -55,7 +55,7 @@ class NormalTextField extends StatelessWidget {
               color: Colors.deepPurpleAccent,
             ),
           ),
-          labelStyle: GoogleFonts.poppins(fontWeight: FontWeight.w600, fontSize: 10, color: const Color(0xFFABABAB)),
+          labelStyle: GoogleFonts.poppins(fontWeight: FontWeight.normal, fontSize: 10, color: const Color(0xFFABABAB)),
           floatingLabelStyle: GoogleFonts.poppins(fontWeight: FontWeight.w600, fontSize: 13, color: Colors.deepPurpleAccent),
         ),
         style: GoogleFonts.poppins(fontWeight: FontWeight.normal, fontSize: 12, color: Colors.black),

@@ -1,3 +1,6 @@
+import 'package:bms_salesco/app/data/DropDownValue.dart';
+import 'package:bms_salesco/widgets/DropDowns/list_drop_down.dart';
+import 'package:bms_salesco/widgets/InputFields/normal_text_field.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -13,11 +16,47 @@ class DesignView extends GetView<DesignController> {
         title: const Text('DesignView'),
         centerTitle: true,
       ),
-      body: const Center(
-        child: Text(
-          'DesignView is working',
-          style: TextStyle(fontSize: 20),
-        ),
+      body: Column(
+        // crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          SizedBox(width: context.width),
+          ListDropDown(
+            items: [
+              DropDownValue(key: "1", value: "one1"),
+              DropDownValue(key: "1", value: "one2"),
+              DropDownValue(key: "1", value: "one3"),
+              DropDownValue(key: "1", value: "one4"),
+            ],
+            title: "Location",
+            autoFocus: true,
+            onSelect: (DropDownValue? val) {},
+          ),
+          SizedBox(height: 40),
+          NormalTextField(
+            controller: TextEditingController(),
+            widthRatio: .3,
+            label: "Tape ID",
+          ),
+          SizedBox(height: 40),
+          NormalTextField(
+            controller: TextEditingController(),
+            widthRatio: .3,
+            label: "Tape ID",
+          ),
+          SizedBox(height: 40),
+          ListDropDown(
+            items: [
+              DropDownValue(key: "1", value: "one"),
+              DropDownValue(key: "1", value: "one"),
+              DropDownValue(key: "1", value: "one"),
+              DropDownValue(key: "1", value: "one"),
+            ],
+            title: "Location",
+            onSelect: (DropDownValue? val) {},
+          ),
+        ],
       ),
     );
   }
