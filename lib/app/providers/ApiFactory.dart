@@ -144,12 +144,24 @@ class ApiFactory {
     return "$BASE_URL/api/ROReceived/OnLeaveEffectDate?EffectiveDate=$date";
   }
 
-  static String RO_RECEIVED_LOAD_LEAVE_CHANNEL({
+  static String RO_RECEIVED_RETRIVE({
+    required String receivedCode,
+  }) =>
+      "$BASE_URL/api/ROReceived/RetriveRecords?Code=$receivedCode";
+
+  static String RO_RECEIVED_LEAVE_CLIENT({
     required String locationCode,
     required String channelCode,
     required String clientCode,
   }) {
     return "$BASE_URL/api/ROReceived/OnLeaveClient?ClientCode=$clientCode&LocationCode=$locationCode&ChannelCode=$channelCode";
+  }
+
+  static String RO_RECEIVED_DELETE({
+    required String id,
+    required String remark,
+  }) {
+    return "$BASE_URL/api/ROReceived/DeleteRecords?IntID=$id&Remarks=$remark";
   }
 
   static String RO_RECEIVED_SAVE = "$BASE_URL/api/ROReceived/SaveRecords";
@@ -576,6 +588,15 @@ class ApiFactory {
   static String get EDI_MAPPING_AGENT_SEARCH => "$BASE_URL/api/EDIMapping/GetAgencyMasterSearch?TextAgencyMaster=";
   static String get EDI_MAPPING_CHANNEL_SEARCH => "$BASE_URL/api/EDIMapping/GetChannelMasterSearch?TextChannelMaster=";
 
+  ///////////////////////////////////// DealRecoSummary ////////////////////////////////////////////////////
+
+  static String get DEAL_RECO_SUMMARY_LOAD => "$BASE_URL/api/DealReCoSummary/Dealrecosummary_Load";
+  static String get DEAL_RECO_SUMMARY_GET_CLIENT => "$BASE_URL/api/DealReCoSummary/GetClient?locationName=";
+  static String get DEAL_RECO_SUMMARY_GET_AGENCY => "$BASE_URL/api/DealReCoSummary/GetAgency";
+  static String get DEAL_RECO_SUMMARY_GET_DEAL => "$BASE_URL/api/DealReCoSummary/GetDeal";
+  static String get DEAL_RECO_SUMMARY_GET_DEAL_LEAVE => "$BASE_URL/api/DealReCoSummary/DealLeave";
+  static String get DEAL_RECO_SUMMARY_GENERATE => "$BASE_URL/api/DealReCoSummary/GetGenrate";
+
   ///
   ///
   ///
@@ -605,6 +626,7 @@ class ApiFactory {
   ///
   ///
   ///
+  ///
   ///////////////////////// TAPE-ID-CAMPAIGN-START//////
   static String TAPE_ID_CAMPAIGN_ON_LEAVE(String tapeID) => "$BASE_URL/api/TapeIDCampaign/TapeIdDetails?TapeId=$tapeID";
   static String TAPE_ID_CAMPAIGN_GET_HISTORY(String tapeID) => "$BASE_URL/api/TapeIDCampaign/TapeIdHistoryDetails?TapeId=$tapeID";
@@ -626,4 +648,16 @@ class ApiFactory {
   static String get MAKE_GOOD_REPORT_GET_BRAND => "$BASE_URL/api/MakeGoodReport/GetBrand";
   static String get MAKE_GOOD_REPORT_GET_GENERATE => "$BASE_URL/api/MakeGoodReport/Generate";
   ///////////////////////// MAKE-GOOD-REPORT-END//////
+  ///////////////////////// COMERCIAL CREATION AUTO/////////
+  static String COMMERCIAL_CREATION_GET_LOAD() => "$BASE_URL/api/CommercialMasterAuto/GetLoad";
+  static String COMMERCIAL_CREATION_PROVIDER_LIST(String provider) => "$BASE_URL/api/CommercialMasterAuto/GetProviderSelect?Provider=$provider";
+  static String COMMERCIAL_CREATION_CLIENT_LEAVE(String clientMaster) =>
+      "$BASE_URL/api/CommercialMasterAuto/GetClientMasterLeave?ClientMaster=$clientMaster";
+  static String COMMERCIAL_CREATION_CLIENT_LIST() => "$BASE_URL/api/CommercialMasterAuto/GetClientMaster?SearchText=";
+  static String COMMERCIAL_CREATION_SHOW_ACID(String acid) => "$BASE_URL/api/CommercialMasterAuto/GetShowACID?acid=$acid";
+  static String COMMERCIAL_CREATION_REVENUE_TYPE_SELECT(String revenue) =>
+      "$BASE_URL/api/CommercialMasterAuto/GetrevenuetypeSelect?revenuetype=$revenue";
+  static String COMMERCIAL_CREATION_EOM_SELECT(String som, String eom) => "$BASE_URL/api/CommercialMasterAuto/GetEOMSelect?EOM=$som&SOM=$eom";
+  static String COMMERCIAL_CREATION_SAVE() => "$BASE_URL/api/CommercialMasterAuto/PostSave";
+  ///////////////////////// End: COMERCIAL CREATION AUTO ////////////
 }

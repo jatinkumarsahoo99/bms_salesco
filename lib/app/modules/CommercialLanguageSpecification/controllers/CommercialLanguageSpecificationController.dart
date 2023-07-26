@@ -1,9 +1,13 @@
 import 'package:get/get.dart';
 
-class CommercialLanguageSpecificationController extends GetxController {
-  //TODO: Implement CommercialLanguageSpecificationController
+import '../../../data/DropDownValue.dart';
 
-  final count = 0.obs;
+class CommercialLanguageSpecificationController extends GetxController {
+
+  RxList<DropDownValue> locationList=RxList([]);
+  RxList<DropDownValue> channelList=RxList([]);
+  RxList<DropDownValue> tableList=RxList([]);
+  double widthSize=0.12;
   @override
   void onInit() {
     super.onInit();
@@ -16,5 +20,4 @@ class CommercialLanguageSpecificationController extends GetxController {
 
   @override
   void onClose() {}
-  void increment() => count.value++;
 }

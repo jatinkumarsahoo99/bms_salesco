@@ -31,12 +31,15 @@ class AuditStatusReportView  extends StatelessWidget  {
            if(controllerX.auditStatusReportModel != null && controllerX.auditStatusReportModel!.audit != null &&
                controllerX.auditStatusReportModel!.audit!.length >0
            ){
+             print(">>>>>>>>DataList"+( controllerX.auditStatusReportModel!.audit!.length).toString());
              return Expanded(
                flex: 10,
                child: Padding(
                  padding: const EdgeInsets.all(8.0),
                  child: DataGridFromMap(
                    showSrNo: false,
+                   hideCode: false,
+                   formatDate: false,
                    mapData: (controllerX.auditStatusReportModel!.audit
                        ?.map((e) => e.toJson())
                        .toList())!,
@@ -45,15 +48,19 @@ class AuditStatusReportView  extends StatelessWidget  {
                  ),
                ),
              );
-           }else if(controllerX.auditStatusGenerateToList != null && controllerX.auditStatusGenerateToList!.toList != null &&
-               controllerX.auditStatusGenerateToList!.toList!.length >0){
+           }
+           else if(controllerX.auditStatusGenerateToList != null && controllerX.auditStatusGenerateToList?.listData != null &&
+               (controllerX.auditStatusGenerateToList!.listData?.length??0) >0){
+             print(">>>>>>ListData"+(controllerX.auditStatusGenerateToList!.listData?.length.toString()??""));
              return Expanded(
                flex: 10,
                child: Padding(
                  padding: const EdgeInsets.all(8.0),
                  child: DataGridFromMap(
                    showSrNo: false,
-                   mapData: (controllerX.auditStatusGenerateToList!.toList
+                   hideCode: false,
+                   formatDate: false,
+                   mapData: (controllerX.auditStatusGenerateToList!.listData
                        ?.map((e) => e.toJson())
                        .toList())!,
                    // mapData: (controllerX.dataList)!,
@@ -61,7 +68,8 @@ class AuditStatusReportView  extends StatelessWidget  {
                  ),
                ),
              );
-           }else{
+           }
+           else{
              return Expanded(
                flex: 10,
                // height: 400,
@@ -144,6 +152,7 @@ class AuditStatusReportView  extends StatelessWidget  {
                                           children: [
                                             Obx(()=>  Checkbox(
                                               value: controllerX.checked.value,
+                                              side: const BorderSide(color: Colors.deepPurpleAccent),
                                               onChanged: (bool? value) {
                                                 controllerX.checked.value = value!;
                                                 if(value!){
@@ -201,6 +210,7 @@ class AuditStatusReportView  extends StatelessWidget  {
                                                         children: [
                                                           Checkbox(
                                                             value: controllerX.channelList[index].ischecked,
+                                                            side: const BorderSide(color: Colors.deepPurpleAccent),
                                                             onChanged:
                                                                 (bool? value) {
                                                                   controllerX.channelList[index].ischecked = value;
