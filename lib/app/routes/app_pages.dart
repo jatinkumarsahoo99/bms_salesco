@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/foundation.dart';
-
 import 'package:get/get.dart';
 import 'package:get/get.dart';
 
@@ -35,9 +34,9 @@ import '../modules/InternationalSalesReport/views/international_sales_report_vie
 import '../modules/MakeGoodReport/bindings/make_good_report_binding.dart';
 import '../modules/MarkROsFlag/bindings/mark_r_os_flag_binding.dart';
 import '../modules/MonthlyReport/bindings/monthly_report_binding.dart';
+import '../modules/MonthlyReport/views/monthly_report_view.dart';
 import '../modules/NewShortContentForm/bindings/new_short_content_form_binding.dart';
 import '../modules/NewShortContentForm/views/new_short_content_form_view.dart';
-import '../modules/MonthlyReport/views/monthly_report_view.dart';
 import '../modules/OnSpotBookingSkyMedia/bindings/on_spot_booking_sky_media_binding.dart';
 import '../modules/PeriodicDealUtilisationFormat2/bindings/periodic_deal_utilisation_format2_binding.dart';
 import '../modules/ProductLevel1/bindings/product_level1_binding.dart';
@@ -62,7 +61,6 @@ import '../modules/ViewOldDeal/views/view_old_deal_view.dart';
 import '../modules/WorkflowDefinition/bindings/workflow_definition_binding.dart';
 import '../modules/ZoneWiseInventoryUtilization/bindings/zone_wise_inventory_utilization_binding.dart';
 import '../modules/ZoneWiseInventoryUtilization/views/zone_wise_inventory_utilization_view.dart';
-
 import '../providers/AuthGuard1.dart';
 
 part 'app_routes.dart';
@@ -72,8 +70,8 @@ class AppPages {
 
   static const INITIAL = kReleaseMode
       ? Routes.HOME
-      : Routes.COMMERCIAL_CREATION_AUTO_DETAILS +
-          "?personalNo=kW5Bkf17%2FS5YF7ML28FmVg%3D%3D&loginCode=1BWIoBKeDl7qDSAAhxvXsQ%3D%3D&formName=OI8ukDpPPVN0I2BEXu2h4nuFu%2BZm1ZRpvP8NL4XCXzQ%3D";
+      : Routes.MAKE_GOOD_REPORT +
+          "?personalNo=R9vVPL7er1Os/usemWG/Iw==&loginCode=0iGe3vK5h2KGjfSKZTpmsQ==&formName=OI8ukDpPPVN0I2BEXu2h4nuFu%2BZm1ZRpvP8NL4XCXzQ%3D";
   static final routes = [
     GetPage(
       name: _Paths.ASRUN_DETAILS_REPORT,
@@ -162,8 +160,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.COMMERCIAL_LANGUAGE_SPECIFICATION,
-      page: () =>
-          AuthGuard(childName: _Paths.COMMERCIAL_LANGUAGE_SPECIFICATION),
+      page: () => AuthGuard(childName: _Paths.COMMERCIAL_LANGUAGE_SPECIFICATION),
     ),
     GetPage(
       name: _Paths.ON_SPOT_BOOKING_SKY_MEDIA,
@@ -173,8 +170,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.PERIODIC_DEAL_UTILISATION_FORMAT2,
-      page: () =>
-          AuthGuard(childName: _Paths.PERIODIC_DEAL_UTILISATION_FORMAT2),
+      page: () => AuthGuard(childName: _Paths.PERIODIC_DEAL_UTILISATION_FORMAT2),
       // PeriodicDealUtilisationFormat2View(),
       binding: PeriodicDealUtilisationFormat2Binding(),
     ),
@@ -268,7 +264,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.COMMERCIAL_CREATION_AUTO_DETAILS,
-      page: () => AuthGuard(childName:_Paths.COMMERCIAL_CREATION_AUTO_DETAILS),
+      page: () => AuthGuard(childName: _Paths.COMMERCIAL_CREATION_AUTO_DETAILS),
     ),
   ];
 }

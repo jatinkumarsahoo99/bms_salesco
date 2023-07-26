@@ -28,6 +28,7 @@ dependencies:
   flutter:
     sdk: flutter
   file_picker: ^5.3.1
+  google_fonts: ^4.0.4
   flutter_widget_from_html: ^0.10.3
 
 dev_dependencies: 
