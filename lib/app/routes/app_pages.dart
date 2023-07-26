@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+
 import 'package:get/get.dart';
 
 import '../modules/AmagiSpotPlanning/bindings/amagi_spot_planning_binding.dart';
@@ -9,6 +10,8 @@ import '../modules/AuditStatusReport/bindings/audit_status_report_binding.dart';
 import '../modules/AutoTimeLock/bindings/auto_time_lock_binding.dart';
 import '../modules/ChangeRONumber/bindings/change_r_o_number_binding.dart';
 import '../modules/DealRecoSummary/bindings/deal_reco_summary_binding.dart';
+import '../modules/Design/bindings/design_binding.dart';
+import '../modules/Design/views/design_view.dart';
 import '../modules/EDI_Mapping/bindings/e_d_i_mapping_binding.dart';
 import '../modules/EdiRoBooking/bindings/edi_ro_booking_binding.dart';
 import '../modules/EdiRoBooking/views/edi_ro_booking_view.dart';
@@ -135,7 +138,8 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.COMMERCIAL_LANGUAGE_SPECIFICATION,
-      page: () => AuthGuard(childName: _Paths.COMMERCIAL_LANGUAGE_SPECIFICATION),
+      page: () =>
+          AuthGuard(childName: _Paths.COMMERCIAL_LANGUAGE_SPECIFICATION),
     ),
     GetPage(
       name: _Paths.ON_SPOT_BOOKING_SKY_MEDIA,
@@ -145,7 +149,8 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.PERIODIC_DEAL_UTILISATION_FORMAT2,
-      page: () => AuthGuard(childName: _Paths.PERIODIC_DEAL_UTILISATION_FORMAT2),
+      page: () =>
+          AuthGuard(childName: _Paths.PERIODIC_DEAL_UTILISATION_FORMAT2),
       // PeriodicDealUtilisationFormat2View(),
       binding: PeriodicDealUtilisationFormat2Binding(),
     ),
@@ -240,6 +245,11 @@ class AppPages {
     GetPage(
       name: _Paths.COMMERCIAL_CREATION_AUTO_DETAILS,
       page: () => AuthGuard(childName: _Paths.COMMERCIAL_CREATION_AUTO_DETAILS),
+    ),
+    GetPage(
+      name: _Paths.DESIGN,
+      page: () => const DesignView(),
+      binding: DesignBinding(),
     ),
   ];
 }

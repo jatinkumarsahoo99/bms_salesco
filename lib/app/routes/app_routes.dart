@@ -29,7 +29,8 @@ abstract class Routes {
       _Paths.PERIODIC_DEAL_UTILISATION_FORMAT2;
   static const UPDATE_EXECUTIVE = _Paths.UPDATE_EXECUTIVE;
   // static const USER_GROUPS_FOR_DEAL_WORKFLOW = _Paths.USER_GROUPS_FOR_DEAL_WORKFLOW;
-  static const USER_GROUPS_FOR_DEAL_WORKFLOW = _Paths.USER_GROUPS_FOR_DEAL_WORKFLOW;
+  static const USER_GROUPS_FOR_DEAL_WORKFLOW =
+      _Paths.USER_GROUPS_FOR_DEAL_WORKFLOW;
   static const NEW_SHORT_CONTENT_FORM = _Paths.NEW_SHORT_CONTENT_FORM;
   static const VIEW_OLD_DEAL = _Paths.VIEW_OLD_DEAL;
 
@@ -47,6 +48,7 @@ abstract class Routes {
   static const PRODUCT_MASTER = _Paths.PRODUCT_MASTER;
   static const COMMERCIAL_CREATION_AUTO_DETAILS =
       _Paths.COMMERCIAL_CREATION_AUTO_DETAILS;
+  static const DESIGN = _Paths.DESIGN;
 }
 
 abstract class RoutesList {
@@ -96,10 +98,10 @@ abstract class _Paths {
   static const WORKFLOW_DEFINITION = '/frmDP_ApprovalTrail';
   static const E_D_I_MAPPING = '/frmEDIClientAgencyChannelMapping';
   static const COMMERCIAL_CREATION_AUTO = '/frmCommercialMasterAutoCreate';
-  static const COMMERCIAL_LANGUAGE_SPECIFICATION =
-      '/frmCommercialLanguageSpec';
+  static const COMMERCIAL_LANGUAGE_SPECIFICATION = '/frmCommercialLanguageSpec';
   static const ON_SPOT_BOOKING_SKY_MEDIA = '/frmDigiTextBooking';
-  static const PERIODIC_DEAL_UTILISATION_FORMAT2 = '/frmPeriodicDealUtilisation';
+  static const PERIODIC_DEAL_UTILISATION_FORMAT2 =
+      '/frmPeriodicDealUtilisation';
   static const UPDATE_EXECUTIVE = '/frmbreakpatternxmlgenration';
   static const USER_GROUPS_FOR_DEAL_WORKFLOW = '/frmDP_UserGroups';
   static const NEW_SHORT_CONTENT_FORM = '/new_short_content_form';
@@ -118,4 +120,5 @@ abstract class _Paths {
   static const PRODUCT_MASTER = '/frmProductMaster';
   static const COMMERCIAL_CREATION_AUTO_DETAILS =
       '/commercial-creation-auto-details';
+  static const DESIGN = '/design';
 }

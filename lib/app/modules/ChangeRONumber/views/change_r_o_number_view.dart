@@ -49,53 +49,17 @@ class ChangeRONumberView extends GetView<ChangeRONumberController> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      ListDropDown2(
-                        title: "Location",
-                        autoFocus: true,
-                        widthRatio: .16,
-                        items: [
-                          DropDownValue(
-                            key: "12",
-                            value: "nitish",
-                          ),
-                          DropDownValue(
-                            key: "12",
-                            value: "nitish1",
-                          ),
-                          DropDownValue(
-                            key: "12",
-                            value: "nitish2",
-                          ),
-                          DropDownValue(
-                            key: "12",
-                            value: "nitish2",
-                          ),
-                          DropDownValue(
-                            key: "12",
-                            value: "nitish2",
-                          ),
-                          DropDownValue(
-                            key: "12",
-                            value: "nitish2",
-                          ),
-                          DropDownValue(
-                            key: "12",
-                            value: "nitish2",
-                          ),
-                        ],
-                      ),
-
-                      // Obx(() {
-                      //   return DropDownField.formDropDown1WidthMap(
-                      //     controller.locationList.value,
-                      //     controller.handleOnChangedLocation,
-                      //     "Location",
-                      //     .16,
-                      //     autoFocus: true,
-                      //     selected: controller.selectedLocation,
-                      //     inkWellFocusNode: controller.locationFN,
-                      //   );
-                      // }),
+                      Obx(() {
+                        return DropDownField.formDropDown1WidthMap(
+                          controller.locationList.value,
+                          controller.handleOnChangedLocation,
+                          "Location",
+                          .16,
+                          autoFocus: true,
+                          selected: controller.selectedLocation,
+                          inkWellFocusNode: controller.locationFN,
+                        );
+                      }),
                       Obx(() {
                         return DropDownField.formDropDown1WidthMap(
                           controller.channelList.value,
@@ -109,21 +73,16 @@ class ChangeRONumberView extends GetView<ChangeRONumberController> {
                   ),
                 ),
                 SizedBox(height: 20),
-                // InputFields.formField1(
-                //   hintTxt: "Booking No",
-                //   controller: TextEditingController(),
-                //   width: .4,
-                // ),
-                NormalTextField(
+                InputFields.formField1(
+                  hintTxt: "Booking No",
                   controller: controller.bookingNoCtr,
-                  label: "Booking No",
-                  widthRatio: .4,
+                  width: .4,
                 ),
                 SizedBox(height: 20),
-                NormalTextField(
-                  controller: controller.bookingNoCtr,
-                  label: "Booking Reference Number",
-                  widthRatio: .4,
+                InputFields.formField1(
+                  hintTxt: "Booking Reference No.",
+                  controller: controller.bookingRefNumber,
+                  width: .4,
                 ),
                 SizedBox(height: 20),
                 Align(
