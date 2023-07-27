@@ -577,6 +577,7 @@ class ApiFactory {
   static String get EDI_MAPPING_CLIENT_SEARCH => "$BASE_URL/api/EDIMapping/GetClientMasterSearch?TextClientMaster=";
   static String get EDI_MAPPING_AGENT_SEARCH => "$BASE_URL/api/EDIMapping/GetAgencyMasterSearch?TextAgencyMaster=";
   static String get EDI_MAPPING_CHANNEL_SEARCH => "$BASE_URL/api/EDIMapping/GetChannelMasterSearch?TextChannelMaster=";
+  static String get EDI_MAPPING_POPULATE_ENTITY => "$BASE_URL/api/EDIMapping/GetPopulateEntity";
 
   ///////////////////////////////////// DealRecoSummary ////////////////////////////////////////////////////
 
@@ -586,6 +587,16 @@ class ApiFactory {
   static String get DEAL_RECO_SUMMARY_GET_DEAL => "$BASE_URL/api/DealReCoSummary/GetDeal";
   static String get DEAL_RECO_SUMMARY_GET_DEAL_LEAVE => "$BASE_URL/api/DealReCoSummary/DealLeave";
   static String get DEAL_RECO_SUMMARY_GENERATE => "$BASE_URL/api/DealReCoSummary/GetGenrate";
+
+  /////////////////////////////// DealWorkFlow Definition ///////////////////////////////////////
+  static String get DEAL_WORK_FLOW_DEFINITION_LOAD => "$BASE_URL/api/DealWorkflowDefinition/GetDWFOnLoad";
+  static String get DEAL_WORK_FLOW_DEFINITION_GET_GROUP_SEARCH => "$BASE_URL/api/DealWorkflowDefinition/GetGroupSearch?TextGroupSearch=";
+  static String get DEAL_WORK_FLOW_DEFINITION_GET_USER_SEARCH => "$BASE_URL/api/DealWorkflowDefinition/GetuserSearch?TextUserSearch=";
+  static String get DEAL_WORK_FLOW_DEFINITION_ON_LEAVE_COPYZONE => "$BASE_URL/api/DealWorkflowDefinition/GetCopyZoneOnLeave?ZoneCode=";
+  static String get DEAL_WORK_FLOW_DEFINITION_ON_LEAVE_ZONE => "$BASE_URL/api/DealWorkflowDefinition/GetZoneOnLeave?ZoneCode=";
+  static String get DEAL_WORK_FLOW_DEFINITION_ON_LEAVE_LOCATION => "$BASE_URL/api/DealWorkflowDefinition/GetLocationOnLeave?LocationCode=";
+  static String get DEAL_WORK_FLOW_DEFINITION_GET_DISPLAY => "$BASE_URL/api/DealWorkflowDefinition/GetDisplay";
+  static String get DEAL_WORK_FLOW_DEFINITION_SAVE => "$BASE_URL/api/DealWorkflowDefinition/Postsave";
 
 
   ///
