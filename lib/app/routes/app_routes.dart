@@ -22,21 +22,17 @@ abstract class Routes {
   static const WORKFLOW_DEFINITION = _Paths.WORKFLOW_DEFINITION;
   static const E_D_I_MAPPING = _Paths.E_D_I_MAPPING;
   static const COMMERCIAL_CREATION_AUTO = _Paths.COMMERCIAL_CREATION_AUTO;
-  static const COMMERCIAL_LANGUAGE_SPECIFICATION =
-      _Paths.COMMERCIAL_LANGUAGE_SPECIFICATION;
+  static const COMMERCIAL_LANGUAGE_SPECIFICATION = _Paths.COMMERCIAL_LANGUAGE_SPECIFICATION;
   static const ON_SPOT_BOOKING_SKY_MEDIA = _Paths.ON_SPOT_BOOKING_SKY_MEDIA;
-  static const PERIODIC_DEAL_UTILISATION_FORMAT2 =
-      _Paths.PERIODIC_DEAL_UTILISATION_FORMAT2;
+  static const PERIODIC_DEAL_UTILISATION_FORMAT2 = _Paths.PERIODIC_DEAL_UTILISATION_FORMAT2;
   static const UPDATE_EXECUTIVE = _Paths.UPDATE_EXECUTIVE;
   // static const USER_GROUPS_FOR_DEAL_WORKFLOW = _Paths.USER_GROUPS_FOR_DEAL_WORKFLOW;
-  static const USER_GROUPS_FOR_DEAL_WORKFLOW =
-      _Paths.USER_GROUPS_FOR_DEAL_WORKFLOW;
+  static const USER_GROUPS_FOR_DEAL_WORKFLOW = _Paths.USER_GROUPS_FOR_DEAL_WORKFLOW;
   static const NEW_SHORT_CONTENT_FORM = _Paths.NEW_SHORT_CONTENT_FORM;
   static const VIEW_OLD_DEAL = _Paths.VIEW_OLD_DEAL;
 
   static const RATE_CARDFROM_DEAL_WORKFLOW = _Paths.RATE_CARDFROM_DEAL_WORKFLOW;
-  static const ZONE_WISE_INVENTORY_UTILIZATION =
-      _Paths.ZONE_WISE_INVENTORY_UTILIZATION;
+  static const ZONE_WISE_INVENTORY_UTILIZATION = _Paths.ZONE_WISE_INVENTORY_UTILIZATION;
   static const RESCHEDULE_IMPORT = _Paths.RESCHEDULE_IMPORT;
   static const AMAGI_SPOT_PLANNING = _Paths.AMAGI_SPOT_PLANNING;
   static const AMAGI_SPOTS_REPLACEMENT = _Paths.AMAGI_SPOTS_REPLACEMENT;
@@ -46,8 +42,7 @@ abstract class Routes {
   static const PRODUCT_LEVEL2 = _Paths.PRODUCT_LEVEL2;
   static const PRODUCT_LEVEL3 = _Paths.PRODUCT_LEVEL3;
   static const PRODUCT_MASTER = _Paths.PRODUCT_MASTER;
-  static const COMMERCIAL_CREATION_AUTO_DETAILS =
-      _Paths.COMMERCIAL_CREATION_AUTO_DETAILS;
+  static const COMMERCIAL_CREATION_AUTO_DETAILS = _Paths.COMMERCIAL_CREATION_AUTO_DETAILS;
   static const DESIGN = _Paths.DESIGN;
 }
 
@@ -100,8 +95,7 @@ abstract class _Paths {
   static const COMMERCIAL_CREATION_AUTO = '/frmCommercialMasterAutoCreate';
   static const COMMERCIAL_LANGUAGE_SPECIFICATION = '/frmCommercialLanguageSpec';
   static const ON_SPOT_BOOKING_SKY_MEDIA = '/frmDigiTextBooking';
-  static const PERIODIC_DEAL_UTILISATION_FORMAT2 =
-      '/frmPeriodicDealUtilisation';
+  static const PERIODIC_DEAL_UTILISATION_FORMAT2 = '/frmPeriodicDealUtilisation';
   static const UPDATE_EXECUTIVE = '/frmbreakpatternxmlgenration';
   static const USER_GROUPS_FOR_DEAL_WORKFLOW = '/frmDP_UserGroups';
   static const NEW_SHORT_CONTENT_FORM = '/new_short_content_form';
@@ -118,7 +112,6 @@ abstract class _Paths {
   static const PRODUCT_LEVEL2 = '/frmProductLevel2';
   static const PRODUCT_LEVEL3 = '/frmProductLevel3';
   static const PRODUCT_MASTER = '/frmProductMaster';
-  static const COMMERCIAL_CREATION_AUTO_DETAILS =
-      '/commercial-creation-auto-details';
+  static const COMMERCIAL_CREATION_AUTO_DETAILS = '/commercial-creation-auto-details';
   static const DESIGN = '/design';
 }

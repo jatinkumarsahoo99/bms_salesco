@@ -647,6 +647,18 @@ class ApiFactory {
   ///
   ///
   ///
+  ///////////////////////// MARK-ROS-FLAG-START//////
+  static String get MARK_ROS_FLAG_GET_LOCATION => "$BASE_URL/api/ManageROSFlags/GetLocation";
+  static String MARK_ROS_FLAG_GET_CHANNEL(String locationCode) => "$BASE_URL/api/ManageROSFlags/GetChannel?LocationCode=$locationCode";
+  static String MARK_ROS_FLAG_GET_DATA(String locationCode, String channelCode, String fromDate) =>
+      "$BASE_URL/api/ManageROSFlags/Show?LocationCode=$locationCode&ChannelCode=$channelCode&EffectiveDate=$fromDate";
+  static String get MARK_ROS_FLAG_SAVE => "$BASE_URL/api/ManageROSFlags/Save";
+  ///////////////////////// MARK-ROS-FLAG-END//////
+  ///
+  ///
+  ///
+  ///
+  ///
   ///////////////////////// MAKE-GOOD-REPORT-START//////
   static String get MAKE_GOOD_REPORT_GET_LOCATION => "$BASE_URL/api/MakeGoodReport/GetLocation";
   static String get MAKE_GOOD_REPORT_GET_CHANNEL => "$BASE_URL/api/MakeGoodReport/GetChannel";
