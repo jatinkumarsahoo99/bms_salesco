@@ -1,18 +1,14 @@
+import 'package:bms_salesco/widgets/CheckBoxWidget.dart';
+import 'package:bms_salesco/widgets/input_fields.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
-import '../../../../widgets/DateTime/DateWithThreeTextField.dart';
 import '../../../../widgets/FormButton.dart';
 import '../../../../widgets/dropdown.dart';
 import '../../../../widgets/gridFromMap.dart';
-import '../../../../widgets/input_fields.dart';
 import '../../../controller/HomeController.dart';
 import '../../../providers/Utils.dart';
-
 import '../controllers/auto_time_lock_controller.dart';
 
 class AutoTimeLockView extends GetView<AutoTimeLockController> {
@@ -38,7 +34,6 @@ class AutoTimeLockView extends GetView<AutoTimeLockController> {
                   autoFocus: true,
                   selected: controller.selectedLocation,
                   inkWellFocusNode: controller.locationFN,
-                  isEnable: controller.bottomControllsEnable.value,
                 );
               }),
 
@@ -59,19 +54,94 @@ class AutoTimeLockView extends GetView<AutoTimeLockController> {
                           ? null
                           : DataGridFromMap(
                               mapData: controller.dataTableList.value.map((e) => e.toJson()).toList(),
-                              editKeys: ["commDuration"],
-                              onEdit: (row) {
-                                controller.lastSelectedIdx = row.rowIdx;
-                                if (RegExp(r'^[0-9]+$').hasMatch(row.value)) {
-                                  controller.dataTableList[row.rowIdx].commDuration = num.tryParse(row.value.toString());
-                                  controller.madeChanges = true;
-                                } else {
-                                  controller.dataTableList.refresh();
-                                }
+                              onRowDoubleTap: (val) {
+                                controller.lastSelectedIdx = val.rowIdx;
+                                controller.stateManager?.setCurrentCell(
+                                    controller.stateManager?.getRowByIdx(controller.lastSelectedIdx)?.cells['channelName'],
+                                    controller.lastSelectedIdx);
+
+                                var temp = controller.dataTableList[val.rowIdx];
+                                var resCanLockTC = TextEditingController(text: temp.resCanLockTime);
+                                var nextDayLockTC = TextEditingController(text: temp.nextDayLockTime);
+                                Get.defaultDialog(
+                                  title: "Edit",
+                                  content: SizedBox(
+                                    width: context.width * .6,
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        InputFields.formFieldDisable(
+                                          hintTxt: "Channel",
+                                          value: temp.channelName ?? "",
+                                          widthRatio: .3,
+                                        ),
+                                        InputFields.numbers(
+                                          hintTxt: "Same Day Close",
+                                          controller: TextEditingController(text: (temp.sameDayClose ?? "0").toString()),
+                                          onchanged: (v) {
+                                            temp.sameDayClose = int.tryParse(v) ?? 0;
+                                          },
+                                          width: .3,
+                                        ),
+                                        InputFields.formFieldNumberMask(
+                                          hintTxt: "Res Can Lock Time",
+                                          paddingLeft: 0,
+                                          controller: resCanLockTC,
+                                          widthRatio: .3,
+                                          isTime: true,
+                                        ),
+                                        InputFields.numbers(
+                                          hintTxt: "FPC Lock Days",
+                                          controller: TextEditingController(text: (temp.fpcLockDays ?? "0").toString()),
+                                          onchanged: (v) {
+                                            temp.fpcLockDays = int.tryParse(v) ?? 0;
+                                          },
+                                          width: .3,
+                                        ),
+                                        InputFields.numbers(
+                                          hintTxt: "Excess Book",
+                                          controller: TextEditingController(text: (temp.excessBooking ?? "0").toString()),
+                                          onchanged: (v) {
+                                            temp.excessBooking = int.tryParse(v) ?? 0;
+                                          },
+                                          width: .3,
+                                        ),
+                                        InputFields.formFieldNumberMask(
+                                          hintTxt: "Next Day Lock Time",
+                                          paddingLeft: 0,
+                                          controller: nextDayLockTC,
+                                          widthRatio: .3,
+                                          isTime: true,
+                                        ),
+                                        CheckBoxWidget1(
+                                          title: "Channel Lock Y N",
+                                          value: (temp.channelLockYN ?? "N") == "Y",
+                                          onChanged: (val) {
+                                            temp.channelLockYN = (val ?? false) ? "Y" : "N";
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  confirm: FormButton(
+                                    btnText: "Cancel",
+                                    callback: () {
+                                      Get.back();
+                                    },
+                                  ),
+                                  cancel: FormButton(
+                                    btnText: "Ok",
+                                    callback: () {
+                                      temp.resCanLockTime = resCanLockTC.text;
+                                      temp.nextDayLockTime = nextDayLockTC.text;
+                                      controller.dataTableList[val.rowIdx] = temp;
+                                      controller.dataTableList.refresh();
+                                      Get.back();
+                                    },
+                                  ),
+                                );
                               },
-                              // witdthSpecificColumn: {
-                              //   "commDuration": 200,
-                              // },
                               mode: PlutoGridMode.normal,
                               colorCallback: (row) =>
                                   (row.row.cells.containsValue(controller.stateManager?.currentCell)) ? Colors.deepPurple.shade200 : Colors.white,
@@ -80,47 +150,13 @@ class AutoTimeLockView extends GetView<AutoTimeLockController> {
                                 event.stateManager.setSelectingMode(PlutoGridSelectingMode.row);
                                 event.stateManager.setSelecting(true);
                                 event.stateManager.setCurrentCell(
-                                    event.stateManager.getRowByIdx(controller.lastSelectedIdx)?.cells['commDuration'], controller.lastSelectedIdx);
+                                    event.stateManager.getRowByIdx(controller.lastSelectedIdx)?.cells['channelName'], controller.lastSelectedIdx);
                               },
                             ),
                     );
                   },
                 ),
               ),
-
-              // Padding(
-              //   padding: const EdgeInsets.symmetric(vertical: 10),
-              //   child: Row(
-              //     crossAxisAlignment: CrossAxisAlignment.end,
-              //     mainAxisAlignment: MainAxisAlignment.center,
-              //     children: [
-              // InputFields.numbers(
-              //   hintTxt: "Common.Dur.Sec For 30 Mins Prog.",
-              //   inputformatters: [
-              //     FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
-              //   ],
-              //   controller: controller.counterTC,
-              //   padLeft: 5,
-              //   isNegativeReq: false,
-              //   width: .17,
-              // ),
-              // SizedBox(
-              //   width: context.width * .17,
-              //   child: Obx(() {
-              //     return NumericStepButton(
-              //       counter: controller.count.value,
-              //       onChanged: (val) {
-              //         controller.count.value = val;
-              //       },
-              //       hint: "Common.Dur.Sec For 30 Mins Prog.",
-              //       isEnable: controller.bottomControllsEnable.value,
-              //     );
-              //   }),
-              // ),
-              // const SizedBox(width: 10),
-              //     ],
-              //   ),
-              // ),
 
               ///Common Buttons
               Align(

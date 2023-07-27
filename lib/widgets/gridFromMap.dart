@@ -43,9 +43,11 @@ class DataGridFromMap extends StatelessWidget {
     this.exportFileName,
     this.focusNode,
     this.previousWidgetFN,
+    this.specificWidth,
   }) : super(key: key);
   final List mapData;
   bool enableSort;
+  final Map<String, double>? specificWidth;
   final bool? showSrNo;
   final bool? hideCode;
   final PlutoGridMode? mode;
@@ -99,74 +101,76 @@ class DataGridFromMap extends StatelessWidget {
     if (showonly != null && showonly!.isNotEmpty) {
       for (var key in showonly!) {
         if ((mapData[0] as Map).containsKey(key)) {
-          segColumn.add(PlutoColumn(
-              title: doPasccal
-                  ? keyMapping != null
-                      ? keyMapping!.containsKey(key)
-                          ? keyMapping![key]
-                          : key == "fpcCaption"
-                              ? "FPC Caption"
-                              : key.toString().pascalCaseToNormal()
-                      : key.toString().pascalCaseToNormal()
-                  : key.toString(),
-              enableRowChecked: (checkRow == true && key == checkRowKey) ? true : false,
-              renderer: ((rendererContext) {
-                if (actionIconKey != null && key == actionIconKey) {
-                  return GestureDetector(
-                    child: Icon(
-                      actionIcon,
-                      size: 19,
-                    ),
-                    onTap: () {
-                      actionOnPress!(rendererContext.rowIdx);
-                    },
-                  );
-                  // if () {
-                  // } else {
-                  //   return GestureDetector(
-                  //     onSecondaryTapDown: (detail) {
-                  //       DataGridMenu().showGridMenu(
-                  //           rendererContext.stateManager, detail, context);
-                  //     },
-                  //     child: Text(
-                  //       rendererContext.cell.value.toString(),
-                  //       style: TextStyle(
-                  //         fontSize: SizeDefine.columnTitleFontSize,
-                  //       ),
-                  //     ),
-                  //   );
-                  // }
-                } else {
-                  return GestureDetector(
-                    onSecondaryTapDown: (detail) {
-                      DataGridMenu().showGridMenu(rendererContext.stateManager, detail, context, exportFileName: exportFileName);
-                    },
-                    child: Text(
-                      (rendererContext.cell.value ?? "").toString(),
-                      style: TextStyle(
-                        fontSize: SizeDefine.columnTitleFontSize,
+          segColumn.add(
+            PlutoColumn(
+                title: doPasccal
+                    ? keyMapping != null
+                        ? keyMapping!.containsKey(key)
+                            ? keyMapping![key]
+                            : key == "fpcCaption"
+                                ? "FPC Caption"
+                                : key.toString().pascalCaseToNormal()
+                        : key.toString().pascalCaseToNormal()
+                    : key.toString(),
+                enableRowChecked: (checkRow == true && key == checkRowKey) ? true : false,
+                renderer: ((rendererContext) {
+                  if (actionIconKey != null && key == actionIconKey) {
+                    return GestureDetector(
+                      child: Icon(
+                        actionIcon,
+                        size: 19,
                       ),
-                    ),
-                  );
-                }
-              }),
-              enableSorting: enableSort,
-              enableRowDrag: false,
-              enableEditingMode: editKeys != null && editKeys!.contains(key),
-              enableDropToResize: true,
-              enableContextMenu: false,
-              width: Utils.getColumnSize(
-                key: key,
-                value: mapData[0][key].toString(),
-              ),
-              enableAutoEditing: false,
-              hide: showonly == null
-                  ? (hideKeys != null && hideKeys!.contains(key)) ||
-                      hideCode! && key.toString().toLowerCase() != "hourcode" && key.toString().toLowerCase().contains("code")
-                  : !showonly!.contains(key),
-              enableColumnDrag: false,
-              field: key,
-              type: PlutoColumnType.text()));
+                      onTap: () {
+                        actionOnPress!(rendererContext.rowIdx);
+                      },
+                    );
+                    // if () {
+                    // } else {
+                    //   return GestureDetector(
+                    //     onSecondaryTapDown: (detail) {
+                    //       DataGridMenu().showGridMenu(
+                    //           rendererContext.stateManager, detail, context);
+                    //     },
+                    //     child: Text(
+                    //       rendererContext.cell.value.toString(),
+                    //       style: TextStyle(
+                    //         fontSize: SizeDefine.columnTitleFontSize,
+                    //       ),
+                    //     ),
+                    //   );
+                    // }
+                  } else {
+                    return GestureDetector(
+                      onSecondaryTapDown: (detail) {
+                        DataGridMenu().showGridMenu(rendererContext.stateManager, detail, context, exportFileName: exportFileName);
+                      },
+                      child: Text(
+                        (rendererContext.cell.value ?? "").toString(),
+                        style: TextStyle(
+                          fontSize: SizeDefine.columnTitleFontSize,
+                        ),
+                      ),
+                    );
+                  }
+                }),
+                enableSorting: enableSort,
+                enableRowDrag: false,
+                enableEditingMode: editKeys != null && editKeys!.contains(key),
+                enableDropToResize: true,
+                enableContextMenu: false,
+                width: Utils.getColumnSize(
+                  key: key,
+                  value: mapData[0][key].toString(),
+                ),
+                enableAutoEditing: false,
+                hide: showonly == null
+                    ? (hideKeys != null && hideKeys!.contains(key)) ||
+                        hideCode! && key.toString().toLowerCase() != "hourcode" && key.toString().toLowerCase().contains("code")
+                    : !showonly!.contains(key),
+                enableColumnDrag: false,
+                field: key,
+                type: PlutoColumnType.text()),
+          );
         }
       }
     } else {
@@ -475,6 +479,8 @@ class DataGridFromMap3 extends StatelessWidget {
                         (showTitleInCheckBox != null && showTitleInCheckBox!.isNotEmpty)
                             ? mapData[rendererContext.rowIdx][key]['value']
                             : mapData[rendererContext.rowIdx][key],
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                         style: TextStyle(
                           fontSize: SizeDefine.columnTitleFontSize,
                         ),
@@ -490,6 +496,8 @@ class DataGridFromMap3 extends StatelessWidget {
                 },
                 child: Text(
                   rendererContext.cell.value.toString(),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     fontSize: SizeDefine.columnTitleFontSize,
                   ),
@@ -542,28 +550,29 @@ class DataGridFromMap3 extends StatelessWidget {
         focusNode: focusNode,
         autofocus: false,
         child: PlutoGrid(
-            onChanged: onEdit,
-            mode: mode ?? PlutoGridMode.normal,
-            configuration: plutoGridConfiguration2(
-              focusNode: focusNode!,
-              autoScale: columnAutoResize,
-              actionOnPress: actionOnPress,
-              actionKey: actionIconKey ?? [],
-              previousWidgetFN: previousWidgetFN,
-            ).copyWith(style: gridStyle),
-            rowColorCallback: colorCallback,
-            onLoaded: (load) {
-              load.stateManager
-                  .setColumnSizeConfig(PlutoGridColumnSizeConfig(autoSizeMode: PlutoAutoSizeMode.none, resizeMode: PlutoResizeMode.normal));
-              load.stateManager.setKeepFocus(false);
-              if (onload != null) {
-                onload!(load);
-              }
-            },
-            columns: segColumn,
-            onRowDoubleTap: onRowDoubleTap,
-            onSelected: onSelected,
-            rows: segRows),
+          onChanged: onEdit,
+          mode: mode ?? PlutoGridMode.normal,
+          configuration: plutoGridConfiguration2(
+            focusNode: focusNode!,
+            autoScale: columnAutoResize,
+            actionOnPress: actionOnPress,
+            actionKey: actionIconKey ?? [],
+            previousWidgetFN: previousWidgetFN,
+          ).copyWith(style: gridStyle),
+          rowColorCallback: colorCallback,
+          onLoaded: (load) {
+            load.stateManager
+                .setColumnSizeConfig(PlutoGridColumnSizeConfig(autoSizeMode: PlutoAutoSizeMode.none, resizeMode: PlutoResizeMode.normal));
+            load.stateManager.setKeepFocus(false);
+            if (onload != null) {
+              onload!(load);
+            }
+          },
+          columns: segColumn,
+          onRowDoubleTap: onRowDoubleTap,
+          onSelected: onSelected,
+          rows: segRows,
+        ),
       ),
     );
   }

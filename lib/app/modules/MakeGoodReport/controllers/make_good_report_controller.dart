@@ -1,31 +1,27 @@
+import 'package:bms_salesco/app/modules/MakeGoodReport/model/make_good_report_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pluto_grid/pluto_grid.dart';
 
 import '../../../../widgets/LoadingDialog.dart';
 import '../../../controller/ConnectorControl.dart';
 import '../../../data/DropDownValue.dart';
 import '../../../data/PermissionModel.dart';
+import '../../../providers/ApiFactory.dart';
 import '../../../providers/Utils.dart';
 import '../../../routes/app_pages.dart';
 
 class MakeGoodReportController extends GetxController {
-  var effectiveDateTC = TextEditingController(),
-      weekDaysTC = TextEditingController(),
-      dialogCounter = TextEditingController(text: "0"),
-      counterTC = TextEditingController(text: "0");
-  var locationList = <DropDownValue>[].obs, channelList = <DropDownValue>[].obs;
-  DropDownValue? selectedLocation, selectedChannel, selectedProgram;
-  var locationFN = FocusNode();
+  var fromDateTC = TextEditingController(), toDateTC = TextEditingController();
+  var locationList = <DropDownValue>[].obs,
+      channelList = <DropDownValue>[].obs,
+      clientList = <DropDownValue>[].obs,
+      agencyList = <DropDownValue>[].obs,
+      brandList = <DropDownValue>[].obs;
+  DropDownValue? selectedLocation, selectedChannel, selectedClient, selectedAgency, selectedBrand;
+  var locationFN = FocusNode(), clientFN = FocusNode();
   List<PermissionModel>? formPermissions;
-  PlutoGridStateManager? stateManager;
-  int lastSelectedIdx = 0;
-  var dataTableList = [].obs;
-  // var count = 0.obs;
-  var bottomControllsEnable = true.obs;
-  var buttonsList = ["Default", "Save Today", "Save All Days", "Special"];
-  var programs = <DropDownValue>[].obs;
-  bool madeChanges = false;
+  var dataTableList = <dynamic>[].obs;
+  var controllsEnable = true.obs;
 
   @override
   void onInit() {
@@ -39,258 +35,216 @@ class MakeGoodReportController extends GetxController {
     getOnLoadData();
   }
 
-  saveSpecial(String fromDate, String toDate, String fromTime, String toTime, List<bool> weekdays, String updateType) {
-    if (fromDate == toDate) {
-      LoadingDialog.showErrorDialog("Special to Date cannot be less than Special From Date.");
-    }
-    //  else if ((Utils.convertToSecond(value: toTime) - Utils.convertToSecond(value: fromTime)) <= 0) {
-    //   LoadingDialog.showErrorDialog("Please enter Duration.");
-    // }
-    else if ((num.tryParse(dialogCounter.text) ?? 0) <= 0) {
-      LoadingDialog.showErrorDialog("Please enter Duration.");
-    }
-    // else if (selectedProgram == null) {
-    //   LoadingDialog.showErrorDialog("Please select Program.");
-    // }
-    else if (updateType.isEmpty) {
-      LoadingDialog.showErrorDialog("Select Default or Add or Fixed for update.");
-    } else {
-      int upType = 0;
-      if (updateType == "Default") {
-        upType = 0;
-      } else if (updateType == "Add") {
-        upType = 1;
-      } else if (updateType == "Fixed") {
-        upType = 2;
-      }
-      // LoadingDialog.call();
-      // Get.find<ConnectorControl>().POSTMETHOD(
-      //   api: ApiFactory.MANAGE_CHANNEL_INV_SAVE_SPECIAL,
-      //   fun: (resp) {
-      //     Get.back();
-      //     if (resp != null && resp is Map<String, dynamic> && resp['isError'] != null && !(resp['isError'] as bool)) {
-      //       LoadingDialog.callDataSaved(
-      //         msg: resp['genericMessage'].toString(),
-      //         callback: () {
-      //           Get.back();
-      //           Get.back();
-      //           closeDialogIfOpen();
-      //           handleGenerateButton();
-      //         },
-      //       );
-      //     } else {
-      //       LoadingDialog.showErrorDialog(resp.toString());
-      //     }
-      //   },
-      //   json: {
-      //     "updateType": upType,
-      //     "locationcode": selectedLocation?.key ?? "",
-      //     "channelcode": selectedChannel?.key ?? "",
-      //     "duration": (num.tryParse(dialogCounter.text) ?? 0),
-      //     "fromDate": DateFormat("yyyy-MM-dd").format(DateFormat("dd-MM-yyyy").parse(fromDate)),
-      //     "toDate": DateFormat("yyyy-MM-dd").format(DateFormat("dd-MM-yyyy").parse(toDate)),
-      //     "fromTime": fromTime,
-      //     "toTime": toTime,
-      //     "programCode": selectedProgram?.key ?? "",
-      //     "sun": weekdays[1] ? 1 : 0,
-      //     "mon": weekdays[2] ? 1 : 0,
-      //     "tue": weekdays[3] ? 1 : 0,
-      //     "wed": weekdays[4] ? 1 : 0,
-      //     "thu": weekdays[5] ? 1 : 0,
-      //     "fri": weekdays[6] ? 1 : 0,
-      //     "sat": weekdays[7] ? 1 : 0,
-      //   },
-      // );
+  getClient() {
+    if (selectedLocation != null && selectedChannel != null) {
+      clientFN.requestFocus();
+      LoadingDialog.call();
+      Get.find<ConnectorControl>().GETMETHODCALL(
+        api: ApiFactory.MAKE_GOOD_REPORT_GET_CLIENT(
+          Uri.encodeQueryComponent(selectedLocation?.value ?? ""),
+          Uri.encodeQueryComponent(selectedChannel?.value ?? ""),
+          Utils.getRequiredFormatDateInString(fromDateTC.text, "yyyy-MM-dd"),
+          Utils.getRequiredFormatDateInString(toDateTC.text, "yyyy-MM-dd"),
+        ),
+        fun: (resp2) {
+          Get.back();
+          if (resp2 != null && resp2 is Map<String, dynamic> && resp2['clients'] != null && resp2['clients'] is List<dynamic>) {
+            clientList.clear();
+            clientList.value.addAll(
+              (resp2['clients'] as List<dynamic>)
+                  .map((e) => DropDownValue(
+                        key: e['clientCode'].toString(),
+                        value: e['clientName'].toString(),
+                      ))
+                  .toList(),
+            );
+          } else {
+            LoadingDialog.showErrorDialog(resp2.toString());
+          }
+        },
+        failed: (resp) {
+          Get.back();
+          LoadingDialog.showErrorDialog(resp.toString());
+        },
+      );
     }
   }
 
-  getPrograms(String from, String to, String weekDays) {
-    // LoadingDialog.call();
-    // Get.find<ConnectorControl>().POSTMETHOD(
-    //   api: ApiFactory.MANAGE_CHANNEL_INV_PROGRAM_SEARCH,
-    //   fun: (resp) {
-    //     closeDialogIfOpen();
-    //     if (resp != null && resp is List<dynamic>) {
-    //       programs.clear();
-    //       programs.addAll((resp).map((e) => DropDownValue(key: e['programcode'].toString(), value: e['programname'].toString())).toList());
-    //     }
-    //   },
-    //   json: {
-    //     "locationcode": selectedLocation?.key,
-    //     "channelcode": selectedChannel?.key,
-    //     "fromDate": DateFormat("dd-MMM-yyyy").format(DateFormat("dd-MM-yyyy").parse(from)),
-    //     "toDate": DateFormat("dd-MMM-yyyy").format(DateFormat("dd-MM-yyyy").parse(to)),
-    //     "daysInCommaSep": weekDays,
-    //   },
-    // );
-  }
-
-  handleOnDefaultClick() {
-    if ((num.tryParse(counterTC.text) ?? 0) <= 0) {
-      LoadingDialog.showErrorDialog("Enter commercial duration.");
-    } else if (dataTableList.isNotEmpty) {
-      madeChanges = true;
-      for (var i = 0; i < dataTableList.length; i++) {
-        if (dataTableList[i].episodeDuration != null) {
-          dataTableList[i].commDuration = (dataTableList[i].episodeDuration ?? 0) * (num.tryParse(counterTC.text) ?? 0) / 30;
-        }
-      }
-      dataTableList.refresh();
+  getAgency() {
+    if (selectedLocation != null && selectedChannel != null && selectedClient != null) {
+      LoadingDialog.call();
+      Get.find<ConnectorControl>().GETMETHODCALL(
+        api: ApiFactory.MAKE_GOOD_REPORT_GET_AGENCY(
+          Uri.encodeQueryComponent(selectedLocation?.value ?? ""),
+          Uri.encodeQueryComponent(selectedChannel?.value ?? ""),
+          Uri.encodeQueryComponent(selectedClient?.value ?? ""),
+        ),
+        fun: (resp2) {
+          Get.back();
+          if (resp2 != null && resp2 is Map<String, dynamic> && resp2['agency'] != null && resp2['agency'] is List<dynamic>) {
+            agencyList.clear();
+            agencyList.value.addAll(
+              (resp2['agency'] as List<dynamic>)
+                  .map((e) => DropDownValue(
+                        key: e['agencycode'].toString(),
+                        value: e['agencyname'].toString(),
+                      ))
+                  .toList(),
+            );
+          } else {
+            LoadingDialog.showErrorDialog(resp2.toString());
+          }
+        },
+        failed: (resp) {
+          Get.back();
+          LoadingDialog.showErrorDialog(resp.toString());
+        },
+      );
     }
   }
 
-  void saveTodayAndAllData(bool fromSaveToday) {
-    if (selectedLocation == null || selectedChannel == null) {
-      LoadingDialog.showErrorDialog("Please select Location,Channel.");
-    } else if (!madeChanges) {
-      LoadingDialog.showErrorDialog("No changes to save");
-    } else {
-      stateManager!.setCurrentCell(stateManager!.getRowByIdx(lastSelectedIdx)?.cells['telecastDate'], lastSelectedIdx);
-      // LoadingDialog.call();
-      // Get.find<ConnectorControl>().POSTMETHOD(
-      //   api: ApiFactory.MANAGE_CHANNEL_INV_SAVE_TODAY_ALL_DATA,
-      //   fun: (resp) {
-      //     closeDialogIfOpen();
-      //     // LoadingDialog.callDataSaved(msg: resp.toString());
-      //     if (resp != null && resp is Map<String, dynamic> && resp['isError'] != null && !(resp['isError'] as bool)) {
-      //       LoadingDialog.callDataSaved(
-      //         msg: resp['genericMessage'].toString(),
-      //         callback: () {
-      //           Get.back();
-      //           closeDialogIfOpen();
-      //           handleGenerateButton();
-      //         },
-      //       );
-      //     } else {
-      //       LoadingDialog.showErrorDialog(resp.toString());
-      //     }
-      //   },
-      //   json: {
-      //     "locationCode": selectedLocation?.key,
-      //     "channelCode": selectedChannel?.key,
-      //     "effectiveDate": DateFormat("yyyy-MM-dd").format(DateFormat("dd-MM-yyyy").parse(effectiveDateTC.text)),
-      //     "loginCode": Get.find<MainController>().user?.logincode ?? "",
-      //     "allDays": fromSaveToday ? "N" : "Y",
-      //     "saveTodayDataRequest": dataTableList.value.map((e) => e.toJson(fromSave: true)).toList(),
-      //   },
-      // );
+  getBrand() {
+    if (selectedLocation != null && selectedChannel != null && selectedClient != null && selectedAgency != null) {
+      LoadingDialog.call();
+      Get.find<ConnectorControl>().POSTMETHOD(
+        api: ApiFactory.MAKE_GOOD_REPORT_GET_BRAND,
+        fun: (resp2) {
+          Get.back();
+          if (resp2 != null && resp2 is Map<String, dynamic> && resp2['brand'] != null && resp2['brand'] is List<dynamic>) {
+            brandList.clear();
+            brandList.value.addAll(
+              (resp2['brand'] as List<dynamic>)
+                  .map((e) => DropDownValue(
+                        key: e['brandCode'].toString(),
+                        value: e['brandName'].toString(),
+                      ))
+                  .toList(),
+            );
+          } else {
+            LoadingDialog.showErrorDialog(resp2.toString());
+          }
+        },
+        json: {
+          "locationName": selectedLocation?.value ?? "",
+          "channelName": selectedChannel?.value ?? "",
+          "fromdate": Utils.getRequiredFormatDateInString(fromDateTC.text, "yyyy-MM-dd"),
+          "todate": Utils.getRequiredFormatDateInString(toDateTC.text, "yyyy-MM-dd"),
+          "clientName": selectedClient?.value,
+          "agencyName": selectedAgency?.value,
+        },
+      );
     }
   }
 
   clearPage() {
-    lastSelectedIdx = 0;
-    stateManager = null;
-    selectedProgram = null;
-    dataTableList.clear();
-    effectiveDateTC.clear();
-    weekDaysTC.clear();
     selectedLocation = null;
     selectedChannel = null;
+    selectedAgency = null;
+    selectedClient = null;
+    selectedBrand = null;
+    brandList.refresh();
+    agencyList.refresh();
+    clientList.refresh();
     locationList.refresh();
     channelList.refresh();
+    dataTableList.clear();
     locationFN.requestFocus();
-    programs.clear();
-    // count.value = 0;
-    dialogCounter.text = "0";
-    counterTC.text = "0";
-    madeChanges = false;
-  }
-
-  handleOnChangedLocation(DropDownValue? val) {
-    selectedLocation = val;
-    if (val != null) {
-      // closeDialogIfOpen();
-      // LoadingDialog.call();
-      // Get.find<ConnectorControl>().GETMETHODCALL(
-      //   api: ApiFactory.MANAGE_CHANNEL_INV_LEAVE_LOCATION(val.key.toString(), Get.find<MainController>().user?.logincode ?? ""),
-      //   fun: (resp) {
-      //     closeDialogIfOpen();
-      //     if (resp != null && resp is List<dynamic>) {
-      //       channelList.clear();
-      //       selectedChannel = null;
-      //       channelList.addAll((resp)
-      //           .map((e) => DropDownValue(
-      //                 key: e['channelCode'].toString(),
-      //                 value: e['channelName'].toString(),
-      //               ))
-      //           .toList());
-      //     } else {
-      //       LoadingDialog.showErrorDialog(resp.toString());
-      //     }
-      //   },
-      //   failed: (resp) {
-      //     closeDialogIfOpen();
-      //     LoadingDialog.showErrorDialog(resp.toString());
-      //   },
-      // );
-    }
+    dataTableList.clear();
+    fromDateTC.clear();
+    toDateTC.clear();
+    controllsEnable.value = true;
   }
 
   getOnLoadData() {
-    // Get.find<ConnectorControl>().GETMETHODCALL(
-    //     api: ApiFactory.MANAGE_CHANNEL_INV_ON_LOAD,
-    //     fun: (resp) {
-    //       closeDialogIfOpen();
-    //       if (resp != null && resp is List<dynamic>) {
-    //         locationList.value.addAll((resp)
-    //             .map((e) => DropDownValue(
-    //                   key: e['locationCode'].toString(),
-    //                   value: e['locationName'].toString(),
-    //                 ))
-    //             .toList());
-    //         if (locationList.isNotEmpty) {
-    //           selectedLocation = locationList.first;
-    //           locationList.refresh();
-    //         }
-    //       } else {
-    //         LoadingDialog.showErrorDialog(resp.toString());
-    //       }
-    //     },
-    //     failed: (resp) {
-    //       closeDialogIfOpen();
-    //       LoadingDialog.showErrorDialog(resp.toString());
-    //     });
+    Get.find<ConnectorControl>().GETMETHODCALL(
+        api: ApiFactory.MAKE_GOOD_REPORT_GET_LOCATION,
+        fun: (resp) {
+          if (resp != null && resp is Map<String, dynamic> && resp['location'] != null && resp['location'] is List<dynamic>) {
+            locationList.clear();
+            locationList.value.addAll((resp['location'] as List<dynamic>)
+                .map((e) => DropDownValue(
+                      key: e['locationCode'].toString(),
+                      value: e['locationName'].toString(),
+                    ))
+                .toList());
+            if (locationList.isNotEmpty) {
+              selectedLocation = locationList.first;
+              locationList.refresh();
+            }
+            Get.find<ConnectorControl>().GETMETHODCALL(
+              api: ApiFactory.MAKE_GOOD_REPORT_GET_CHANNEL,
+              fun: (resp2) {
+                Get.back();
+                if (resp2 != null && resp2 is Map<String, dynamic> && resp2['channel'] != null && resp2['channel'] is List<dynamic>) {
+                  channelList.clear();
+                  channelList.value.addAll((resp2['channel'] as List<dynamic>)
+                      .map((e) => DropDownValue(
+                            key: e['channelcode'].toString(),
+                            value: e['channelname'].toString(),
+                          ))
+                      .toList());
+                } else {
+                  LoadingDialog.showErrorDialog(resp2.toString());
+                }
+              },
+              failed: (resp3) {
+                Get.back();
+                LoadingDialog.showErrorDialog(resp3.toString());
+              },
+            );
+          } else {
+            LoadingDialog.showErrorDialog(resp.toString());
+          }
+        },
+        failed: (resp) {
+          Get.back();
+          LoadingDialog.showErrorDialog(resp.toString());
+        });
   }
 
-  void handleGenerateButton() {
-    if (selectedLocation == null || selectedChannel == null) {
-      LoadingDialog.showErrorDialog("select location and channel first.");
-    } else {
-      //   LoadingDialog.call();
-      //   Get.find<ConnectorControl>().GETMETHODCALL(
-      //       api: ApiFactory.MANAGE_CHANNEL_INV_DISPLAY_DATA(selectedLocation?.key ?? "", selectedChannel?.key ?? "",
-      //           DateFormat("yyyy-MM-dd").format(DateFormat("dd-MM-yyyy").parse(effectiveDateTC.text))),
-      //       fun: (resp) {
-      //         closeDialogIfOpen();
-      //         madeChanges = false;
-      //         if (resp != null && resp is List<dynamic>) {
-      //           dataTableList.clear();
-      //           dataTableList.addAll((resp).map((e) => ManageChannelInventory.fromJson(e)).toList());
-      //         } else {
-      //           LoadingDialog.showErrorDialog(resp.toString());
-      //         }
-      //       },
-      //       failed: (resp) {
-      //         closeDialogIfOpen();
-      //         LoadingDialog.showErrorDialog(resp.toString());
-      //       });
-      // }
-    }
-
-    closeDialogIfOpen() {
-      if (Get.isDialogOpen ?? false) {
-        Get.back();
-      }
-    }
-
-    formHandler(btn) {
-      if (btn == "Clear") {
-        clearPage();
-      } else if (btn == "Save") {}
+  generateReport() {
+    if (selectedLocation != null && selectedChannel != null && selectedClient != null && selectedAgency != null && selectedBrand != null) {
+      LoadingDialog.call();
+      Get.find<ConnectorControl>().POSTMETHOD(
+        api: ApiFactory.MAKE_GOOD_REPORT_GET_GENERATE,
+        fun: (resp2) {
+          Get.back();
+          if (resp2 != null &&
+              resp2 is Map<String, dynamic> &&
+              resp2['generate'] != null &&
+              ((resp2['generate']['generateAllClient'] is List<dynamic>) || (resp2['generate']['generateSpecificReport'] is List<dynamic>))) {
+            dataTableList.clear();
+            print(controllsEnable.value);
+            if (!controllsEnable.value) {
+              // dataTableList.value = (resp2['generate']['generateAllClient'] as List<dynamic>).map((e) => MakeGoodReportModel.fromJson(e)).toList();
+              dataTableList.value = (resp2['generate']['generateAllClient'] as List<dynamic>);
+            } else {
+              dataTableList.value =
+                  // (resp2['generate']['generateSpecificReport'] as List<dynamic>).map((e) => MakeGoodReportModel.fromJson(e)).toList();
+                  (resp2['generate']['generateSpecificReport'] as List<dynamic>);
+            }
+            // print(dataTableList.value);
+          } else {
+            LoadingDialog.showErrorDialog(resp2.toString());
+          }
+        },
+        json: {
+          "locationName": selectedLocation?.value ?? "",
+          "channelName": selectedChannel?.value ?? "",
+          "fromDate": Utils.getRequiredFormatDateInString(fromDateTC.text, "yyyy-MM-dd"),
+          "toDate": Utils.getRequiredFormatDateInString(toDateTC.text, "yyyy-MM-dd"),
+          "clientName": selectedClient?.value,
+          "agencyName": selectedAgency?.value,
+          "brandName": selectedBrand?.value,
+          "isAllClient": !controllsEnable.value,
+        },
+      );
     }
   }
 
-  handleBottonButtonsTap(String buttonsList) {}
-
-  formHandler(btn) {}
+  formHandler(btn) {
+    if (btn == "Clear") {
+      clearPage();
+    }
+  }
 }

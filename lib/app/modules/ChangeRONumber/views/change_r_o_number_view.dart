@@ -1,8 +1,12 @@
+import 'package:bms_salesco/app/data/DropDownValue.dart';
+import 'package:bms_salesco/widgets/DropDowns/list_drop_down.dart';
 import 'package:bms_salesco/widgets/dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../widgets/FormButton.dart';
+import '../../../../widgets/InputFields/normal_text_field.dart';
 import '../../../../widgets/input_fields.dart';
 import '../controllers/change_r_o_number_controller.dart';
 
@@ -76,7 +80,7 @@ class ChangeRONumberView extends GetView<ChangeRONumberController> {
                 ),
                 SizedBox(height: 20),
                 InputFields.formField1(
-                  hintTxt: "Booking Reference Number",
+                  hintTxt: "Booking Reference No.",
                   controller: controller.bookingRefNumber,
                   width: .4,
                 ),

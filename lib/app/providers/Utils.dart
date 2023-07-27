@@ -28,6 +28,10 @@ class Utils {
     return DateFormat("MM/dd/yyyy").format(DateFormat('dd-MM-yyyy').parse(ddMMYYYY));
   }
 
+  static String getRequiredFormatDateInString(String date, String requiredFormat, {String actualFormat = "dd-MM-yyyy"}) {
+    return DateFormat(requiredFormat).format(DateFormat(actualFormat).parse(date));
+  }
+
   static toDateFormat1(String date, {bool? isStringRequired}) {
     final DateTime formatter = DateFormat("yyyy-MM-dd\'T\'HH:mm:ss.SSS").parse(date);
     // log(">>>>>>"+formatter.toString());
@@ -355,7 +359,7 @@ class Utils {
     if (Get.find<HomeController>().selectChild != null) {
       print("Resposss>>>" + jsonEncode(Get.find<HomeController>().selectChild?.toJson()));
       PermissionModel? permissionModel =
-      Get.find<MainController>().permissionList?.lastWhere((element) => element.appFormName == Get.find<HomeController>().selectChild?.key);
+          Get.find<MainController>().permissionList?.lastWhere((element) => element.appFormName == Get.find<HomeController>().selectChild?.key);
       return permissionModel;
     } else {
       return null;
