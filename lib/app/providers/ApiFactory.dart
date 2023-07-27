@@ -571,8 +571,6 @@ class ApiFactory {
       "$BASE_URL/api/ModuleFormTransaction/GetModuleFormDetails?ModuleCode=$moduleCode";
   ///////////////////////// END MODULE FORM TRANSACTION API//////
 
-
-
 ///////////////////////////// Asrun Details Report ///////////////////////////////
 
   static String get ASRUN_DETAILS_REPORT_LOAD => "$BASE_URL/api/AsrundetailsReport/AsrundetailsReportLoad";
@@ -598,7 +596,6 @@ class ApiFactory {
   static String get DEAL_RECO_SUMMARY_GET_DEAL => "$BASE_URL/api/DealReCoSummary/GetDeal";
   static String get DEAL_RECO_SUMMARY_GET_DEAL_LEAVE => "$BASE_URL/api/DealReCoSummary/DealLeave";
   static String get DEAL_RECO_SUMMARY_GENERATE => "$BASE_URL/api/DealReCoSummary/GetGenrate";
-
 
   ///
   ///
@@ -641,10 +638,21 @@ class ApiFactory {
   ///
   ///
   ///
+  ///////////////////////// MAKE-GOOD-REPORT-START//////
+  static String get MAKE_GOOD_REPORT_GET_LOCATION => "$BASE_URL/api/MakeGoodReport/GetLocation";
+  static String get MAKE_GOOD_REPORT_GET_CHANNEL => "$BASE_URL/api/MakeGoodReport/GetChannel";
+  static String MAKE_GOOD_REPORT_GET_CLIENT(String locationName, String channelName, String fromDate, String toDate) =>
+      "$BASE_URL/api/MakeGoodReport/GetClient?LocationName=$locationName&ChannelName=$channelName&Fromdate=$fromDate&ToDate=$toDate";
+  static String MAKE_GOOD_REPORT_GET_AGENCY(String locationName, String channelName, String clientName) =>
+      "$BASE_URL/api/MakeGoodReport/GetAgency?LocationName=$locationName&ChannelName=$channelName&Clientname=$clientName";
+  static String get MAKE_GOOD_REPORT_GET_BRAND => "$BASE_URL/api/MakeGoodReport/GetBrand";
+  static String get MAKE_GOOD_REPORT_GET_GENERATE => "$BASE_URL/api/MakeGoodReport/Generate";
+  ///////////////////////// MAKE-GOOD-REPORT-END//////
   ///////////////////////// COMERCIAL CREATION AUTO/////////
   static String COMMERCIAL_CREATION_GET_LOAD() => "$BASE_URL/api/CommercialMasterAuto/GetLoad";
   static String COMMERCIAL_CREATION_PROVIDER_LIST(String provider) => "$BASE_URL/api/CommercialMasterAuto/GetProviderSelect?Provider=$provider";
-  static String COMMERCIAL_CREATION_CLIENT_LEAVE(String clientMaster) => "$BASE_URL/api/CommercialMasterAuto/GetClientMasterLeave?ClientMaster=$clientMaster";
+  static String COMMERCIAL_CREATION_CLIENT_LEAVE(String clientMaster) =>
+      "$BASE_URL/api/CommercialMasterAuto/GetClientMasterLeave?ClientMaster=$clientMaster";
   static String COMMERCIAL_CREATION_CLIENT_LIST() => "$BASE_URL/api/CommercialMasterAuto/GetClientMaster?SearchText=";
   static String COMMERCIAL_CREATION_BRAND_LIST(String client) => "$BASE_URL/api/CommercialMasterAuto/GetBrandMaster?Clientcode=$client&SearchText=";
   static String COMMERCIAL_CREATION_SHOW_ACID(String acid) => "$BASE_URL/api/CommercialMasterAuto/GetShowACID?acid=$acid";
@@ -652,6 +660,9 @@ class ApiFactory {
   static String COMMERCIAL_CREATION_SELECT_CLIENT(String clientCode) => "$BASE_URL/api/CommercialMasterAuto/GetClientMasterByCode?SearchValue=$clientCode";
   static String COMMERCIAL_CREATION_SELECT_BRAND(String clientCode) => "$BASE_URL/api/CommercialMasterAuto/GetBrandMasterByCode?SearchValue=$clientCode";
   static String COMMERCIAL_CREATION_EOM_SELECT(String som,String eom) => "$BASE_URL/api/CommercialMasterAuto/GetEOMSelect?EOM=$som&SOM=$eom";
+  static String COMMERCIAL_CREATION_REVENUE_TYPE_SELECT(String revenue) =>
+      "$BASE_URL/api/CommercialMasterAuto/GetrevenuetypeSelect?revenuetype=$revenue";
+  static String COMMERCIAL_CREATION_EOM_SELECT(String som, String eom) => "$BASE_URL/api/CommercialMasterAuto/GetEOMSelect?EOM=$som&SOM=$eom";
   static String COMMERCIAL_CREATION_SAVE() => "$BASE_URL/api/CommercialMasterAuto/PostSave";
   ///////////////////////// End: COMERCIAL CREATION AUTO ////////////
 }

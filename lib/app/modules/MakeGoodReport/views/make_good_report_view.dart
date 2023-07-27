@@ -1,16 +1,12 @@
 import 'package:bms_salesco/widgets/CheckBoxWidget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
 import '../../../../widgets/DateTime/DateWithThreeTextField.dart';
 import '../../../../widgets/FormButton.dart';
 import '../../../../widgets/dropdown.dart';
 import '../../../../widgets/gridFromMap.dart';
-import '../../../../widgets/input_fields.dart';
 import '../../../controller/HomeController.dart';
 import '../../../providers/Utils.dart';
 import '../controllers/make_good_report_controller.dart';
@@ -26,89 +22,98 @@ class MakeGoodReportView extends GetView<MakeGoodReportController> {
         child: Padding(
           padding: const EdgeInsets.all(10.0),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ///Controllers
-              Wrap(
-                // crossAxisAlignment: CrossAxisAlignment.end,
-                spacing: 10,
-                runSpacing: 10,
-                children: [
-                  Obx(() {
-                    return DropDownField.formDropDown1WidthMap(
-                      controller.locationList.value,
-                      controller.handleOnChangedLocation,
-                      "Location",
-                      .3,
-                      autoFocus: true,
-                      selected: controller.selectedLocation,
-                      inkWellFocusNode: controller.locationFN,
-                      isEnable: controller.bottomControllsEnable.value,
-                    );
-                  }),
-                  Obx(() {
-                    return DropDownField.formDropDown1WidthMap(
-                      controller.channelList.value,
-                      (v) => controller.selectedChannel = v,
-                      "Channel",
-                      .3,
-                      selected: controller.selectedChannel,
-                      isEnable: controller.bottomControllsEnable.value,
-                    );
-                  }),
-                  DateWithThreeTextField(
-                    title: "From Date",
-                    mainTextController: controller.effectiveDateTC,
-                    widthRation: 0.15,
-                    isEnable: controller.bottomControllsEnable.value,
-                    startDate: DateTime.now(),
-                  ),
-                  DateWithThreeTextField(
-                    title: "To Date",
-                    mainTextController: controller.effectiveDateTC,
-                    widthRation: 0.15,
-                    isEnable: controller.bottomControllsEnable.value,
-                    startDate: DateTime.now(),
-                  ),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      DropDownField.formDropDown1WidthMap(
+              FocusTraversalGroup(
+                policy: OrderedTraversalPolicy(),
+                child: Wrap(
+                  crossAxisAlignment: WrapCrossAlignment.end,
+                  spacing: 10,
+                  runSpacing: 10,
+                  children: [
+                    Obx(() {
+                      return DropDownField.formDropDown1WidthMap(
+                        controller.locationList.value,
+                        (v) => controller.selectedLocation = v,
+                        "Location",
+                        .15,
+                        autoFocus: true,
+                        selected: controller.selectedLocation,
+                        inkWellFocusNode: controller.locationFN,
+                      );
+                    }),
+                    Obx(() {
+                      return DropDownField.formDropDown1WidthMap(
                         controller.channelList.value,
                         (v) => controller.selectedChannel = v,
+                        "Channel",
+                        .15,
+                        selected: controller.selectedChannel,
+                      );
+                    }),
+                    DateWithThreeTextField(
+                      title: "From Date",
+                      mainTextController: controller.fromDateTC,
+                      widthRation: 0.15,
+                    ),
+                    DateWithThreeTextField(
+                      title: "To Date",
+                      mainTextController: controller.toDateTC,
+                      widthRation: 0.15,
+                      onFocusChange: (date) {
+                        controller.getClient();
+                      },
+                    ),
+                    Obx(() {
+                      return DropDownField.formDropDown1WidthMap(
+                        controller.clientList.value,
+                        (v) {
+                          controller.selectedClient = v;
+                          controller.getAgency();
+                        },
                         "Client",
-                        .83,
-                        selected: controller.selectedChannel,
-                        isEnable: controller.bottomControllsEnable.value,
-                      ),
-                      SizedBox(width: 10),
-                      CheckBoxWidget1(title: "All Clients")
-                    ],
-                  ),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      DropDownField.formDropDown1WidthMap(
-                        controller.channelList.value,
-                        (v) => controller.selectedChannel = v,
+                        .15,
+                        selected: controller.selectedClient,
+                        isEnable: controller.controllsEnable.value,
+                        inkWellFocusNode: controller.clientFN,
+                      );
+                    }),
+                    Obx(() {
+                      return DropDownField.formDropDown1WidthMap(
+                        controller.agencyList.value,
+                        (v) {
+                          controller.selectedAgency = v;
+                          controller.getBrand();
+                        },
                         "Agency",
-                        .3,
-                        selected: controller.selectedChannel,
-                        isEnable: controller.bottomControllsEnable.value,
-                      ),
-                      SizedBox(width: 10),
-                      DropDownField.formDropDown1WidthMap(
-                        controller.channelList.value,
-                        (v) => controller.selectedChannel = v,
+                        .15,
+                        selected: controller.selectedAgency,
+                        isEnable: controller.controllsEnable.value,
+                      );
+                    }),
+                    Obx(() {
+                      return DropDownField.formDropDown1WidthMap(
+                        controller.brandList.value,
+                        (v) => controller.selectedBrand = v,
                         "Brand",
-                        .3,
-                        selected: controller.selectedChannel,
-                        isEnable: controller.bottomControllsEnable.value,
-                      ),
-                      SizedBox(width: 10),
-                      FormButton(btnText: "Report", callback: controller.handleGenerateButton),
-                    ],
-                  ),
-                ],
+                        .15,
+                        selected: controller.selectedBrand,
+                        isEnable: controller.controllsEnable.value,
+                      );
+                    }),
+                    Obx(() {
+                      return CheckBoxWidget1(
+                        title: "All Clients",
+                        value: !controller.controllsEnable.value,
+                        onChanged: (val) {
+                          controller.controllsEnable.value = !(controller.controllsEnable.value);
+                        },
+                      );
+                    }),
+                    FormButton(btnText: "Report", callback: controller.generateReport),
+                  ],
+                ),
               ),
 
               ///Data table
@@ -126,31 +131,22 @@ class MakeGoodReportView extends GetView<MakeGoodReportController> {
                           : null,
                       child: controller.dataTableList.value.isEmpty
                           ? null
-                          : DataGridFromMap(
-                              mapData: controller.dataTableList.value.map((e) => e.toJson()).toList(),
-                              editKeys: ["commDuration"],
-                              onEdit: (row) {
-                                controller.lastSelectedIdx = row.rowIdx;
-                                if (RegExp(r'^[0-9]+$').hasMatch(row.value)) {
-                                  controller.dataTableList[row.rowIdx].commDuration = num.tryParse(row.value.toString());
-                                  controller.madeChanges = true;
-                                } else {
-                                  controller.dataTableList.refresh();
-                                }
+                          : DataGridFromMap3(
+                              specificWidth: const {
+                                "programname": 150,
+                                "clientname": 200,
+                                "agencyname": 200,
+                                "brandname": 200,
+                                "commercialcaption": 300,
+                                "bookingreferencenumber": 300,
+                                "eBookingNumber": 150,
+                                "eBookingMonth": 150,
+                                "cancelDate": 150,
+                                "scheduleDate": 100,
                               },
-                              // witdthSpecificColumn: {
-                              //   "commDuration": 200,
-                              // },
-                              mode: PlutoGridMode.normal,
-                              colorCallback: (row) =>
-                                  (row.row.cells.containsValue(controller.stateManager?.currentCell)) ? Colors.deepPurple.shade200 : Colors.white,
-                              onload: (event) {
-                                controller.stateManager = event.stateManager;
-                                event.stateManager.setSelectingMode(PlutoGridSelectingMode.row);
-                                event.stateManager.setSelecting(true);
-                                event.stateManager.setCurrentCell(
-                                    event.stateManager.getRowByIdx(controller.lastSelectedIdx)?.cells['commDuration'], controller.lastSelectedIdx);
-                              },
+                              // mapData: controller.dataTableList.value.map((e) => e.toJson()).toList(),
+                              mapData: controller.dataTableList.value,
+                              formatDate: false,
                             ),
                     );
                   },
