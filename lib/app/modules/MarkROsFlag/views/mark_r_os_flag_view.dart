@@ -92,21 +92,29 @@ class MarkROsFlagView extends GetView<MarkROsFlagController> {
                           : null,
                       child: controller.dataTableList.value.isEmpty
                           ? null
-                          : DataGridFromMap(
+                          : DataGridFromMap3(
                               mapData: controller.dataTableList.value.map((e) => e.toJson()).toList(),
-                              editKeys: ["commDuration"],
-                              onEdit: (row) {
-                                controller.lastSelectedIdx = row.rowIdx;
-                                if (RegExp(r'^[0-9]+$').hasMatch(row.value)) {
-                                  controller.dataTableList[row.rowIdx].commDuration = num.tryParse(row.value.toString());
-                                  controller.madeChanges = true;
-                                } else {
-                                  controller.dataTableList.refresh();
+                              checkBoxColumnKey: ['flag'],
+                              checkBoxStrComparison: "true",
+                              uncheckCheckBoxStr: "false",
+                              actionIconKey: ['flag'],
+                              actionOnPress: (position, isSpaceCalled) {
+                                if (isSpaceCalled) {
+                                  controller.lastSelectedIdx = position.rowIdx ?? 0;
+                                  controller.stateManager!.changeCellValue(
+                                    controller.stateManager!.currentCell!,
+                                    controller.stateManager!.currentCell!.value == "true" ? "false" : "true",
+                                    force: true,
+                                    callOnChangedEvent: true,
+                                    notify: true,
+                                  );
                                 }
                               },
-                              // witdthSpecificColumn: {
-                              //   "commDuration": 200,
-                              // },
+                              onEdit: (row) {
+                                controller.lastSelectedIdx = row.rowIdx;
+                                controller.madeChanges = true;
+                                controller.dataTableList[row.rowIdx].flag = row.value == "true";
+                              },
                               mode: PlutoGridMode.normal,
                               colorCallback: (row) =>
                                   (row.row.cells.containsValue(controller.stateManager?.currentCell)) ? Colors.deepPurple.shade200 : Colors.white,
@@ -115,7 +123,7 @@ class MarkROsFlagView extends GetView<MarkROsFlagController> {
                                 event.stateManager.setSelectingMode(PlutoGridSelectingMode.row);
                                 event.stateManager.setSelecting(true);
                                 event.stateManager.setCurrentCell(
-                                    event.stateManager.getRowByIdx(controller.lastSelectedIdx)?.cells['commDuration'], controller.lastSelectedIdx);
+                                    event.stateManager.getRowByIdx(controller.lastSelectedIdx)?.cells['telecastDate'], controller.lastSelectedIdx);
                               },
                             ),
                     );
@@ -132,47 +140,15 @@ class MarkROsFlagView extends GetView<MarkROsFlagController> {
                       padding: EdgeInsets.only(left: index != 0 ? 10 : 0),
                       child: FormButton(
                         btnText: controller.buttonsList[index],
-                        callback:
-                            controller.bottomControllsEnable.value ? () => controller.handleBottonButtonsTap(controller.buttonsList[index]) : null,
+                        callback: controller.bottomControllsEnable.value
+                            ? () => controller.saveTodayAndAllData(controller.buttonsList[index] == "Save Today")
+                            : null,
                       ),
                     ),
                   ).toList(),
                 );
               }),
               SizedBox(height: 10),
-              // Padding(
-              //   padding: const EdgeInsets.symmetric(vertical: 10),
-              //   child: Row(
-              //     crossAxisAlignment: CrossAxisAlignment.end,
-              //     mainAxisAlignment: MainAxisAlignment.center,
-              //     children: [
-              // InputFields.numbers(
-              //   hintTxt: "Common.Dur.Sec For 30 Mins Prog.",
-              //   inputformatters: [
-              //     FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
-              //   ],
-              //   controller: controller.counterTC,
-              //   padLeft: 5,
-              //   isNegativeReq: false,
-              //   width: .17,
-              // ),
-              // SizedBox(
-              //   width: context.width * .17,
-              //   child: Obx(() {
-              //     return NumericStepButton(
-              //       counter: controller.count.value,
-              //       onChanged: (val) {
-              //         controller.count.value = val;
-              //       },
-              //       hint: "Common.Dur.Sec For 30 Mins Prog.",
-              //       isEnable: controller.bottomControllsEnable.value,
-              //     );
-              //   }),
-              // ),
-              // const SizedBox(width: 10),
-              //     ],
-              //   ),
-              // ),
 
               ///Common Buttons
               Align(
