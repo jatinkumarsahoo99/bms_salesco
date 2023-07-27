@@ -111,7 +111,7 @@ class ListDropDown extends StatelessWidget {
               /// dropdown icon
               Positioned(
                 right: 0,
-                top: 14,
+                top: 16,
                 child: SizedBox(
                   width: 20,
                   height: 20,

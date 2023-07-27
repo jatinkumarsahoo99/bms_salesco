@@ -1,6 +1,7 @@
 import 'package:bms_salesco/app/data/DropDownValue.dart';
 import 'package:bms_salesco/widgets/DropDowns/list_drop_down.dart';
 import 'package:bms_salesco/widgets/InputFields/normal_text_field.dart';
+import 'package:bms_salesco/widgets/TabBar/app_tap_bar.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -20,9 +21,12 @@ class DesignView extends GetView<DesignController> {
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          mainAxisSize: MainAxisSize.max,
           children: [
+            AppTabBar(
+              tabsTitle: ['one', 'two'],
+              selectedTab: "two",
+              onSelect: (selectedTab) {},
+            ),
             Wrap(
               runSpacing: 10,
               spacing: 10,
