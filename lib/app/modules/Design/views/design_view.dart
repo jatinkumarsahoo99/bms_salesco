@@ -13,50 +13,53 @@ class DesignView extends GetView<DesignController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.deepPurpleAccent,
         title: const Text('DesignView'),
         centerTitle: true,
       ),
-      body: Column(
-        // crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        mainAxisSize: MainAxisSize.max,
-        children: [
-          SizedBox(width: context.width),
-          ListDropDown(
-            items: [
-              DropDownValue(key: "1", value: "one1"),
-              DropDownValue(key: "1", value: "one2"),
-              DropDownValue(key: "1", value: "one3"),
-              DropDownValue(key: "1", value: "one4"),
-            ],
-            title: "Location",
-            autoFocus: true,
-            onSelect: (DropDownValue? val) {},
-          ),
-          SizedBox(height: 40),
-          NormalTextField(
-            controller: TextEditingController(),
-            widthRatio: .3,
-            label: "Tape ID",
-          ),
-          SizedBox(height: 40),
-          NormalTextField(
-            controller: TextEditingController(),
-            widthRatio: .3,
-            label: "Tape ID",
-          ),
-          SizedBox(height: 40),
-          ListDropDown(
-            items: [
-              DropDownValue(key: "1", value: "one"),
-              DropDownValue(key: "1", value: "one"),
-              DropDownValue(key: "1", value: "one"),
-              DropDownValue(key: "1", value: "one"),
-            ],
-            title: "Location",
-            onSelect: (DropDownValue? val) {},
-          ),
-        ],
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            Wrap(
+              runSpacing: 10,
+              spacing: 10,
+              children: [
+                ListDropDown(
+                  focusNode: FocusNode(),
+                  items: [
+                    DropDownValue(key: "1", value: "one1"),
+                    DropDownValue(key: "1", value: "one2"),
+                    DropDownValue(key: "1", value: "one3"),
+                    DropDownValue(key: "1", value: "one4"),
+                  ],
+                  title: "Location",
+                  autoFocus: true,
+                  onSelect: (DropDownValue? val) {},
+                ),
+                ListDropDown(
+                  focusNode: FocusNode(),
+                  items: [
+                    DropDownValue(key: "1", value: "one1"),
+                    DropDownValue(key: "1", value: "one2"),
+                    DropDownValue(key: "1", value: "one3"),
+                    DropDownValue(key: "1", value: "one4"),
+                  ],
+                  title: "Channel",
+                  onSelect: (DropDownValue? val) {},
+                  iconData: Icons.tv_rounded,
+                ),
+                NormalTextField(
+                  controller: TextEditingController(),
+                  widthRatio: .3,
+                  label: "Tape ID",
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

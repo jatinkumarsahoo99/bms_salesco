@@ -37,29 +37,48 @@ class ListDropDown extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool hasFocus = (autoFocus ?? false);
+    bool menuOpen = false;
     DropDownValue? selectedVal = selectedValue;
     return SizedBox(
       width: context.width * (widthRatio ?? .3),
-      height: 45,
+      height: 48,
       child: StatefulBuilder(
         builder: (context, setState) {
           return Stack(
             children: [
+              /// icon widget
               Positioned(
-                left: 10,
-                top: 17,
+                left: 5,
+                top: 18,
                 child: Icon(
                   iconData ?? Icons.pin_drop,
                   color: Colors.deepPurpleAccent,
                   size: 16,
                 ),
               ),
+
+              /// selected text
+              if (selectedVal != null) ...{
+                Positioned(
+                  right: 20,
+                  top: 18,
+                  left: 35,
+                  child: Text(
+                    selectedVal?.value ?? title,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: GoogleFonts.poppins(fontWeight: FontWeight.normal, fontSize: 12, color: Colors.black),
+                  ),
+                ),
+              },
+
+              /// floating text and hint text
               AnimatedPositioned(
-                right: hasFocus ? null : 20,
-                top: hasFocus ? 0 : 18,
-                left: hasFocus ? 30 : 35,
+                right: (hasFocus || selectedVal != null) ? null : 20,
+                top: (hasFocus || selectedVal != null) ? 0 : 19,
+                left: (hasFocus || selectedVal != null) ? 30 : 35,
                 duration: Duration(milliseconds: 200),
-                child: hasFocus
+                child: (hasFocus || selectedVal != null)
                     ? DecoratedBox(
                         decoration: BoxDecoration(
                           gradient: LinearGradient(
@@ -75,29 +94,49 @@ class ListDropDown extends StatelessWidget {
                             title,
                             style: GoogleFonts.poppins(
                               fontWeight: FontWeight.w600,
-                              fontSize: 11,
+                              fontSize: 10.5,
                               color: Colors.deepPurpleAccent,
                             ),
                           ),
                         ),
                       )
                     : Text(
-                        selectedValue?.value ?? title,
+                        title,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: GoogleFonts.poppins(fontWeight: FontWeight.normal, fontSize: 10, color: const Color(0xFFABABAB)),
                       ),
               ),
+
+              /// dropdown icon
               Positioned(
                 right: 0,
                 top: 14,
-                child: Icon(
-                  hasFocus ? Icons.arrow_drop_down_rounded : Icons.arrow_drop_up_rounded,
-                  color: Color(0xFFABABAB),
+                child: SizedBox(
+                  width: 20,
+                  height: 20,
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      color: Colors.deepPurpleAccent,
+                      borderRadius: BorderRadius.circular(7),
+                    ),
+                    child: AnimatedRotation(
+                      turns: menuOpen ? 1 : 2,
+                      duration: Duration(milliseconds: 500),
+                      child: Icon(
+                        menuOpen ? Icons.arrow_drop_up_rounded : Icons.arrow_drop_down_rounded,
+                        color: Colors.white,
+                        size: 20,
+                      ),
+                    ),
+                  ),
                 ),
               ),
+
+              /// main inkwell
               Positioned(
                 bottom: 0,
+                right: 6,
                 child: InkWell(
                   focusNode: focusNode,
                   hoverColor: Colors.transparent,
@@ -108,11 +147,18 @@ class ListDropDown extends StatelessWidget {
                     if (onFocusChange != null) {
                       onFocusChange!(value);
                     }
-                    setState(() {
-                      hasFocus = value;
-                    });
+                    if (!menuOpen) {
+                      setState(() {
+                        hasFocus = value;
+                      });
+                    }
                   },
                   onTap: () {
+                    setState(() {
+                      hasFocus = true;
+                      menuOpen = true;
+                    });
+
                     final RenderBox renderBox = context.findRenderObject() as RenderBox;
                     final offset = renderBox.localToGlobal(Offset.zero);
                     final left = offset.dx;
@@ -197,43 +243,41 @@ class ListDropDown extends StatelessWidget {
 
                                   /// list
                                   Expanded(
-                                    child: StatefulBuilder(builder: (context, er) {
-                                      return ListView(
-                                        shrinkWrap: true,
-                                        children: tempList.map(
-                                          (element) {
-                                            return Padding(
-                                              padding: const EdgeInsets.symmetric(horizontal: 8),
-                                              child: InkWell(
-                                                focusColor: Color(0xFFf5f5f5),
-                                                onFocusChange: (value) {
-                                                  er(() {});
-                                                },
-                                                borderRadius: BorderRadius.circular(12),
-                                                onTap: () {
-                                                  Navigator.pop(context);
-                                                  selectedVal = element;
-                                                  setState(() {});
-                                                  onSelect(element);
-                                                  FocusScope.of(context).requestFocus(focusNode);
-                                                },
-                                                child: Padding(
-                                                  padding: const EdgeInsets.only(left: 10, right: 10, top: 12, bottom: 12),
-                                                  child: Text(
-                                                    element.value ?? "null",
-                                                    style: GoogleFonts.poppins(
-                                                      fontWeight: FontWeight.normal,
-                                                      fontSize: 10,
-                                                      color: FocusScope.of(context).hasFocus ? Colors.black : Color(0xff959595),
-                                                    ),
+                                    child: ListView(
+                                      shrinkWrap: true,
+                                      children: tempList.map(
+                                        (element) {
+                                          return Padding(
+                                            padding: const EdgeInsets.symmetric(horizontal: 8),
+                                            child: InkWell(
+                                              focusColor: Color(0xFFf5f5f5),
+                                              borderRadius: BorderRadius.circular(12),
+                                              onTap: () {
+                                                Navigator.pop(context);
+                                                selectedVal = element;
+                                                setState(() {});
+                                                onSelect(element);
+                                                if (focusNode != null) {
+                                                  focusNode?.requestFocus();
+                                                }
+                                                // FocusScope.of(context).requestFocus(focusNode);
+                                              },
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(left: 10, right: 10, top: 12, bottom: 12),
+                                                child: Text(
+                                                  element.value ?? "null",
+                                                  style: GoogleFonts.poppins(
+                                                    fontWeight: FontWeight.normal,
+                                                    fontSize: 10,
+                                                    color: Colors.black,
                                                   ),
                                                 ),
                                               ),
-                                            );
-                                          },
-                                        ).toList(),
-                                      );
-                                    }),
+                                            ),
+                                          );
+                                        },
+                                      ).toList(),
+                                    ),
                                   ),
                                 ],
                               );
@@ -241,11 +285,18 @@ class ListDropDown extends StatelessWidget {
                           ),
                         )
                       ],
-                    );
+                    ).then((value) {
+                      setState(() {
+                        menuOpen = false;
+                      });
+                      if (focusNode != null) {
+                        focusNode?.requestFocus();
+                      }
+                    });
                   },
                   child: Ink(
                     width: context.width * (widthRatio ?? .3),
-                    height: 37,
+                    height: 40,
                     decoration: BoxDecoration(
                       border: Border.all(
                         color: hasFocus ? Colors.deepPurpleAccent : Colors.transparent,
