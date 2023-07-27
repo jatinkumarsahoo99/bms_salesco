@@ -1,3 +1,5 @@
+import 'package:bms_salesco/app/providers/Utils.dart';
+
 class MarkROSFlagModel {
   String? telecastDate;
   String? telecastTime;
@@ -50,7 +52,7 @@ class MarkROSFlagModel {
       // data['originalRepeatName'] = originalRepeatName;
       // data['episodeDuration'] = episodeDuration;
     } else {
-      data['telecastDate'] = telecastDate;
+      data['telecastDate'] = Utils.dateFormatChange(telecastDate ?? "", "yyyy-MM-ddThh:mm:ss", "yyyy-MM-dd");
       data['telecastTime'] = telecastTime;
       data['programName'] = programName;
       data['programTypeName'] = programTypeName;
