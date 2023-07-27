@@ -39,7 +39,6 @@ import '../modules/UserGroupsForDealWorkflow/bindings/user_groups_for_deal_workf
 
 import '../modules/ViewOldDeal/bindings/view_old_deal_binding.dart';
 import '../modules/ViewOldDeal/views/view_old_deal_view.dart';
-import '../modules/WorkflowDefinition/bindings/workflow_definition_binding.dart';
 import '../modules/ZoneWiseInventoryUtilization/bindings/zone_wise_inventory_utilization_binding.dart';
 import '../providers/AuthGuard1.dart';
 
@@ -54,11 +53,6 @@ class AppPages {
           "?personalNo=R9vVPL7er1Os/usemWG/Iw==&loginCode=0iGe3vK5h2KGjfSKZTpmsQ==&formName=OI8ukDpPPVN0I2BEXu2h4nuFu%2BZm1ZRpvP8NL4XCXzQ%3D";
 
   static final routes = [
-    GetPage(
-      name: _Paths.HOME,
-      page: () => HomeView(),
-      binding: HomeBinding(),
-    ),
     GetPage(
       name: _Paths.ASRUN_DETAILS_REPORT,
       page: () =>

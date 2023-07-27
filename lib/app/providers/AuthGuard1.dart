@@ -67,9 +67,6 @@ class AuthGuard extends StatelessWidget {
         }
         if (controller.loginVal.value == 1) {
           switch (childName) {
-            case Routes.HOME:
-              currentWidget = HomeView();
-              break;
             case Routes.ASRUN_DETAILS_REPORT:
               currentWidget = AsrunDetailsReportView();
               break;
