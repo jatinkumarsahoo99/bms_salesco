@@ -12,14 +12,17 @@ import '../../../../widgets/gridFromMap.dart';
 import '../../../controller/HomeController.dart';
 import '../../../controller/MainController.dart';
 import '../../../data/PermissionModel.dart';
+import '../../../providers/Aes.dart';
 import '../../../providers/Utils.dart';
 import '../../../routes/app_pages.dart';
 import '../controllers/CommercialCreationAutoController.dart';
 
 class CommercialCreationAutoView
     extends GetView<CommercialCreationAutoController> {
+  CommercialCreationAutoController controllerX =
+      Get.put<CommercialCreationAutoController>(
+          CommercialCreationAutoController());
 
-  CommercialCreationAutoController controllerX=Get.put<CommercialCreationAutoController>(CommercialCreationAutoController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,13 +38,15 @@ class CommercialCreationAutoView
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Obx(() => DropDownField.formDropDown1WidthMap(
-                    controllerX.loadModel?.value?.loadData?.lstProviders??[],
+                        controllerX.loadModel?.value?.loadData?.lstProviders ??
+                            [],
                         (data) {
-                    },
-                    "Providers",
-                    0.3,
-                    searchReq: true,
-                  )),
+                          controllerX.getProviederSelect(data.value ?? "");
+                        },
+                        "Providers",
+                        0.3,
+                        searchReq: true,
+                      )),
                 ],
               ),
             ),
@@ -52,13 +57,18 @@ class CommercialCreationAutoView
                 // init: CreateBreakPatternController(),
                 builder: (controller) {
                   print("Called this Update >>>listUpdate");
-                  if (controller.loadModel?.value?.loadData?.lstNewMedia != null &&
-                      ((controller.loadModel?.value?.loadData?.lstNewMedia?.length ?? 0) > 0)) {
+                  if (controller.loadModel?.value?.loadData?.lstNewMedia !=
+                          null &&
+                      ((controller.loadModel?.value?.loadData?.lstNewMedia
+                                  ?.length ??
+                              0) >
+                          0)) {
                     return Expanded(
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 10),
                         child: DataGridFromMap(
-                          mapData: (controller.loadModel?.value?.loadData?.lstNewMedia
+                          mapData: (controller
+                              .loadModel?.value?.loadData?.lstNewMedia
                               ?.map((e) => e.toJson())
                               .toList())!,
                           widthRatio: (Get.width / 9) + 5,
@@ -66,11 +76,18 @@ class CommercialCreationAutoView
                           onload: (PlutoGridOnLoadedEvent grid) {
                             controllerX.stateManager = grid.stateManager;
                           },
+                          hideKeys: ["acid"],
                           mode: PlutoGridMode.selectWithOneTap,
                           // actionIcon: Icons.delete_forever_rounded,
-                          /*onSelected: (PlutoGridOnSelectedEvent pluto) {
-                            controllerX.onDoubleClick(pluto);
-                          },*/
+                          onSelected: (PlutoGridOnSelectedEvent pluto) {
+                            Get.toNamed(Routes.COMMERCIAL_CREATION_AUTO_DETAILS,
+                                parameters: {
+                                  "acId": Aes.encrypt(
+                                          pluto.row?.cells["acid"]?.value ??
+                                              "") ??
+                                      ""
+                                });
+                          },
                           // mode: controllerX.gridcanFocus,
                         ),
                       ),
@@ -81,7 +98,7 @@ class CommercialCreationAutoView
                         clipBehavior: Clip.hardEdge,
                         shape: RoundedRectangleBorder(
                           borderRadius:
-                          BorderRadius.circular(0), // if you need this
+                              BorderRadius.circular(0), // if you need this
                           side: BorderSide(
                             color: Colors.grey.shade300,
                             width: 1,
@@ -100,18 +117,20 @@ class CommercialCreationAutoView
                 id: "buttons",
                 init: Get.find<HomeController>(),
                 builder: (controller) {
-                  print("Data is???"+Routes.COMMERCIAL_CREATION_AUTO.replaceAll("/", ""));
+                  print("Data is???" +
+                      Routes.COMMERCIAL_CREATION_AUTO.replaceAll("/", ""));
                   int? index = Get.find<MainController>()
                       .permissionList!
                       .indexWhere((element) {
-                    return element.appFormName == Routes.COMMERCIAL_CREATION_AUTO.replaceAll("/", "");
+                    return element.appFormName ==
+                        Routes.COMMERCIAL_CREATION_AUTO.replaceAll("/", "");
                   });
-                  if(index==null || index==-1){
+                  if (index == null || index == -1) {
                     return Container();
                   }
-                  PermissionModel? formPermissions=Get.find<MainController>()
-                      .permissionList![index];
-                  print("k>>>"+jsonEncode(formPermissions.toJson()));
+                  PermissionModel? formPermissions =
+                      Get.find<MainController>().permissionList![index];
+                  print("k>>>" + jsonEncode(formPermissions.toJson()));
                   if (controller.buttons != null) {
                     return ButtonBar(
                       alignment: MainAxisAlignment.start,
@@ -121,9 +140,8 @@ class CommercialCreationAutoView
                           FormButtonWrapper(
                             btnText: btn["name"],
                             // isEnabled: btn['isDisabled'],
-                            callback:
-                                Utils.btnAccessHandler2(btn['name'],
-                                    controller, formPermissions) ==
+                            callback: Utils.btnAccessHandler2(btn['name'],
+                                        controller, formPermissions) ==
                                     null
                                 ? null
                                 : () => formHandler(btn['name']),
@@ -142,7 +160,7 @@ class CommercialCreationAutoView
   }
 
   formHandler(btn) {
-    switch(btn){
+    switch (btn) {
       case "Save":
         // controllerX.save();
         break;

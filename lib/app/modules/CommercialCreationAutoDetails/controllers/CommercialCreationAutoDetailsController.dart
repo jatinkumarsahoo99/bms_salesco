@@ -1,11 +1,15 @@
 import 'dart:convert';
 
+import 'package:bms_salesco/app/controller/MainController.dart';
+import 'package:bms_salesco/widgets/NoDataFoundPage.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:bms_salesco/app/data/DropDownValue.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../widgets/LoadingDialog.dart';
 import '../../../controller/ConnectorControl.dart';
+import '../../../providers/Aes.dart';
 import '../../../providers/ApiFactory.dart';
 import '../../../providers/Utils.dart';
 import '../../CommercialCreationAuto/ComercialAutoLoadModel.dart';
@@ -18,7 +22,6 @@ class CommercialCreationAutoDetailsController extends GetxController {
   TextEditingController som_ = TextEditingController();
   TextEditingController eom_ = TextEditingController();
 
-  // TextEditingController duration_ = TextEditingController();
   TextEditingController caption_ = TextEditingController();
   TextEditingController endDate_ = TextEditingController();
   RxString duration = RxString("00:00:00:00");
@@ -31,9 +34,10 @@ class CommercialCreationAutoDetailsController extends GetxController {
   RxString htmlBody = RxString("");
   final count = 0.obs;
   FocusNode eomFocus = FocusNode();
+  RxList<DropDownValue> secTypeList = RxList([]);
 
   Rxn<DropDownValue>? selectClient = Rxn<DropDownValue>();
-  DropDownValue? selectBrand;
+  Rxn<DropDownValue>? selectBrand = Rxn<DropDownValue>();
   Rxn<DropDownValue>? selectLanguage = Rxn<DropDownValue>();
   DropDownValue? selectCensorship;
   DropDownValue? selectRevenue;
@@ -43,6 +47,9 @@ class CommercialCreationAutoDetailsController extends GetxController {
 
   @override
   void onInit() {
+    if ((!Get.isRegistered<MainController>()) || Get.find<MainController>().user == null) {
+      Get.to(NoDataFoundPage());
+    }
     getLoad();
     getDataFromACID();
     super.onInit();
@@ -71,19 +78,28 @@ class CommercialCreationAutoDetailsController extends GetxController {
               ComercialAutoLoadModel.fromJson(map as Map<String, dynamic>);
         });
   }
+
   getRevenueLeave(String revType) {
     Get.find<ConnectorControl>().GETMETHODCALL(
         api: ApiFactory.COMMERCIAL_CREATION_REVENUE_TYPE_SELECT(revType),
-        fun: (Map map) {
-          print("Response>>>>"+jsonEncode(map));
-          loadModel?.value =
-              ComercialAutoLoadModel.fromJson(map as Map<String, dynamic>);
+        fun: (map) {
+          print("Response>>>>" + jsonEncode(map));
+          if (map is Map &&
+              map.containsKey("lstsectype") &&
+              map["lstsectype"] != null) {
+            secTypeList.value.clear();
+            map["lstsectype"].forEach((e) {
+              secTypeList.value.add(new DropDownValue(
+                  key: e["eventCode"].toString(), value: e["eventName"]));
+            });
+          }
         });
   }
 
   getDataFromACID() {
     Get.find<ConnectorControl>().GETMETHODCALL(
-        api: ApiFactory.COMMERCIAL_CREATION_SHOW_ACID("58"),
+        api: ApiFactory.COMMERCIAL_CREATION_SHOW_ACID(
+            Aes.decrypt(Get.parameters["acId"] ?? "") ?? "322"),
         fun: (Map map) {
           commercialDetails =
               CommercialDetailsModel.fromJson(map as Map<String, dynamic>);
@@ -115,20 +131,91 @@ class CommercialCreationAutoDetailsController extends GetxController {
               key: commercialDetails?.lstShowACID![0].languageCode ?? "",
               value:
                   commercialDetails?.lstShowACID![0].commerciallanguage ?? "");
-          htmlBody.value=commercialDetails?.lstShowACID![0].mailBody ?? "";
-          selectClientFromApi(commercialDetails?.lstShowACID![0].advertiser ?? "");
+          htmlBody.value = commercialDetails?.lstShowACID![0].mailBody ?? "";
+          selectClientFromApi(
+              commercialDetails?.lstShowACID![0].clientCode ?? "");
+          selectBrandFromApi(
+              commercialDetails?.lstShowACID![0].clientCode ?? "");
         });
   }
 
   selectClientFromApi(String client) {
     Get.find<ConnectorControl>().GETMETHODCALL(
-        api: ApiFactory.COMMERCIAL_CREATION_CLIENT_LIST() + client,
+        api: ApiFactory.COMMERCIAL_CREATION_SELECT_CLIENT(client),
         fun: (Map map) {
           if (map.containsKey("lstClientMaster")) {
-            selectClient?.value = DropDownValue(
-                key: map["lstClientMaster"][0]["clientcode"],
-                value: map["lstClientMaster"][0]["Clientname"]);
+            if (map["lstClientMaster"] != null) {
+              selectClient?.value = DropDownValue(
+                  key: map["lstClientMaster"][0]["clientcode"],
+                  value: map["lstClientMaster"][0]["Clientname"]);
+            }
           }
         });
+  }
+
+  selectBrandFromApi(String client) {
+    Get.find<ConnectorControl>().GETMETHODCALL(
+        api: ApiFactory.COMMERCIAL_CREATION_BRAND_LIST(client) +
+            (commercialDetails?.lstShowACID![0].brand ?? ""),
+        fun: (Map map) {
+          if (map.containsKey("lstbrandmaster")) {
+            if (map["lstbrandmaster"] != null) {
+              selectBrand?.value = DropDownValue(
+                  key: map["lstbrandmaster"][0]["Brandcode"],
+                  value: map["lstbrandmaster"][0]["Brandname"]);
+            }
+          }
+        });
+  }
+
+  void save() {
+    if (selectCensorship == null) {
+      LoadingDialog.callInfoMessage("Please select censorship");
+    } else if (selectRevenue == null) {
+      LoadingDialog.callInfoMessage("Please select revenue");
+    } else if (selectBrand?.value == null) {
+      LoadingDialog.callInfoMessage("Please select brand");
+    } else if (selectClient?.value == null) {
+      LoadingDialog.callInfoMessage("Please select client");
+    } else if (selectLanguage?.value == null) {
+      LoadingDialog.callInfoMessage("Please select client");
+    } else {
+      LoadingDialog.call();
+      var postMap = {
+        "commercialCaption": caption_.text,
+        "commercialDuration": Utils.oldBMSConvertToSecondsValue(value:duration.value).toString()??"",
+        "exportTapeCode": tapeId_.text,
+        "brandCode": selectBrand?.value?.key ?? "",
+        "som": som_.text,
+        "modifiedBy": "",
+        "killDate": DateFormat("dd-MM-yyyy").format((DateFormat("d-M-yyyy").parse(endDate_.text))),
+        "houseID": tapeId_.text,
+        "segmentNumber": 1,
+        "despatchDate": DateFormat("dd-MM-yyyy").format(DateTime.now()),
+        "RecievedOn": DateFormat("dd-MM-yyyy").format(DateTime.now()),
+        "eventtypecode": selectRevenue?.key ?? "",
+        "eventsubtype": selectSectype?.key ?? "",
+        "agencytapeid": commercialDetails?.lstShowACID![0].agencyId,
+        "languagecode": selectLanguage?.value?.key ?? "",
+        "clockid": commercialDetails?.lstShowACID![0].agencyId,
+        "eom": eom_.text,
+        "ExportTapeCaption": caption_.text,
+        "censorshipCode": selectCensorship?.key ?? "",
+        "acid": commercialDetails?.lstShowACID![0].acid.toString()
+      };
+      Get.find<ConnectorControl>().POSTMETHOD(
+          api: ApiFactory.COMMERCIAL_CREATION_SAVE(),
+          json: postMap,
+          fun: (map) {
+            Get.back();
+            if (map is Map &&
+                map.containsKey("lstsectype") &&
+                map["lstsectype"]!=null) {
+              LoadingDialog.callDataSavedMessage("Data successfully");
+            } else {
+              LoadingDialog.callInfoMessage(map.toString());
+            }
+          });
+    }
   }
 }
