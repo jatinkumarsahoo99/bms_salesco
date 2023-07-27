@@ -26,6 +26,19 @@ class CommercialCreationAutoDetailsView
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text(
+            "Details",
+            style: const TextStyle(color: Colors.deepPurple,fontWeight: FontWeight.w800)),
+        backgroundColor: Colors.white,
+        elevation: 2,
+        leading: IconButton(
+            icon: const Icon(Icons.arrow_back_ios_new_rounded,
+                color: Colors.black),
+            onPressed: () {
+              Get.back();
+            }),
+      ),
       body: SizedBox(
         height: double.maxFinite,
         width: double.maxFinite,
@@ -62,23 +75,26 @@ class CommercialCreationAutoDetailsView
                                   width: (Get.width * 0.60) + 20),
                             ),
                           ),
-                          Padding(
+                          Obx(() => Padding(
                             padding: const EdgeInsets.only(left: 5),
                             child: DropDownField.formDropDownSearchAPI2(
                                 GlobalKey(), context,
                                 title: "Brand",
                                 autoFocus: true,
+                                customInData: "lstbrandmaster",
                                 url: ApiFactory
-                                    .COMMERCIAL_CREATION_CLIENT_LIST(),
-                                parseKeyForKey: "programName",
-                                parseKeyForValue: "programName",
-                                onchanged: (data) {},
-                                // selectedValue: controllerX.selectProgram,
+                                    .COMMERCIAL_CREATION_BRAND_LIST(controllerX.selectClient?.value?.key??"",),
+                                parseKeyForKey: "Brandcode",
+                                parseKeyForValue: "Brandname",
+                                onchanged: (data) {
+                                  controllerX.selectBrand?.value=data;
+                                },
+                                selectedValue: controllerX.selectBrand?.value,
                                 width: (Get.width * 0.60) + 20
-                                // padding: const EdgeInsets.only(
+                              // padding: const EdgeInsets.only(
 
-                                ),
-                          ),
+                            ),
+                          )),
                           Padding(
                             padding: const EdgeInsets.only(left: 5),
                             child: InputFields.formField1Width(
@@ -149,8 +165,7 @@ class CommercialCreationAutoDetailsView
                             () => Padding(
                               padding: const EdgeInsets.only(left: 5),
                               child: DropDownField.formDropDown1WidthMap(
-                                  controllerX.loadModel?.value?.loadData
-                                          ?.lstRevenuetype ??
+                                  controllerX.secTypeList.value ??
                                       [], (data) {
                                 controllerX.selectSectype = data;
                               }, "Sec Type", 0.12,
@@ -194,7 +209,11 @@ class CommercialCreationAutoDetailsView
                             child: DateWithThreeTextField(
                               title: "End Date",
                               splitType: "-",
+                              // year: DateTime.now().year+1,
+                              intailDate: DateTime(DateTime.now().year+1,DateTime.now().month,DateTime.now().day),
+                              startDate: DateTime(DateTime.now().year+1,DateTime.now().month,DateTime.now().day),
                               widthRation: 0.12,
+                              formatting: "dd-MM-yyyy",
                               onFocusChange: (data) {
                                 print("Called when focus changed");
                               },
@@ -223,14 +242,14 @@ class CommercialCreationAutoDetailsView
                     ),
                     VerticalDivider(),
                     Expanded(
-                      child: Obx(() => HtmlWidget(
+                      child: Obx(() => controllerX.htmlBody.value!=""?HtmlWidget(
                             controllerX.htmlBody.value,
                         renderMode: RenderMode.column,
 
                         // set the default styling for text
                         textStyle: TextStyle(fontSize: 14),
 
-                      )),
+                      ):Container()),
                     )
                   ],
                 ),
@@ -322,7 +341,7 @@ class CommercialCreationAutoDetailsView
   formHandler(btn) {
     switch (btn) {
       case "Save":
-        // controllerX.save();
+        controllerX.save();
         break;
       case "Clear":
         Get.find<HomeController>().clearPage1();

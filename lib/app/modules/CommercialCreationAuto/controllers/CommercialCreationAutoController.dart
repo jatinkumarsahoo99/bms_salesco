@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:bms_salesco/widgets/LoadingDialog.dart';
 import 'package:get/get.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
@@ -23,39 +24,34 @@ class CommercialCreationAutoController extends GetxController {
     Get.find<ConnectorControl>().GETMETHODCALL(
         api: ApiFactory.COMMERCIAL_CREATION_GET_LOAD(),
         fun: (Map map) {
-          print("Location dta>>>" + jsonEncode(map));
           loadModel?.value=ComercialAutoLoadModel.fromJson(map as Map<String,dynamic>);
           update(["listUpdate"]);
         });
   }
-
-
-  void save() {
-    /*if (selectLocation == null) {
-      LoadingDialog.callInfoMessage("Please select location");
-    } else if (selectChannel == null) {
-      LoadingDialog.callInfoMessage("Please select location");
-    } else if (stateManager == null) {
-      LoadingDialog.callInfoMessage("Table not available");
-    } else {
-      LoadingDialog.call();
-      var postMap = {
-        "locationCode": selectLocation?.key,
-        "channelcode": selectChannel?.key,
-        "dseriesSpecs": stateManager?.rows.map((e) => e.toJsonIntConvert(intConverterKeys: ["startPosition","endPosition"],boolList:["isLastSegment"])).toList()
-      };
-      Get.find<ConnectorControl>().POSTMETHOD(
-          api: ApiFactory.DSERIES_SPECIFICATION_SAVE,
-          json: postMap,
-          fun: (map) {
-            Get.back();
-            if (map is Map && map.containsKey("save") && map["save"].toString().contains("successfully")) {
-              LoadingDialog.callDataSavedMessage("Data successfully");
-            }else{
-              LoadingDialog.callInfoMessage(map.toString());
+  getProviederSelect(String selectProvider) {
+    LoadingDialog.call();
+    Get.find<ConnectorControl>().GETMETHODCALL(
+        api: ApiFactory.COMMERCIAL_CREATION_PROVIDER_LIST(selectProvider),
+        fun: (map) {
+          Get.back();
+          // print("COMMERCIAL_CREATION_PROVIDER_LIST=>>>" + jsonEncode(map));
+          if(map is Map && map.containsKey("newMedia")){
+            if(loadModel?.value!=null){
+              // loadModel?.value?.loadData.l
+              if (map['newMedia'] != null) {
+                List<LstNewMedia> lstNewMedia = <LstNewMedia>[];
+                map['newMedia'].forEach((v) {
+                  lstNewMedia!.add(new LstNewMedia.fromJson(v));
+                });
+                loadModel?.value?.loadData?.lstNewMedia=lstNewMedia;
+                update(["listUpdate"]);
+              }
             }
-          });
-    }*/
+          }
+        });
   }
+
+
+
 
 }

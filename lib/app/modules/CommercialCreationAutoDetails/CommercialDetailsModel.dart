@@ -34,10 +34,10 @@ class LstShowACID {
   String? mailBody;
   String? createdon;
   String? clientCode;
-  Null? brandCode;
-  Null? updatedBy;
+  String? brandCode;
+  String? updatedBy;
   String? updatedOn;
-  Null? commercialCode;
+  String? commercialCode;
   String? languageCode;
   String? tapeid;
   String? endDate;

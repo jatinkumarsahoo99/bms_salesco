@@ -66,6 +66,14 @@ class LoadData {
       });
     }
   }
+  LoadData.fromJson1(Map<String, dynamic> json) {
+    if (json['lstNewMedia'] != null) {
+      lstNewMedia = <LstNewMedia>[];
+      json['lstNewMedia'].forEach((v) {
+        lstNewMedia!.add(new LstNewMedia.fromJson(v));
+      });
+    }
+  }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
@@ -100,6 +108,7 @@ class LstNewMedia {
   String? clockid;
   String? createdon;
   String? tapeid;
+  num? acid;
 
   LstNewMedia(
       {this.clientName,
@@ -126,6 +135,7 @@ class LstNewMedia {
     clockid = json['clockid'];
     createdon = json['createdon'];
     tapeid = json['tapeid'];
+    acid = json['acid'];
   }
 
   Map<String, dynamic> toJson() {
@@ -141,6 +151,7 @@ class LstNewMedia {
     data['clockid'] = this.clockid;
     data['createdon'] = this.createdon;
     data['tapeid'] = this.tapeid;
+    data['acid'] = this.acid;
     return data;
   }
 }
