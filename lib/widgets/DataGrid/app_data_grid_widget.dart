@@ -65,10 +65,13 @@ class _AppDataGridWidgetState extends State<AppDataGridWidget> {
                   columnTextStyle: GoogleFonts.poppins(fontWeight: FontWeight.w500, fontSize: 14),
                   gridBorderRadius: BorderRadius.circular(12),
                   borderColor: Colors.transparent,
+                  inactivatedBorderColor: Colors.grey,
+                  activatedBorderColor: Colors.red,
                   gridBorderColor: Colors.transparent,
                   cellTextStyle: GoogleFonts.poppins(fontWeight: FontWeight.normal, fontSize: 13),
                   defaultCellPadding: EdgeInsets.all(4),
                   rowHeight: 30,
+                  activatedColor: Colors.deepPurpleAccent.shade100,
                 ),
               ),
             );
