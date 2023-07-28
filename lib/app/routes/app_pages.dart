@@ -48,8 +48,8 @@ class AppPages {
 
   static const INITIAL = kReleaseMode
       ? Routes.HOME
-      : Routes.MARK_R_OS_FLAG +
-          "?personalNo=R9vVPL7er1Os/usemWG/Iw==&loginCode=0iGe3vK5h2KGjfSKZTpmsQ==&formName=OI8ukDpPPVN0I2BEXu2h4nuFu%2BZm1ZRpvP8NL4XCXzQ%3D";
+      : Routes.NEW_SHORT_CONTENT_FORM +
+          "?personalNo=hWlrtkk6LCUUIRgmutvmzg%3D%3D&loginCode=gsS2oEkuYKzI9aXanDqobQ%3D%3D&formName=a4Lfy%2FGb5Roxo9vLiBCqSQ%3D%3D";
   static final routes = [
     GetPage(
       name: _Paths.ASRUN_DETAILS_REPORT,
@@ -138,7 +138,8 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.COMMERCIAL_LANGUAGE_SPECIFICATION,
-      page: () => AuthGuard(childName: _Paths.COMMERCIAL_LANGUAGE_SPECIFICATION),
+      page: () =>
+          AuthGuard(childName: _Paths.COMMERCIAL_LANGUAGE_SPECIFICATION),
     ),
     GetPage(
       name: _Paths.ON_SPOT_BOOKING_SKY_MEDIA,
@@ -148,7 +149,8 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.PERIODIC_DEAL_UTILISATION_FORMAT2,
-      page: () => AuthGuard(childName: _Paths.PERIODIC_DEAL_UTILISATION_FORMAT2),
+      page: () =>
+          AuthGuard(childName: _Paths.PERIODIC_DEAL_UTILISATION_FORMAT2),
       // PeriodicDealUtilisationFormat2View(),
       binding: PeriodicDealUtilisationFormat2Binding(),
     ),
@@ -166,7 +168,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.NEW_SHORT_CONTENT_FORM,
-      page: () => const NewShortContentFormView(),
+      page: () => AuthGuard(childName: _Paths.NEW_SHORT_CONTENT_FORM),
       binding: NewShortContentFormBinding(),
     ),
     GetPage(
