@@ -1,28 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
-class RadioRow extends StatefulWidget {
+class MultiAppRadio extends StatelessWidget {
   final List items;
   final String groupValue;
   final bool? isVertical;
   final Function? onchange;
   final List<String>? disabledRadios;
-  const RadioRow({
+  final double width;
+  const MultiAppRadio({
     Key? key,
     required this.items,
     required this.groupValue,
     this.onchange,
+    this.width = 0,
     this.isVertical,
     this.disabledRadios,
   }) : super(key: key);
-
-  @override
-  State<RadioRow> createState() => _RadioRowState();
-}
-
-class _RadioRowState extends State<RadioRow> {
   @override
   Widget build(BuildContext context) {
-    return (widget.isVertical ?? false)
+    return (isVertical ?? false)
         ? Column(
             mainAxisSize: MainAxisSize.min,
             children: buildRadio(),
@@ -34,7 +31,7 @@ class _RadioRowState extends State<RadioRow> {
   }
 
   buildRadio() {
-    return widget.items
+    return items
         .map(
           (e) => Padding(
             padding: const EdgeInsets.only(left: 5),
@@ -43,17 +40,21 @@ class _RadioRowState extends State<RadioRow> {
               children: [
                 Radio<String>(
                   value: e,
-                  groupValue: widget.groupValue,
-                  onChanged: widget.disabledRadios?.contains(e) ?? false
+                  splashRadius: 15,
+                  groupValue: groupValue,
+                  onChanged: disabledRadios?.contains(e) ?? false
                       ? null
                       : (value) {
-                          widget.onchange!(value);
+                          onchange!(value);
                         },
                 ),
+                SizedBox(width: width),
                 Text(
                   e,
-                  style: TextStyle(
-                    color: widget.disabledRadios?.contains(e) ?? false ? Colors.grey : Colors.black,
+                  style: GoogleFonts.poppins(
+                    fontWeight: FontWeight.normal,
+                    fontSize: 13,
+                    color: disabledRadios?.contains(e) ?? false ? Colors.grey : Colors.black,
                   ),
                 ),
               ],
