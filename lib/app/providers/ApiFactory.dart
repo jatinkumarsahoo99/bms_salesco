@@ -610,6 +610,13 @@ class ApiFactory {
   static String get DEAL_WORK_FLOW_DEFINITION_GET_DISPLAY => "$BASE_URL/api/DealWorkflowDefinition/GetDisplay";
   static String get DEAL_WORK_FLOW_DEFINITION_SAVE => "$BASE_URL/api/DealWorkflowDefinition/Postsave";
 
+  //////////////////////////////////////// GeoProgramUpdate ////////////////////////////
+  static String get GEO_PROGRAM_UPDATE_LOAD => "$BASE_URL/api/GeoProgramUpdate/GetGPUOnLoad";
+  static String get GEO_PROGRAM_UPDATE_UPDATE => "$BASE_URL/api/GeoProgramUpdate/PostUpdate";
+
+  //////////////////////////////// OneSpotBooking ////////////////////////////////
+  static String get ONE_SPOT_BOOKING_LOAD => "$BASE_URL/api/OneSpotBooking/GetOSBOnload";
+
 
   ///
   ///

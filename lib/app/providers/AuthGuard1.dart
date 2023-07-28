@@ -26,7 +26,7 @@ import '../modules/AuditStatusReport/views/audit_status_report_view.dart';
 import '../modules/DealRecoSummary/views/deal_reco_summary_view.dart';
 import '../modules/EDI_Mapping/views/e_d_i_mapping_view.dart';
 
-import '../modules/OnSpotBookingSkyMedia/views/on_spot_booking_sky_media_view.dart';
+import '../modules/OneSpotBookingSkyMedia/views/one_spot_booking_sky_media_view.dart';
 import '../modules/PeriodicDealUtilisationFormat2/views/periodic_deal_utilisation_format2_view.dart';
 import '../modules/RateCardfromDealWorkflow/views/rate_cardfrom_deal_workflow_view.dart';
 import '../modules/RescheduleImport/views/reschedule_import_view.dart';
@@ -106,8 +106,8 @@ class AuthGuard extends StatelessWidget {
             case Routes.WORKFLOW_DEFINITION:
               currentWidget = WorkflowDefinitionView();
               break;
-            case Routes.ON_SPOT_BOOKING_SKY_MEDIA:
-              currentWidget = OnSpotBookingSkyMediaView();
+            case Routes.ONE_SPOT_BOOKING_SKY_MEDIA:
+              currentWidget = OneSpotBookingSkyMediaView();
               break;
             case Routes.PERIODIC_DEAL_UTILISATION_FORMAT2:
               currentWidget = PeriodicDealUtilisationFormat2View();

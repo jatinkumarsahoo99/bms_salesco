@@ -13,7 +13,7 @@ import '../../../providers/ApiFactory.dart';
 import '../../../providers/Utils.dart';
 import '../controllers/e_d_i_mapping_controller.dart';
 
-class EDIMappingView extends GetView<EDIMappingController> {
+class EDIMappingView extends StatelessWidget {
    EDIMappingView({Key? key}) : super(key: key);
 
    EDIMappingController controllerX =

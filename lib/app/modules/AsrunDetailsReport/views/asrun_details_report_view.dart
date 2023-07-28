@@ -12,7 +12,7 @@ import '../../../data/PermissionModel.dart';
 import '../../../providers/Utils.dart';
 import '../controllers/asrun_details_report_controller.dart';
 
-class AsrunDetailsReportView extends GetView<AsrunDetailsReportController> {
+class AsrunDetailsReportView extends StatelessWidget {
    AsrunDetailsReportView({Key? key}) : super(key: key);
 
    AsrunDetailsReportController controllerX =

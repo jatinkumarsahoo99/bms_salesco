@@ -17,7 +17,7 @@ import '../../../providers/Utils.dart';
 import '../DealWorkDefinitionGridModel.dart';
 import '../controllers/workflow_definition_controller.dart';
 
-class WorkflowDefinitionView extends GetView<WorkflowDefinitionController> {
+class WorkflowDefinitionView extends StatelessWidget {
   WorkflowDefinitionView({Key? key}) : super(key: key);
 
   WorkflowDefinitionController controllerX =
@@ -190,52 +190,65 @@ class WorkflowDefinitionView extends GetView<WorkflowDefinitionController> {
                                           print(">>>>" + v);
                                           controllerX.selectRadio1.value = v;
                                           controllerX.selectRadio1.refresh();
+                                          if(v == "Employee"){
+                                            controllerX.userEnable.value = true;
+                                            controllerX.groupEnable.value = false;
+                                            controllerX.groupEnable.refresh();
+                                            controllerX.userEnable.refresh();
+                                          }else{
+                                            controllerX.userEnable.value = false;
+                                            controllerX.groupEnable.value = true;
+                                            controllerX.groupEnable.refresh();
+                                            controllerX.userEnable.refresh();
+                                          }
                                         },
                                       )),
                                   SizedBox(
                                     height: 4,
                                   ),
-                                  DropDownField.formDropDownSearchAPI2(
-                                    GlobalKey(),
-                                    context,
-                                    width: context.width * 0.36,
-                                    onchanged: (DropDownValue? val) {
-                                      print(">>>" + val.toString());
-                                      controllerX.selectedUser = val;
-                                      // controllerX.getProductDetails(val?.key??"");
-                                      // controllerX.fetchClientDetails((val?.value ??"")??"");
-                                    },
-                                    title: 'User',
-                                    url: ApiFactory
-                                        .DEAL_WORK_FLOW_DEFINITION_GET_USER_SEARCH,
-                                    parseKeyForKey: "PersonnelNo",
-                                    parseKeyForValue: 'Employees',
-                                    selectedValue: controllerX.selectedProduct,
-                                    autoFocus: true,
-                                    // maxLength: 1
-                                  ),
+                                 Obx(()=>DropDownField.formDropDownSearchAPI2(
+                                     GlobalKey(),
+                                     context,
+                                     width: context.width * 0.36,
+                                     onchanged: (DropDownValue? val) {
+                                       print(">>>" + val.toString());
+                                       controllerX.selectedUser = val;
+                                       // controllerX.getProductDetails(val?.key??"");
+                                       // controllerX.fetchClientDetails((val?.value ??"")??"");
+                                     },
+                                     title: 'User',
+                                     url: ApiFactory
+                                         .DEAL_WORK_FLOW_DEFINITION_GET_USER_SEARCH,
+                                     parseKeyForKey: "PersonnelNo",
+                                     parseKeyForValue: 'Employees',
+                                     selectedValue: controllerX.selectedUser,
+                                     // autoFocus: true,
+                                     isEnable: controllerX.userEnable.value
+                                   // maxLength: 1
+                                 ),) ,
                                   SizedBox(
                                     height: 4,
                                   ),
-                                  DropDownField.formDropDownSearchAPI2(
-                                    GlobalKey(),
-                                    context,
-                                    width: context.width * 0.36,
-                                    onchanged: (DropDownValue? val) {
-                                      print(">>>" + val.toString());
-                                      controllerX.selectedGroup = val;
-                                      // controllerX.getProductDetails(val?.key??"");
-                                      // controllerX.fetchClientDetails((val?.value ??"")??"");
-                                    },
-                                    title: 'Group',
-                                    url: ApiFactory
-                                        .DEAL_WORK_FLOW_DEFINITION_GET_GROUP_SEARCH,
-                                    parseKeyForKey: "GroupID",
-                                    parseKeyForValue: 'GroupName',
-                                    selectedValue: controllerX.selectedGroup,
-                                    autoFocus: true,
-                                    // maxLength: 1
-                                  ),
+                                 Obx(()=>DropDownField.formDropDownSearchAPI2(
+                                     GlobalKey(),
+                                     context,
+                                     width: context.width * 0.36,
+                                     onchanged: (DropDownValue? val) {
+                                       print(">>>" + val.toString());
+                                       controllerX.selectedGroup = val;
+                                       // controllerX.getProductDetails(val?.key??"");
+                                       // controllerX.fetchClientDetails((val?.value ??"")??"");
+                                     },
+                                     title: 'Group',
+                                     url: ApiFactory
+                                         .DEAL_WORK_FLOW_DEFINITION_GET_GROUP_SEARCH,
+                                     parseKeyForKey: "GroupID",
+                                     parseKeyForValue: 'GroupName',
+                                     selectedValue: controllerX.selectedGroup,
+                                     autoFocus: true,
+                                     isEnable: controllerX.groupEnable.value
+                                   // maxLength: 1
+                                 ),) ,
                                   SizedBox(
                                     height: 4,
                                   ),
@@ -288,20 +301,9 @@ class WorkflowDefinitionView extends GetView<WorkflowDefinitionController> {
                                         child: FormButtonWrapper(
                                           btnText: "Add",
                                           callback: () {
-                                            if (controllerX
+                                           /* if (controllerX
                                                     .selectRadio2.value ==
                                                 "After") {
-                                              /*controllerX.gridStateManager?.insertRows((controllerX.selectedIndex??0)+1,
-                                                  [PlutoRow(cells: {
-                                                    "approvalSequenceID": PlutoCell(value: "0"),
-                                                    "sequenceName": PlutoCell(value: controllerX.stepNameController.text??""),
-                                                    "formName": PlutoCell(value: controllerX.formNameController.text??""),
-                                                    "groupID": PlutoCell(value: controllerX.selectedGroup?.key??""),
-                                                    "groupName": PlutoCell(value:controllerX.selectedGroup?.value??""),
-                                                    "personnelNo": PlutoCell(value: controllerX.selectedUser?.key??""),
-                                                    "employees": PlutoCell(value:controllerX.selectedUser?.value??""),
-                                                  } )]);*/
-
                                               if (controllerX
                                                           .approvalSequenceId !=
                                                       null &&
@@ -311,7 +313,9 @@ class WorkflowDefinitionView extends GetView<WorkflowDefinitionController> {
                                                   controllerX
                                                           .approvalSequenceId !=
                                                       "0") {
-                                                int selIndex =(controllerX.selectedIndex ?? 0)  ;
+                                                int selIndex = (controllerX
+                                                        .selectedIndex ??
+                                                    0);
                                                 controllerX
                                                         .dealWorkDefinitionGridModel
                                                         ?.display?[selIndex]
@@ -363,7 +367,10 @@ class WorkflowDefinitionView extends GetView<WorkflowDefinitionController> {
                                                         .selectedGroup?.value ??
                                                     "";
                                               } else {
-                                                int selIndex =(controllerX.selectedIndex ?? 0) +1  ;
+                                                int selIndex = (controllerX
+                                                            .selectedIndex ??
+                                                        0) +
+                                                    1;
                                                 controllerX.dealWorkDefinitionGridModel?.display?.insert(
                                                     selIndex,
                                                     Display(
@@ -378,10 +385,11 @@ class WorkflowDefinitionView extends GetView<WorkflowDefinitionController> {
                                                                 .formNameController
                                                                 .text ??
                                                             "",
-                                                        groupID: int.parse(controllerX
-                                                                .selectedGroup
-                                                                ?.key ??
-                                                            "0"),
+                                                        groupID: int.parse(
+                                                            controllerX
+                                                                    .selectedGroup
+                                                                    ?.key ??
+                                                                "0"),
                                                         groupName: controllerX
                                                                 .selectedGroup
                                                                 ?.value ??
@@ -392,17 +400,8 @@ class WorkflowDefinitionView extends GetView<WorkflowDefinitionController> {
                                               }
                                               controllerX.clearNew();
                                               controllerX.update(['grid']);
-                                            } else {
-                                              /* controllerX.gridStateManager?.insertRows((controllerX.selectedIndex??0),
-                                                  [PlutoRow(cells: {
-                                                    "approvalSequenceID": PlutoCell(value: "0"),
-                                                    "sequenceName": PlutoCell(value: controllerX.stepNameController.text??""),
-                                                    "formName": PlutoCell(value: controllerX.formNameController.text??""),
-                                                    "groupID": PlutoCell(value: controllerX.selectedGroup?.key??""),
-                                                    "groupName": PlutoCell(value:controllerX.selectedGroup?.value??""),
-                                                    "personnelNo": PlutoCell(value: controllerX.selectedUser?.key??""),
-                                                    "employees": PlutoCell(value:controllerX.selectedUser?.value??""),
-                                                  } )]);*/
+                                            }
+                                            else {
                                               if (controllerX
                                                           .approvalSequenceId !=
                                                       null &&
@@ -506,8 +505,8 @@ class WorkflowDefinitionView extends GetView<WorkflowDefinitionController> {
                                               }
                                               controllerX.clearNew();
                                               controllerX.update(['grid']);
-                                            }
-                                            // controllerX.callGetRetrieve();
+                                            }*/
+                                            controllerX.btnAddClick();
                                           },
                                           showIcon: false,
                                         ),
@@ -714,70 +713,75 @@ class WorkflowDefinitionView extends GetView<WorkflowDefinitionController> {
             ),
             Expanded(
               child: GetBuilder<WorkflowDefinitionController>(
-                id: "copyToGrid",
-                builder: (context) {
-                  return Container(
-                    decoration:
-                        BoxDecoration(border: Border.all(color: Colors.grey)),
-                    child: (controllerX.onLeaveCopyZoneModel != null &&
-                            controllerX.onLeaveCopyZoneModel?.onLeaveCopyZone !=
-                                null &&
-                            (controllerX.onLeaveCopyZoneModel?.onLeaveCopyZone
-                                        ?.length ??
-                                    0) >
-                                0)
-                        ? ListView.builder(
-                            itemCount: controllerX.onLeaveCopyZoneModel
-                                    ?.onLeaveCopyZone?.length ??
-                                0,
-                            itemBuilder: (BuildContext context, int index) {
-                              return InkWell(
-                                onTap: (){
-                                  controllerX.selectedCopyToIndex = index;
-                                  controllerX.update(['copyToGrid']);
-                                },
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                  children: [
-                                    Checkbox(
-                                        value: controllerX.onLeaveCopyZoneModel
-                                            ?.onLeaveCopyZone?[index].isChecked,
-                                        onChanged: (val) {
-                                          controllerX
+                  id: "copyToGrid",
+                  builder: (context) {
+                    return Container(
+                      decoration:
+                          BoxDecoration(border: Border.all(color: Colors.grey)),
+                      child: (controllerX.onLeaveCopyZoneModel != null &&
+                              controllerX
+                                      .onLeaveCopyZoneModel?.onLeaveCopyZone !=
+                                  null &&
+                              (controllerX.onLeaveCopyZoneModel?.onLeaveCopyZone
+                                          ?.length ??
+                                      0) >
+                                  0)
+                          ? ListView.builder(
+                              itemCount: controllerX.onLeaveCopyZoneModel
+                                      ?.onLeaveCopyZone?.length ??
+                                  0,
+                              itemBuilder: (BuildContext context, int index) {
+                                return InkWell(
+                                  onTap: () {
+                                    controllerX.selectedCopyToIndex = index;
+                                    controllerX.update(['copyToGrid']);
+                                  },
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    children: [
+                                      Checkbox(
+                                          value: controllerX
                                               .onLeaveCopyZoneModel
                                               ?.onLeaveCopyZone?[index]
-                                              .isChecked = val;
-                                          controllerX.selectedCopyToIndex = index;
-                                          controllerX.update(['copyToGrid']);
-                                        }),
-                                    Expanded(
-                                      child: Container(
-                                          color:
-                                              (controllerX.selectedCopyToIndex == index)
-                                                  ? Colors.deepPurpleAccent
-                                                  : Colors.white,
-                                          child: Text(
+                                              .isChecked,
+                                          onChanged: (val) {
                                             controllerX
-                                                    .onLeaveCopyZoneModel
-                                                    ?.onLeaveCopyZone?[index]
-                                                    .stationname ??
-                                                "",
-                                            style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 12),
-                                          )),
-                                    ),
-                                    SizedBox(
-                                      width: 7,
-                                    )
-                                  ],
-                                ),
-                              );
-                            })
-                        : Container(),
-                  );
-                }
-              ),
+                                                .onLeaveCopyZoneModel
+                                                ?.onLeaveCopyZone?[index]
+                                                .isChecked = val;
+                                            controllerX.selectedCopyToIndex =
+                                                index;
+                                            controllerX.update(['copyToGrid']);
+                                          }),
+                                      Expanded(
+                                        child: Container(
+                                            color: (controllerX
+                                                        .selectedCopyToIndex ==
+                                                    index)
+                                                ? Colors.deepPurpleAccent
+                                                : Colors.white,
+                                            child: Text(
+                                              controllerX
+                                                      .onLeaveCopyZoneModel
+                                                      ?.onLeaveCopyZone?[index]
+                                                      .stationname ??
+                                                  "",
+                                              style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 12),
+                                            )),
+                                      ),
+                                      SizedBox(
+                                        width: 7,
+                                      )
+                                    ],
+                                  ),
+                                );
+                              })
+                          : Container(),
+                    );
+                  }),
             )
           ],
         ),

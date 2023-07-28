@@ -50,7 +50,7 @@ class Display {
     groupName = json['groupName'];
     personnelNo = json['personnelNo'];
     employees = json['employees'];
-    employeeCode = json['employeeCode'];
+    employeeCode = json['personnelNo'];
   }
 
   Map<String, dynamic> toJson() {
@@ -62,7 +62,7 @@ class Display {
     data['groupName'] = this.groupName;
     data['personnelNo'] = this.personnelNo;
     data['employees'] = this.employees;
-    data['employeeCode'] = this.employeeCode;
+    data['employeeCode'] = this.personnelNo;
     return data;
   }
 
@@ -71,11 +71,11 @@ class Display {
     data['approvalSequenceID'] = this.approvalSequenceID;
     data['sequenceName'] = this.sequenceName;
     data['formName'] = this.formName;
-    data['groupID'] = this.groupID;
-    data['groupName'] = this.groupName;
-    data['personnelNo'] = this.personnelNo;
-    data['employeename'] = this.employees;
-    data['employeeCode'] = this.personnelNo;
+    data['groupID'] = (this.groupID == "0")?null:this.groupID;
+    data['GroupName'] = this.groupName;
+    data['personnelNo'] = this.personnelNo??"";
+    data['employeename'] = this.employees??"";
+    data['employeeCode'] = this.personnelNo??"";
     return data;
   }
 

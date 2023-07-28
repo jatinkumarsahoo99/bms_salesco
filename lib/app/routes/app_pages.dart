@@ -23,7 +23,7 @@ import '../modules/MarkROsFlag/bindings/mark_r_os_flag_binding.dart';
 import '../modules/MonthlyReport/bindings/monthly_report_binding.dart';
 import '../modules/NewShortContentForm/bindings/new_short_content_form_binding.dart';
 import '../modules/NewShortContentForm/views/new_short_content_form_view.dart';
-import '../modules/OnSpotBookingSkyMedia/bindings/on_spot_booking_sky_media_binding.dart';
+import '../modules/OneSpotBookingSkyMedia/bindings/one_spot_booking_sky_media_binding.dart';
 import '../modules/PeriodicDealUtilisationFormat2/bindings/periodic_deal_utilisation_format2_binding.dart';
 import '../modules/ProductLevel1/bindings/product_level1_binding.dart';
 import '../modules/ProductLevel2/bindings/product_level2_binding.dart';
@@ -49,7 +49,7 @@ class AppPages {
 
   static const INITIAL = kReleaseMode
       ? Routes.HOME
-      : Routes.WORKFLOW_DEFINITION +
+      : Routes.ONE_SPOT_BOOKING_SKY_MEDIA +
           "?personalNo=R9vVPL7er1Os/usemWG/Iw==&loginCode=0iGe3vK5h2KGjfSKZTpmsQ==&formName=OI8ukDpPPVN0I2BEXu2h4nuFu%2BZm1ZRpvP8NL4XCXzQ%3D";
 
   static final routes = [
@@ -146,10 +146,10 @@ class AppPages {
       page: () => AuthGuard(childName: _Paths.COMMERCIAL_LANGUAGE_SPECIFICATION),
     ),
     GetPage(
-      name: _Paths.ON_SPOT_BOOKING_SKY_MEDIA,
-      page: () => AuthGuard(childName: _Paths.ON_SPOT_BOOKING_SKY_MEDIA),
+      name: _Paths.ONE_SPOT_BOOKING_SKY_MEDIA,
+      page: () => AuthGuard(childName: _Paths.ONE_SPOT_BOOKING_SKY_MEDIA),
       // OnSpotBookingSkyMediaView(),
-      binding: OnSpotBookingSkyMediaBinding(),
+      binding: OneSpotBookingSkyMediaBinding(),
     ),
     GetPage(
       name: _Paths.PERIODIC_DEAL_UTILISATION_FORMAT2,

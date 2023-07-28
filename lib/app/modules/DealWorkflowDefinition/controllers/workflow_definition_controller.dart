@@ -14,6 +14,8 @@ import '../WorkFlowSaveResModel.dart';
 class WorkflowDefinitionController extends GetxController {
   //TODO: Implement WorkflowDefinitionController
   Rx<bool> isEnable = Rx<bool>(true);
+  Rx<bool> userEnable = Rx<bool>(true);
+  Rx<bool> groupEnable = Rx<bool>(false);
   final count = 0.obs;
   var clientDetails = RxList<DropDownValue>();
   DropDownValue? selectedClientDetails;
@@ -220,38 +222,48 @@ class WorkflowDefinitionController extends GetxController {
               map['display'].length > 0) {
             dealWorkDefinitionGridModel = DealWorkDefinitionGridModel.fromJson(
                 map as Map<String, dynamic>);
+            approvalSequenceId="";
+            clearNew();
             update(['grid']);
           } else {
-            dealWorkDefinitionGridModel = null;
+            dealWorkDefinitionGridModel = DealWorkDefinitionGridModel(display: []);
+            approvalSequenceId="";
+            clearNew();
             update(['grid']);
           }
         });
   }
+
   WorkFlowSaveResModel? workFlowSaveResModel;
   saveDealWorkFlow() {
-    if(selectedZone == null || selectedStation == null
-    || selectedLocation == null || selectedChannel == null
-    ){
+    if (selectedZone == null ||
+        selectedStation == null ||
+        selectedLocation == null ||
+        selectedChannel == null) {
       LoadingDialog.showErrorDialog("Please select required dropdown");
-    }else{
+    } else {
       LoadingDialog.call();
-      if(onLeaveCopyZoneModel == null){
+      if (onLeaveCopyZoneModel == null) {
         onLeaveCopyZoneModel = OnLeaveCopyZoneModel(onLeaveCopyZone: []);
       }
 
-      List<OnLeaveCopyZone>? stationLst = onLeaveCopyZoneModel?.onLeaveCopyZone?.where((element) => element.isChecked == true).toList();
+      List<OnLeaveCopyZone>? stationLst = onLeaveCopyZoneModel?.onLeaveCopyZone
+          ?.where((element) => element.isChecked == true)
+          .toList();
       Map<String, dynamic> postData = {
-        "locationcode": selectedLocation?.key??"",
-        "channelcode":selectedChannel?.key?? "",
-        "zonecode":selectedZone?.key?? "",
-        "workflowid": selectedType?.key??"",
-        "stationCode": selectedStation?.key?? "",
-        "teamid": selectedTeam?.key??"",
-        "lstSavedt": dealWorkDefinitionGridModel?.display?.map((e) => e.toJson1()).toList(),
+        "locationcode": selectedLocation?.key ?? "",
+        "channelcode": selectedChannel?.key ?? "",
+        "zonecode": selectedZone?.key ?? "",
+        "workflowid": selectedType?.key ?? "",
+        "stationCode": selectedStation?.key ?? "",
+        "teamid": selectedTeam?.key ?? "",
+        "lstSavedt": dealWorkDefinitionGridModel?.display
+            ?.map((e) => e.toJson1())
+            .toList(),
         "station": {
-          "locationcode":selectedCopyToLocation?.key?? "",
-          "channelcode":selectedCopyToChannel?.key?? "",
-          "zonecode":selectedCopyToZone?.key??"",
+          "locationcode": selectedCopyToLocation?.key ?? "",
+          "channelcode": selectedCopyToChannel?.key ?? "",
+          "zonecode": selectedCopyToZone?.key ?? "",
           "stationLst": stationLst?.map((e) => e.toJson()).toList()
         }
       };
@@ -261,44 +273,50 @@ class WorkflowDefinitionController extends GetxController {
           json: postData,
           fun: (map) {
             Get.back();
-            if(map is Map && map.containsKey("save") && map['save'] != null
-                && map['save'].containsKey('lstApprovalTrail') &&
-                map ['save']['lstApprovalTrail'] != null && map['save']['lstApprovalTrail'] .length > 0 ){
+            print(">>>>res"+map.toString());
+
+            if (map is Map &&
+                map.containsKey("save") &&
+                map['save'] != null &&
+                map['save'].containsKey('lstApprovalTrail') &&
+                map['save']['lstApprovalTrail'] != null &&
+                map['save']['lstApprovalTrail'].length > 0) {
               dealWorkDefinitionGridModel?.display?.clear();
-              workFlowSaveResModel = WorkFlowSaveResModel.fromJson(map as Map<String,dynamic>) ;
-              workFlowSaveResModel?.save?.lstApprovalTrail ?.forEach((e){
+              workFlowSaveResModel =
+                  WorkFlowSaveResModel.fromJson(map as Map<String, dynamic>);
+              workFlowSaveResModel?.save?.lstApprovalTrail?.forEach((e) {
                 dealWorkDefinitionGridModel?.display?.add(Display(
-                    approvalSequenceID: e.approvalSequenceID??0,
-                    employees: e.employees??"",
-                    formName:e.formName??"",
-                    groupID: e.groupID??0,
-                    groupName: e.groupName??"",
-                    personnelNo:
-                    e.personnelNo?? "",
-                    sequenceName: e.sequenceName ?? ""
-                ));
+                    approvalSequenceID: e.approvalSequenceID ?? 0,
+                    employees: e.employees ?? "",
+                    formName: e.formName ?? "",
+                    groupID: e.groupID ?? 0,
+                    groupName: e.groupName ?? "",
+                    personnelNo: e.personnelNo ?? "",
+                    sequenceName: e.sequenceName ?? ""));
               });
               update(['grid']);
-
-            }else{
+            } else {
               LoadingDialog.showErrorDialog("Something went wrong");
             }
             // print("map>>>"+ jsonEncode(map).toString());
           });
     }
-
   }
 
   onDoubleTap(int index) {
-    print(">>>>>>>>>>" +
-        ((gridStateManager?.rows[index].cells['groupID'])?.value).toString());
+    // print(">>>>>>>>>>" + ((gridStateManager?.rows[index].cells['groupID'])?.value).toString());
     if ((gridStateManager?.rows[index].cells['groupID'])?.value != null &&
-        (gridStateManager?.rows[index].cells['groupID'])?.value != "") {
+        (gridStateManager?.rows[index].cells['groupID'])?.value != "" &&
+        (gridStateManager?.rows[index].cells['groupID'])?.value != "0"
+    ) {
       selectRadio1.value = "User Group";
       selectedGroup = DropDownValue(
           value:
               (gridStateManager?.rows[index].cells['groupName'])?.value ?? "",
           key: (gridStateManager?.rows[index].cells['groupID'])?.value ?? "");
+      selectedUser = null;
+      userEnable.value = false;
+      groupEnable.value = true;
     } else {
       selectRadio1.value = "Employee";
       selectedUser = DropDownValue(
@@ -306,6 +324,10 @@ class WorkflowDefinitionController extends GetxController {
               (gridStateManager?.rows[index].cells['employees'])?.value ?? "",
           key: (gridStateManager?.rows[index].cells['personnelNo'])?.value ??
               "");
+      print(">>>>>>"+selectedUser!.value.toString() + selectedUser!.key.toString());
+      selectedGroup = null;
+      userEnable.value = true;
+      groupEnable.value = false;
     }
     stepNameController.text =
         (gridStateManager?.rows[index].cells['sequenceName'])?.value ?? "";
@@ -319,6 +341,94 @@ class WorkflowDefinitionController extends GetxController {
     // gridStateManager.ce
   }
 
+  btnAddClick() {
+    if (selectRadio2.value == "After") {
+      if (approvalSequenceId != null &&
+          approvalSequenceId != "" &&
+          approvalSequenceId != "0") {
+        int selIndex = (selectedIndex ?? 0);
+        dealWorkDefinitionGridModel?.display?[selIndex].approvalSequenceID =
+            int.parse(approvalSequenceId ?? "0");
+        dealWorkDefinitionGridModel?.display?[selIndex].employees =
+            selectedUser?.value ?? "";
+
+        dealWorkDefinitionGridModel?.display?[selIndex].formName =
+            formNameController.text ?? "";
+
+        dealWorkDefinitionGridModel?.display?[selIndex].personnelNo =
+            selectedUser?.key ?? "";
+
+        dealWorkDefinitionGridModel?.display?[selIndex].groupID =
+        (selectedGroup?.key != null &&
+            selectedGroup?.key != "" )? int.parse(selectedGroup!.key!):null ;
+
+        dealWorkDefinitionGridModel?.display?[selIndex].sequenceName =
+            stepNameController.text ?? "";
+
+        dealWorkDefinitionGridModel?.display?[selIndex].groupName =
+            selectedGroup?.value ?? "";
+      } else {
+        int selIndex = (selectedIndex ?? 0) + 1;
+        if(dealWorkDefinitionGridModel?.display?.length == 0){
+          selIndex = 0;
+        }
+        dealWorkDefinitionGridModel?.display?.insert(
+            selIndex,
+            Display(
+                approvalSequenceID: int.parse(approvalSequenceId ?? "0"),
+                employees: selectedUser?.value ?? "",
+                formName: formNameController.text ?? "",
+                groupID: (selectedGroup?.key != null &&
+                    selectedGroup?.key != "" )? int.parse(selectedGroup!.key!):null,
+                groupName: selectedGroup?.value ?? "",
+                personnelNo: selectedUser?.key ?? "",
+                sequenceName: stepNameController.text ?? ""));
+      }
+      clearNew();
+      update(['grid']);
+    } else {
+      if (approvalSequenceId != null &&
+          approvalSequenceId != "" &&
+          approvalSequenceId != "0") {
+        dealWorkDefinitionGridModel?.display?[selectedIndex ?? 0]
+            .approvalSequenceID = int.parse(approvalSequenceId ?? "0");
+        dealWorkDefinitionGridModel?.display?[selectedIndex ?? 0].employees =
+            selectedUser?.value ?? "";
+
+        dealWorkDefinitionGridModel?.display?[selectedIndex ?? 0].formName =
+            formNameController.text ?? "";
+
+        dealWorkDefinitionGridModel?.display?[selectedIndex ?? 0].personnelNo =
+            selectedUser?.key ?? "";
+
+        dealWorkDefinitionGridModel?.display?[selectedIndex ?? 0].groupID =
+        (selectedGroup?.key != null &&
+            selectedGroup?.key != "" )? int.parse(selectedGroup!.key!):null ;
+
+        dealWorkDefinitionGridModel?.display?[selectedIndex ?? 0].sequenceName =
+            stepNameController.text ?? "";
+
+        dealWorkDefinitionGridModel?.display?[selectedIndex ?? 0].groupName =
+            selectedGroup?.value ?? "";
+      } else {
+        dealWorkDefinitionGridModel?.display?.insert(
+            selectedIndex ?? 0,
+            Display(
+                approvalSequenceID: int.parse(approvalSequenceId ?? "0"),
+                employees: selectedUser?.value ?? "",
+                formName: formNameController.text ?? "",
+                groupID:(selectedGroup?.key != null &&
+                    selectedGroup?.key != "" )? int.parse(selectedGroup!.key!):null,
+                groupName: selectedGroup?.value ?? "",
+                personnelNo: selectedUser?.key ?? "",
+                sequenceName: stepNameController.text ?? ""));
+      }
+      clearNew();
+      update(['grid']);
+    }
+    // controllerX.callGetRetrieve();
+  }
+
   clearNew() {
     selectedGroup = null;
     selectedUser = null;
@@ -328,11 +438,14 @@ class WorkflowDefinitionController extends GetxController {
     approvalSequenceId = "0";
     selectedGroup = null;
     selectedUser = null;
+    update(['top']);
   }
-  clearAll(){
+
+  clearAll() {
     Get.delete<WorkflowDefinitionController>();
     Get.find<HomeController>().clearPage1();
   }
+
   @override
   void onInit() {
     fetchAllLoaderData();
@@ -350,11 +463,12 @@ class WorkflowDefinitionController extends GetxController {
   }
 
   formHandler(String string) {
-    if(string == "Save"){
+    if (string == "Save") {
       saveDealWorkFlow();
-    }else if(string == "Clear"){
+    } else if (string == "Clear") {
       clearAll();
     }
   }
+
   void increment() => count.value++;
 }

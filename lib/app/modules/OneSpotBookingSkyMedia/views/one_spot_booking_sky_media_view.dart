@@ -10,14 +10,14 @@ import '../../../controller/HomeController.dart';
 import '../../../controller/MainController.dart';
 import '../../../data/PermissionModel.dart';
 import '../../../providers/Utils.dart';
-import '../controllers/on_spot_booking_sky_media_controller.dart';
+import '../controllers/one_spot_booking_sky_media_controller.dart';
 
-class OnSpotBookingSkyMediaView
-    extends GetView<OnSpotBookingSkyMediaController> {
-   OnSpotBookingSkyMediaView({Key? key}) : super(key: key);
+class OneSpotBookingSkyMediaView extends StatelessWidget {
 
-   OnSpotBookingSkyMediaController controllerX =
-   Get.put<OnSpotBookingSkyMediaController>(OnSpotBookingSkyMediaController());
+   OneSpotBookingSkyMediaView({Key? key}) : super(key: key);
+
+   OneSpotBookingSkyMediaController controllerX =
+   Get.put<OneSpotBookingSkyMediaController>(OneSpotBookingSkyMediaController());
 
 
   @override
@@ -54,17 +54,18 @@ class OnSpotBookingSkyMediaView
                               0.1,
                               isEnable: controllerX.isEnable,
                               selected: controllerX.selectedLocation,
-                              dialogHeight: Get.height * .7,
+                              dialogHeight: Get.height * .35,
                               autoFocus: true,),),
                             SizedBox(
                               width: MediaQuery.of(context).size.width*0.3,
                               child: Obx(() {
                                 return DropDownField.formDropDown1WidthMap(
-                                  controller.channelList.value,
-                                      (val) => controller.selectedChannel = val,
+                                  controllerX.channelList.value,
+                                      (val) => controllerX.selectedChannel = val,
                                   "Channel",
                                   .3,
-                                  selected: controller.selectedChannel,
+                                  dialogHeight: Get.height * .35,
+                                  selected: controllerX.selectedChannel,
                                 );
                               }),
                             ),
@@ -78,7 +79,7 @@ class OnSpotBookingSkyMediaView
                             children: [
                               DateWithThreeTextField(
                                 title: "Booking Date",
-                                mainTextController: TextEditingController(),
+                                mainTextController:  controllerX.bookingDateController,
                                 widthRation: .1,
                                 isEnable: controllerX.isEnable,
                               ),
@@ -89,13 +90,13 @@ class OnSpotBookingSkyMediaView
                                   children: [
                                     DateWithThreeTextField(
                                       title: "Effective Date",
-                                      mainTextController: TextEditingController(),
+                                      mainTextController: controllerX.effectiveDateController,
                                       widthRation: .1,
                                       isEnable: controllerX.isEnable,
                                     ),
                                     InputFields.formField1(
-                                      hintTxt: "FormName",
-                                      controller: TextEditingController(),
+                                      hintTxt: "",
+                                      controller: controllerX.txtController,
                                       width:  0.1,
                                       // autoFocus: true,
                                       // focusNode: controllerX.brandName,
@@ -120,7 +121,7 @@ class OnSpotBookingSkyMediaView
                         0.46,
                         isEnable: controllerX.isEnable,
                         selected: controllerX.selectedLocation,
-                        dialogHeight: Get.height * .7,
+                        dialogHeight: Get.height * .35,
                         autoFocus: true,),),
                       Obx(()=>DropDownField.formDropDown1WidthMap(
                         controllerX.locationList.value??[],
@@ -130,7 +131,7 @@ class OnSpotBookingSkyMediaView
                         0.46,
                         isEnable: controllerX.isEnable,
                         selected: controllerX.selectedLocation,
-                        dialogHeight: Get.height * .7,
+                        dialogHeight: Get.height * .35,
                         autoFocus: true,),),
                       Obx(()=>DropDownField.formDropDown1WidthMap(
                         controllerX.locationList.value??[],
