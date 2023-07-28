@@ -32,24 +32,23 @@ class DesignView extends GetView<DesignController> {
                 ListDropDown(
                   focusNode: FocusNode(),
                   items: [
-                    DropDownValue(key: "1", value: "one1"),
-                    DropDownValue(key: "1", value: "one2"),
-                    DropDownValue(key: "1", value: "one3"),
-                    DropDownValue(key: "1", value: "one4"),
+                    DropDownValue(key: "1", value: "Asia"),
+                    DropDownValue(key: "1", value: "Africa"),
+                    DropDownValue(key: "1", value: "International"),
                   ],
                   title: "Location",
                   autoFocus: true,
-                  onSelect: (DropDownValue? val) {},
                   widthRatio: .15,
+                  onSelect: (DropDownValue? val) {},
                 ),
                 ListDropDownCheckBox(
                   focusNode: FocusNode(),
                   items: [
-                    MultiCheckBoxModel(DropDownValue(key: "1", value: "one1"), true),
-                    MultiCheckBoxModel(DropDownValue(key: "1", value: "one1"), false),
-                    MultiCheckBoxModel(DropDownValue(key: "1", value: "one1"), true),
-                    MultiCheckBoxModel(DropDownValue(key: "1", value: "one1"), false),
-                    MultiCheckBoxModel(DropDownValue(key: "1", value: "one1"), false),
+                    MultiCheckBoxModel(DropDownValue(key: "1", value: "Zee-Bihar-HD"), false),
+                    MultiCheckBoxModel(DropDownValue(key: "1", value: "Zee TV"), true),
+                    MultiCheckBoxModel(DropDownValue(key: "1", value: "Zing"), true),
+                    MultiCheckBoxModel(DropDownValue(key: "1", value: "Zee Marathi"), true),
+                    MultiCheckBoxModel(DropDownValue(key: "1", value: "Zee Bojpuri"), true),
                   ],
                   title: "Multi Channel",
                   onSelect: (DropDownValue? val) {},
@@ -60,12 +59,6 @@ class DesignView extends GetView<DesignController> {
                   controller: TextEditingController(),
                   widthRatio: .15,
                   label: "Tape ID",
-                ),
-                MultiCheckBox(
-                  list: [
-                    MultiCheckBoxModel(DropDownValue(value: "one"), true),
-                    MultiCheckBoxModel(DropDownValue(value: "two"), false),
-                  ],
                 ),
               ],
             ),
@@ -78,7 +71,6 @@ class DesignView extends GetView<DesignController> {
             SizedBox(height: 10),
             Expanded(
               child: Container(
-                // margin: EdgeInsets.all(8),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(20),

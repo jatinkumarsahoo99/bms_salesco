@@ -19,7 +19,6 @@ class ListDropDownCheckBox extends StatelessWidget {
   final bool? autoFocus;
   final void Function(bool)? onFocusChange;
   final IconData? iconData;
-  final DropDownValue? selectedValue;
   final FocusNode? focusNode;
   const ListDropDownCheckBox({
     super.key,
@@ -28,7 +27,6 @@ class ListDropDownCheckBox extends StatelessWidget {
     required this.onSelect,
     this.onChanged,
     this.widthRatio,
-    this.selectedValue,
     this.autoFocus,
     this.dialogWidth,
     this.dialogHeight,
@@ -41,7 +39,7 @@ class ListDropDownCheckBox extends StatelessWidget {
   Widget build(BuildContext context) {
     bool hasFocus = (autoFocus ?? false);
     bool menuOpen = false;
-    DropDownValue? selectedVal = selectedValue;
+    String? selectedVal = getSelectedName();
     return SizedBox(
       width: context.width * (widthRatio ?? .3),
       height: 48,
@@ -67,7 +65,7 @@ class ListDropDownCheckBox extends StatelessWidget {
                   top: 18,
                   left: 35,
                   child: Text(
-                    selectedVal.value ?? title,
+                    selectedVal!,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: GoogleFonts.poppins(fontWeight: FontWeight.normal, fontSize: 12, color: Colors.black),
@@ -257,7 +255,15 @@ class ListDropDownCheckBox extends StatelessWidget {
                                         canScroll: true,
                                         isHorizontal: false,
                                         width: 12,
-                                        onChanged: onChanged,
+                                        onChanged: (index, val) async {
+                                          items[index].isSelected = val;
+                                          tempList[index].isSelected = val;
+                                          if (onChanged != null) {
+                                            onChanged!(index, val);
+                                          }
+                                          selectedVal = getSelectedName();
+                                          setState(() {});
+                                        },
                                       ),
                                     ),
                                   ),
@@ -295,5 +301,21 @@ class ListDropDownCheckBox extends StatelessWidget {
         },
       ),
     );
+  }
+
+  String? getSelectedName() {
+    String? selectedItem;
+
+    var tempLis = items.where((element) => (element.isSelected ?? false)).toList().map((e) => (e.val?.value ?? "")).toList();
+    if (tempLis.isNotEmpty) {
+      if (tempLis.length <= 2) {
+        selectedItem = tempLis.join(', ');
+      } else {
+        int cout = tempLis.length;
+        tempLis.removeRange(2, tempLis.length);
+        selectedItem = selectedItem = "${tempLis.join(', ')} +${cout - 2}";
+      }
+    }
+    return selectedItem;
   }
 }
