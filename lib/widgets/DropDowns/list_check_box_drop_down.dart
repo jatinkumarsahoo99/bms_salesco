@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:bms_salesco/app/data/DropDownValue.dart';
+import 'package:bms_salesco/widgets/CheckBox/multi_check_box.dart';
 import 'package:bms_salesco/widgets/CustomSearchDropDown/src/popupMenu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -9,23 +10,23 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../app/providers/SizeDefine.dart';
 
-class ListDropDown extends StatelessWidget {
-  final List<DropDownValue> items;
+class ListDropDownCheckBox extends StatelessWidget {
+  final List<MultiCheckBoxModel> items;
+  final void Function(int, bool)? onChanged;
   final String title;
   final void Function(DropDownValue? val) onSelect;
   final double? widthRatio, dialogWidth, dialogHeight;
   final bool? autoFocus;
   final void Function(bool)? onFocusChange;
   final IconData? iconData;
-  final DropDownValue? selectedValue;
   final FocusNode? focusNode;
-  const ListDropDown({
+  const ListDropDownCheckBox({
     super.key,
     required this.items,
     required this.title,
     required this.onSelect,
+    this.onChanged,
     this.widthRatio,
-    this.selectedValue,
     this.autoFocus,
     this.dialogWidth,
     this.dialogHeight,
@@ -38,7 +39,7 @@ class ListDropDown extends StatelessWidget {
   Widget build(BuildContext context) {
     bool hasFocus = (autoFocus ?? false);
     bool menuOpen = false;
-    DropDownValue? selectedVal = selectedValue;
+    String? selectedVal = getSelectedName();
     return SizedBox(
       width: context.width * (widthRatio ?? .3),
       height: 48,
@@ -64,7 +65,7 @@ class ListDropDown extends StatelessWidget {
                   top: 18,
                   left: 35,
                   child: Text(
-                    selectedVal?.value ?? title,
+                    selectedVal!,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: GoogleFonts.poppins(fontWeight: FontWeight.normal, fontSize: 12, color: Colors.black),
@@ -165,7 +166,7 @@ class ListDropDown extends StatelessWidget {
                     final top = offset.dy + renderBox.size.height + 5;
                     final right = left + renderBox.size.width;
                     final width = renderBox.size.width;
-                    var tempList = <DropDownValue>[];
+                    var tempList = <MultiCheckBoxModel>[];
                     tempList.addAll(items);
                     showMenu(
                       context: context,
@@ -185,6 +186,7 @@ class ListDropDown extends StatelessWidget {
                             height: (dialogHeight ?? 200) - 20,
                             child: StatefulBuilder(builder: (context, re) {
                               return Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   /// search
                                   Padding(
@@ -224,14 +226,17 @@ class ListDropDown extends StatelessWidget {
                                         color: Colors.black,
                                       ),
                                       onChanged: ((value) {
+                                        tempList.clear();
                                         if (value.isNotEmpty) {
-                                          tempList.clear();
                                           for (var i = 0; i < items.length; i++) {
-                                            if (items[i].value!.toLowerCase().contains(value.toLowerCase())) {
+                                            if (items[i].val!.value!.toLowerCase().contains(value.toLowerCase())) {
                                               tempList.add(items[i]);
                                             }
                                           }
+                                        } else {
+                                          tempList.addAll(items);
                                         }
+                                        re(() {});
                                       }),
                                       inputFormatters: [
                                         FilteringTextInputFormatter.deny("  "),
@@ -243,40 +248,23 @@ class ListDropDown extends StatelessWidget {
 
                                   /// list
                                   Expanded(
-                                    child: ListView(
-                                      shrinkWrap: true,
-                                      children: tempList.map(
-                                        (element) {
-                                          return Padding(
-                                            padding: const EdgeInsets.symmetric(horizontal: 8),
-                                            child: InkWell(
-                                              focusColor: Color(0xFFf5f5f5),
-                                              borderRadius: BorderRadius.circular(12),
-                                              onTap: () {
-                                                Navigator.pop(context);
-                                                selectedVal = element;
-                                                setState(() {});
-                                                onSelect(element);
-                                                if (focusNode != null) {
-                                                  focusNode?.requestFocus();
-                                                }
-                                                // FocusScope.of(context).requestFocus(focusNode);
-                                              },
-                                              child: Padding(
-                                                padding: const EdgeInsets.only(left: 10, right: 10, top: 12, bottom: 12),
-                                                child: Text(
-                                                  element.value ?? "null",
-                                                  style: GoogleFonts.poppins(
-                                                    fontWeight: FontWeight.normal,
-                                                    fontSize: 10,
-                                                    color: Colors.black,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          );
+                                    child: Padding(
+                                      padding: EdgeInsets.only(left: 10),
+                                      child: MultiCheckBox(
+                                        list: tempList,
+                                        canScroll: true,
+                                        isHorizontal: false,
+                                        width: 12,
+                                        onChanged: (index, val) async {
+                                          items[index].isSelected = val;
+                                          tempList[index].isSelected = val;
+                                          if (onChanged != null) {
+                                            onChanged!(index, val);
+                                          }
+                                          selectedVal = getSelectedName();
+                                          setState(() {});
                                         },
-                                      ).toList(),
+                                      ),
                                     ),
                                   ),
                                 ],
@@ -313,5 +301,21 @@ class ListDropDown extends StatelessWidget {
         },
       ),
     );
+  }
+
+  String? getSelectedName() {
+    String? selectedItem;
+
+    var tempLis = items.where((element) => (element.isSelected ?? false)).toList().map((e) => (e.val?.value ?? "")).toList();
+    if (tempLis.isNotEmpty) {
+      if (tempLis.length <= 2) {
+        selectedItem = tempLis.join(', ');
+      } else {
+        int cout = tempLis.length;
+        tempLis.removeRange(2, tempLis.length);
+        selectedItem = selectedItem = "${tempLis.join(', ')} +${cout - 2}";
+      }
+    }
+    return selectedItem;
   }
 }

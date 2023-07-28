@@ -24,9 +24,11 @@ class _RadioRowState extends State<RadioRow> {
   Widget build(BuildContext context) {
     return (widget.isVertical ?? false)
         ? Column(
+            mainAxisSize: MainAxisSize.min,
             children: buildRadio(),
           )
         : Row(
+            mainAxisSize: MainAxisSize.min,
             children: buildRadio(),
           );
   }
@@ -37,6 +39,7 @@ class _RadioRowState extends State<RadioRow> {
           (e) => Padding(
             padding: const EdgeInsets.only(left: 5),
             child: Row(
+              mainAxisSize: MainAxisSize.min,
               children: [
                 Radio<String>(
                     value: e,
