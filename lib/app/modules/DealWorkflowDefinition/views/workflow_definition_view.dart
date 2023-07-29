@@ -17,7 +17,7 @@ import '../../../providers/Utils.dart';
 import '../DealWorkDefinitionGridModel.dart';
 import '../controllers/workflow_definition_controller.dart';
 
-class WorkflowDefinitionView extends StatelessWidget {
+class WorkflowDefinitionView extends GetView<WorkflowDefinitionController> {
   WorkflowDefinitionView({Key? key}) : super(key: key);
 
   WorkflowDefinitionController controllerX =

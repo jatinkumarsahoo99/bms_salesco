@@ -164,7 +164,9 @@ class OneSpotBookingSkyMediaController extends GetxController {
           if(map is Map && map.containsKey("saveOSBooking") && map['saveOSBooking'] != null &&
               map['saveOSBooking'].containsKey('meassage') &&
               map['saveOSBooking']['meassage'] != null){
+            clearAll();
             LoadingDialog.callDataSavedMessage( map['saveOSBooking']['meassage']??"");
+
           }else{
             LoadingDialog.showErrorDialog(map??"Something went wrong");
           }
