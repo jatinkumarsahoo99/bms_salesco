@@ -619,6 +619,8 @@ class ApiFactory {
   static String get ONE_SPOT_BOOKING_CHANNEL_LEAVE => "$BASE_URL/api/OneSpotBooking/GetChannelOnLeave?locationcode=";
   static String get ONE_SPOT_BOOKING_SAVE => "$BASE_URL/api/OneSpotBooking/PostSave";
 
+  /////////////////////////////////// International Sales Report /////////////////////////////
+  static String get INTERNATIONAL_SALES_REPORT_GENERATE => "$BASE_URL/api/InternationalSalesReport/Generate";
 
   ///
   ///

@@ -108,7 +108,7 @@ abstract class _Paths {
   static const AMAGI_SPOT_PLANNING = '/frmAma_Planning';
   static const AMAGI_SPOTS_REPLACEMENT = '/amagi-spots-replacement';
   static const AMAGI_STATUS_REPORT = '/frmAmagiSTatus';
-  static const INTERNATIONAL_SALES_REPORT = '/international-sales-report';
+  static const INTERNATIONAL_SALES_REPORT = '/Rocanelationotherrevune';
   static const PRODUCT_LEVEL1 = '/frmProductLevel1';
   static const PRODUCT_LEVEL2 = '/frmProductLevel2';
   static const PRODUCT_LEVEL3 = '/frmProductLevel3';

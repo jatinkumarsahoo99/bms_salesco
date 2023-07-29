@@ -71,8 +71,8 @@ class Display {
     data['approvalSequenceID'] = this.approvalSequenceID;
     data['sequenceName'] = this.sequenceName;
     data['formName'] = this.formName;
-    data['groupID'] = (this.groupID == "0")?null:this.groupID;
-    data['GroupName'] = this.groupName;
+    data['groupID'] = (this.groupID == 0)?null:this.groupID;
+    data['GroupName'] = this.groupName??"";
     data['personnelNo'] = this.personnelNo??"";
     data['employeename'] = this.employees??"";
     data['employeeCode'] = this.personnelNo??"";

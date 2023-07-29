@@ -60,6 +60,7 @@ class WorkflowDefinitionController extends GetxController {
   FocusNode brandName = FocusNode();
 
   String approvalSequenceId = "0";
+  bool isDoubleClick = false;
 
   fetchAllLoaderData() {
     // LoadingDialog.call();
@@ -304,6 +305,7 @@ class WorkflowDefinitionController extends GetxController {
   }
 
   onDoubleTap(int index) {
+    isDoubleClick = true;
     // print(">>>>>>>>>>" + ((gridStateManager?.rows[index].cells['groupID'])?.value).toString());
     if ((gridStateManager?.rows[index].cells['groupID'])?.value != null &&
         (gridStateManager?.rows[index].cells['groupID'])?.value != "" &&
@@ -343,9 +345,9 @@ class WorkflowDefinitionController extends GetxController {
 
   btnAddClick() {
     if (selectRadio2.value == "After") {
-      if (approvalSequenceId != null &&
+      if ((approvalSequenceId != null &&
           approvalSequenceId != "" &&
-          approvalSequenceId != "0") {
+          approvalSequenceId != "0") || isDoubleClick) {
         int selIndex = (selectedIndex ?? 0);
         dealWorkDefinitionGridModel?.display?[selIndex].approvalSequenceID =
             int.parse(approvalSequenceId ?? "0");
@@ -387,9 +389,9 @@ class WorkflowDefinitionController extends GetxController {
       clearNew();
       update(['grid']);
     } else {
-      if (approvalSequenceId != null &&
+      if ((approvalSequenceId != null &&
           approvalSequenceId != "" &&
-          approvalSequenceId != "0") {
+          approvalSequenceId != "0") || isDoubleClick) {
         dealWorkDefinitionGridModel?.display?[selectedIndex ?? 0]
             .approvalSequenceID = int.parse(approvalSequenceId ?? "0");
         dealWorkDefinitionGridModel?.display?[selectedIndex ?? 0].employees =
@@ -438,6 +440,9 @@ class WorkflowDefinitionController extends GetxController {
     approvalSequenceId = "0";
     selectedGroup = null;
     selectedUser = null;
+    isDoubleClick = false;
+    userEnable =Rx<bool>(true);
+    groupEnable = Rx<bool>(false);
     update(['top']);
   }
 

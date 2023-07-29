@@ -506,6 +506,7 @@ class WorkflowDefinitionView extends StatelessWidget {
                                               controllerX.clearNew();
                                               controllerX.update(['grid']);
                                             }*/
+
                                             controllerX.btnAddClick();
                                           },
                                           showIcon: false,
@@ -584,6 +585,7 @@ class WorkflowDefinitionView extends StatelessWidget {
                                     },
                                     onSelected:
                                         (PlutoGridOnSelectedEvent? val) {
+                                          controllerX.isDoubleClick = false;
                                       controllerX.selectedIndex =
                                           val?.rowIdx ?? 0;
                                     },
