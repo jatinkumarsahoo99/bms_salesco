@@ -296,7 +296,7 @@ class WorkflowDefinitionController extends GetxController {
               });
               update(['grid']);
             } else {
-              LoadingDialog.showErrorDialog("Something went wrong");
+              LoadingDialog.showErrorDialog(map??"Something went wrong");
             }
             // print("map>>>"+ jsonEncode(map).toString());
           });
