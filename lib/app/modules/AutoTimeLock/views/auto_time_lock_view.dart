@@ -146,9 +146,11 @@ class AutoTimeLockView extends GetView<AutoTimeLockController> {
                               colorCallback: (row) =>
                                   (row.row.cells.containsValue(controller.stateManager?.currentCell)) ? Colors.deepPurple.shade200 : Colors.white,
                               onload: (event) {
+                                event.stateManager.gridFocusNode.requestFocus();
                                 controller.stateManager = event.stateManager;
                                 event.stateManager.setSelectingMode(PlutoGridSelectingMode.row);
                                 event.stateManager.setSelecting(true);
+                                event.stateManager.moveCurrentCellByRowIdx(controller.lastSelectedIdx, PlutoMoveDirection.down);
                                 event.stateManager.setCurrentCell(
                                     event.stateManager.getRowByIdx(controller.lastSelectedIdx)?.cells['channelName'], controller.lastSelectedIdx);
                               },
