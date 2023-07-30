@@ -63,6 +63,14 @@ class DesignView extends GetView<DesignController> {
                   label: "Tape ID",
                 ),
                 MultiAppRadio(items: ['items1', 'items2', 'items3'], groupValue: 'items1'),
+                ClipPath(
+                  child: Container(
+                    width: 200,
+                    height: 200,
+                    color: Colors.red,
+                  ),
+                  clipper: CustomClipPath(),
+                ),
               ],
             ),
             SizedBox(height: 10),
@@ -239,4 +247,19 @@ class DesignView extends GetView<DesignController> {
       ),
     );
   }
+}
+
+class CustomClipPath extends CustomClipper<Path> {
+  var radius = 5.0;
+  @override
+  Path getClip(Size size) {
+    Path path = Path();
+    path.lineTo(size.width / 2, size.height);
+    // path.lineTo(size.width / 2, size.height);
+    path.lineTo(size.width, 0.0);
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }
