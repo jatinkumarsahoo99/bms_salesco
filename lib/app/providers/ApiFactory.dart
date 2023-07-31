@@ -258,7 +258,15 @@ class ApiFactory {
 
 // END --> Contnet Inward
 
-  /////////////////////////////////////////////////////////////////////////////////////////
+  ///////////////////////////////// New Short Content Form /////////////////////////////////////
+  static String NEW_SHORT_CONTENT_INIT = "$BASE_URL/api/ShortCode/OnLoadShortCode";
+  static String NEW_SHORT_CONTENT_LOCATION_LEAVE(locationCode) => "$BASE_URL/api/ShortCode/OnLeaveLocation?LocationCode=$locationCode";
+  static String NEW_SHORT_CONTENT_Type_LEAVE(formCode) => "$BASE_URL/api/ShortCode/OnLeaveType?FormCode=$formCode";
+  static String NEW_SHORT_CONTENT_Program_Search = "$BASE_URL/api/ShortCode/OnFillComboProgram?strSearch=";
+  static String NEW_SHORT_CONTENT_HOUSEID_LEAVE(houseCode, ShortName, StrCode) =>
+      "$BASE_URL/api/ShortCode/HouseIDOnLeave?HouseID=$houseCode&TextBoxShortName=$ShortName&strCode=$StrCode";
+  static String NEW_SHORT_CONTENT_SAVE = "$BASE_URL/api/ShortCode/SaveRecords";
+  ////////////////////////////////////////////////////////////////////////////////////////
 
   ////////////////Operatonal FPC Page: UI-> Shreesh Tiwari API-> Ram P Kubde//////////////
 

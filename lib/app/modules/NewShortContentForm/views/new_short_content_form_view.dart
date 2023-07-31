@@ -1,4 +1,5 @@
 import 'package:bms_salesco/app/controller/HomeController.dart';
+import 'package:bms_salesco/app/providers/ApiFactory.dart';
 import 'package:bms_salesco/app/providers/SizeDefine.dart';
 import 'package:bms_salesco/widgets/DateTime/DateWithThreeTextField.dart';
 import 'package:bms_salesco/widgets/FormButton.dart';
@@ -34,54 +35,83 @@ class NewShortContentFormView extends GetView<NewShortContentFormController> {
                 runSpacing: 5,
                 spacing: Get.width * 0.01,
                 children: [
-                  DropDownField.formDropDown1WidthMap(
-                    [],
-                    (valeu) {},
-                    "Location",
-                    .24,
-                    autoFocus: true,
+                  Obx(
+                    () => DropDownField.formDropDown1WidthMap(
+                      controller.locations.value,
+                      (value) {
+                        controller.getChannel(value.key);
+                        controller.selectedLocation = value;
+                      },
+                      "Location",
+                      .24,
+                      autoFocus: true,
+                    ),
                   ),
-                  DropDownField.formDropDown1WidthMap(
-                    [],
-                    (valeu) {},
-                    "Channel",
-                    .24,
-                    autoFocus: true,
+                  Obx(
+                    () => DropDownField.formDropDown1WidthMap(
+                      controller.channels.value,
+                      (value) {
+                        controller.selectedChannel = value;
+                      },
+                      "Channel",
+                      .24,
+                      autoFocus: true,
+                    ),
                   ),
-                  DropDownField.formDropDown1WidthMap(
-                    [],
-                    (valeu) {},
-                    "Type",
-                    .24,
-                    autoFocus: true,
+                  Obx(
+                    () => DropDownField.formDropDown1WidthMap(
+                      controller.types.value,
+                      (value) {
+                        controller.selectedType = value;
+                        controller.typeleave(value.key);
+                      },
+                      "Type",
+                      .24,
+                      autoFocus: true,
+                    ),
                   ),
-                  DropDownField.formDropDown1WidthMap(
-                    [],
-                    (valeu) {},
-                    "Category",
-                    .24,
-                    autoFocus: true,
+                  Obx(
+                    () => DropDownField.formDropDown1WidthMap(
+                      controller.categeroies.value,
+                      (value) {
+                        controller.selectedCategory = value;
+                      },
+                      "Category",
+                      .24,
+                      autoFocus: true,
+                    ),
                   ),
                   InputFields.formField1(
                     hintTxt: "Caption",
-                    controller: TextEditingController(),
+                    controller: controller.caption,
                     width: 0.24,
                   ),
                   InputFields.formField1(
                     hintTxt: "TX Caption",
-                    controller: TextEditingController(),
+                    controller: controller.txCaption,
                     width: 0.24,
                   ),
                   InputFields.formField1(
                     hintTxt: "House ID",
-                    controller: TextEditingController(),
+                    controller: controller.houseId,
+                    focusNode: controller.houseFocusNode,
                     width: 0.155,
                   ),
-                  InputFields.formField1(
-                    hintTxt: "Program",
-                    controller: TextEditingController(),
-                    width: 0.325,
+                  DropDownField.formDropDownSearchAPI2(
+                    GlobalKey(),
+                    context,
+                    title: "Program",
+                    url: ApiFactory.NEW_SHORT_CONTENT_Program_Search,
+                    onchanged: (value) {
+                      controller.selectedProgram = value;
+                    },
+                    width: Get.width * 0.325,
                   ),
+                  // InputFields.formField1(
+                  //   hintTxt: "Program",
+                  //   controller: TextEditingController(),
+                  //   width: 0.325,
+                  // ),
                   InputFields.formFieldNumberMask(hintTxt: "SOM", widthRatio: .155, controller: TextEditingController(), paddingLeft: 0),
                   InputFields.formFieldNumberMask(hintTxt: "EOM", widthRatio: .155, controller: TextEditingController(), paddingLeft: 0),
                   InputFields.formFieldNumberMask(hintTxt: "Duration", widthRatio: .16, controller: TextEditingController(), paddingLeft: 0),
@@ -107,6 +137,37 @@ class NewShortContentFormView extends GetView<NewShortContentFormController> {
                       ],
                     ),
                   ),
+                  Obx(
+                    () => DropDownField.formDropDown1WidthMap(
+                      controller.types.value,
+                      (value) {
+                        controller.selectedType = value;
+                        controller.typeleave(value.key);
+                      },
+                      "Tape",
+                      .155,
+                      autoFocus: true,
+                    ),
+                  ),
+                  Obx(
+                    () => DropDownField.formDropDown1WidthMap(
+                      controller.types.value,
+                      (value) {
+                        controller.selectedType = value;
+                        controller.typeleave(value.key);
+                      },
+                      "Org / Repeat",
+                      .155,
+                      autoFocus: true,
+                    ),
+                  ),
+                  InputFields.formField1(
+                    hintTxt: "Segment Number",
+                    controller: controller.houseId,
+                    focusNode: controller.houseFocusNode,
+                    width: 0.16,
+                  ),
+
                   InputFields.formField1(
                     hintTxt: "Remarks",
                     controller: TextEditingController(),
