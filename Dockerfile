@@ -48,8 +48,11 @@ WORKDIR /app
 COPY --from=build-env /app/build/web /app/public-flutter
 COPY ./server/app.js /app/app.js
 COPY ./server/package.json /app/package.json
+COPY startup.sh .
+RUN chmod 777 startup.sh
 RUN npm install
 ENV NODE_ENV production
 ENV ENVIRONMENT production
 EXPOSE 3000
-CMD pm2-docker app.js
+#CMD pm2-docker app.js
+CMD sh ./startup.sh && pm2-docker app.js
