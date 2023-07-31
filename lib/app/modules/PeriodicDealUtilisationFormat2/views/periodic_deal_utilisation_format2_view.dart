@@ -39,6 +39,7 @@ class PeriodicDealUtilisationFormat2View
                     title: Text('Periodic Deal Utilisation'),
                     centerTitle: true,
                     backgroundColor: Colors.deepPurple,
+                    // titleTextStyle: Theme.of(context).textTheme.headline1,
                   ),
                   SizedBox(
                     height: 5,
@@ -54,21 +55,23 @@ class PeriodicDealUtilisationFormat2View
                             Obx(()=>DropDownField.formDropDown1WidthMap(
                               controllerX.locationList.value??[],
                                   (value) {
-                                controllerX.selectedLocation = value;
+                                controllerX.selectedLocation?.value = value;
+                                controllerX.selectedChannel?.value = null;
                               }, "Location", .23,
                               isEnable: controllerX.isEnable,
-                              selected: controllerX.selectedLocation,
-                              dialogHeight: Get.height * .7,
+                              selected: controllerX.selectedLocation?.value,
+                              dialogHeight: Get.height * .35,
                               autoFocus: true,),),
                             Obx(()=>DropDownField.formDropDown1WidthMap(
-                              controllerX.locationList.value??[],
+                              controllerX.channelList.value??[],
                                   (value) {
-                                controllerX.selectedLocation = value;
+                                controllerX.selectedChannel?.value = value;
+                                controllerX.getOnChannelLeave();
                               }, "Channel", .23,
                               isEnable: controllerX.isEnable,
-                              selected: controllerX.selectedLocation,
-                              dialogHeight: Get.height * .7,
-                              autoFocus: true,),),
+                              selected: controllerX.selectedChannel?.value,
+                              dialogHeight: Get.height * .35,
+                              autoFocus: false,),),
                           ],
                         ),
                       ),
@@ -82,7 +85,7 @@ class PeriodicDealUtilisationFormat2View
                             callback: () {
                               // controllerX.callGetRetrieve();
                             },
-                            showIcon: false,
+                            showIcon: true,
                           ),
                         ),
                       ),
@@ -95,14 +98,14 @@ class PeriodicDealUtilisationFormat2View
                       SizedBox(
                         width: MediaQuery.of(context).size.width*0.55,
                         child: Obx(()=>DropDownField.formDropDown1WidthMap(
-                          controllerX.locationList.value??[],
+                          controllerX.clientList.value??[],
                               (value) {
-                            controllerX.selectedLocation = value;
+                            controllerX.selectedClient?.value = value;
                           }, "Client", .55,
                           isEnable: controllerX.isEnable,
-                          selected: controllerX.selectedLocation,
+                          selected: controllerX.selectedClient?.value,
                           dialogHeight: Get.height * .7,
-                          autoFocus: true,),),
+                          autoFocus: false,),),
                       ),
 
 
@@ -116,7 +119,7 @@ class PeriodicDealUtilisationFormat2View
                             callback: () {
                               // controllerX.callGetRetrieve();
                             },
-                            showIcon: false,
+                            showIcon: true,
                           ),
                         ),
                       ),
@@ -132,23 +135,23 @@ class PeriodicDealUtilisationFormat2View
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Obx(()=>DropDownField.formDropDown1WidthMap(
-                              controllerX.locationList.value??[],
+                              controllerX.agencyList.value??[],
                                   (value) {
-                                controllerX.selectedLocation = value;
+                                controllerX.selectedAgency?.value = value;
                               }, "Agency", .4,
                               isEnable: controllerX.isEnable,
-                              selected: controllerX.selectedLocation,
+                              selected: controllerX.selectedAgency?.value,
                               dialogHeight: Get.height * .7,
-                              autoFocus: true,),),
+                              autoFocus: false,),),
                             Obx(()=>DropDownField.formDropDown1WidthMap(
-                              controllerX.locationList.value??[],
+                              controllerX.dealNoList.value??[],
                                   (value) {
-                                controllerX.selectedLocation = value;
+                                controllerX.selectedDealNo?.value = value;
                               }, "DealNo", .1,
                               isEnable: controllerX.isEnable,
-                              selected: controllerX.selectedLocation,
+                              selected: controllerX.selectedDealNo?.value,
                               dialogHeight: Get.height * .7,
-                              autoFocus: true,),),
+                              autoFocus: false,),),
                           ],
                         ),
                       ),
@@ -163,7 +166,7 @@ class PeriodicDealUtilisationFormat2View
                             callback: () {
                               // controllerX.callGetRetrieve();
                             },
-                            showIcon: false,
+                            showIcon: true,
                           ),
                         ),
                       ),
@@ -180,31 +183,31 @@ class PeriodicDealUtilisationFormat2View
                           children: [
                             DateWithThreeTextField(
                               title: "Util As ON",
-                              mainTextController: TextEditingController(),
+                              mainTextController: controllerX.utilAsOnDateController,
                               widthRation: .1,
                               isEnable: controllerX.isEnable,
                             ),
                             DateWithThreeTextField(
                               title: "To",
-                              mainTextController: TextEditingController(),
+                              mainTextController: controllerX.utilAsOnDateToDateController,
                               widthRation: .1,
                               isEnable: controllerX.isEnable,
                             ),
                             DateWithThreeTextField(
                               title: "Deal Period",
-                              mainTextController: TextEditingController(),
+                              mainTextController: controllerX.dealPeriodController,
                               widthRation: .1,
                               isEnable: controllerX.isEnable,
                             ),
                             DateWithThreeTextField(
                               title: "To",
-                              mainTextController: TextEditingController(),
+                              mainTextController: controllerX.dealPeriodToController,
                               widthRation: .1,
                               isEnable: controllerX.isEnable,
                             ),
                             InputFields.formField1(
-                              hintTxt: "FormName",
-                              controller: TextEditingController(),
+                              hintTxt: "Deal Amount",
+                              controller: controllerX.dealAmountController,
                               width:  0.1,
                               // autoFocus: true,
                               // focusNode: controllerX.brandName,
@@ -228,13 +231,13 @@ class PeriodicDealUtilisationFormat2View
                       padding: const EdgeInsets.all(8.0),
                       child: Container(
                         decoration: BoxDecoration(
-                            border: Border.all(color: Colors.black)),
+                            border: Border.all(color: Colors.grey)),
                         child:  GetBuilder<PeriodicDealUtilisationFormat2Controller>(
                             id: "grid",
                             builder: (controllerX) {
                               return Container(
                                 decoration: BoxDecoration(
-                                    border: Border.all(color: Colors.black)),
+                                    border: Border.all(color: Colors.grey)),
 
                               );
                             }

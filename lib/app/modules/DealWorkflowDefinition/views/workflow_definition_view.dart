@@ -600,10 +600,7 @@ class WorkflowDefinitionView extends GetView<WorkflowDefinitionController> {
                                     // mapData: (controllerX.dataList)!,
                                     widthRatio: Get.width / 9 - 1,
                                   )
-                                : Container(
-                                    decoration: BoxDecoration(
-                                        border: Border.all(color: Colors.grey)),
-                                  );
+                                : Container();
                           }),
                     ),
                   ),
@@ -655,8 +652,9 @@ class WorkflowDefinitionView extends GetView<WorkflowDefinitionController> {
       contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       content: Container(
         height: Get.height * 0.65,
-        width: Get.width * 0.4,
+        width: Get.width * 0.45,
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Obx(
               () => DropDownField.formDropDown1WidthMap(
@@ -714,76 +712,87 @@ class WorkflowDefinitionView extends GetView<WorkflowDefinitionController> {
               height: 4,
             ),
             Expanded(
-              child: GetBuilder<WorkflowDefinitionController>(
-                  id: "copyToGrid",
-                  builder: (context) {
-                    return Container(
-                      decoration:
-                          BoxDecoration(border: Border.all(color: Colors.grey)),
-                      child: (controllerX.onLeaveCopyZoneModel != null &&
-                              controllerX
-                                      .onLeaveCopyZoneModel?.onLeaveCopyZone !=
-                                  null &&
-                              (controllerX.onLeaveCopyZoneModel?.onLeaveCopyZone
-                                          ?.length ??
-                                      0) >
-                                  0)
-                          ? ListView.builder(
-                              itemCount: controllerX.onLeaveCopyZoneModel
-                                      ?.onLeaveCopyZone?.length ??
-                                  0,
-                              itemBuilder: (BuildContext context, int index) {
-                                return InkWell(
-                                  onTap: () {
-                                    controllerX.selectedCopyToIndex = index;
-                                    controllerX.update(['copyToGrid']);
-                                  },
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
-                                    children: [
-                                      Checkbox(
-                                          value: controllerX
-                                              .onLeaveCopyZoneModel
-                                              ?.onLeaveCopyZone?[index]
-                                              .isChecked,
-                                          onChanged: (val) {
-                                            controllerX
-                                                .onLeaveCopyZoneModel
-                                                ?.onLeaveCopyZone?[index]
-                                                .isChecked = val;
-                                            controllerX.selectedCopyToIndex =
-                                                index;
-                                            controllerX.update(['copyToGrid']);
-                                          }),
-                                      Expanded(
-                                        child: Container(
-                                            color: (controllerX
-                                                        .selectedCopyToIndex ==
-                                                    index)
-                                                ? Colors.deepPurpleAccent
-                                                : Colors.white,
-                                            child: Text(
-                                              controllerX
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                 Obx(()=>Checkbox(value: controllerX.checkAll.value, onChanged: (val){
+                   controllerX.checkAll.value =  val!;
+                   controllerX.checkAllList(val);
+                 }),),
+                  Expanded(
+                    child: GetBuilder<WorkflowDefinitionController>(
+                        id: "copyToGrid",
+                        builder: (context) {
+                          return Container(
+                            decoration:
+                                BoxDecoration(border: Border.all(color: Colors.grey)),
+                            child: (controllerX.onLeaveCopyZoneModel != null &&
+                                    controllerX
+                                            .onLeaveCopyZoneModel?.onLeaveCopyZone !=
+                                        null &&
+                                    (controllerX.onLeaveCopyZoneModel?.onLeaveCopyZone
+                                                ?.length ??
+                                            0) >
+                                        0)
+                                ? ListView.builder(
+                                    itemCount: controllerX.onLeaveCopyZoneModel
+                                            ?.onLeaveCopyZone?.length ??
+                                        0,
+                                    itemBuilder: (BuildContext context, int index) {
+                                      return InkWell(
+                                        onTap: () {
+                                          controllerX.selectedCopyToIndex = index;
+                                          controllerX.update(['copyToGrid']);
+                                        },
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
+                                          children: [
+                                            Checkbox(
+                                                value: controllerX
+                                                    .onLeaveCopyZoneModel
+                                                    ?.onLeaveCopyZone?[index]
+                                                    .isChecked,
+                                                onChanged: (val) {
+                                                  controllerX
                                                       .onLeaveCopyZoneModel
                                                       ?.onLeaveCopyZone?[index]
-                                                      .stationname ??
-                                                  "",
-                                              style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 12),
-                                            )),
-                                      ),
-                                      SizedBox(
-                                        width: 7,
-                                      )
-                                    ],
-                                  ),
-                                );
-                              })
-                          : Container(),
-                    );
-                  }),
+                                                      .isChecked = val;
+                                                  controllerX.selectedCopyToIndex =
+                                                      index;
+                                                  controllerX.update(['copyToGrid']);
+                                                }),
+                                            Expanded(
+                                              child: Container(
+                                                  color: (controllerX
+                                                              .selectedCopyToIndex ==
+                                                          index)
+                                                      ? Colors.deepPurpleAccent
+                                                      : Colors.white,
+                                                  child: Text(
+                                                    controllerX
+                                                            .onLeaveCopyZoneModel
+                                                            ?.onLeaveCopyZone?[index]
+                                                            .stationname ??
+                                                        "",
+                                                    style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 12),
+                                                  )),
+                                            ),
+                                            SizedBox(
+                                              width: 7,
+                                            )
+                                          ],
+                                        ),
+                                      );
+                                    })
+                                : Container(),
+                          );
+                        }),
+                  ),
+                ],
+              ),
             )
           ],
         ),

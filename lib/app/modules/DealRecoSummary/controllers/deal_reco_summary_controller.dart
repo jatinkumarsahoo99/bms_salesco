@@ -80,6 +80,9 @@ class DealRecoSummaryController extends GetxController {
 
   }
 
+
+
+
   fetchAgency(){
     Map<String, dynamic> postData = {
       "LocationName": selectedLocation?.value??"",

@@ -72,6 +72,12 @@ abstract class RoutesList {
     _Paths.GEO_PROGRAM_UPDATE,
     _Paths.WORKFLOW_DEFINITION
   ];
+
+ /* static final RoutesList _instance = RoutesList._();
+
+  factory RoutesList(){
+    return _instance;
+  }*/
 }
 
 abstract class _Paths {

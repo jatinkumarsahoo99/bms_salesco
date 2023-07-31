@@ -621,6 +621,15 @@ class ApiFactory {
 
   /////////////////////////////////// International Sales Report /////////////////////////////
   static String get INTERNATIONAL_SALES_REPORT_GENERATE => "$BASE_URL/api/InternationalSalesReport/Generate";
+  //////////////////////////////////////// PeriodicDealUtilisationFormat2 /////////////////////////////
+  static String get PERIODIC_DEAL_UTILISATION_FORMAT2_LOAD => "$BASE_URL/api/PeriodicDealUtilisation/GetPDUOnload";
+  static String get PERIODIC_DEAL_UTILISATION_FORMAT2_ON_CHANNEL_LEAVE => "$BASE_URL/api/PeriodicDealUtilisation/GetChannelOnLeave";
+
+////////////////////////////////////////////// User Groups For Deal Work flow  //////////////////////////////////////////
+  static String get USER_GROUPS_FOR_DEAL_WORKFLOW_EmpSearch => "$BASE_URL/api/UserGroupsForDealWorkflow/GetEmployeeSearch?TextEmployeeSearch=";
+  static String get USER_GROUPS_FOR_DEAL_WORKFLOW_GET_DISPLAY_GROUP => "$BASE_URL/api/UserGroupsForDealWorkflow/GetDisplayGroup?GroupName=";
+  static String get USER_GROUPS_FOR_DEAL_WORKFLOW_SAVE=> "$BASE_URL/api/UserGroupsForDealWorkflow/Save";
+
 
   ///
   ///

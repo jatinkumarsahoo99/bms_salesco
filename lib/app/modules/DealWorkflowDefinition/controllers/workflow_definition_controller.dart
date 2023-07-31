@@ -7,6 +7,7 @@ import '../../../controller/ConnectorControl.dart';
 import '../../../controller/HomeController.dart';
 import '../../../data/DropDownValue.dart';
 import '../../../providers/ApiFactory.dart';
+import '../../CommonSearch/views/common_search_view.dart';
 import '../DealWorkDefinitionGridModel.dart';
 import '../OnLeaveCopyZoneModel.dart';
 import '../WorkFlowSaveResModel.dart';
@@ -61,6 +62,31 @@ class WorkflowDefinitionController extends GetxController {
 
   String approvalSequenceId = "0";
   bool isDoubleClick = false;
+  Rx<bool> checkAll = Rx<bool>(false);
+  checkAllList(bool sta){
+    if(sta){
+      if(onLeaveCopyZoneModel != null && onLeaveCopyZoneModel?.onLeaveCopyZone != null &&
+          (onLeaveCopyZoneModel?.onLeaveCopyZone?.length??0) > 0){
+        onLeaveCopyZoneModel?.onLeaveCopyZone?.forEach((element) {
+          if(element.isChecked != true){
+            element.isChecked = true;
+          }
+        });
+      }
+      update(['copyToGrid']);
+    }else{
+      if(onLeaveCopyZoneModel != null && onLeaveCopyZoneModel?.onLeaveCopyZone != null &&
+          (onLeaveCopyZoneModel?.onLeaveCopyZone?.length??0) > 0){
+        onLeaveCopyZoneModel?.onLeaveCopyZone?.forEach((element) {
+          if(element.isChecked != false){
+            element.isChecked = false;
+          }
+        });
+      }
+      update(['copyToGrid']);
+    }
+
+  }
 
   fetchAllLoaderData() {
     // LoadingDialog.call();
@@ -467,11 +493,23 @@ class WorkflowDefinitionController extends GetxController {
     super.onClose();
   }
 
+  void search() {
+    // Get.delete<TransformationController>();
+    Get.to(SearchPage(
+        key: Key("Deal WorkFlow Definition"),
+        screenName: "Deal WorkFlow Definition",
+        appBarName: "Deal WorkFlow Definition",
+        strViewName: "DP_View_ApprovalTrail",
+        isAppBarReq: true));
+  }
+
   formHandler(String string) {
     if (string == "Save") {
       saveDealWorkFlow();
     } else if (string == "Clear") {
       clearAll();
+    }else if(string == "Search"){
+      search();
     }
   }
 
