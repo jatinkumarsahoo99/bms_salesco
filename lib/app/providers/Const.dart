@@ -1,7 +1,9 @@
 // import 'package:bms/providers/aad/model/config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:get/get.dart';
 
+import '../controller/MainController.dart';
 import '../data/system_envirtoment.dart';
 import 'ApiFactory.dart';
 
@@ -45,7 +47,7 @@ class Const {
 
 
 
-  static String getInstrumentKey() {
+  /*static String getInstrumentKey() {
     switch (ApiFactory.Enviroment.toLowerCase()) {
       case "prod":
         return "5029c09c-acd8-44e1-83cf-9a34094599a2";
@@ -212,8 +214,8 @@ class Const {
         return "https://app-salesco-bms-dev.zeeconnect.in";
     }
   }
-
-/*static String getInstrumentKey() {
+*/
+static String getInstrumentKey() {
     if(!kDebugMode){
       return Get.find<MainController>().environmentModel?.appInsrtumentationKey??"";
     }
@@ -244,6 +246,22 @@ class Const {
       default:
         return "https://api-login-bms-dev.zeeconnect.in";
     }
+  }
+
+  static String getBaseSalescoAPIUrl() {
+    if(!kDebugMode){
+      return Get.find<MainController>().environmentModel?.apiSalescoUrl??"";
+    }
+      switch (ApiFactory.Enviroment.toLowerCase()) {
+        case "prod":
+          return "https://api-salesco-bms.zeeconnect.in";
+        case "uat":
+          return "https://api-salesco-bms-dev.zeeconnect.in";
+        case "dev":
+          return "https://api-salesco-bms-dev.zeeconnect.in";
+        default:
+          return "https://api-salesco-bms-dev.zeeconnect.in";
+      }
   }
 
   static String getBaseCommonAPIUrl() {
@@ -387,5 +405,20 @@ class Const {
       default:
         return "https://app-scheduling-bms-dev.zeeconnect.in";
     }
-  }*/
+  }
+  static String getWebSalescoUrl() {
+    if(!kDebugMode){
+      return Get.find<MainController>().environmentModel?.appSalescoUrl??"";
+    }
+      switch (ApiFactory.Enviroment.toLowerCase()) {
+        case "prod":
+          return "https://salesco-bms.zeeconnect.in";
+        case "uat":
+          return "https://app-salesco-bms-uat.zeeconnect.in";
+        case "dev":
+          return "https://app-salesco-bms-dev.zeeconnect.in";
+        default:
+          return "https://app-salesco-bms-dev.zeeconnect.in";
+      }
+  }
 }
