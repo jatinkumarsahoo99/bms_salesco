@@ -101,10 +101,13 @@ class NewShortContentFormView extends GetView<NewShortContentFormController> {
                     GlobalKey(),
                     context,
                     title: "Program",
+                    parseKeyForKey: "ProgramCode",
+                    parseKeyForValue: "ProgramName",
                     url: ApiFactory.NEW_SHORT_CONTENT_Program_Search,
                     onchanged: (value) {
                       controller.selectedProgram = value;
                     },
+                    selectedValue: controller.selectedProgram,
                     width: Get.width * 0.325,
                   ),
                   // InputFields.formField1(
@@ -112,24 +115,30 @@ class NewShortContentFormView extends GetView<NewShortContentFormController> {
                   //   controller: TextEditingController(),
                   //   width: 0.325,
                   // ),
-                  InputFields.formFieldNumberMask(hintTxt: "SOM", widthRatio: .155, controller: TextEditingController(), paddingLeft: 0),
-                  InputFields.formFieldNumberMask(hintTxt: "EOM", widthRatio: .155, controller: TextEditingController(), paddingLeft: 0),
-                  InputFields.formFieldNumberMask(hintTxt: "Duration", widthRatio: .16, controller: TextEditingController(), paddingLeft: 0),
+                  InputFields.formFieldNumberMask(hintTxt: "SOM", widthRatio: .155, controller: controller.som, paddingLeft: 0),
+                  InputFields.formFieldNumberMask(hintTxt: "EOM", widthRatio: .155, controller: controller.eom, paddingLeft: 0),
+                  InputFields.formFieldNumberMask(hintTxt: "Duration", widthRatio: .16, controller: controller.duration, paddingLeft: 0),
                   DateWithThreeTextField(
                     title: "Start Date",
-                    mainTextController: TextEditingController(),
+                    mainTextController: controller.startData,
                     widthRation: .155,
                   ),
                   DateWithThreeTextField(
                     title: "End Date",
-                    mainTextController: TextEditingController(),
+                    mainTextController: controller.endDate,
                     widthRation: .155,
                   ),
                   SizedBox(
                     width: Get.width * 0.16,
                     child: Row(
                       children: [
-                        Checkbox(value: false, onChanged: (value) {}),
+                        Obx(
+                          () => Checkbox(
+                              value: controller.toBeBilled.value,
+                              onChanged: (value) {
+                                controller.toBeBilled.value = value!;
+                              }),
+                        ),
                         Text(
                           "To be Billed",
                           style: TextStyle(fontSize: SizeDefine.labelSize1),
@@ -139,38 +148,37 @@ class NewShortContentFormView extends GetView<NewShortContentFormController> {
                   ),
                   Obx(
                     () => DropDownField.formDropDown1WidthMap(
-                      controller.types.value,
+                      controller.tapes.value,
                       (value) {
-                        controller.selectedType = value;
-                        controller.typeleave(value.key);
+                        controller.selectedTape = value;
                       },
                       "Tape",
                       .155,
+                      selected: controller.selectedTape,
                       autoFocus: true,
                     ),
                   ),
                   Obx(
                     () => DropDownField.formDropDown1WidthMap(
-                      controller.types.value,
+                      controller.orgRepeats.value,
                       (value) {
-                        controller.selectedType = value;
-                        controller.typeleave(value.key);
+                        controller.selectedOrgRep = value;
                       },
                       "Org / Repeat",
                       .155,
+                      selected: controller.selectedOrgRep,
                       autoFocus: true,
                     ),
                   ),
                   InputFields.formField1(
                     hintTxt: "Segment Number",
-                    controller: controller.houseId,
-                    focusNode: controller.houseFocusNode,
+                    controller: controller.segment,
                     width: 0.16,
                   ),
 
                   InputFields.formField1(
                     hintTxt: "Remarks",
-                    controller: TextEditingController(),
+                    controller: controller.remark,
                     width: 0.49,
                   ),
                 ],
@@ -195,7 +203,11 @@ class NewShortContentFormView extends GetView<NewShortContentFormController> {
                             // mainAxisSize: MainAxisSize.min,
                             children: [
                               for (var btn in btncontroller.buttons!) ...{
-                                FormButtonWrapper(btnText: btn["name"], callback: () {}
+                                FormButtonWrapper(
+                                    btnText: btn["name"],
+                                    callback: () {
+                                      btnHandler(btn["name"]);
+                                    }
                                     //  ((Utils.btnAccessHandler(btn['name'], controller.formPermissions!) == null))
                                     //     ? null
                                     //     : () => controller.formHandler(btn['name']),
@@ -218,5 +230,18 @@ class NewShortContentFormView extends GetView<NewShortContentFormController> {
         ),
       ),
     );
+  }
+
+  btnHandler(name) {
+    switch (name) {
+      case "Save":
+        controller.save();
+        break;
+      case "Search":
+        break;
+      case "Delete":
+        break;
+      default:
+    }
   }
 }
