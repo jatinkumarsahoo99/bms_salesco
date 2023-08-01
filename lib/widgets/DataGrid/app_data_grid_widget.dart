@@ -93,6 +93,15 @@ class _AppDataGridWidgetState extends State<AppDataGridWidget> {
                 }
               },
               configuration: const PlutoGridConfiguration().copyWith(
+                tabKeyAction: PlutoGridTabKeyAction.moveToNextOnEdge,
+                shortcut: PlutoGridShortcut(
+                  actions: {},
+                ),
+                scrollbar: const PlutoGridScrollbarConfig(
+                  draggableScrollbar: true,
+                  isAlwaysShown: true,
+                  hoverWidth: 15,
+                ),
                 columnSize: const PlutoGridColumnSizeConfig().copyWith(autoSizeMode: PlutoAutoSizeMode.scale, resizeMode: PlutoResizeMode.normal),
                 style: PlutoGridStyleConfig(
                   columnContextIcon: Icons.swap_horiz_outlined,
