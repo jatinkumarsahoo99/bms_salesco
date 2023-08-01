@@ -17,7 +17,7 @@ class UserGroupsForDealWorkflowController extends GetxController {
 
   DropDownValue? selectedEmployee;
   DropDownValue? selectedChannel;
-  DisPlayGroupModel? disPlayGroupModel;
+  DisPlayGroupModel? disPlayGroupModel = DisPlayGroupModel(displayGroup: []);
   TextEditingController groupTextController = new TextEditingController();
 
   void addBtnClick(){
@@ -37,6 +37,11 @@ class UserGroupsForDealWorkflowController extends GetxController {
     Get.delete<UserGroupsForDealWorkflowController>();
     Get.find<HomeController>().clearPage1();
   }
+
+  getDisPlay(){
+
+  }
+
   @override
   void onInit() {
     super.onInit();

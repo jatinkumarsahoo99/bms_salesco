@@ -50,9 +50,7 @@ class UserGroupsForDealWorkflowView
                     // autoFocus: true,
                     // focusNode: controllerX.brandName,
                     // isEnable: controllerX.isEnable,
-                    onchanged: (value) {
-
-                    },
+                    onchanged: (value) {},
                     // autoFocus: true,
                   ),
                   DropDownField
@@ -65,8 +63,8 @@ class UserGroupsForDealWorkflowView
                     },
                     title: 'Employee',
                     url:ApiFactory.USER_GROUPS_FOR_DEAL_WORKFLOW_EmpSearch,
-                    parseKeyForKey: "productcode",
-                    parseKeyForValue: 'Productname',
+                    parseKeyForKey: "PersonnelNo",
+                    parseKeyForValue: 'Employees',
                     selectedValue: controllerX.selectedEmployee,
                     autoFocus: true,
                     // maxLength: 1
@@ -102,9 +100,7 @@ class UserGroupsForDealWorkflowView
                         child:  GetBuilder<UserGroupsForDealWorkflowController>(
                             id: "grid",
                             builder: (controllerX) {
-                              return Container(
-                                decoration: BoxDecoration(
-                                    border: Border.all(color: Colors.grey)),
+                              return  Container(
 
                               );
                             }
