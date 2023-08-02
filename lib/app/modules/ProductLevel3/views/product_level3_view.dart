@@ -47,35 +47,42 @@ class ProductLevel3View extends GetView<ProductLevel3Controller> {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           Obx(()=>DropDownField.formDropDown1WidthMap(
-                            controllerX.locationList.value??[],
+                            controllerX.typeList.value??[],
                                 (value) {
-                              controllerX.selectedLocation = value;
+                              controllerX.selectedType?.value = value;
+                              controllerX.fetchProductLevel1(value.key??"");
                             }, "Type", .41,
                             isEnable: controllerX.isEnable.value,
-                            selected: controllerX.selectedLocation,
-                            dialogHeight: Get.height * .7,
+                            selected: controllerX.selectedType?.value,
+                            inkWellFocusNode: controllerX.typeNode,
+                            dialogHeight: Get.height * .3,
                             autoFocus: true,),),
                           Obx(()=>DropDownField.formDropDown1WidthMap(
-                            controllerX.locationList.value??[],
+                            controllerX.level1List.value??[],
                                 (value) {
-                              controllerX.selectedLocation = value;
+                              controllerX.selectedLevel1?.value = value;
+                              controllerX.fetchProductLevel2(int.parse((value.key??"0").toString()));
                             }, "Level 1", .41,
                             isEnable: controllerX.isEnable.value,
-                            selected: controllerX.selectedLocation,
-                            dialogHeight: Get.height * .7,
+                            selected: controllerX.selectedLevel1?.value,
+                            inkWellFocusNode: controllerX.level1Node,
+                            dialogHeight: Get.height * .3,
                             autoFocus: true,),),
                           Obx(()=>DropDownField.formDropDown1WidthMap(
-                            controllerX.locationList.value??[],
+                            controllerX.level2List.value??[],
                                 (value) {
-                              controllerX.selectedLocation = value;
+                              controllerX.selectedLevel2?.value = value;
+
                             }, "Level 2", .41,
                             isEnable: controllerX.isEnable.value,
-                            selected: controllerX.selectedLocation,
-                            dialogHeight: Get.height * .7,
+                            selected: controllerX.selectedLevel2?.value,
+                            inkWellFocusNode: controllerX.level2Node,
+                            dialogHeight: Get.height * .3,
                             autoFocus: true,),),
                           InputFields.formField1(
                             hintTxt: "Level 3",
-                            controller: TextEditingController(),
+                            controller: controllerX.level3Controller,
+                            focusNode: controllerX.level3Node,
                             width:  0.41,
                             // autoFocus: true,
                             // focusNode: controllerX.brandName,
@@ -99,7 +106,7 @@ class ProductLevel3View extends GetView<ProductLevel3Controller> {
                         PermissionModel formPermissions = Get.find<MainController>()
                             .permissionList!
                             .lastWhere((element) =>
-                        element.appFormName == "frmCommercialMaster");
+                        element.appFormName == "frmProductLevel3");
                         if (controller.buttons != null) {
                           return ButtonBar(
                             alignment: MainAxisAlignment.start,

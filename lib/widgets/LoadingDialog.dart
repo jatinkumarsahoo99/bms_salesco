@@ -414,7 +414,7 @@ class LoadingDialog {
     );
   }
 
-  static recordExists(String title, Function? confirm, {String? deleteTitle, String? deleteCancel}) {
+  static recordExists(String title, Function? confirm, {String? deleteTitle, String? deleteCancel, Function? cancel}) {
     Get.defaultDialog(
       title: "",
       titleStyle: TextStyle(fontSize: 1),
@@ -447,6 +447,9 @@ class LoadingDialog {
           autoFocus: false,
           callback: () {
             Get.back();
+            if (cancel != null) {
+              cancel();
+            }
           },
           btnText: deleteCancel ?? "No"),
       cancel: DailogCloseButton(

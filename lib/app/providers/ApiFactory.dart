@@ -637,6 +637,24 @@ class ApiFactory {
   static String get UPDATE_EXECUTIVE_GET_VERIFY => "$BASE_URL/api/UpdateExecutive/GetVerifiy";
   static String get UPDATE_EXECUTIVE_UPDATE_EXECUTIVE => "$BASE_URL/api/UpdateExecutive/UpdateExecutive";
 
+  ///////////////////////////////////// Product Level 1 //////////////////////////////
+  static String get PRODUCT_LEVEL1_LOAD => "$BASE_URL/api/ProductLevelOne/GetPT1OnLoad";
+  static String get PRODUCT_LEVEL1_RETRIEVE => "$BASE_URL/api/ProductLevelOne/GetRetrieveRecord";
+  static String get PRODUCT_LEVEL1_SAVE => "$BASE_URL/api/ProductLevelOne/PostSave";
+
+  /////////////////////////////////// Product Level 2 ////////////////////////////////
+  static String get PRODUCT_LEVEL2_LOAD => "$BASE_URL/api/ProductLevelTwo/GetPTTwoOnLoad";
+  static String get PRODUCT_LEVEL2_GET_PRODUCT_LEVEL1 => "$BASE_URL/api/ProductLevelTwo/GetProductLevelOne";
+  static String get PRODUCT_LEVEL2_RETRIEVE => "$BASE_URL/api/ProductLevelTwo/GetRetrieveRecord";
+  static String get PRODUCT_LEVEL2_SAVE => "$BASE_URL/api/ProductLevelTwo/PostSave";
+
+  //////////////////////////////// Product Level 3 //////////////////////////////////
+  static String get PRODUCT_LEVEL3_LOAD => "$BASE_URL/api/ProductLevelThree/GetproductType";
+  static String get PRODUCT_LEVEL3_GET_PRODUCT_LEVEL1 => "$BASE_URL/api/ProductLevelThree/GetProductLeaveOne";
+  static String get PRODUCT_LEVEL3_GET_PRODUCT_LEVEL2 => "$BASE_URL/api/ProductLevelThree/GetProductLevelTwo";
+  static String get PRODUCT_LEVEL3_RETRIEVE => "$BASE_URL/api/ProductLevelThree/Retrieverecord";
+  static String get PRODUCT_LEVEL3_SAVE => "$BASE_URL/api/ProductLevelThree/PostSave";
+
 
   ///
   ///
