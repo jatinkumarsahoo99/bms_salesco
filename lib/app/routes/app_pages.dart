@@ -149,7 +149,7 @@ class AppPages {
       name: _Paths.ONE_SPOT_BOOKING_SKY_MEDIA,
       page: () => AuthGuard(childName: _Paths.ONE_SPOT_BOOKING_SKY_MEDIA),
       // OnSpotBookingSkyMediaView(),
-      binding: OnSpotBookingSkyMediaBinding(),
+      binding: OneSpotBookingSkyMediaBinding(),
     ),
     GetPage(
       name: _Paths.PERIODIC_DEAL_UTILISATION_FORMAT2,
