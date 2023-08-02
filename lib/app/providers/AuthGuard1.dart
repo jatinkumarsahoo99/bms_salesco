@@ -2,6 +2,7 @@ import 'package:bms_salesco/app/controller/MainController.dart';
 import 'package:bms_salesco/app/modules/AmagiSpotPlanning/views/amagi_spot_planning_view.dart';
 import 'package:bms_salesco/app/modules/AmagiSpotsReplacement/views/amagi_spots_replacement_view.dart';
 import 'package:bms_salesco/app/modules/MakeGoodReport/views/make_good_report_view.dart';
+import 'package:bms_salesco/app/modules/NewShortContentForm/views/new_short_content_form_view.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -102,6 +103,9 @@ class AuthGuard extends StatelessWidget {
               break;
             case Routes.GEO_PROGRAM_UPDATE:
               currentWidget = GeoProgramUpdateView();
+              break;
+            case Routes.NEW_SHORT_CONTENT_FORM:
+              currentWidget = NewShortContentFormView();
               break;
             case Routes.WORKFLOW_DEFINITION:
               currentWidget = WorkflowDefinitionView();
