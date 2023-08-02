@@ -11,8 +11,10 @@ import 'package:get/get.dart';
 
 import '../controllers/new_short_content_form_controller.dart';
 
-class NewShortContentFormView extends GetView<NewShortContentFormController> {
-  const NewShortContentFormView({Key? key}) : super(key: key);
+class NewShortContentFormView extends StatelessWidget {
+  NewShortContentFormView({Key? key}) : super(key: key);
+  final controller =
+      Get.put<NewShortContentFormController>(NewShortContentFormController());
   @override
   Widget build(BuildContext context) {
     return Center(

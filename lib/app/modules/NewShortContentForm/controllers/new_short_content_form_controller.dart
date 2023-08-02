@@ -148,7 +148,7 @@ class NewShortContentFormController extends GetxController {
   save() async {
     var body = {};
     List _durations = duration.text.split(":");
-    int intDuration = Duration(
+    num intDuration = Duration(
             hours: int.parse(_durations[0]),
             minutes: int.parse(_durations[1]),
             seconds: int.parse(_durations[2]))
@@ -213,14 +213,14 @@ class NewShortContentFormController extends GetxController {
       body = {
         "vignetteCode": null,
         "vignetteCaption": caption.text,
-        "vignetteDuration": duration.text,
+        "vignetteDuration": intDuration,
         "exportTapeCode_VG": txCaption.text,
         "originalRepeatCode": selectedOrgRep?.key,
         "segmentNumber_VG": segment.text,
         "startDate": DateFormat("yyyy-MM-dd")
             .format(DateFormat("dd-MM-yyyy").parse(startData.text)),
         "remarks": remark.text,
-        "billflag": toBeBilled.value,
+        "billflag": toBeBilled.value ? 1 : 0,
         "companycode": "",
         "exportTapeDuration": intDuration, //Common in (Slide/Vignette)
         "locationcode":
@@ -248,6 +248,7 @@ class NewShortContentFormController extends GetxController {
                 rawdata["onSaveShortCode"]["result"] != null) {
               LoadingDialog.callDataSaved(
                   msg: rawdata["onSaveShortCode"]["result"]["message"]);
+              return true;
             } else {
               LoadingDialog.callErrorMessage1(msg: "Save Failed");
               return false;
