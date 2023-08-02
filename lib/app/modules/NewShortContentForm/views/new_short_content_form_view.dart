@@ -1,4 +1,5 @@
 import 'package:bms_salesco/app/controller/HomeController.dart';
+import 'package:bms_salesco/app/providers/ApiFactory.dart';
 import 'package:bms_salesco/app/providers/SizeDefine.dart';
 import 'package:bms_salesco/widgets/DateTime/DateWithThreeTextField.dart';
 import 'package:bms_salesco/widgets/FormButton.dart';
@@ -10,8 +11,10 @@ import 'package:get/get.dart';
 
 import '../controllers/new_short_content_form_controller.dart';
 
-class NewShortContentFormView extends GetView<NewShortContentFormController> {
-  const NewShortContentFormView({Key? key}) : super(key: key);
+class NewShortContentFormView extends StatelessWidget {
+  NewShortContentFormView({Key? key}) : super(key: key);
+  final controller =
+      Get.put<NewShortContentFormController>(NewShortContentFormController());
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -34,72 +37,125 @@ class NewShortContentFormView extends GetView<NewShortContentFormController> {
                 runSpacing: 5,
                 spacing: Get.width * 0.01,
                 children: [
-                  DropDownField.formDropDown1WidthMap(
-                    [],
-                    (valeu) {},
-                    "Location",
-                    .24,
-                    autoFocus: true,
+                  Obx(
+                    () => DropDownField.formDropDown1WidthMap(
+                      controller.locations.value,
+                      (value) {
+                        controller.getChannel(value.key);
+                        controller.selectedLocation = value;
+                      },
+                      "Location",
+                      .24,
+                      autoFocus: true,
+                    ),
                   ),
-                  DropDownField.formDropDown1WidthMap(
-                    [],
-                    (valeu) {},
-                    "Channel",
-                    .24,
-                    autoFocus: true,
+                  Obx(
+                    () => DropDownField.formDropDown1WidthMap(
+                      controller.channels.value,
+                      (value) {
+                        controller.selectedChannel = value;
+                      },
+                      "Channel",
+                      .24,
+                      autoFocus: true,
+                    ),
                   ),
-                  DropDownField.formDropDown1WidthMap(
-                    [],
-                    (valeu) {},
-                    "Type",
-                    .24,
-                    autoFocus: true,
+                  Obx(
+                    () => DropDownField.formDropDown1WidthMap(
+                      controller.types.value,
+                      (value) {
+                        controller.selectedType = value;
+                        controller.typeleave(value.key);
+                      },
+                      "Type",
+                      .24,
+                      autoFocus: true,
+                    ),
                   ),
-                  DropDownField.formDropDown1WidthMap(
-                    [],
-                    (valeu) {},
-                    "Category",
-                    .24,
-                    autoFocus: true,
+                  Obx(
+                    () => DropDownField.formDropDown1WidthMap(
+                      controller.categeroies.value,
+                      (value) {
+                        controller.selectedCategory = value;
+                      },
+                      "Category",
+                      .24,
+                      autoFocus: true,
+                    ),
                   ),
                   InputFields.formField1(
                     hintTxt: "Caption",
-                    controller: TextEditingController(),
+                    controller: controller.caption,
                     width: 0.24,
                   ),
                   InputFields.formField1(
                     hintTxt: "TX Caption",
-                    controller: TextEditingController(),
+                    controller: controller.txCaption,
                     width: 0.24,
                   ),
                   InputFields.formField1(
                     hintTxt: "House ID",
-                    controller: TextEditingController(),
+                    controller: controller.houseId,
+                    focusNode: controller.houseFocusNode,
                     width: 0.155,
                   ),
-                  InputFields.formField1(
-                    hintTxt: "Program",
-                    controller: TextEditingController(),
-                    width: 0.325,
+                  DropDownField.formDropDownSearchAPI2(
+                    GlobalKey(),
+                    context,
+                    title: "Program",
+                    parseKeyForKey: "ProgramCode",
+                    parseKeyForValue: "ProgramName",
+                    url: ApiFactory.NEW_SHORT_CONTENT_Program_Search,
+                    onchanged: (value) {
+                      controller.selectedProgram = value;
+                    },
+                    selectedValue: controller.selectedProgram,
+                    width: Get.width * 0.325,
                   ),
-                  InputFields.formFieldNumberMask(hintTxt: "SOM", widthRatio: .155, controller: TextEditingController(), paddingLeft: 0),
-                  InputFields.formFieldNumberMask(hintTxt: "EOM", widthRatio: .155, controller: TextEditingController(), paddingLeft: 0),
-                  InputFields.formFieldNumberMask(hintTxt: "Duration", widthRatio: .16, controller: TextEditingController(), paddingLeft: 0),
+                  // InputFields.formField1(
+                  //   hintTxt: "Program",
+                  //   controller: TextEditingController(),
+                  //   width: 0.325,
+                  // ),
+                  InputFields.formFieldNumberMask(
+                      hintTxt: "SOM",
+                      widthRatio: .155,
+                      controller: controller.som,
+                      paddingLeft: 0,
+                      isTime: true),
+                  InputFields.formFieldNumberMask(
+                      hintTxt: "EOM",
+                      widthRatio: .155,
+                      controller: controller.eom,
+                      isTime: true,
+                      paddingLeft: 0),
+                  InputFields.formFieldNumberMask(
+                      hintTxt: "Duration",
+                      widthRatio: .16,
+                      isTime: true,
+                      controller: controller.duration,
+                      paddingLeft: 0),
                   DateWithThreeTextField(
                     title: "Start Date",
-                    mainTextController: TextEditingController(),
+                    mainTextController: controller.startData,
                     widthRation: .155,
                   ),
                   DateWithThreeTextField(
                     title: "End Date",
-                    mainTextController: TextEditingController(),
+                    mainTextController: controller.endDate,
                     widthRation: .155,
                   ),
                   SizedBox(
                     width: Get.width * 0.16,
                     child: Row(
                       children: [
-                        Checkbox(value: false, onChanged: (value) {}),
+                        Obx(
+                          () => Checkbox(
+                              value: controller.toBeBilled.value,
+                              onChanged: (value) {
+                                controller.toBeBilled.value = value!;
+                              }),
+                        ),
                         Text(
                           "To be Billed",
                           style: TextStyle(fontSize: SizeDefine.labelSize1),
@@ -107,9 +163,39 @@ class NewShortContentFormView extends GetView<NewShortContentFormController> {
                       ],
                     ),
                   ),
+                  Obx(
+                    () => DropDownField.formDropDown1WidthMap(
+                      controller.tapes.value,
+                      (value) {
+                        controller.selectedTape = value;
+                      },
+                      "Tape",
+                      .155,
+                      selected: controller.selectedTape,
+                      autoFocus: true,
+                    ),
+                  ),
+                  Obx(
+                    () => DropDownField.formDropDown1WidthMap(
+                      controller.orgRepeats.value,
+                      (value) {
+                        controller.selectedOrgRep = value;
+                      },
+                      "Org / Repeat",
+                      .155,
+                      selected: controller.selectedOrgRep,
+                      autoFocus: true,
+                    ),
+                  ),
+                  InputFields.formField1(
+                    hintTxt: "Segment Number",
+                    controller: controller.segment,
+                    width: 0.16,
+                  ),
+
                   InputFields.formField1(
                     hintTxt: "Remarks",
-                    controller: TextEditingController(),
+                    controller: controller.remark,
                     width: 0.49,
                   ),
                 ],
@@ -134,7 +220,11 @@ class NewShortContentFormView extends GetView<NewShortContentFormController> {
                             // mainAxisSize: MainAxisSize.min,
                             children: [
                               for (var btn in btncontroller.buttons!) ...{
-                                FormButtonWrapper(btnText: btn["name"], callback: () {}
+                                FormButtonWrapper(
+                                    btnText: btn["name"],
+                                    callback: () {
+                                      btnHandler(btn["name"]);
+                                    }
                                     //  ((Utils.btnAccessHandler(btn['name'], controller.formPermissions!) == null))
                                     //     ? null
                                     //     : () => controller.formHandler(btn['name']),
@@ -157,5 +247,24 @@ class NewShortContentFormView extends GetView<NewShortContentFormController> {
         ),
       ),
     );
+  }
+
+  btnHandler(name) async {
+    switch (name) {
+      case "Save":
+        if (await controller.save()) {
+          Get.delete<NewShortContentFormController>();
+          Get.find<HomeController>().clearPage1();
+        }
+
+        break;
+      case "Search":
+        break;
+      case "Clear":
+        Get.delete<NewShortContentFormController>();
+        Get.find<HomeController>().clearPage1();
+        break;
+      default:
+    }
   }
 }

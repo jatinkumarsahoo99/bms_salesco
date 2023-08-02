@@ -48,7 +48,7 @@ class AppPages {
 
   static const INITIAL = kReleaseMode
       ? Routes.HOME
-      : Routes.DESIGN +
+      : Routes.NEW_SHORT_CONTENT_FORM +
           "?personalNo=R9vVPL7er1Os/usemWG/Iw==&loginCode=0iGe3vK5h2KGjfSKZTpmsQ==&formName=OI8ukDpPPVN0I2BEXu2h4nuFu%2BZm1ZRpvP8NL4XCXzQ%3D";
   static final routes = [
     GetPage(
@@ -166,7 +166,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.NEW_SHORT_CONTENT_FORM,
-      page: () => const NewShortContentFormView(),
+      page: () => AuthGuard(childName: _Paths.NEW_SHORT_CONTENT_FORM),
       binding: NewShortContentFormBinding(),
     ),
     GetPage(
