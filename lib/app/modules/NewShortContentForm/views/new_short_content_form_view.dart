@@ -115,9 +115,24 @@ class NewShortContentFormView extends GetView<NewShortContentFormController> {
                   //   controller: TextEditingController(),
                   //   width: 0.325,
                   // ),
-                  InputFields.formFieldNumberMask(hintTxt: "SOM", widthRatio: .155, controller: controller.som, paddingLeft: 0),
-                  InputFields.formFieldNumberMask(hintTxt: "EOM", widthRatio: .155, controller: controller.eom, paddingLeft: 0),
-                  InputFields.formFieldNumberMask(hintTxt: "Duration", widthRatio: .16, controller: controller.duration, paddingLeft: 0),
+                  InputFields.formFieldNumberMask(
+                      hintTxt: "SOM",
+                      widthRatio: .155,
+                      controller: controller.som,
+                      paddingLeft: 0,
+                      isTime: true),
+                  InputFields.formFieldNumberMask(
+                      hintTxt: "EOM",
+                      widthRatio: .155,
+                      controller: controller.eom,
+                      isTime: true,
+                      paddingLeft: 0),
+                  InputFields.formFieldNumberMask(
+                      hintTxt: "Duration",
+                      widthRatio: .16,
+                      isTime: true,
+                      controller: controller.duration,
+                      paddingLeft: 0),
                   DateWithThreeTextField(
                     title: "Start Date",
                     mainTextController: controller.startData,
@@ -232,14 +247,20 @@ class NewShortContentFormView extends GetView<NewShortContentFormController> {
     );
   }
 
-  btnHandler(name) {
+  btnHandler(name) async {
     switch (name) {
       case "Save":
-        controller.save();
+        if (await controller.save()) {
+          Get.delete<NewShortContentFormController>();
+          Get.find<HomeController>().clearPage1();
+        }
+
         break;
       case "Search":
         break;
-      case "Delete":
+      case "Clear":
+        Get.delete<NewShortContentFormController>();
+        Get.find<HomeController>().clearPage1();
         break;
       default:
     }
