@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:pluto_grid/pluto_grid.dart';
 
 import '../../../../widgets/DateTime/DateWithThreeTextField.dart';
 import '../../../../widgets/FormButton.dart';
 import '../../../../widgets/dropdown.dart';
+import '../../../../widgets/gridFromMap.dart';
 import '../../../../widgets/input_fields.dart';
 import '../../../controller/HomeController.dart';
 import '../../../controller/MainController.dart';
@@ -47,10 +49,13 @@ class UserGroupsForDealWorkflowView
                     hintTxt: "Group",
                     controller: controllerX.groupTextController,
                     width:  0.36,
-                    // autoFocus: true,
+                    autoFocus: false,
                     // focusNode: controllerX.brandName,
                     // isEnable: controllerX.isEnable,
-                    onchanged: (value) {},
+                    onchanged: (value) {
+                      // controllerX.getDisPlay(value);
+                    },
+                    focusNode: controllerX.groupNode
                     // autoFocus: true,
                   ),
                   DropDownField
@@ -66,7 +71,7 @@ class UserGroupsForDealWorkflowView
                     parseKeyForKey: "PersonnelNo",
                     parseKeyForValue: 'Employees',
                     selectedValue: controllerX.selectedEmployee,
-                    autoFocus: true,
+                    autoFocus: false,
                     // maxLength: 1
                   ),
                   Row(
@@ -81,7 +86,7 @@ class UserGroupsForDealWorkflowView
                         child: FormButtonWrapper(
                           btnText: "Add",
                           callback: () {
-                            // controllerX.callGetRetrieve();
+                            controllerX.addBtnClick();
                           },
                           showIcon: false,
                         ),
@@ -100,7 +105,21 @@ class UserGroupsForDealWorkflowView
                         child:  GetBuilder<UserGroupsForDealWorkflowController>(
                             id: "grid",
                             builder: (controllerX) {
-                              return  Container(
+                              return (controllerX.disPlayGroupModel != null &&
+                                  controllerX.disPlayGroupModel?.displayGroup != null &&
+                                  (controllerX.disPlayGroupModel?.displayGroup?.employees?.length??0) >0
+                              )?DataGridFromMap(
+                                showSrNo: false,
+                                hideCode: false,
+                                formatDate: false,
+                                mode: PlutoGridMode.selectWithOneTap,
+                                mapData: (controllerX
+                                    .disPlayGroupModel!.displayGroup
+                                    ?.employees?.map((e) => e.toJson())
+                                    .toList())!,
+                                // mapData: (controllerX.dataList)!,
+                                widthRatio: Get.width / 9 - 1,
+                              ): Container(
 
                               );
                             }

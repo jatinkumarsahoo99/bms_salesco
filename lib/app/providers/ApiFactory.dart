@@ -630,6 +630,13 @@ class ApiFactory {
   static String get USER_GROUPS_FOR_DEAL_WORKFLOW_GET_DISPLAY_GROUP => "$BASE_URL/api/UserGroupsForDealWorkflow/GetDisplayGroup?GroupName=";
   static String get USER_GROUPS_FOR_DEAL_WORKFLOW_SAVE=> "$BASE_URL/api/UserGroupsForDealWorkflow/Save";
 
+  //////////////////////////////////////////////// Update Executive ////////////////////////////////////////////////////////
+  static String get UPDATE_EXECUTIVE_LOAD => "$BASE_URL/api/UpdateExecutive/GetUEOnLoad";
+  static String get UPDATE_EXECUTIVE_GET_CLIENT => "$BASE_URL/api/UpdateExecutive/Getclient";
+  static String get UPDATE_EXECUTIVE_GET_AGENCY => "$BASE_URL/api/UpdateExecutive/GetAgency";
+  static String get UPDATE_EXECUTIVE_GET_VERIFY => "$BASE_URL/api/UpdateExecutive/GetVerifiy";
+  static String get UPDATE_EXECUTIVE_UPDATE_EXECUTIVE => "$BASE_URL/api/UpdateExecutive/UpdateExecutive";
+
 
   ///
   ///

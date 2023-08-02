@@ -76,7 +76,7 @@ class GeoProgramUpdateController extends GetxController {
             if(map is Map && map.containsKey("update") && map['update'] != null){
               LoadingDialog.callDataSavedMessage(map['update']??"");
             }else{
-              LoadingDialog.showErrorDialog("Some thing went wrong");
+              LoadingDialog.showErrorDialog((map??"Some thing went wrong").toString());
             }
           });
     }
@@ -108,7 +108,7 @@ class GeoProgramUpdateController extends GetxController {
     if(btn == "Update"){
       updateAPICall();
     }if(btn == "Clear"){
-      print("clear call");
+      // print("clear call");
       clearAll();
     }
   }

@@ -64,6 +64,7 @@ class WorkflowDefinitionView extends GetView<WorkflowDefinitionController> {
                                       0.36,
                                       isEnable: controllerX.isEnable.value,
                                       selected: controllerX.selectedLocation,
+                                      inkWellFocusNode: controllerX.locationNode,
                                       /*onFocusChange: (val) {
                                         if (!val) {
                                           controllerX.onLeaveLocation(
@@ -91,6 +92,7 @@ class WorkflowDefinitionView extends GetView<WorkflowDefinitionController> {
                                       selected: controllerX.selectedChannel,
                                       dialogHeight: Get.height * .35,
                                       autoFocus: true,
+                                      inkWellFocusNode: controllerX.channelNode,
                                     ),
                                   ),
                                   SizedBox(
@@ -110,6 +112,7 @@ class WorkflowDefinitionView extends GetView<WorkflowDefinitionController> {
                                       0.36,
                                       isEnable: controllerX.isEnable.value,
                                       selected: controllerX.selectedZone,
+                                      inkWellFocusNode: controllerX.zoneNode,
                                       /* onFocusChange: (val) {
                                         if (!val) {
                                           controllerX.onLeaveZone(
@@ -136,6 +139,7 @@ class WorkflowDefinitionView extends GetView<WorkflowDefinitionController> {
                                       selected: controllerX.selectedStation,
                                       dialogHeight: Get.height * .35,
                                       autoFocus: true,
+                                      inkWellFocusNode: controllerX.stationNode,
                                     ),
                                   ),
                                   SizedBox(
@@ -153,6 +157,7 @@ class WorkflowDefinitionView extends GetView<WorkflowDefinitionController> {
                                       selected: controllerX.selectedTeam,
                                       dialogHeight: Get.height * .35,
                                       autoFocus: true,
+                                      inkWellFocusNode: controllerX.teamNode,
                                     ),
                                   ),
                                   SizedBox(
@@ -169,6 +174,7 @@ class WorkflowDefinitionView extends GetView<WorkflowDefinitionController> {
                                       0.36,
                                       isEnable: controllerX.isEnable.value,
                                       selected: controllerX.selectedType,
+                                      inkWellFocusNode: controllerX.typeNode,
                                       /* onFocusChange: (val) {
                                         if (!val) {
                                           controllerX.getDisplayApi();
@@ -222,6 +228,7 @@ class WorkflowDefinitionView extends GetView<WorkflowDefinitionController> {
                                      parseKeyForKey: "PersonnelNo",
                                      parseKeyForValue: 'Employees',
                                      selectedValue: controllerX.selectedUser,
+                                     inkwellFocus:  controllerX.userNode,
                                      // autoFocus: true,
                                      isEnable: controllerX.userEnable.value
                                    // maxLength: 1
@@ -246,6 +253,7 @@ class WorkflowDefinitionView extends GetView<WorkflowDefinitionController> {
                                      parseKeyForValue: 'GroupName',
                                      selectedValue: controllerX.selectedGroup,
                                      autoFocus: true,
+                                     inkwellFocus: controllerX.groupNode,
                                      isEnable: controllerX.groupEnable.value
                                    // maxLength: 1
                                  ),) ,
@@ -301,211 +309,6 @@ class WorkflowDefinitionView extends GetView<WorkflowDefinitionController> {
                                         child: FormButtonWrapper(
                                           btnText: "Add",
                                           callback: () {
-                                           /* if (controllerX
-                                                    .selectRadio2.value ==
-                                                "After") {
-                                              if (controllerX
-                                                          .approvalSequenceId !=
-                                                      null &&
-                                                  controllerX
-                                                          .approvalSequenceId !=
-                                                      "" &&
-                                                  controllerX
-                                                          .approvalSequenceId !=
-                                                      "0") {
-                                                int selIndex = (controllerX
-                                                        .selectedIndex ??
-                                                    0);
-                                                controllerX
-                                                        .dealWorkDefinitionGridModel
-                                                        ?.display?[selIndex]
-                                                        .approvalSequenceID =
-                                                    int.parse(controllerX
-                                                            .approvalSequenceId ??
-                                                        "0");
-                                                controllerX
-                                                    .dealWorkDefinitionGridModel
-                                                    ?.display?[selIndex]
-                                                    .employees = controllerX
-                                                        .selectedUser?.value ??
-                                                    "";
-
-                                                controllerX
-                                                    .dealWorkDefinitionGridModel
-                                                    ?.display?[selIndex]
-                                                    .formName = controllerX
-                                                        .formNameController
-                                                        .text ??
-                                                    "";
-
-                                                controllerX
-                                                    .dealWorkDefinitionGridModel
-                                                    ?.display?[selIndex]
-                                                    .personnelNo = controllerX
-                                                        .selectedUser?.key ??
-                                                    "";
-
-                                                controllerX
-                                                    .dealWorkDefinitionGridModel
-                                                    ?.display?[selIndex]
-                                                    .groupID = int.parse(controllerX
-                                                        .selectedGroup?.key ??
-                                                    "0");
-
-                                                controllerX
-                                                    .dealWorkDefinitionGridModel
-                                                    ?.display?[selIndex]
-                                                    .sequenceName = controllerX
-                                                        .stepNameController
-                                                        .text ??
-                                                    "";
-
-                                                controllerX
-                                                    .dealWorkDefinitionGridModel
-                                                    ?.display?[selIndex]
-                                                    .groupName = controllerX
-                                                        .selectedGroup?.value ??
-                                                    "";
-                                              } else {
-                                                int selIndex = (controllerX
-                                                            .selectedIndex ??
-                                                        0) +
-                                                    1;
-                                                controllerX.dealWorkDefinitionGridModel?.display?.insert(
-                                                    selIndex,
-                                                    Display(
-                                                        approvalSequenceID: int.parse(
-                                                            controllerX.approvalSequenceId ??
-                                                                "0"),
-                                                        employees: controllerX
-                                                                .selectedUser
-                                                                ?.value ??
-                                                            "",
-                                                        formName: controllerX
-                                                                .formNameController
-                                                                .text ??
-                                                            "",
-                                                        groupID: int.parse(
-                                                            controllerX
-                                                                    .selectedGroup
-                                                                    ?.key ??
-                                                                "0"),
-                                                        groupName: controllerX
-                                                                .selectedGroup
-                                                                ?.value ??
-                                                            "",
-                                                        personnelNo:
-                                                            controllerX.selectedUser?.key ?? "",
-                                                        sequenceName: controllerX.stepNameController.text ?? ""));
-                                              }
-                                              controllerX.clearNew();
-                                              controllerX.update(['grid']);
-                                            }
-                                            else {
-                                              if (controllerX
-                                                          .approvalSequenceId !=
-                                                      null &&
-                                                  controllerX
-                                                          .approvalSequenceId !=
-                                                      "" &&
-                                                  controllerX
-                                                          .approvalSequenceId !=
-                                                      "0") {
-                                                controllerX
-                                                        .dealWorkDefinitionGridModel
-                                                        ?.display?[controllerX
-                                                                .selectedIndex ??
-                                                            0]
-                                                        .approvalSequenceID =
-                                                    int.parse(controllerX
-                                                            .approvalSequenceId ??
-                                                        "0");
-                                                controllerX
-                                                    .dealWorkDefinitionGridModel
-                                                    ?.display?[controllerX
-                                                            .selectedIndex ??
-                                                        0]
-                                                    .employees = controllerX
-                                                        .selectedUser?.value ??
-                                                    "";
-
-                                                controllerX
-                                                    .dealWorkDefinitionGridModel
-                                                    ?.display?[controllerX
-                                                            .selectedIndex ??
-                                                        0]
-                                                    .formName = controllerX
-                                                        .formNameController
-                                                        .text ??
-                                                    "";
-
-                                                controllerX
-                                                    .dealWorkDefinitionGridModel
-                                                    ?.display?[controllerX
-                                                            .selectedIndex ??
-                                                        0]
-                                                    .personnelNo = controllerX
-                                                        .selectedUser?.key ??
-                                                    "";
-
-                                                controllerX
-                                                    .dealWorkDefinitionGridModel
-                                                    ?.display?[controllerX
-                                                            .selectedIndex ??
-                                                        0]
-                                                    .groupID = int.parse(controllerX
-                                                        .selectedGroup?.key ??
-                                                    "0");
-
-                                                controllerX
-                                                    .dealWorkDefinitionGridModel
-                                                    ?.display?[controllerX
-                                                            .selectedIndex ??
-                                                        0]
-                                                    .sequenceName = controllerX
-                                                        .stepNameController
-                                                        .text ??
-                                                    "";
-
-                                                controllerX
-                                                    .dealWorkDefinitionGridModel
-                                                    ?.display?[controllerX
-                                                            .selectedIndex ??
-                                                        0]
-                                                    .groupName = controllerX
-                                                        .selectedGroup?.value ??
-                                                    "";
-                                              } else {
-                                                controllerX.dealWorkDefinitionGridModel?.display?.insert(
-                                                    controllerX.selectedIndex ??
-                                                        0,
-                                                    Display(
-                                                        approvalSequenceID: int.parse(
-                                                            controllerX.approvalSequenceId ??
-                                                                "0"),
-                                                        employees: controllerX
-                                                                .selectedUser
-                                                                ?.value ??
-                                                            "",
-                                                        formName: controllerX
-                                                                .formNameController
-                                                                .text ??
-                                                            "",
-                                                        groupID: int.parse(controllerX
-                                                                .selectedGroup
-                                                                ?.key ??
-                                                            "0"),
-                                                        groupName: controllerX
-                                                                .selectedGroup
-                                                                ?.value ??
-                                                            "",
-                                                        personnelNo:
-                                                            controllerX.selectedUser?.key ?? "",
-                                                        sequenceName: controllerX.stepNameController.text ?? ""));
-                                              }
-                                              controllerX.clearNew();
-                                              controllerX.update(['grid']);
-                                            }*/
 
                                             controllerX.btnAddClick();
                                           },

@@ -63,6 +63,19 @@ class WorkflowDefinitionController extends GetxController {
   String approvalSequenceId = "0";
   bool isDoubleClick = false;
   Rx<bool> checkAll = Rx<bool>(false);
+
+  FocusNode locationNode = FocusNode();
+  FocusNode channelNode = FocusNode();
+  FocusNode clientNode = FocusNode();
+  FocusNode agencyNode = FocusNode();
+  FocusNode zoneNode = FocusNode();
+  FocusNode stationNode = FocusNode();
+  FocusNode teamNode = FocusNode();
+  FocusNode typeNode = FocusNode();
+  FocusNode userNode = FocusNode();
+  FocusNode groupNode = FocusNode();
+
+
   checkAllList(bool sta){
     if(sta){
       if(onLeaveCopyZoneModel != null && onLeaveCopyZoneModel?.onLeaveCopyZone != null &&
@@ -227,6 +240,7 @@ class WorkflowDefinitionController extends GetxController {
   }
 
   DealWorkDefinitionGridModel? dealWorkDefinitionGridModel;
+
   getDisplayApi() {
     LoadingDialog.call();
     Map<String, dynamic> postData = {
@@ -323,7 +337,7 @@ class WorkflowDefinitionController extends GetxController {
               });
               update(['grid']);
             } else {
-              LoadingDialog.showErrorDialog(map??"Something went wrong");
+              LoadingDialog.showErrorDialog((map??"Something went wrong").toString());
             }
             // print("map>>>"+ jsonEncode(map).toString());
           });
