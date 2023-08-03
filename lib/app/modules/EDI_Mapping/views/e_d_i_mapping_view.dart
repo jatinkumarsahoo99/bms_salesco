@@ -13,7 +13,7 @@ import '../../../providers/ApiFactory.dart';
 import '../../../providers/Utils.dart';
 import '../controllers/e_d_i_mapping_controller.dart';
 
-class EDIMappingView extends GetView<EDIMappingController> {
+class EDIMappingView extends StatelessWidget {
    EDIMappingView({Key? key}) : super(key: key);
 
    EDIMappingController controllerX =
@@ -38,7 +38,7 @@ class EDIMappingView extends GetView<EDIMappingController> {
                         title: Text('EDI Client Agency Channel Mapping'),
                         centerTitle: true,
                         backgroundColor: Colors.deepPurple,
-                      ),
+                        ),
                         SizedBox(
                         height: 5,
                         ),
@@ -76,6 +76,7 @@ class EDIMappingView extends GetView<EDIMappingController> {
                                       onchanged: (DropDownValue? val) {
                                         print(">>>" + val.toString());
                                         controllerX.selectedClient = val;
+                                        // controllerX.callPopulateEntity();
                                         // controllerX.getProductDetails(val?.key??"");
                                         // controllerX.fetchClientDetails((val?.value ??"")??"");
                                       },
@@ -94,6 +95,7 @@ class EDIMappingView extends GetView<EDIMappingController> {
                                       onchanged: (DropDownValue? val) {
                                         print(">>>" + val.toString());
                                         controllerX.selectedAgency = val;
+                                        // controllerX.callPopulateEntity();
                                         // controllerX.getProductDetails(val?.key??"");
                                         // controllerX.fetchClientDetails((val?.value ??"")??"");
                                       },
@@ -112,6 +114,7 @@ class EDIMappingView extends GetView<EDIMappingController> {
                                       onchanged: (DropDownValue? val) {
                                         print(">>>" + val.toString());
                                         controllerX.selectedChannel = val;
+                                        // controllerX.callPopulateEntity();
                                         // controllerX.getProductDetails(val?.key??"");
                                         // controllerX.fetchClientDetails((val?.value ??"")??"");
                                       },
@@ -144,15 +147,162 @@ class EDIMappingView extends GetView<EDIMappingController> {
                                     child: Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: Container(
-                                        decoration: BoxDecoration(
-                                            border: Border.all(color: Colors.black)),
                                         child:  GetBuilder<EDIMappingController>(
                                             id: "grid",
                                             builder: (controllerX) {
-                                              return Container(
+
+                                              switch(controllerX.radioName){
+                                                case "Client":
+                                                  return Container(
+                                                    decoration: BoxDecoration(
+                                                        border: Border.all(color: Colors.grey)),
+                                                    child:(controllerX.populateEntityModel != null &&
+                                                        controllerX.populateEntityModel?.populateEntity != null &&
+                                                        controllerX.populateEntityModel?.
+                                                        populateEntity?.clientMaster != null &&
+                                                        (controllerX.populateEntityModel?.populateEntity?.clientMaster?.length??0) >0
+                                                    )? ListView.builder(
+                                                        itemCount:controllerX.populateEntityModel?.
+                                                        populateEntity?.clientMaster?.length ,
+                                                        itemBuilder: (BuildContext context,int index){
+                                                          return Padding(
+                                                            padding: const EdgeInsets.all(3.0),
+                                                            child: InkWell(
+                                                                onTap: (){
+                                                                  controllerX.selectedIndex = index;
+                                                                  controllerX.update(['grid']);
+                                                                },
+                                                                child: Expanded(
+                                                                  child: Container(
+                                                                      color:(controllerX.selectedIndex == index)? Colors.deepPurpleAccent:Colors.white,
+                                                                      child: Text(controllerX.populateEntityModel?.populateEntity?.clientMaster?[index].softClient??"",
+                                                                        style: TextStyle(color: Colors.black,fontSize: 12),)),
+                                                                )),
+                                                          );
+
+                                                        }):Container()
+                                                  );
+                                                  break;
+                                                case "Agency":
+                                                  return Container(
+                                                      decoration: BoxDecoration(
+                                                          border: Border.all(color: Colors.grey)),
+                                                      child:(controllerX.populateEntityModel != null &&
+                                                          controllerX.populateEntityModel?.populateEntity != null &&
+                                                          controllerX.populateEntityModel?.
+                                                          populateEntity?.agencyMaster != null &&
+                                                          (controllerX.populateEntityModel?.populateEntity?.agencyMaster?.length??0) >0
+                                                      )? ListView.builder(
+                                                          itemCount:controllerX.populateEntityModel?.
+                                                          populateEntity?.agencyMaster?.length ,
+                                                          itemBuilder: (BuildContext context,int index){
+                                                            return Padding(
+                                                              padding: const EdgeInsets.all(3.0),
+                                                              child: InkWell(
+                                                                  onTap: (){
+                                                                    controllerX.selectedIndex = index;
+                                                                    controllerX.update(['grid']);
+                                                                  },
+                                                                  child: Expanded(
+                                                                    child: Container(
+                                                                        color:(controllerX.selectedIndex == index)? Colors.deepPurpleAccent:Colors.white,
+                                                                        child: Text(controllerX.populateEntityModel?.populateEntity?.agencyMaster?[index].softAgency??"",
+                                                                          style: TextStyle(color: Colors.black,fontSize: 12),)),
+                                                                  )),
+                                                            );
+
+                                                          }):Container()
+                                                  );
+                                                  break;
+                                                case "Channel":
+                                                  return Container(
+                                                      decoration: BoxDecoration(
+                                                          border: Border.all(color: Colors.grey)),
+                                                      child:(controllerX.populateEntityModel != null &&
+                                                          controllerX.populateEntityModel?.populateEntity != null &&
+                                                          controllerX.populateEntityModel?.
+                                                          populateEntity?.channelMaster != null &&
+                                                          (controllerX.populateEntityModel?.populateEntity?.channelMaster?.length??0) >0
+                                                      )? ListView.builder(
+                                                          itemCount:controllerX.populateEntityModel?.
+                                                          populateEntity?.channelMaster?.length ,
+                                                          itemBuilder: (BuildContext context,int index){
+                                                            return Padding(
+                                                              padding: const EdgeInsets.all(3.0),
+                                                              child: InkWell(
+                                                                  onTap: (){
+                                                                    controllerX.selectedIndex = index;
+                                                                    controllerX.update(['grid']);
+                                                                  },
+                                                                  child: Expanded(
+                                                                    child: Container(
+                                                                        color:(controllerX.selectedIndex == index)? Colors.deepPurpleAccent:Colors.white,
+                                                                        child: Text(controllerX.populateEntityModel?.populateEntity?.channelMaster?[index].SoftChannel??"",
+                                                                          style: TextStyle(color: Colors.black,fontSize: 12),)),
+                                                                  )),
+                                                            );
+
+                                                          }):Container()
+                                                  );
+                                                  break;
+                                                default:
+                                                  return Container();
+
+                                              }
+
+
+
+                                             /* return Container(
                                                 decoration: BoxDecoration(
-                                                    border: Border.all(color: Colors.black)),
-                                              );
+                                                    border: Border.all(color: Colors.grey)),
+                                                child:(controllerX.populateEntityModel != null &&
+                                                    controllerX.populateEntityModel?.populateEntity != null
+                                                )? (controllerX.isClient)?( controllerX.populateEntityModel?.populateEntity?.clientMaster != null &&
+                                                    (controllerX.populateEntityModel?.populateEntity?.clientMaster?.length??0) >0)?
+                                                ListView.builder(
+                                                    itemCount:controllerX.populateEntityModel?.
+                                                    populateEntity?.clientMaster?.length ,
+                                                    itemBuilder: (BuildContext context,int index){
+                                                      return Padding(
+                                                        padding: const EdgeInsets.all(3.0),
+                                                        child: InkWell(
+                                                            onTap: (){
+                                                              controllerX.selectedIndex = index;
+                                                              controllerX.update(['grid']);
+                                                            },
+                                                            child: Expanded(
+                                                              child: Container(
+                                                                  color:(controllerX.selectedIndex == index)? Colors.deepPurpleAccent:Colors.white,
+                                                                  child: Text(controllerX.populateEntityModel?.populateEntity?.clientMaster?[index].softClient??"",
+                                                                    style: TextStyle(color: Colors.black,fontSize: 12),)),
+                                                            )),
+                                                      );
+
+                                                    }):Container():
+                                                (controllerX.isAgency)?
+                                                ( controllerX.populateEntityModel?.populateEntity?.agencyMaster != null &&
+                                                    (controllerX.populateEntityModel?.populateEntity?.agencyMaster?.length??0) >0)?
+                                                ListView.builder(
+                                                    itemCount:controllerX.populateEntityModel?.
+                                                    populateEntity?.agencyMaster?.length ,
+                                                    itemBuilder: (BuildContext context,int index){
+                                                      return Padding(
+                                                        padding: const EdgeInsets.all(3.0),
+                                                        child: InkWell(
+                                                            onTap: (){
+                                                              controllerX.selectedIndex = index;
+                                                              controllerX.update(['grid']);
+                                                            },
+                                                            child: Expanded(
+                                                              child: Container(
+                                                                  color:(controllerX.selectedIndex == index)? Colors.deepPurpleAccent:Colors.white,
+                                                                  child: Text(controllerX.populateEntityModel?.populateEntity?.agencyMaster?[index].softAgency??"",
+                                                                    style: TextStyle(color: Colors.black,fontSize: 12),)),
+                                                            )),
+                                                      );
+
+                                                    }):Container():Container():Container(),
+                                              );*/
                                             }
                                         ),
                                       ),
@@ -173,7 +323,7 @@ class EDIMappingView extends GetView<EDIMappingController> {
                               PermissionModel formPermissions = Get.find<MainController>()
                                   .permissionList!
                                   .lastWhere((element) =>
-                              element.appFormName == "frmCommercialMaster");
+                              element.appFormName == "frmEDIClientAgencyChannelMapping");
                               if (controller.buttons != null) {
                                 return ButtonBar(
                                   alignment: MainAxisAlignment.start,

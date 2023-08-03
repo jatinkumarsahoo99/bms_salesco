@@ -12,8 +12,12 @@ import '../../../providers/Utils.dart';
 
 import '../controllers/geo_program_update_controller.dart';
 
-class GeoProgramUpdateView extends GetView<GeoProgramUpdateController> {
-  const GeoProgramUpdateView({Key? key}) : super(key: key);
+class GeoProgramUpdateView extends StatelessWidget {
+   GeoProgramUpdateView({Key? key}) : super(key: key);
+
+   GeoProgramUpdateController controllerX =
+  Get.put<GeoProgramUpdateController>(GeoProgramUpdateController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,30 +50,38 @@ class GeoProgramUpdateView extends GetView<GeoProgramUpdateController> {
                   ),
                 ),
                 DropDownField.formDropDown1WidthMap(
-                  [],
-                  (p0) {},
+                  controllerX.locationList,
+                        (value) {
+                      controllerX.selectedLocation = value;
+                    },
                   "Location",
                   .2,
                   autoFocus: true,
+                    dialogHeight: Get.height * .35,
+                  selected: controllerX.selectedLocation
                 ),
                 SizedBox(height: 20),
                 DropDownField.formDropDown1WidthMap(
-                  [],
-                  (p0) => null,
+                    controllerX.channelList,
+                        (value) {
+                          controllerX.selectedChannel = value;
+                    },
                   "Channel",
                   .2,
+                    dialogHeight: Get.height * .35,
+                    selected: controllerX.selectedChannel
                 ),
                 SizedBox(height: 20),
                 DateWithThreeTextField(
                   title: "From Date",
-                  mainTextController: TextEditingController(),
+                  mainTextController: controllerX.formDateController,
                   widthRation: 0.2,
                   startDate: DateTime.now(),
                 ),
                 SizedBox(height: 20),
                 DateWithThreeTextField(
                   title: "To Date",
-                  mainTextController: TextEditingController(),
+                  mainTextController: controllerX.toDateController,
                   widthRation: 0.2,
                   startDate: DateTime.now(),
                 ),
@@ -86,7 +98,7 @@ class GeoProgramUpdateView extends GetView<GeoProgramUpdateController> {
                         for (var btn in ["Update", "Clear", "Exit"]) ...{
                           FormButtonWrapper(
                             btnText: btn,
-                            callback: () => controller.formHandler(btn),
+                            callback: () => controllerX.formHandler(btn),
                           )
                         },
                       ],

@@ -12,6 +12,7 @@ import '../modules/ChangeRONumber/bindings/change_r_o_number_binding.dart';
 import '../modules/DealRecoSummary/bindings/deal_reco_summary_binding.dart';
 import '../modules/Design/bindings/design_binding.dart';
 import '../modules/Design/views/design_view.dart';
+import '../modules/DealWorkflowDefinition/bindings/workflow_definition_binding.dart';
 import '../modules/EDI_Mapping/bindings/e_d_i_mapping_binding.dart';
 import '../modules/EdiRoBooking/bindings/edi_ro_booking_binding.dart';
 import '../modules/EdiRoBooking/views/edi_ro_booking_view.dart';
@@ -22,7 +23,7 @@ import '../modules/MarkROsFlag/bindings/mark_r_os_flag_binding.dart';
 import '../modules/MonthlyReport/bindings/monthly_report_binding.dart';
 import '../modules/NewShortContentForm/bindings/new_short_content_form_binding.dart';
 import '../modules/NewShortContentForm/views/new_short_content_form_view.dart';
-import '../modules/OnSpotBookingSkyMedia/bindings/on_spot_booking_sky_media_binding.dart';
+import '../modules/OneSpotBookingSkyMedia/bindings/one_spot_booking_sky_media_binding.dart';
 import '../modules/PeriodicDealUtilisationFormat2/bindings/periodic_deal_utilisation_format2_binding.dart';
 import '../modules/ProductLevel1/bindings/product_level1_binding.dart';
 import '../modules/ProductLevel2/bindings/product_level2_binding.dart';
@@ -35,9 +36,9 @@ import '../modules/SameDayCollection/bindings/same_day_collection_binding.dart';
 import '../modules/TapeIDCampaign/bindings/tape_i_d_campaign_binding.dart';
 import '../modules/Update_Executive/bindings/update_executive_binding.dart';
 import '../modules/UserGroupsForDealWorkflow/bindings/user_groups_for_deal_workflow_binding.dart';
+
 import '../modules/ViewOldDeal/bindings/view_old_deal_binding.dart';
 import '../modules/ViewOldDeal/views/view_old_deal_view.dart';
-import '../modules/WorkflowDefinition/bindings/workflow_definition_binding.dart';
 import '../modules/ZoneWiseInventoryUtilization/bindings/zone_wise_inventory_utilization_binding.dart';
 import '../providers/AuthGuard1.dart';
 
@@ -48,8 +49,9 @@ class AppPages {
 
   static const INITIAL = kReleaseMode
       ? Routes.HOME
-      : Routes.NEW_SHORT_CONTENT_FORM +
+      : Routes.PRODUCT_LEVEL2 +
           "?personalNo=R9vVPL7er1Os/usemWG/Iw==&loginCode=0iGe3vK5h2KGjfSKZTpmsQ==&formName=OI8ukDpPPVN0I2BEXu2h4nuFu%2BZm1ZRpvP8NL4XCXzQ%3D";
+
   static final routes = [
     GetPage(
       name: _Paths.ASRUN_DETAILS_REPORT,
@@ -129,6 +131,9 @@ class AppPages {
     GetPage(
       name: _Paths.E_D_I_MAPPING,
       page: () => AuthGuard(childName: _Paths.E_D_I_MAPPING),
+     /* transition: Transition.zoom,
+      transitionDuration: Duration(seconds: 1),*/
+
       // EDIMappingView(),
       binding: EDIMappingBinding(),
     ),
@@ -141,10 +146,10 @@ class AppPages {
       page: () => AuthGuard(childName: _Paths.COMMERCIAL_LANGUAGE_SPECIFICATION),
     ),
     GetPage(
-      name: _Paths.ON_SPOT_BOOKING_SKY_MEDIA,
-      page: () => AuthGuard(childName: _Paths.ON_SPOT_BOOKING_SKY_MEDIA),
+      name: _Paths.ONE_SPOT_BOOKING_SKY_MEDIA,
+      page: () => AuthGuard(childName: _Paths.ONE_SPOT_BOOKING_SKY_MEDIA),
       // OnSpotBookingSkyMediaView(),
-      binding: OnSpotBookingSkyMediaBinding(),
+      binding: OneSpotBookingSkyMediaBinding(),
     ),
     GetPage(
       name: _Paths.PERIODIC_DEAL_UTILISATION_FORMAT2,

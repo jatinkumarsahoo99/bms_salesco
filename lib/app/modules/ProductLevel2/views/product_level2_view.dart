@@ -2,8 +2,13 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 
+import '../../../../widgets/FormButton.dart';
 import '../../../../widgets/dropdown.dart';
 import '../../../../widgets/input_fields.dart';
+import '../../../controller/HomeController.dart';
+import '../../../controller/MainController.dart';
+import '../../../data/PermissionModel.dart';
+import '../../../providers/Utils.dart';
 import '../controllers/product_level2_controller.dart';
 
 class ProductLevel2View extends GetView<ProductLevel2Controller> {
@@ -42,29 +47,32 @@ class ProductLevel2View extends GetView<ProductLevel2Controller> {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           Obx(()=>DropDownField.formDropDown1WidthMap(
-                            controllerX.locationList.value??[],
+                            controllerX.typeList.value??[],
                                 (value) {
-                              controllerX.selectedLocation = value;
+                              controllerX.selectedType?.value = value;
+                              controllerX.fetchProductLevel1(controllerX.selectedType?.value?.key??"");
                             }, "Type", .41,
                             isEnable: controllerX.isEnable.value,
-                            selected: controllerX.selectedLocation,
-                            dialogHeight: Get.height * .7,
+                            selected: controllerX.selectedType?.value,
+                            dialogHeight: Get.height * .3,
+                            inkWellFocusNode: controllerX.typeNode,
                             autoFocus: true,),),
                           Obx(()=>DropDownField.formDropDown1WidthMap(
-                            controllerX.locationList.value??[],
+                            controllerX.level1List.value??[],
                                 (value) {
-                              controllerX.selectedLocation = value;
+                              controllerX.selectedLevel1?.value = value;
                             }, "Level 1", .41,
                             isEnable: controllerX.isEnable.value,
-                            selected: controllerX.selectedLocation,
-                            dialogHeight: Get.height * .7,
+                            selected: controllerX.selectedLevel1?.value,
+                            inkWellFocusNode: controllerX.level1Node,
+                            dialogHeight: Get.height * .3,
                             autoFocus: true,),),
                           InputFields.formField1(
                             hintTxt: "Level 2",
-                            controller: TextEditingController(),
+                            controller: controllerX.level2Controller,
                             width:  0.41,
                             // autoFocus: true,
-                            // focusNode: controllerX.brandName,
+                            focusNode: controllerX.level2Node,
                             // isEnable: controllerX.isEnable,
                             onchanged: (value) {
 
@@ -78,14 +86,14 @@ class ProductLevel2View extends GetView<ProductLevel2Controller> {
                     ),
                   ),
                   SizedBox(height: 5),
-                  /*  GetBuilder<HomeController>(
+                    GetBuilder<HomeController>(
                       id: "buttons",
                       init: Get.find<HomeController>(),
                       builder: (controller) {
                         PermissionModel formPermissions = Get.find<MainController>()
                             .permissionList!
                             .lastWhere((element) =>
-                        element.appFormName == "frmCommercialMaster");
+                        element.appFormName == "frmProductLevel2");
                         if (controller.buttons != null) {
                           return ButtonBar(
                             alignment: MainAxisAlignment.start,
@@ -106,7 +114,7 @@ class ProductLevel2View extends GetView<ProductLevel2Controller> {
                           );
                         }
                         return Container(child: Text("No"),);
-                      })*/
+                      })
                   /// bottom common buttons
                 ],
               ),

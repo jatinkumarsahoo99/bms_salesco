@@ -5,7 +5,9 @@ import 'package:get/get.dart';
 import '../../../../widgets/DateTime/DateWithThreeTextField.dart';
 import '../../../../widgets/FormButton.dart';
 import '../../../../widgets/dropdown.dart';
+import '../../../../widgets/gridFromMap.dart';
 import '../../../../widgets/radio_row.dart';
+import '../../../controller/HomeController.dart';
 import '../controllers/international_sales_report_controller.dart';
 
 class InternationalSalesReportView
@@ -21,7 +23,7 @@ class InternationalSalesReportView
     return Scaffold(
       body: Center(
         child: SizedBox(
-          width: size.width * 0.95,
+          width: size.width * 0.98,
           child: Dialog(
             child: Padding(
               padding: const EdgeInsets.all(8.0),
@@ -42,17 +44,17 @@ class InternationalSalesReportView
 
                       DateWithThreeTextField(
                         title: "From Date",
-                        mainTextController: TextEditingController(),
+                        mainTextController: controllerX.fromDateController,
                         widthRation: .1,
                         isEnable: controllerX.isEnable.value,
                       ),
                       DateWithThreeTextField(
                         title: "To Date",
-                        mainTextController: TextEditingController(),
+                        mainTextController: controllerX.toDateController,
                         widthRation: .1,
                         isEnable: controllerX.isEnable.value,
                       ),
-                      RadioRow(
+                      Obx(()=> RadioRow(
                         items: [
                           "Detail",
                           "Summary"
@@ -62,9 +64,10 @@ class InternationalSalesReportView
                         onchange: (String v) {
                           print(">>>>"+v);
                           controllerX.selectValue.value=v;
+                          controllerX.getRadioStatus(v);
                           controllerX.selectValue.refresh();
                         },
-                      ),
+                      )),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -74,9 +77,9 @@ class InternationalSalesReportView
                             child: FormButtonWrapper(
                               btnText: "Generate",
                               callback: () {
-                                // controllerX.callGetRetrieve();
+                                controllerX.callBtnGenerate();
                               },
-                              showIcon: false,
+                              showIcon: true,
                             ),
                           ),
                           Padding(
@@ -85,11 +88,24 @@ class InternationalSalesReportView
                             child: FormButtonWrapper(
                               btnText: "clear",
                               callback: () {
-                                // controllerX.callGetRetrieve();
+                                Get.delete<InternationalSalesReportController>();
+                                Get.find<HomeController>().clearPage1();
                               },
-                              showIcon: false,
+                              showIcon: true,
                             ),
                           ),
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                top: 14.0, left: 10, right: 10),
+                            child: FormButtonWrapper(
+                              btnText: "Exit",
+                              callback: () {
+                                Get.delete<InternationalSalesReportController>();
+                              },
+                              showIcon: true,
+                            ),
+                          ),
+
                         ],
                       ),
 
@@ -102,15 +118,45 @@ class InternationalSalesReportView
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Container(
-                        decoration: BoxDecoration(
-                            border: Border.all(color: Colors.black)),
                         child:  GetBuilder<InternationalSalesReportController>(
                             id: "grid",
                             builder: (controllerX) {
-                              return Container(
+                              return (controllerX.isSummary)?
+                              (controllerX.internationalSalesReportModel?.report?.internationalSalesSummary != null &&
+                                  (controllerX.internationalSalesReportModel?.report?.internationalSalesSummary?.length??0) >0
+                              )? Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: DataGridFromMap(
+                                  showSrNo: false,
+                                  hideCode: false,
+                                  formatDate: false,
+                                  mapData: (controllerX.internationalSalesReportModel!.report?.internationalSalesSummary
+                                      ?.map((e) => e.toJson())
+                                      .toList())!,
+                                  // mapData: (controllerX.dataList)!,
+                                  widthRatio: Get.width / 9 - 1,
+                                ),
+                              ): Container(
                                 decoration: BoxDecoration(
-                                    border: Border.all(color: Colors.black)),
+                                    border: Border.all(color: Colors.grey)),
 
+                              ):(controllerX.internationalSalesReportModel?.report?.internationalDetails != null &&
+                                  (controllerX.internationalSalesReportModel?.report?.internationalDetails?.length??0) >0)?
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: DataGridFromMap(
+                                  showSrNo: false,
+                                  hideCode: false,
+                                  formatDate: false,
+                                  mapData: (controllerX.internationalSalesReportModel!.report?.internationalDetails
+                                      ?.map((e) => e.toJson())
+                                      .toList())!,
+                                  // mapData: (controllerX.dataList)!,
+                                  widthRatio: Get.width / 9 - 1,
+                                ),
+                              ):Container(
+                                decoration: BoxDecoration(
+                                    border: Border.all(color: Colors.grey)),
                               );
                             }
                         ),

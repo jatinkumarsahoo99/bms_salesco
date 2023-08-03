@@ -583,6 +583,8 @@ class ApiFactory {
       "$BASE_URL/api/ModuleFormTransaction/GetModuleFormDetails?ModuleCode=$moduleCode";
   ///////////////////////// END MODULE FORM TRANSACTION API//////
 
+
+
 ///////////////////////////// Asrun Details Report ///////////////////////////////
 
   static String get ASRUN_DETAILS_REPORT_LOAD => "$BASE_URL/api/AsrundetailsReport/AsrundetailsReportLoad";
@@ -599,6 +601,7 @@ class ApiFactory {
   static String get EDI_MAPPING_CLIENT_SEARCH => "$BASE_URL/api/EDIMapping/GetClientMasterSearch?TextClientMaster=";
   static String get EDI_MAPPING_AGENT_SEARCH => "$BASE_URL/api/EDIMapping/GetAgencyMasterSearch?TextAgencyMaster=";
   static String get EDI_MAPPING_CHANNEL_SEARCH => "$BASE_URL/api/EDIMapping/GetChannelMasterSearch?TextChannelMaster=";
+  static String get EDI_MAPPING_POPULATE_ENTITY => "$BASE_URL/api/EDIMapping/GetPopulateEntity";
 
   ///////////////////////////////////// DealRecoSummary ////////////////////////////////////////////////////
 
@@ -608,6 +611,62 @@ class ApiFactory {
   static String get DEAL_RECO_SUMMARY_GET_DEAL => "$BASE_URL/api/DealReCoSummary/GetDeal";
   static String get DEAL_RECO_SUMMARY_GET_DEAL_LEAVE => "$BASE_URL/api/DealReCoSummary/DealLeave";
   static String get DEAL_RECO_SUMMARY_GENERATE => "$BASE_URL/api/DealReCoSummary/GetGenrate";
+
+  /////////////////////////////// DealWorkFlow Definition ///////////////////////////////////////
+  static String get DEAL_WORK_FLOW_DEFINITION_LOAD => "$BASE_URL/api/DealWorkflowDefinition/GetDWFOnLoad";
+  static String get DEAL_WORK_FLOW_DEFINITION_GET_GROUP_SEARCH => "$BASE_URL/api/DealWorkflowDefinition/GetGroupSearch?TextGroupSearch=";
+  static String get DEAL_WORK_FLOW_DEFINITION_GET_USER_SEARCH => "$BASE_URL/api/DealWorkflowDefinition/GetuserSearch?TextUserSearch=";
+  static String get DEAL_WORK_FLOW_DEFINITION_ON_LEAVE_COPYZONE => "$BASE_URL/api/DealWorkflowDefinition/GetCopyZoneOnLeave?ZoneCode=";
+  static String get DEAL_WORK_FLOW_DEFINITION_ON_LEAVE_ZONE => "$BASE_URL/api/DealWorkflowDefinition/GetZoneOnLeave?ZoneCode=";
+  static String get DEAL_WORK_FLOW_DEFINITION_ON_LEAVE_LOCATION => "$BASE_URL/api/DealWorkflowDefinition/GetLocationOnLeave?LocationCode=";
+  static String get DEAL_WORK_FLOW_DEFINITION_GET_DISPLAY => "$BASE_URL/api/DealWorkflowDefinition/GetDisplay";
+  static String get DEAL_WORK_FLOW_DEFINITION_SAVE => "$BASE_URL/api/DealWorkflowDefinition/Postsave";
+
+  //////////////////////////////////////// GeoProgramUpdate ////////////////////////////
+  static String get GEO_PROGRAM_UPDATE_LOAD => "$BASE_URL/api/GeoProgramUpdate/GetGPUOnLoad";
+  static String get GEO_PROGRAM_UPDATE_UPDATE => "$BASE_URL/api/GeoProgramUpdate/PostUpdate";
+
+  //////////////////////////////// OneSpotBooking ////////////////////////////////
+  static String get ONE_SPOT_BOOKING_LOAD => "$BASE_URL/api/OneSpotBooking/GetOSBOnload";
+  static String get ONE_SPOT_BOOKING_CHANNEL_LEAVE => "$BASE_URL/api/OneSpotBooking/GetChannelOnLeave?locationcode=";
+  static String get ONE_SPOT_BOOKING_SAVE => "$BASE_URL/api/OneSpotBooking/PostSave";
+
+  /////////////////////////////////// International Sales Report /////////////////////////////
+  static String get INTERNATIONAL_SALES_REPORT_GENERATE => "$BASE_URL/api/InternationalSalesReport/Generate";
+  //////////////////////////////////////// PeriodicDealUtilisationFormat2 /////////////////////////////
+  static String get PERIODIC_DEAL_UTILISATION_FORMAT2_LOAD => "$BASE_URL/api/PeriodicDealUtilisation/GetPDUOnload";
+  static String get PERIODIC_DEAL_UTILISATION_FORMAT2_ON_CHANNEL_LEAVE => "$BASE_URL/api/PeriodicDealUtilisation/GetChannelOnLeave";
+
+////////////////////////////////////////////// User Groups For Deal Work flow  //////////////////////////////////////////
+  static String get USER_GROUPS_FOR_DEAL_WORKFLOW_EmpSearch => "$BASE_URL/api/UserGroupsForDealWorkflow/GetEmployeeSearch?TextEmployeeSearch=";
+  static String get USER_GROUPS_FOR_DEAL_WORKFLOW_GET_DISPLAY_GROUP => "$BASE_URL/api/UserGroupsForDealWorkflow/GetDisplayGroup?GroupName=";
+  static String get USER_GROUPS_FOR_DEAL_WORKFLOW_SAVE=> "$BASE_URL/api/UserGroupsForDealWorkflow/Save";
+
+  //////////////////////////////////////////////// Update Executive ////////////////////////////////////////////////////////
+  static String get UPDATE_EXECUTIVE_LOAD => "$BASE_URL/api/UpdateExecutive/GetUEOnLoad";
+  static String get UPDATE_EXECUTIVE_GET_CLIENT => "$BASE_URL/api/UpdateExecutive/Getclient";
+  static String get UPDATE_EXECUTIVE_GET_AGENCY => "$BASE_URL/api/UpdateExecutive/GetAgency";
+  static String get UPDATE_EXECUTIVE_GET_VERIFY => "$BASE_URL/api/UpdateExecutive/GetVerifiy";
+  static String get UPDATE_EXECUTIVE_UPDATE_EXECUTIVE => "$BASE_URL/api/UpdateExecutive/UpdateExecutive";
+
+  ///////////////////////////////////// Product Level 1 //////////////////////////////
+  static String get PRODUCT_LEVEL1_LOAD => "$BASE_URL/api/ProductLevelOne/GetPT1OnLoad";
+  static String get PRODUCT_LEVEL1_RETRIEVE => "$BASE_URL/api/ProductLevelOne/GetRetrieveRecord";
+  static String get PRODUCT_LEVEL1_SAVE => "$BASE_URL/api/ProductLevelOne/PostSave";
+
+  /////////////////////////////////// Product Level 2 ////////////////////////////////
+  static String get PRODUCT_LEVEL2_LOAD => "$BASE_URL/api/ProductLevelTwo/GetPTTwoOnLoad";
+  static String get PRODUCT_LEVEL2_GET_PRODUCT_LEVEL1 => "$BASE_URL/api/ProductLevelTwo/GetProductLevelOne";
+  static String get PRODUCT_LEVEL2_RETRIEVE => "$BASE_URL/api/ProductLevelTwo/GetRetrieveRecord";
+  static String get PRODUCT_LEVEL2_SAVE => "$BASE_URL/api/ProductLevelTwo/PostSave";
+
+  //////////////////////////////// Product Level 3 //////////////////////////////////
+  static String get PRODUCT_LEVEL3_LOAD => "$BASE_URL/api/ProductLevelThree/GetproductType";
+  static String get PRODUCT_LEVEL3_GET_PRODUCT_LEVEL1 => "$BASE_URL/api/ProductLevelThree/GetProductLeaveOne";
+  static String get PRODUCT_LEVEL3_GET_PRODUCT_LEVEL2 => "$BASE_URL/api/ProductLevelThree/GetProductLevelTwo";
+  static String get PRODUCT_LEVEL3_RETRIEVE => "$BASE_URL/api/ProductLevelThree/Retrieverecord";
+  static String get PRODUCT_LEVEL3_SAVE => "$BASE_URL/api/ProductLevelThree/PostSave";
+
 
   ///
   ///

@@ -22,15 +22,12 @@ abstract class Routes {
   static const WORKFLOW_DEFINITION = _Paths.WORKFLOW_DEFINITION;
   static const E_D_I_MAPPING = _Paths.E_D_I_MAPPING;
   static const COMMERCIAL_CREATION_AUTO = _Paths.COMMERCIAL_CREATION_AUTO;
-  static const COMMERCIAL_LANGUAGE_SPECIFICATION =
-      _Paths.COMMERCIAL_LANGUAGE_SPECIFICATION;
-  static const ON_SPOT_BOOKING_SKY_MEDIA = _Paths.ON_SPOT_BOOKING_SKY_MEDIA;
-  static const PERIODIC_DEAL_UTILISATION_FORMAT2 =
-      _Paths.PERIODIC_DEAL_UTILISATION_FORMAT2;
+  static const COMMERCIAL_LANGUAGE_SPECIFICATION = _Paths.COMMERCIAL_LANGUAGE_SPECIFICATION;
+  static const ONE_SPOT_BOOKING_SKY_MEDIA = _Paths.ONE_SPOT_BOOKING_SKY_MEDIA;
+  static const PERIODIC_DEAL_UTILISATION_FORMAT2 = _Paths.PERIODIC_DEAL_UTILISATION_FORMAT2;
   static const UPDATE_EXECUTIVE = _Paths.UPDATE_EXECUTIVE;
   // static const USER_GROUPS_FOR_DEAL_WORKFLOW = _Paths.USER_GROUPS_FOR_DEAL_WORKFLOW;
-  static const USER_GROUPS_FOR_DEAL_WORKFLOW =
-      _Paths.USER_GROUPS_FOR_DEAL_WORKFLOW;
+  static const USER_GROUPS_FOR_DEAL_WORKFLOW = _Paths.USER_GROUPS_FOR_DEAL_WORKFLOW;
   static const NEW_SHORT_CONTENT_FORM = _Paths.NEW_SHORT_CONTENT_FORM;
   static const VIEW_OLD_DEAL = _Paths.VIEW_OLD_DEAL;
 
@@ -69,14 +66,22 @@ abstract class RoutesList {
     _Paths.AMAGI_SPOTS_REPLACEMENT,
     _Paths.INTERNATIONAL_SALES_REPORT,
     _Paths.NEW_SHORT_CONTENT_FORM,
-    _Paths.ON_SPOT_BOOKING_SKY_MEDIA,
+    _Paths.ONE_SPOT_BOOKING_SKY_MEDIA,
     _Paths.PERIODIC_DEAL_UTILISATION_FORMAT2,
     _Paths.UPDATE_EXECUTIVE,
     _Paths.USER_GROUPS_FOR_DEAL_WORKFLOW,
     _Paths.PRODUCT_LEVEL1,
     _Paths.PRODUCT_LEVEL2,
     _Paths.PRODUCT_LEVEL3,
+    _Paths.GEO_PROGRAM_UPDATE,
+    _Paths.WORKFLOW_DEFINITION
   ];
+
+ /* static final RoutesList _instance = RoutesList._();
+
+  factory RoutesList(){
+    return _instance;
+  }*/
 }
 
 abstract class _Paths {
@@ -100,9 +105,8 @@ abstract class _Paths {
   static const E_D_I_MAPPING = '/frmEDIClientAgencyChannelMapping';
   static const COMMERCIAL_CREATION_AUTO = '/frmCommercialMasterAutoCreate';
   static const COMMERCIAL_LANGUAGE_SPECIFICATION = '/frmCommercialLanguageSpec';
-  static const ON_SPOT_BOOKING_SKY_MEDIA = '/frmDigiTextBooking';
-  static const PERIODIC_DEAL_UTILISATION_FORMAT2 =
-      '/frmPeriodicDealUtilisation';
+  static const ONE_SPOT_BOOKING_SKY_MEDIA = '/frmDigiTextBooking';
+  static const PERIODIC_DEAL_UTILISATION_FORMAT2 = '/frmPeriodicDealUtilisation';
   static const UPDATE_EXECUTIVE = '/frmbreakpatternxmlgenration';
   static const USER_GROUPS_FOR_DEAL_WORKFLOW = '/frmDP_UserGroups';
   static const NEW_SHORT_CONTENT_FORM = '/frmNewForm';
@@ -114,7 +118,7 @@ abstract class _Paths {
   static const AMAGI_SPOT_PLANNING = '/frmAma_Planning';
   static const AMAGI_SPOTS_REPLACEMENT = '/amagi-spots-replacement';
   static const AMAGI_STATUS_REPORT = '/frmAmagiSTatus';
-  static const INTERNATIONAL_SALES_REPORT = '/international-sales-report';
+  static const INTERNATIONAL_SALES_REPORT = '/Rocanelationotherrevune';
   static const PRODUCT_LEVEL1 = '/frmProductLevel1';
   static const PRODUCT_LEVEL2 = '/frmProductLevel2';
   static const PRODUCT_LEVEL3 = '/frmProductLevel3';

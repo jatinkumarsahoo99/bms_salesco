@@ -12,6 +12,7 @@ import '../../widgets/NoDataFoundPage.dart';
 import '../modules/AmagiStatusReport/views/amagi_status_report_view.dart';
 import '../modules/AutoTimeLock/views/auto_time_lock_view.dart';
 import '../modules/ChangeRONumber/views/change_r_o_number_view.dart';
+import '../modules/DealWorkflowDefinition/views/workflow_definition_view.dart';
 import '../modules/CommercialCreationAutoDetails/views/CommercialCreationAutoDetailsView.dart';
 import '../modules/GeoProgramUpdate/views/geo_program_update_view.dart';
 import '../modules/InternationalSalesReport/views/international_sales_report_view.dart';
@@ -26,7 +27,7 @@ import '../modules/AuditStatusReport/views/audit_status_report_view.dart';
 import '../modules/DealRecoSummary/views/deal_reco_summary_view.dart';
 import '../modules/EDI_Mapping/views/e_d_i_mapping_view.dart';
 
-import '../modules/OnSpotBookingSkyMedia/views/on_spot_booking_sky_media_view.dart';
+import '../modules/OneSpotBookingSkyMedia/views/one_spot_booking_sky_media_view.dart';
 import '../modules/PeriodicDealUtilisationFormat2/views/periodic_deal_utilisation_format2_view.dart';
 import '../modules/RateCardfromDealWorkflow/views/rate_cardfrom_deal_workflow_view.dart';
 import '../modules/RescheduleImport/views/reschedule_import_view.dart';
@@ -39,7 +40,6 @@ import '../modules/SameDayCollection/views/same_day_collection_view.dart';
 import '../modules/TapeIDCampaign/views/tape_i_d_campaign_view.dart';
 import '../modules/Update_Executive/views/update_executive_view.dart';
 import '../modules/UserGroupsForDealWorkflow/views/user_groups_for_deal_workflow_view.dart';
-import '../modules/WorkflowDefinition/views/workflow_definition_view.dart';
 import '../modules/ZoneWiseInventoryUtilization/views/zone_wise_inventory_utilization_view.dart';
 
 import '../routes/app_pages.dart';
@@ -110,8 +110,8 @@ class AuthGuard extends StatelessWidget {
             case Routes.WORKFLOW_DEFINITION:
               currentWidget = WorkflowDefinitionView();
               break;
-            case Routes.ON_SPOT_BOOKING_SKY_MEDIA:
-              currentWidget = OnSpotBookingSkyMediaView();
+            case Routes.ONE_SPOT_BOOKING_SKY_MEDIA:
+              currentWidget = OneSpotBookingSkyMediaView();
               break;
             case Routes.PERIODIC_DEAL_UTILISATION_FORMAT2:
               currentWidget = PeriodicDealUtilisationFormat2View();

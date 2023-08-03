@@ -31,6 +31,12 @@ class DealRecoSummaryController extends GetxController {
   FocusNode dealNoFocusNode = FocusNode();
   bool isFocusActive = false;
 
+  FocusNode locationNode = FocusNode();
+  FocusNode channelNode = FocusNode();
+  FocusNode clientNode = FocusNode();
+  FocusNode agencyNode = FocusNode();
+  FocusNode zoneNode = FocusNode();
+  FocusNode executiveNamNode = FocusNode();
 
   fetchAllLoaderData() {
     // LoadingDialog.call();
@@ -79,6 +85,9 @@ class DealRecoSummaryController extends GetxController {
         });
 
   }
+
+
+
 
   fetchAgency(){
     Map<String, dynamic> postData = {

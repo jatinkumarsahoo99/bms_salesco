@@ -47,18 +47,23 @@ class ProductLevel1View extends GetView<ProductLevel1Controller> {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           Obx(()=>DropDownField.formDropDown1WidthMap(
-                            controllerX.locationList.value??[],
+                            controllerX.typeList.value??[],
                                 (value) {
-                              controllerX.selectedLocation = value;
+                              controllerX.selectedType?.value = value;
                             }, "Type", .41,
                             isEnable: controllerX.isEnable.value,
-                            selected: controllerX.selectedLocation,
-                            dialogHeight: Get.height * .7,
+                            selected: controllerX.selectedType?.value,
+                            dialogHeight: Get.height * .2,
+                            inkWellFocusNode: controllerX.typeNode,
                             autoFocus: true,),),
+
                           InputFields.formField1(
                             hintTxt: "Level 1",
-                            controller: TextEditingController(),
+                            controller: controllerX.level1Controller,
                             width:  0.41,
+                            capital: true,
+                            focusNode: controllerX.level1Node,
+
                             // autoFocus: true,
                             // focusNode: controllerX.brandName,
                             // isEnable: controllerX.isEnable,
@@ -67,21 +72,19 @@ class ProductLevel1View extends GetView<ProductLevel1Controller> {
                             },
                             // autoFocus: true,
                           ),
-
-
                         ],
                       ),
                     ),
                   ),
                   SizedBox(height: 5),
-                /*  GetBuilder<HomeController>(
+                  GetBuilder<HomeController>(
                       id: "buttons",
                       init: Get.find<HomeController>(),
                       builder: (controller) {
                         PermissionModel formPermissions = Get.find<MainController>()
                             .permissionList!
-                            .lastWhere((element) =>
-                        element.appFormName == "frmCommercialMaster");
+                            .lastWhere(
+                                (element) => element.appFormName == "frmProductLevel1");
                         if (controller.buttons != null) {
                           return ButtonBar(
                             alignment: MainAxisAlignment.start,
@@ -101,8 +104,8 @@ class ProductLevel1View extends GetView<ProductLevel1Controller> {
                             ],
                           );
                         }
-                        return Container(child: Text("No"),);
-                      })*/
+                        return Container();
+                      })
                   /// bottom common buttons
                 ],
               ),
