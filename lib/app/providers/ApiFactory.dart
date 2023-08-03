@@ -667,6 +667,11 @@ class ApiFactory {
   static String get PRODUCT_LEVEL3_RETRIEVE => "$BASE_URL/api/ProductLevelThree/Retrieverecord";
   static String get PRODUCT_LEVEL3_SAVE => "$BASE_URL/api/ProductLevelThree/PostSave";
 
+  /////////////////////////////////////// Product Master ///////////////////////////////
+  static String get PRODUCT_MASTER_GET_PRODUCT_LEVEL_THREE => "$BASE_URL/api/ProductMaster/GetProductLevelThree";
+  static String get PRODUCT_MASTER_GET_RETRIEVE_RECORD => "$BASE_URL/api/ProductMaster/GetRetrieveRecord";
+  static String get PRODUCT_MASTER_POST => "$BASE_URL/api/ProductMaster/PostSave";
+
 
   ///
   ///

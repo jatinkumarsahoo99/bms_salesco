@@ -6,6 +6,7 @@ import '../../../controller/ConnectorControl.dart';
 import '../../../controller/HomeController.dart';
 import '../../../data/DropDownValue.dart';
 import '../../../providers/ApiFactory.dart';
+import '../../CommonSearch/views/common_search_view.dart';
 
 class ProductLevel2Controller extends GetxController {
   //TODO: Implement ProductLevel2Controller
@@ -168,6 +169,15 @@ class ProductLevel2Controller extends GetxController {
             // strProductevel2
           });
     }
+  }
+  void search() {
+    // Get.delete<TransformationController>();
+    Get.to(SearchPage(
+        key: Key("Product Level 2"),
+        screenName: "Product Level 2",
+        appBarName: "Product Level 2",
+        strViewName: "vTesting",
+        isAppBarReq: true));
   }
   @override
   void onReady() {
