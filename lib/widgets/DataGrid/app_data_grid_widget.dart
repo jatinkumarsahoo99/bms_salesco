@@ -94,9 +94,9 @@ class _AppDataGridWidgetState extends State<AppDataGridWidget> {
               },
               configuration: const PlutoGridConfiguration().copyWith(
                 tabKeyAction: PlutoGridTabKeyAction.moveToNextOnEdge,
-                shortcut: PlutoGridShortcut(
-                  actions: {},
-                ),
+                // shortcut: PlutoGridShortcut(
+                //   actions: {},
+                // ),
                 scrollbar: const PlutoGridScrollbarConfig(
                   draggableScrollbar: true,
                   isAlwaysShown: true,

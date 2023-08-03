@@ -1,76 +1,86 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AppSwitchWidget extends StatelessWidget {
   final bool onn;
   final void Function(bool val)? onChanged;
+  final void Function(bool)? onFocusChange;
+  final String? msg;
+  final double width;
   const AppSwitchWidget({
     super.key,
     required this.onn,
     this.onChanged,
+    this.onFocusChange,
+    this.width = 50,
+    this.msg,
   });
 
   @override
   Widget build(BuildContext context) {
     bool onnTemp = onn;
-    return SizedBox(
-      width: 45,
-      height: 22,
-      child: StatefulBuilder(builder: (context, re) {
-        return DecoratedBox(
-          decoration: BoxDecoration(
-            color: onnTemp ? Colors.deepPurpleAccent : Color(0xFFf4f4f4),
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(4.0),
-            child: Stack(
-              children: [
-                AnimatedPositioned(
-                  left: onnTemp ? 3 : null,
-                  right: onnTemp ? null : 3,
-                  top: 0,
-                  bottom: 0,
-                  duration: Duration(seconds: 3),
-                  child: Text(
-                    onnTemp ? "on" : "off",
-                    style: GoogleFonts.poppins(
-                      color: Colors.white,
-                      fontSize: 10,
-                    ),
-                  ),
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        StatefulBuilder(
+          builder: (context, re) {
+            return InkWell(
+              onTap: () {
+                re(() {
+                  onnTemp = !onnTemp;
+                });
+              },
+              hoverColor: Colors.black.withOpacity(0.04),
+              onFocusChange: onFocusChange,
+              focusColor: Colors.black.withOpacity(0.04),
+              borderRadius: BorderRadius.circular(20),
+              child: Ink(
+                width: width,
+                height: 23,
+                decoration: BoxDecoration(
+                  color: onnTemp ? Colors.deepPurpleAccent : const Color(0xFFF5F5F5),
+                  borderRadius: BorderRadius.circular(20),
                 ),
-                AnimatedPositioned(
-                  right: onnTemp ? 0 : null,
-                  left: onnTemp ? null : 0,
-                  top: 0,
-                  bottom: 0,
-                  duration: Duration(seconds: 3),
-                  child: GestureDetector(
-                    onTap: () {
-                      re(() {
-                        onnTemp = !onnTemp;
-                      });
-                    },
-                    child: SizedBox(
-                      width: 15,
-                      height: 15,
-                      child: DecoratedBox(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(100),
-                          color: Colors.white,
+                child: Stack(
+                  children: [
+                    Positioned(
+                      left: onnTemp ? 8 : null,
+                      right: onnTemp ? null : 8,
+                      top: 4,
+                      bottom: 4,
+                      // duration: const Duration(milliseconds: 300),
+                      child: Text(
+                        msg ?? (onnTemp ? "on" : "off"),
+                        style: GoogleFonts.poppins(
+                          color: onnTemp ? Colors.white : const Color(0xFFABABAB),
+                          fontSize: 11,
                         ),
                       ),
                     ),
-                  ),
+                    Positioned(
+                      right: onnTemp ? 4 : null,
+                      left: onnTemp ? null : 4,
+                      top: 4,
+                      bottom: 4,
+                      // duration: const Duration(seconds: 3),
+                      child: SizedBox(
+                        width: 15,
+                        height: 15,
+                        child: DecoratedBox(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(100),
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          ),
-        );
-      }),
+              ),
+            );
+          },
+        ),
+      ],
     );
   }
 }
