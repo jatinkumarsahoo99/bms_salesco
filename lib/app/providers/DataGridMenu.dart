@@ -121,7 +121,8 @@ class DataGridMenu {
           ]);
     }
 
-    var selected = await showMenu(context: context, position: RelativeRect.fromSize(details.globalPosition & Size(40, 40), Get.size), items: [
+    var selected = await showMenu(context: context, position: RelativeRect.fromSize(details.globalPosition & Size(40, 40), Get.size),
+        items: [
       const PopupMenuItem<DataGridMenuItem>(
         value: DataGridMenuItem.find,
         height: 36,

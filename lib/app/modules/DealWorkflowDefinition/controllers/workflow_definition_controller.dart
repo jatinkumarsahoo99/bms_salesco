@@ -168,11 +168,12 @@ class WorkflowDefinitionController extends GetxController {
   }
 
   onLeaveZone(String zoneCode) {
+    LoadingDialog.call();
     Get.find<ConnectorControl>().GETMETHODCALL(
         api: ApiFactory.DEAL_WORK_FLOW_DEFINITION_ON_LEAVE_ZONE + zoneCode,
         // "https://jsonkeeper.com/b/D537"
         fun: (map) {
-          // Get.back();
+          Get.back();
           stationList.clear();
           List<DropDownValue> dataList = [];
           // print(">>>>>>"+map.toString());
@@ -193,11 +194,12 @@ class WorkflowDefinitionController extends GetxController {
 
   OnLeaveCopyZoneModel? onLeaveCopyZoneModel;
   onLeaveCopyToZone(String zoneCode) {
+    LoadingDialog.call();
     Get.find<ConnectorControl>().GETMETHODCALL(
         api: ApiFactory.DEAL_WORK_FLOW_DEFINITION_ON_LEAVE_COPYZONE + zoneCode,
         // "https://jsonkeeper.com/b/D537"
         fun: (map) {
-          // Get.back();
+          Get.back();
 
           // print(">>>>>>"+map.toString());
           if (map is Map &&
@@ -215,6 +217,7 @@ class WorkflowDefinitionController extends GetxController {
   }
 
   onLeaveLocation(String locationId) {
+    LoadingDialog.call();
     Get.find<ConnectorControl>().GETMETHODCALL(
         api:
             ApiFactory.DEAL_WORK_FLOW_DEFINITION_ON_LEAVE_LOCATION + locationId,
@@ -222,7 +225,7 @@ class WorkflowDefinitionController extends GetxController {
         fun: (map) {
           channelList.clear();
           List<DropDownValue> data = [];
-          // Get.back();
+          Get.back();
           // print(">>>>>>"+map.toString());
           if (map is Map &&
               map.containsKey('onLeaveLocation') &&

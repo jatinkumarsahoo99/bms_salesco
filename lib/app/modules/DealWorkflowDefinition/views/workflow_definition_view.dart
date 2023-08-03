@@ -389,11 +389,25 @@ class WorkflowDefinitionView extends GetView<WorkflowDefinitionController> {
                                     onSelected:
                                         (PlutoGridOnSelectedEvent? val) {
                                           controllerX.isDoubleClick = false;
+
                                       controllerX.selectedIndex =
                                           val?.rowIdx ?? 0;
                                     },
                                     onRowDoubleTap:
                                         (PlutoGridOnRowDoubleTapEvent? val) {
+                                          controllerX.selectedIndex =
+                                              val?.rowIdx ?? 0;
+                                          controllerX.gridStateManager!
+                                              .setCurrentCell(
+                                              controllerX.gridStateManager!
+                                                  .getRowByIdx(controllerX
+                                                  .selectedIndex)!
+                                                  .cells['sequenceName'],
+                                              controllerX.selectedIndex);
+                                          controllerX.gridStateManager!
+                                              .moveCurrentCellByRowIdx(
+                                              controllerX.selectedIndex ?? 0,
+                                              PlutoMoveDirection.down);
                                       controllerX.onDoubleTap(val?.rowIdx ?? 0);
                                     },
                                     mapData: (controllerX
