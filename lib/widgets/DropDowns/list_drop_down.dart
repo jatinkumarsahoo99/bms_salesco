@@ -53,7 +53,7 @@ class ListDropDown extends StatelessWidget {
                 child: Icon(
                   iconData ?? Icons.pin_drop,
                   color: Colors.deepPurpleAccent,
-                  size: 16,
+                  size: SizeDefine2.componentIcon,
                 ),
               ),
 
@@ -67,7 +67,7 @@ class ListDropDown extends StatelessWidget {
                     selectedVal?.value ?? title,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: GoogleFonts.poppins(fontWeight: FontWeight.normal, fontSize: 12, color: Colors.black),
+                    style: GoogleFonts.poppins(fontWeight: FontWeight.normal, fontSize: SizeDefine2.componentTitle, color: Colors.black),
                   ),
                 ),
               },
@@ -94,7 +94,7 @@ class ListDropDown extends StatelessWidget {
                             title,
                             style: GoogleFonts.poppins(
                               fontWeight: FontWeight.w600,
-                              fontSize: 10.5,
+                              fontSize: SizeDefine2.componentHint,
                               color: Colors.deepPurpleAccent,
                             ),
                           ),
@@ -104,7 +104,11 @@ class ListDropDown extends StatelessWidget {
                         title,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: GoogleFonts.poppins(fontWeight: FontWeight.normal, fontSize: 10, color: const Color(0xFFABABAB)),
+                        style: GoogleFonts.poppins(
+                          fontWeight: FontWeight.normal,
+                          fontSize: SizeDefine2.componentHint,
+                          color: const Color(0xFFABABAB),
+                        ),
                       ),
               ),
 
@@ -190,7 +194,7 @@ class ListDropDown extends StatelessWidget {
                                   Padding(
                                     padding: const EdgeInsets.symmetric(horizontal: 8),
                                     child: TextFormField(
-                                      cursorHeight: 10,
+                                      cursorHeight: 15,
                                       decoration: InputDecoration(
                                         contentPadding: EdgeInsets.only(top: 17, right: 10),
                                         isDense: true,
@@ -220,18 +224,21 @@ class ListDropDown extends StatelessWidget {
                                       autofocus: true,
                                       style: GoogleFonts.poppins(
                                         fontWeight: FontWeight.normal,
-                                        fontSize: 10,
+                                        fontSize: SizeDefine2.componentTitle,
                                         color: Colors.black,
                                       ),
                                       onChanged: ((value) {
+                                        tempList.clear();
                                         if (value.isNotEmpty) {
-                                          tempList.clear();
                                           for (var i = 0; i < items.length; i++) {
                                             if (items[i].value!.toLowerCase().contains(value.toLowerCase())) {
                                               tempList.add(items[i]);
                                             }
                                           }
+                                        } else {
+                                          tempList.addAll(items);
                                         }
+                                        re(() {});
                                       }),
                                       inputFormatters: [
                                         FilteringTextInputFormatter.deny("  "),
@@ -263,12 +270,12 @@ class ListDropDown extends StatelessWidget {
                                                 // FocusScope.of(context).requestFocus(focusNode);
                                               },
                                               child: Padding(
-                                                padding: const EdgeInsets.only(left: 10, right: 10, top: 12, bottom: 12),
+                                                padding: const EdgeInsets.only(left: 10, right: 10, top: 6, bottom: 6),
                                                 child: Text(
                                                   element.value ?? "null",
                                                   style: GoogleFonts.poppins(
                                                     fontWeight: FontWeight.normal,
-                                                    fontSize: 10,
+                                                    fontSize: SizeDefine2.componentTitle,
                                                     color: Colors.black,
                                                   ),
                                                 ),

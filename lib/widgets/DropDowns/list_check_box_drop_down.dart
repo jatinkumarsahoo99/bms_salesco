@@ -54,7 +54,7 @@ class ListDropDownCheckBox extends StatelessWidget {
                 child: Icon(
                   iconData ?? Icons.pin_drop,
                   color: Colors.deepPurpleAccent,
-                  size: 16,
+                  size: SizeDefine2.componentIcon,
                 ),
               ),
 
@@ -68,7 +68,7 @@ class ListDropDownCheckBox extends StatelessWidget {
                     selectedVal!,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: GoogleFonts.poppins(fontWeight: FontWeight.normal, fontSize: 12, color: Colors.black),
+                    style: GoogleFonts.poppins(fontWeight: FontWeight.normal, fontSize: SizeDefine2.componentTitle, color: Colors.black),
                   ),
                 ),
               },
@@ -85,8 +85,8 @@ class ListDropDownCheckBox extends StatelessWidget {
                           gradient: LinearGradient(
                             begin: Alignment.topCenter,
                             end: Alignment.bottomCenter,
-                            stops: [.0, 1],
-                            colors: [Colors.white, const Color(0xFFF5F5F5)],
+                            stops: const [.0, 1],
+                            colors: const [Colors.white, Color(0xFFF5F5F5)],
                           ),
                         ),
                         child: Padding(
@@ -95,7 +95,7 @@ class ListDropDownCheckBox extends StatelessWidget {
                             title,
                             style: GoogleFonts.poppins(
                               fontWeight: FontWeight.w600,
-                              fontSize: 10.5,
+                              fontSize: SizeDefine2.componentHint,
                               color: Colors.deepPurpleAccent,
                             ),
                           ),
@@ -105,7 +105,8 @@ class ListDropDownCheckBox extends StatelessWidget {
                         title,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: GoogleFonts.poppins(fontWeight: FontWeight.normal, fontSize: 10, color: const Color(0xFFABABAB)),
+                        style:
+                            GoogleFonts.poppins(fontWeight: FontWeight.normal, fontSize: SizeDefine2.componentHint, color: const Color(0xFFABABAB)),
                       ),
               ),
 
@@ -192,7 +193,7 @@ class ListDropDownCheckBox extends StatelessWidget {
                                   Padding(
                                     padding: const EdgeInsets.symmetric(horizontal: 8),
                                     child: TextFormField(
-                                      cursorHeight: 10,
+                                      cursorHeight: 15,
                                       decoration: InputDecoration(
                                         contentPadding: EdgeInsets.only(top: 17, right: 10),
                                         isDense: true,

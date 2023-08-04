@@ -20,3 +20,9 @@ class SizeDefine {
   static double popupTxtSize = 20;
   static double popupMarginHorizontal = 20;
 }
+
+class SizeDefine2 {
+  static double componentIcon = 16;
+  static double componentHint = 10;
+  static double componentTitle = 12;
+}

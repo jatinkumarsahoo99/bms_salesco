@@ -1,3 +1,4 @@
+import 'package:bms_salesco/app/providers/SizeDefine.dart';
 import 'package:flutter/material.dart';
 // import 'package:get/get.dart';
 import 'package:get/utils.dart';
@@ -58,10 +59,14 @@ class NormalTextField extends StatelessWidget {
                 color: Colors.deepPurpleAccent,
               ),
             ),
-            labelStyle: GoogleFonts.poppins(fontWeight: FontWeight.normal, fontSize: 10, color: const Color(0xFFABABAB)),
-            floatingLabelStyle: GoogleFonts.poppins(fontWeight: FontWeight.w600, fontSize: 13, color: Colors.deepPurpleAccent),
+            labelStyle: GoogleFonts.poppins(fontWeight: FontWeight.normal, fontSize: SizeDefine2.componentHint, color: const Color(0xFFABABAB)),
+            floatingLabelStyle: GoogleFonts.poppins(
+              fontWeight: FontWeight.w600,
+              fontSize: SizeDefine2.componentHint,
+              color: Colors.deepPurpleAccent,
+            ),
           ),
-          style: GoogleFonts.poppins(fontWeight: FontWeight.normal, fontSize: 12, color: Colors.black),
+          style: GoogleFonts.poppins(fontWeight: FontWeight.normal, fontSize: SizeDefine2.componentTitle, color: Colors.black),
         ),
       ),
     );

@@ -1,3 +1,4 @@
+import 'package:bms_salesco/app/providers/SizeDefine.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -53,7 +54,7 @@ class MultiAppRadio extends StatelessWidget {
                   e,
                   style: GoogleFonts.poppins(
                     fontWeight: FontWeight.normal,
-                    fontSize: 13,
+                    fontSize: SizeDefine2.componentTitle,
                     color: disabledRadios?.contains(e) ?? false ? Colors.grey : Colors.black,
                   ),
                 ),

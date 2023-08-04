@@ -1,9 +1,13 @@
+import 'package:bms_salesco/app/providers/extensions/datagrid.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 import 'package:intl/intl.dart' as df;
+
+import '../../app/providers/SizeDefine.dart';
 
 class AppDataGridWidget extends StatefulWidget {
   final List<dynamic> list;
@@ -12,15 +16,19 @@ class AppDataGridWidget extends StatefulWidget {
   final bool enableRowDrag;
   final List<String>? singleCheckBoxColumnName, editingColumnName;
   final String dateFormat;
+  final PlutoAutoSizeMode? autoSizeMode;
+  // final FocusNode? focusNode;
   const AppDataGridWidget({
     super.key,
     required this.list,
     this.autoFitAfterLoad = false,
     this.enableColumnDrag = false,
     this.enableRowDrag = false,
+    // this.focusNode,
     this.singleCheckBoxColumnName,
     this.editingColumnName,
     this.dateFormat = "dd-MM-yyyy",
+    this.autoSizeMode,
   });
 
   @override
@@ -36,6 +44,8 @@ class _AppDataGridWidgetState extends State<AppDataGridWidget> {
     textStyle = GoogleFonts.poppins(color: Colors.black);
     super.initState();
   }
+
+  PlutoGridStateManager? gridSM;
 
   @override
   Widget build(BuildContext context) {
@@ -86,6 +96,7 @@ class _AppDataGridWidgetState extends State<AppDataGridWidget> {
                 debugPrint("onRowChecked");
               },
               onLoaded: (event) {
+                gridSM = event.stateManager;
                 if (widget.autoFitAfterLoad) {
                   for (var i = 0; i < event.stateManager.columns.length; i++) {
                     event.stateManager.autoFitColumn(context, event.stateManager.columns[i]);
@@ -94,25 +105,31 @@ class _AppDataGridWidgetState extends State<AppDataGridWidget> {
               },
               configuration: const PlutoGridConfiguration().copyWith(
                 tabKeyAction: PlutoGridTabKeyAction.moveToNextOnEdge,
-                // shortcut: PlutoGridShortcut(
-                //   actions: {},
-                // ),
+                shortcut: PlutoGridShortcut(
+                  actions: {
+                    ...PlutoGridShortcut.defaultActions,
+                    LogicalKeySet(LogicalKeyboardKey.tab): AppDataGridCustomAction(true, context),
+                    LogicalKeySet(LogicalKeyboardKey.shift, LogicalKeyboardKey.tab): AppDataGridCustomAction(false, context),
+                  },
+                ),
                 scrollbar: const PlutoGridScrollbarConfig(
                   draggableScrollbar: true,
                   isAlwaysShown: true,
                   hoverWidth: 15,
                 ),
-                columnSize: const PlutoGridColumnSizeConfig().copyWith(autoSizeMode: PlutoAutoSizeMode.scale, resizeMode: PlutoResizeMode.normal),
+                enterKeyAction: PlutoGridEnterKeyAction.none,
+                columnSize: const PlutoGridColumnSizeConfig()
+                    .copyWith(autoSizeMode: widget.autoSizeMode ?? PlutoAutoSizeMode.scale, resizeMode: PlutoResizeMode.normal),
                 style: PlutoGridStyleConfig(
                   columnContextIcon: Icons.swap_horiz_outlined,
                   columnHeight: 40,
                   defaultColumnTitlePadding: const EdgeInsets.all(8),
-                  columnTextStyle: textStyle.copyWith(fontWeight: FontWeight.w600, fontSize: 14),
+                  columnTextStyle: textStyle.copyWith(fontWeight: FontWeight.w600, fontSize: SizeDefine2.componentTitle),
                   gridBorderRadius: BorderRadius.circular(12),
                   inactivatedBorderColor: Colors.grey,
                   activatedBorderColor: Colors.deepPurple,
                   enableCellBorderVertical: false,
-                  cellTextStyle: textStyle.copyWith(fontWeight: FontWeight.normal, fontSize: 12),
+                  cellTextStyle: textStyle.copyWith(fontWeight: FontWeight.normal, fontSize: SizeDefine2.componentTitle),
                   defaultCellPadding: const EdgeInsets.all(4),
                   rowHeight: 30,
                   activatedColor: Colors.deepPurple.shade100,
@@ -137,10 +154,6 @@ class _AppDataGridWidgetState extends State<AppDataGridWidget> {
     );
     textPainter.layout();
     return textPainter.width;
-  }
-
-  bool notNullAndEmpty(dynamic val) {
-    return (val != null && val.isNotEmpty);
   }
 
   Future<bool> bindDataWithGrid() async {
@@ -189,5 +202,43 @@ class _AppDataGridWidgetState extends State<AppDataGridWidget> {
       print("Error while adding rows and columns in datatable ERROR:$e");
     }
     return false;
+  }
+}
+
+class AppDataGridCustomAction extends PlutoGridShortcutAction {
+  final bool fromTab;
+  final BuildContext context;
+  AppDataGridCustomAction(this.fromTab, this.context);
+  @override
+  void execute({
+    required PlutoKeyManagerEvent keyEvent,
+    required PlutoGridStateManager stateManager,
+  }) {
+    if (fromTab) {
+      // tab
+      if (stateManager.currentCell?.row == stateManager.refRows.last && stateManager.currentCell?.column == stateManager.refColumns.last) {
+        FocusScope.of(context).nextFocus();
+      } else {
+        if (stateManager.currentCell == null) {
+          stateManager.setCurrentCell(stateManager.firstCell, 0);
+        } else {
+          stateManager.moveCellNext();
+        }
+      }
+    } else {
+      if ((stateManager.currentRowIdx == 0 && stateManager.currentCellPosition?.columnIdx == 0)) {
+        // Shift + tab
+        // FocusScope.of(context).nearestScope.previousFocus();
+        // stateManager.gridFocusNode.unfocus();
+        // stateManager.setCurrentCellPosition(null);
+        // stateManager.setKeepFocus(false);
+        // Future.delayed(Duration(seconds: 3)).then((value) {
+        //   FocusScope.of(context).previousFocus();
+        //   stateManager.gridFocusNode.previousFocus();
+        // });
+      } else {
+        stateManager.moveCellPrevious();
+      }
+    }
   }
 }

@@ -64,9 +64,9 @@ class DesignView extends GetView<DesignController> {
                   label: "Tape ID",
                 ),
                 MultiAppRadio(items: ['items1', 'items2', 'items3'], groupValue: 'items1'),
-                AppSwitchWidget(
-                  onn: true,
-                ),
+                // AppSwitchWidget(
+                //   onn: true,
+                // ),
                 // CustomPaint(
                 //   painter: MyPainter(),
                 //   size: Size(200, 100),
@@ -95,9 +95,9 @@ class DesignView extends GetView<DesignController> {
             SizedBox(height: 10),
             Expanded(
               child: AppDataGridWidget(
-                enableRowDrag: true,
-                singleCheckBoxColumnName: ['locationname'],
-                editingColumnName: ['bookingnumber'],
+                // enableRowDrag: true,
+                // singleCheckBoxColumnName: ['locationname'],
+                // editingColumnName: ['bookingnumber'],
                 list: const [
                   {
                     "locationname": "ASIA",
