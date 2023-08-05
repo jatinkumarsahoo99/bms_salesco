@@ -757,6 +757,14 @@ class ApiFactory {
   ///////////////////////// MAKE-GOOD-REPORT-END//////
   ///
   ///
+  ///////////////////////// MAKE-GOOD-REPORT-START//////
+  static String get COMMERCIAL_LANG_SPEC_LOCATION => "$BASE_URL/api/CommercialLanguageSpec/GetLocation";
+  static String COMMERCIAL_LANG_SPEC_CHANNEL(String locName) => "$BASE_URL/api/CommercialLanguageSpec/GetLocationsLeave?LocationCode=$locName";
+  static String COMMERCIAL_LANG_SPEC_DISPLAY(String loc,String chanl) => "$BASE_URL/api/CommercialLanguageSpec/GetDisplay?LocationCode=$loc&channlecode=$chanl";
+  static String get COMMERCIAL_LANG_SPEC_SAVE => "$BASE_URL/api/CommercialLanguageSpec/PostSave";
+  ///////////////////////// MAKE-GOOD-REPORT-END//////
+  ///
+  ///
   ///
   ///
   ///////////////////////// COMERCIAL CREATION AUTO/////////
