@@ -112,6 +112,12 @@ class ZoneWiseInventoryUtilizationView extends GetView<ZoneWiseInventoryUtilizat
                             specificWidth: {
                               "clientname": 200,
                             },
+                      onColumnHeaderDoubleTap: (String val){
+                              print(">>>>>"+val);
+                      },
+                      onRowDoubleTap: (val){
+
+                      },
                       showSrNo: true,
                       hideCode: false,
                       formatDate: false,

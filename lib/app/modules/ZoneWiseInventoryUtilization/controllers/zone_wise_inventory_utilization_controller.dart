@@ -129,7 +129,7 @@ class ZoneWiseInventoryUtilizationController extends GetxController {
 
   Rx<ZoneWiseUtilizationResponseModel>? zoneWiseUtilizationResponseModel =
       Rx<ZoneWiseUtilizationResponseModel>(
-          ZoneWiseUtilizationResponseModel(generate: []));
+          ZoneWiseUtilizationResponseModel(generate: [Generate(balind: 123,balusa: 234)]));
 
   callGenerate() {
     print("function call");
