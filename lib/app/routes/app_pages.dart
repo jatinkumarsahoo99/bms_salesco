@@ -49,7 +49,7 @@ class AppPages {
 
   static const INITIAL = kReleaseMode
       ? Routes.HOME
-      : Routes.PRODUCT_MASTER +
+      : Routes.RATE_CARDFROM_DEAL_WORKFLOW +
           "?personalNo=R9vVPL7er1Os/usemWG/Iw==&loginCode=0iGe3vK5h2KGjfSKZTpmsQ==&formName=OI8ukDpPPVN0I2BEXu2h4nuFu%2BZm1ZRpvP8NL4XCXzQ%3D";
 
   static final routes = [
@@ -119,7 +119,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.EDI_RO_BOOKING,
-      page: () => const EdiRoBookingView(),
+      page: () =>  EdiRoBookingView(),
       binding: EdiRoBookingBinding(),
     ),
     GetPage(
@@ -176,7 +176,8 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.VIEW_OLD_DEAL,
-      page: () => const ViewOldDealView(),
+      page: () =>  AuthGuard(childName: _Paths.VIEW_OLD_DEAL),
+          // ViewOldDealView(),
       binding: ViewOldDealBinding(),
     ),
     GetPage(

@@ -33,7 +33,11 @@ class RateCardfromDealWorkflowView extends GetView<RateCardfromDealWorkflowContr
                   Obx(() {
                     return DropDownField.formDropDown1WidthMap(
                       controller.locationList.value,
-                      controller.handleOnChangedLocation,
+                      // controller.handleOnChangedLocation,
+                      (val){
+                        controller.selectedLocation = val;
+                        controller.getChannel(val.key??"");
+                      },
                       "Location",
                       .15,
                       autoFocus: true,
@@ -56,11 +60,11 @@ class RateCardfromDealWorkflowView extends GetView<RateCardfromDealWorkflowContr
                   ),
                   FormButton(
                     btnText: "Show",
-                    callback: controller.showData,
+                    // callback: controller.showData,
                   ),
                   FormButton(
                     btnText: "Load",
-                    callback: controller.handleCheckAndUncheck,
+                    // callback: controller.handleCheckAndUncheck,
                   ),
                 ],
               ),

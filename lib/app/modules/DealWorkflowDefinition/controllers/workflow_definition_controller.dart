@@ -74,7 +74,11 @@ class WorkflowDefinitionController extends GetxController {
   FocusNode typeNode = FocusNode();
   FocusNode userNode = FocusNode();
   FocusNode groupNode = FocusNode();
-
+  closeDialogIfOpen() {
+    if (Get.isDialogOpen ?? false) {
+      Get.back();
+    }
+  }
 
   checkAllList(bool sta){
     if(sta){
@@ -391,6 +395,7 @@ class WorkflowDefinitionController extends GetxController {
       if ((approvalSequenceId != null &&
           approvalSequenceId != "" &&
           approvalSequenceId != "0") || isDoubleClick) {
+        LoadingDialog.call();
         int selIndex = (selectedIndex ?? 0);
         dealWorkDefinitionGridModel?.display?[selIndex].approvalSequenceID =
             int.parse(approvalSequenceId ?? "0");
@@ -412,7 +417,9 @@ class WorkflowDefinitionController extends GetxController {
 
         dealWorkDefinitionGridModel?.display?[selIndex].groupName =
             selectedGroup?.value ?? "";
+        Get.back();
       } else {
+        LoadingDialog.call();
         int selIndex = (selectedIndex ?? 0) + 1;
         if(dealWorkDefinitionGridModel?.display?.length == 0){
           selIndex = 0;
@@ -428,6 +435,7 @@ class WorkflowDefinitionController extends GetxController {
                 groupName: selectedGroup?.value ?? "",
                 personnelNo: selectedUser?.key ?? "",
                 sequenceName: stepNameController.text ?? ""));
+        Get.back();
       }
       clearNew();
       update(['grid']);
@@ -435,6 +443,7 @@ class WorkflowDefinitionController extends GetxController {
       if ((approvalSequenceId != null &&
           approvalSequenceId != "" &&
           approvalSequenceId != "0") || isDoubleClick) {
+        LoadingDialog.call();
         dealWorkDefinitionGridModel?.display?[selectedIndex ?? 0]
             .approvalSequenceID = int.parse(approvalSequenceId ?? "0");
         dealWorkDefinitionGridModel?.display?[selectedIndex ?? 0].employees =
@@ -455,7 +464,9 @@ class WorkflowDefinitionController extends GetxController {
 
         dealWorkDefinitionGridModel?.display?[selectedIndex ?? 0].groupName =
             selectedGroup?.value ?? "";
+        Get.back();
       } else {
+        LoadingDialog.call();
         dealWorkDefinitionGridModel?.display?.insert(
             selectedIndex ?? 0,
             Display(
@@ -467,6 +478,7 @@ class WorkflowDefinitionController extends GetxController {
                 groupName: selectedGroup?.value ?? "",
                 personnelNo: selectedUser?.key ?? "",
                 sequenceName: stepNameController.text ?? ""));
+        Get.back();
       }
       clearNew();
       update(['grid']);

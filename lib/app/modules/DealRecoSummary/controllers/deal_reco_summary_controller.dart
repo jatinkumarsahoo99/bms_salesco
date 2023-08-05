@@ -37,7 +37,11 @@ class DealRecoSummaryController extends GetxController {
   FocusNode agencyNode = FocusNode();
   FocusNode zoneNode = FocusNode();
   FocusNode executiveNamNode = FocusNode();
-
+  closeDialogIfOpen() {
+    if (Get.isDialogOpen ?? false) {
+      Get.back();
+    }
+  }
   fetchAllLoaderData() {
     // LoadingDialog.call();
     Get.find<ConnectorControl>().GETMETHODCALL(

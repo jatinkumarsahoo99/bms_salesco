@@ -25,6 +25,12 @@ class EDIMappingController extends GetxController {
   bool isChannel = false;
   String radioName = "Client";
 
+  closeDialogIfOpen() {
+    if (Get.isDialogOpen ?? false) {
+      Get.back();
+    }
+  }
+
   checkRadio(String val){
     if(val == "Client"){
       isClient= true;

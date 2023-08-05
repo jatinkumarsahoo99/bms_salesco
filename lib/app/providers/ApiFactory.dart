@@ -672,6 +672,25 @@ class ApiFactory {
   static String get PRODUCT_MASTER_GET_RETRIEVE_RECORD => "$BASE_URL/api/ProductMaster/GetRetrieveRecord";
   static String get PRODUCT_MASTER_POST => "$BASE_URL/api/ProductMaster/PostSave";
 
+  ///////////////////////////////////// ViewOldDeals //////////////////////////////////////
+  static String get ViewOldDeals_LOAD => "$BASE_URL/api/ViewOldDeals/viewdeal_Load";
+  static String get ViewOldDeals_GET_CLIENT => "$BASE_URL/api/ViewOldDeals/GetClient";
+  static String get ViewOldDeals_GET_AGENCY => "$BASE_URL/api/ViewOldDeals/GetAgency";
+  static String get ViewOldDeals_GET_DEAL => "$BASE_URL/api/ViewOldDeals/GetDeal";
+  static String get ViewOldDeals_GET_DEAL_LEAVE => "$BASE_URL/api/ViewOldDeals/GetDeal_leave";
+
+  //////////////////////////////////// ZoneWiseInventory ////////////////////////////////////////////
+  static String get ZoneWiseInventory_LOAD => "$BASE_URL/api/ZoneWiseInventory/GetLocation";
+  static String get ZoneWiseInventory_GET_CHANNEL => "$BASE_URL/api/ZoneWiseInventory/GetChannel";
+  static String get ZoneWiseInventory_GENERATE => "$BASE_URL/api/ZoneWiseInventory/Generate";
+
+  /////////////////////////////////// RateCardfromDealWorkflow /////////////////////////////////
+  static String get Rate_Card_From_Deal_Workflow_LOAD => "$BASE_URL/api/DPRateCard/GetLocationLoad";
+  static String get Rate_Card_From_Deal_Workflow_GET_Channel => "$BASE_URL/api/DPRateCard/GetChannel";
+  static String get Rate_Card_From_Deal_Workflow_Export => "$BASE_URL/api/DPRateCard/Export";
+  static String get Rate_Card_From_Deal_Workflow_SAVE=> "$BASE_URL/api/DPRateCard/Save";
+
+
 
   ///
   ///

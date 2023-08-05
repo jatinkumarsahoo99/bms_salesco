@@ -179,6 +179,11 @@ class ProductLevel2Controller extends GetxController {
         strViewName: "vTesting",
         isAppBarReq: true));
   }
+  closeDialogIfOpen() {
+    if (Get.isDialogOpen ?? false) {
+      Get.back();
+    }
+  }
   @override
   void onReady() {
     super.onReady();
