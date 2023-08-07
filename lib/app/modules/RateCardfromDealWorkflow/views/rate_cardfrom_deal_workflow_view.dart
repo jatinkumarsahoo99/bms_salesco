@@ -48,7 +48,10 @@ class RateCardfromDealWorkflowView extends GetView<RateCardfromDealWorkflowContr
                   Obx(() {
                     return DropDownField.formDropDown1WidthMap(
                       controller.channelList.value,
-                      (val) => controller.selectedChannel = val,
+                      (val) {
+                        controller.selectedChannel = val;
+                        controller.getExportData();
+                      } ,
                       "Channel",
                       .15,
                       selected: controller.selectedChannel,
@@ -58,13 +61,16 @@ class RateCardfromDealWorkflowView extends GetView<RateCardfromDealWorkflowContr
                     hintTxt: "Path",
                     controller: TextEditingController(),
                   ),
+
                   FormButton(
-                    btnText: "Show",
-                    // callback: controller.showData,
+                    btnText: "Export",
+                    callback:(){
+                      controller.exportBtn();
+                    } ,
                   ),
                   FormButton(
                     btnText: "Load",
-                    // callback: controller.handleCheckAndUncheck,
+                    callback: controller.pickFile,
                   ),
                 ],
               ),
