@@ -41,41 +41,42 @@ class ViewOldDealController extends GetxController {
   FocusNode dealNoNode = FocusNode();
 
   fetchAllLoaderData() {
-    // LoadingDialog.call();
+    LoadingDialog.call();
     Get.find<ConnectorControl>().GETMETHODCALL(
         api: ApiFactory.ViewOldDeals_LOAD,
         fun: (map) {
           locationList.clear();
           channelList.clear();
           executiveList.clear();
+          Get.back();
           if(map is Map && map.containsKey("pageload") &&
               map['pageload'] != null ){
             if(map['pageload'].containsKey('lstlocations') &&
                 map['pageload']['lstlocations'] != null && map['pageload']['lstlocations'].length > 0 ){
-              RxList<DropDownValue>? dataList = RxList([]);
+              // RxList<DropDownValue>? dataList = RxList([]);
               map['pageload']['lstlocations'].forEach((e){
-                dataList.add(DropDownValue.fromJsonDynamic(e, "locationCode", "locationName"));
+                locationList.add(DropDownValue.fromJsonDynamic(e, "locationCode", "locationName"));
               });
-              locationList.addAll(dataList);
+              // locationList.addAll(dataList);
             }
 
             if(map['pageload'].containsKey('lstchannels') &&
                 map['pageload']['lstchannels'] != null &&
                 map['pageload']['lstchannels'].length > 0){
-              RxList<DropDownValue>? dataList = RxList([]);
+              // RxList<DropDownValue>? dataList = RxList([]);
               map['pageload']['lstchannels'].forEach((e){
-                dataList.add(DropDownValue.fromJsonDynamic(e, "channelCode", "channelName"));
+                channelList.add(DropDownValue.fromJsonDynamic(e, "channelCode", "channelName"));
               });
-              channelList.addAll(dataList);
+              // channelList.addAll(dataList);
             }
             if(map['pageload'].containsKey('lstpersonnelmaster') &&
                 map['pageload']['lstpersonnelmaster'] != null &&
                 map['pageload']['lstpersonnelmaster'].length > 0){
-              RxList<DropDownValue>? dataList = RxList([]);
+              // RxList<DropDownValue>? dataList = RxList([]);
               map['pageload']['lstpersonnelmaster'].forEach((e){
-                dataList.add(DropDownValue.fromJsonDynamic(e, "personnelcode", "executivename"));
+                executiveList.add(DropDownValue.fromJsonDynamic(e, "personnelcode", "executivename"));
               });
-              executiveList.addAll(dataList);
+              // executiveList.addAll(dataList);
             }
           }
         });
@@ -210,12 +211,12 @@ class ViewOldDealController extends GetxController {
 
   @override
   void onInit() {
-    fetchAllLoaderData();
     super.onInit();
   }
 
   @override
   void onReady() {
+    fetchAllLoaderData();
     super.onReady();
   }
 
