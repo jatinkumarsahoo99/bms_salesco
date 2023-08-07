@@ -82,7 +82,11 @@ class GeoProgramUpdateController extends GetxController {
     }
 
   }
-
+  closeDialogIfOpen() {
+    if (Get.isDialogOpen ?? false) {
+      Get.back();
+    }
+  }
   @override
   void onInit() {
     fetchAllLoaderData();

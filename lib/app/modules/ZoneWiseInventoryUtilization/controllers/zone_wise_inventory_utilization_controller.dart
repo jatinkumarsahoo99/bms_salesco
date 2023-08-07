@@ -1,21 +1,30 @@
 import 'package:bms_salesco/app/data/DropDownValue.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
 import '../../../../widgets/LoadingDialog.dart';
 import '../../../controller/ConnectorControl.dart';
+import '../../../controller/HomeController.dart';
 import '../../../data/PermissionModel.dart';
 import '../../../providers/ApiFactory.dart';
 import '../../../providers/Utils.dart';
 import '../../../routes/app_pages.dart';
 import '../../SameDayCollection/model/same_day_collection_model.dart';
+import '../ZoneWiseUtilizationResponseModel.dart';
 
 class ZoneWiseInventoryUtilizationController extends GetxController {
   var locationList = <DropDownValue>[].obs, channelList = <DropDownValue>[].obs;
   DropDownValue? selectedLocation, selectedChannel;
   var locationFN = FocusNode();
   var fromTC = TextEditingController();
+
+  TextEditingController fromDateController = TextEditingController();
+  TextEditingController toDateController = TextEditingController();
+  TextEditingController fromTimeController = TextEditingController();
+  TextEditingController toTimeController = TextEditingController();
+
   List<PermissionModel>? formPermissions;
   var dataTableList = <SameDayCollectionModel>[].obs;
   var checkedAll = false.obs;
@@ -23,7 +32,8 @@ class ZoneWiseInventoryUtilizationController extends GetxController {
   int lastSelctedIdx = 0;
   @override
   void onInit() {
-    formPermissions = Utils.fetchPermissions1(Routes.RATE_CARDFROM_DEAL_WORKFLOW.replaceAll("/", ""));
+    formPermissions = Utils.fetchPermissions1(
+        Routes.RATE_CARDFROM_DEAL_WORKFLOW.replaceAll("/", ""));
     super.onInit();
   }
 
@@ -37,6 +47,13 @@ class ZoneWiseInventoryUtilizationController extends GetxController {
     locationFN.requestFocus();
     lastSelctedIdx = 0;
     manager = null;
+    zoneWiseUtilizationResponseModel =
+        Rx<ZoneWiseUtilizationResponseModel>(
+            ZoneWiseUtilizationResponseModel(generate: []));
+  }
+  clearAll() {
+    Get.delete<ZoneWiseInventoryUtilizationController>();
+    Get.find<HomeController>().clearPage1();
   }
 
   @override
@@ -45,132 +62,23 @@ class ZoneWiseInventoryUtilizationController extends GetxController {
     getOnLoadData();
   }
 
-  saveRecord() {
-    if (selectedLocation == null) {
-      LoadingDialog.showErrorDialog("Please select Location");
-    } else if (selectedChannel == null) {
-      LoadingDialog.showErrorDialog("Please select Channel");
-    } else if (dataTableList.isEmpty) {
-      LoadingDialog.showErrorDialog("Please load data first.");
-    } else {
-      LoadingDialog.call();
-      Get.find<ConnectorControl>().POSTMETHOD(
-        api: ApiFactory.SAME_DAY_COLLECTION_SAVE_DATA,
-        fun: (resp) {
-          Get.back();
-          if (resp is Map<String, dynamic> && resp['save'] != null) {
-            if (!(resp['save']['isError'] as bool)) {
-              LoadingDialog.callDataSaved(
-                msg: resp['save']['genericMessage'].toString(),
-                callback: () {
-                  clearPage();
-                },
-              );
-            } else {
-              LoadingDialog.showErrorDialog(resp['save']['errorMessage'].toString());
-            }
-          } else if (resp is Map<String, dynamic> && resp['status'] == "failure") {
-            LoadingDialog.showErrorDialog(resp['message'].toString());
-          } else {
-            LoadingDialog.showErrorDialog(resp.toString());
-          }
-        },
-        json: dataTableList.map((element) => element.toJson(fromSame: true)).toList(),
-      );
-    }
-  }
-
-  showData() {
-    if (selectedLocation == null) {
-      LoadingDialog.showErrorDialog("Please select Location");
-    } else if (selectedChannel == null) {
-      LoadingDialog.showErrorDialog("Please select Channel");
-    } else {
-      LoadingDialog.call();
-      Get.find<ConnectorControl>().GETMETHODCALL(
-          api: ApiFactory.SAME_DAY_COLLECTION_SHOW_DATA(selectedLocation?.key ?? "", selectedChannel?.key ?? ""),
-          fun: (resp) {
-            closeDialogIfOpen();
-            if (resp != null && resp is Map<String, dynamic> && resp['show'] != null) {
-              dataTableList.clear();
-              dataTableList.addAll((resp['show'] as List<dynamic>).map((e) => SameDayCollectionModel.fromJson(e)).toList());
-            } else {
-              if (resp is Map<String, dynamic> && resp['status'] == "failure") {
-                LoadingDialog.showErrorDialog(resp['message'].toString());
-              } else {
-                LoadingDialog.showErrorDialog(resp.toString());
-              }
-            }
-          },
-          failed: (resp) {
-            closeDialogIfOpen();
-            if (resp is Map<String, dynamic> && resp['status'] == "failure") {
-              LoadingDialog.showErrorDialog(resp['message'].toString());
-            } else {
-              LoadingDialog.showErrorDialog(resp.toString());
-            }
-          });
-    }
-  }
-
-  handleOnChangedLocation(DropDownValue? val) {
-    selectedLocation = val;
-    if (val != null) {
-      closeDialogIfOpen();
-      LoadingDialog.call();
-      Get.find<ConnectorControl>().GETMETHODCALL(
-        api: ApiFactory.SAME_DAY_COLLECTION_ON_LEAVE_LOCATION(val.key.toString()),
-        fun: (resp) {
-          closeDialogIfOpen();
-          if (resp != null && resp is Map<String, dynamic> && resp['channel'] != null && resp['channel'] is List<dynamic>) {
-            channelList.clear();
-            selectedChannel = null;
-            channelList.addAll((resp['channel'] as List<dynamic>)
-                .map((e) => DropDownValue(
-                      key: e['channelCode'].toString(),
-                      value: e['channelName'].toString(),
-                    ))
-                .toList());
-          } else {
-            LoadingDialog.showErrorDialog(resp.toString());
-          }
-        },
-        failed: (resp) {
-          closeDialogIfOpen();
-          if (resp is Map<String, dynamic> && resp['status'] == "failure") {
-            LoadingDialog.showErrorDialog(resp['message'].toString());
-          } else {
-            LoadingDialog.showErrorDialog(resp.toString());
-          }
-        },
-      );
-    }
-  }
-
   getOnLoadData() {
     LoadingDialog.call();
     Get.find<ConnectorControl>().GETMETHODCALL(
-        api: ApiFactory.SAME_DAY_COLLECTION_ON_LOAD,
-        fun: (resp) {
+        api: ApiFactory.ZoneWiseInventory_LOAD,
+        fun: (map) {
           closeDialogIfOpen();
-          if (resp != null && resp is Map<String, dynamic> && resp['location'] != null && resp['location'] is List<dynamic>) {
-            locationList.value.addAll((resp['location'] as List<dynamic>)
-                .map((e) => DropDownValue(
-                      key: e['locationCode'].toString(),
-                      value: e['locationName'].toString(),
-                    ))
-                .toList());
-            if (locationList.isNotEmpty) {
-              selectedLocation = locationList.first;
-              locationList.refresh();
-              handleOnChangedLocation(selectedLocation);
-            }
-          } else {
-            if (resp is Map<String, dynamic> && resp['status'] == "failure") {
-              LoadingDialog.showErrorDialog(resp['message'].toString());
-            } else {
-              LoadingDialog.showErrorDialog(resp.toString());
-            }
+          locationList.clear();
+          if (map is Map &&
+              map.containsKey("location") &&
+              map['location'] != null &&
+              map['location'].length > 0) {
+            RxList<DropDownValue>? dataList = RxList([]);
+            map['location'].forEach((e) {
+              dataList.add(new DropDownValue.fromJsonDynamic(
+                  e, "locationCode", "locationName"));
+            });
+            locationList = dataList;
           }
         },
         failed: (resp) {
@@ -183,6 +91,78 @@ class ZoneWiseInventoryUtilizationController extends GetxController {
         });
   }
 
+  getChannel(String location) {
+    LoadingDialog.call();
+    Get.find<ConnectorControl>().GETMETHODCALL(
+        api: ApiFactory.ZoneWiseInventory_GET_CHANNEL +
+            "?Locationcode=" +
+            location,
+        fun: (map) {
+          closeDialogIfOpen();
+          channelList.clear();
+          if (map is Map &&
+              map.containsKey("channel") &&
+              map['channel'] != null &&
+              map['channel'].length > 0) {
+            RxList<DropDownValue>? dataList = RxList([]);
+            map['channel'].forEach((e) {
+              dataList.add(new DropDownValue.fromJsonDynamic(
+                  e, "channelCode", "channelName"));
+            });
+            channelList = dataList;
+          }
+        },
+        failed: (resp) {
+          closeDialogIfOpen();
+          if (resp is Map<String, dynamic> && resp['status'] == "failure") {
+            LoadingDialog.showErrorDialog(resp['message'].toString());
+          } else {
+            LoadingDialog.showErrorDialog(resp.toString());
+          }
+        });
+  }
+
+  String convertDateFromat(String date) {
+    return DateFormat('yyyy-MM-ddTHH:mm:ss')
+        .format(DateFormat('dd-MM-yyyy').parse(date));
+  }
+
+  Rx<ZoneWiseUtilizationResponseModel>? zoneWiseUtilizationResponseModel =
+      Rx<ZoneWiseUtilizationResponseModel>(
+          ZoneWiseUtilizationResponseModel(generate: [Generate(balind: 123,balusa: 234)]));
+
+  callGenerate() {
+    print("function call");
+    LoadingDialog.call();
+    Map<String, dynamic> postData = {
+      "locationcode": selectedLocation?.key ?? "",
+      "channelcode": selectedChannel?.key ?? "ZAZEE00001",
+      "fromdate": convertDateFromat(fromDateController.text) ?? "",
+      "todate": convertDateFromat(toDateController.text) ?? "",
+      "fromtime": fromTimeController.text ?? "10:00:00:00",
+      "totime": toTimeController.text ?? "12:00:00:00"
+    };
+    print(">>>map"+postData.toString());
+    Get.find<ConnectorControl>().POSTMETHOD(
+      api: ApiFactory.ZoneWiseInventory_GENERATE,
+      json: postData,
+      fun: (map) {
+        closeDialogIfOpen();
+        if (map is Map &&
+            map.containsKey('generate') &&
+            map['generate'] != null &&
+            map['generate'].length > 0) {
+          zoneWiseUtilizationResponseModel?.value =
+              ZoneWiseUtilizationResponseModel.fromJson(
+                  map as Map<String, dynamic>);
+        } else {
+          zoneWiseUtilizationResponseModel?.value =
+              ZoneWiseUtilizationResponseModel(generate: []);
+        }
+      },
+    );
+  }
+
   closeDialogIfOpen() {
     if (Get.isDialogOpen ?? false) {
       Get.back();
@@ -191,20 +171,7 @@ class ZoneWiseInventoryUtilizationController extends GetxController {
 
   formHandler(btn) {
     if (btn == "Clear") {
-      clearPage();
-    } else if (btn == "Save") {
-      saveRecord();
-    }
-  }
-
-  void handleCheckAndUncheck() {
-    checkedAll.value = !checkedAll.value;
-    if (dataTableList.isNotEmpty) {
-      dataTableList.value = dataTableList.value.map((e) {
-        e.cancel = checkedAll.value;
-        return e;
-      }).toList();
-      dataTableList.refresh();
+      clearAll();
     }
   }
 }

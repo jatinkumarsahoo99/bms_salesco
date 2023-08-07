@@ -40,6 +40,7 @@ import '../modules/SameDayCollection/views/same_day_collection_view.dart';
 import '../modules/TapeIDCampaign/views/tape_i_d_campaign_view.dart';
 import '../modules/Update_Executive/views/update_executive_view.dart';
 import '../modules/UserGroupsForDealWorkflow/views/user_groups_for_deal_workflow_view.dart';
+import '../modules/ViewOldDeal/views/view_old_deal_view.dart';
 import '../modules/ZoneWiseInventoryUtilization/views/zone_wise_inventory_utilization_view.dart';
 
 import '../routes/app_pages.dart';
@@ -166,6 +167,9 @@ class AuthGuard extends StatelessWidget {
               break;
             case Routes.COMMERCIAL_CREATION_AUTO_DETAILS:
               currentWidget = CommercialCreationAutoDetailsView();
+              break;
+            case Routes.VIEW_OLD_DEAL:
+              currentWidget = ViewOldDealView();
               break;
             default:
               currentWidget = const NoDataFoundPage();

@@ -45,94 +45,21 @@ class RateCardfromDealWorkflowController extends GetxController {
     getOnLoadData();
   }
 
-  saveRecord() {
-    if (selectedLocation == null) {
-      LoadingDialog.showErrorDialog("Please select Location");
-    } else if (selectedChannel == null) {
-      LoadingDialog.showErrorDialog("Please select Channel");
-    } else if (dataTableList.isEmpty) {
-      LoadingDialog.showErrorDialog("Please load data first.");
-    } else {
-      LoadingDialog.call();
-      Get.find<ConnectorControl>().POSTMETHOD(
-        api: ApiFactory.SAME_DAY_COLLECTION_SAVE_DATA,
-        fun: (resp) {
-          Get.back();
-          if (resp is Map<String, dynamic> && resp['save'] != null) {
-            if (!(resp['save']['isError'] as bool)) {
-              LoadingDialog.callDataSaved(
-                msg: resp['save']['genericMessage'].toString(),
-                callback: () {
-                  clearPage();
-                },
-              );
-            } else {
-              LoadingDialog.showErrorDialog(resp['save']['errorMessage'].toString());
-            }
-          } else if (resp is Map<String, dynamic> && resp['status'] == "failure") {
-            LoadingDialog.showErrorDialog(resp['message'].toString());
-          } else {
-            LoadingDialog.showErrorDialog(resp.toString());
-          }
-        },
-        json: dataTableList.map((element) => element.toJson(fromSame: true)).toList(),
-      );
-    }
-  }
-
-  showData() {
-    if (selectedLocation == null) {
-      LoadingDialog.showErrorDialog("Please select Location");
-    } else if (selectedChannel == null) {
-      LoadingDialog.showErrorDialog("Please select Channel");
-    } else {
-      LoadingDialog.call();
-      Get.find<ConnectorControl>().GETMETHODCALL(
-          api: ApiFactory.SAME_DAY_COLLECTION_SHOW_DATA(selectedLocation?.key ?? "", selectedChannel?.key ?? ""),
-          fun: (resp) {
-            closeDialogIfOpen();
-            if (resp != null && resp is Map<String, dynamic> && resp['show'] != null) {
-              dataTableList.clear();
-              dataTableList.addAll((resp['show'] as List<dynamic>).map((e) => SameDayCollectionModel.fromJson(e)).toList());
-            } else {
-              if (resp is Map<String, dynamic> && resp['status'] == "failure") {
-                LoadingDialog.showErrorDialog(resp['message'].toString());
-              } else {
-                LoadingDialog.showErrorDialog(resp.toString());
-              }
-            }
-          },
-          failed: (resp) {
-            closeDialogIfOpen();
-            if (resp is Map<String, dynamic> && resp['status'] == "failure") {
-              LoadingDialog.showErrorDialog(resp['message'].toString());
-            } else {
-              LoadingDialog.showErrorDialog(resp.toString());
-            }
-          });
-    }
-  }
-
-  handleOnChangedLocation(DropDownValue? val) {
-    selectedLocation = val;
-    if (val != null) {
-      closeDialogIfOpen();
-      LoadingDialog.call();
-      Get.find<ConnectorControl>().GETMETHODCALL(
-        api: ApiFactory.SAME_DAY_COLLECTION_ON_LEAVE_LOCATION(val.key.toString()),
-        fun: (resp) {
+  getOnLoadData() {
+    LoadingDialog.call();
+    Get.find<ConnectorControl>().GETMETHODCALL(
+        api: ApiFactory.Rate_Card_From_Deal_Workflow_LOAD,
+        fun: (map) {
           closeDialogIfOpen();
-          if (resp != null && resp is Map<String, dynamic> && resp['channel'] != null && resp['channel'] is List<dynamic>) {
-            channelList.clear();
-            selectedChannel = null;
-            channelList.addAll((resp['channel'] as List<dynamic>)
-                .map((e) => DropDownValue(
-                      key: e['channelCode'].toString(),
-                      value: e['channelName'].toString(),
-                    ))
-                .toList());
-          } else {
-            LoadingDialog.showErrorDialog(resp.toString());
+          locationList.clear();
+          if(map is Map && map.containsKey('location') &&
+              map['location'] != null && map['location'].length >0){
+            RxList<DropDownValue>? dataList = RxList([]);
+            map['location'].forEach((e) {
+              dataList.add(new DropDownValue.fromJsonDynamic(
+                  e, "locationCode", "locationName"));
+            });
+            locationList = dataList;
           }
         },
         failed: (resp) {
@@ -142,35 +69,24 @@ class RateCardfromDealWorkflowController extends GetxController {
           } else {
             LoadingDialog.showErrorDialog(resp.toString());
           }
-        },
-      );
-    }
+        });
   }
 
-  getOnLoadData() {
+  getChannel(String locationCode) {
     LoadingDialog.call();
     Get.find<ConnectorControl>().GETMETHODCALL(
-        api: ApiFactory.SAME_DAY_COLLECTION_ON_LOAD,
-        fun: (resp) {
+        api: ApiFactory.Rate_Card_From_Deal_Workflow_GET_Channel+"?locationcode="+locationCode,
+        fun: (map) {
           closeDialogIfOpen();
-          if (resp != null && resp is Map<String, dynamic> && resp['location'] != null && resp['location'] is List<dynamic>) {
-            locationList.value.addAll((resp['location'] as List<dynamic>)
-                .map((e) => DropDownValue(
-                      key: e['locationCode'].toString(),
-                      value: e['locationName'].toString(),
-                    ))
-                .toList());
-            if (locationList.isNotEmpty) {
-              selectedLocation = locationList.first;
-              locationList.refresh();
-              handleOnChangedLocation(selectedLocation);
-            }
-          } else {
-            if (resp is Map<String, dynamic> && resp['status'] == "failure") {
-              LoadingDialog.showErrorDialog(resp['message'].toString());
-            } else {
-              LoadingDialog.showErrorDialog(resp.toString());
-            }
+          channelList.clear();
+          if(map is Map && map.containsKey('channel') &&
+              map['channel'] != null && map['channel'].length >0){
+            RxList<DropDownValue>? dataList = RxList([]);
+            map['channel'].forEach((e) {
+              dataList.add(new DropDownValue.fromJsonDynamic(
+                  e, "channelCode", "channelName"));
+            });
+            channelList = dataList;
           }
         },
         failed: (resp) {
@@ -193,7 +109,7 @@ class RateCardfromDealWorkflowController extends GetxController {
     if (btn == "Clear") {
       clearPage();
     } else if (btn == "Save") {
-      saveRecord();
+      // saveRecord();
     }
   }
 

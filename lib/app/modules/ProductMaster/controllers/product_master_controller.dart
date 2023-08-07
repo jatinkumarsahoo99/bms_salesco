@@ -144,7 +144,11 @@ class ProductMasterController extends GetxController {
     text = text.replaceAll("'", "`");
     return text;
   }
-
+  closeDialogIfOpen() {
+    if (Get.isDialogOpen ?? false) {
+      Get.back();
+    }
+  }
   @override
   void onInit() {
     fetchAllLoaderData();
@@ -169,6 +173,7 @@ class ProductMasterController extends GetxController {
         strViewName: "vTesting",
         isAppBarReq: true));
   }
+
   @override
   void onReady() {
     super.onReady();

@@ -74,7 +74,10 @@ abstract class RoutesList {
     _Paths.PRODUCT_LEVEL2,
     _Paths.PRODUCT_LEVEL3,
     _Paths.GEO_PROGRAM_UPDATE,
-    _Paths.WORKFLOW_DEFINITION
+    _Paths.WORKFLOW_DEFINITION,
+    _Paths.VIEW_OLD_DEAL,
+    _Paths.ZONE_WISE_INVENTORY_UTILIZATION,
+    _Paths.RATE_CARDFROM_DEAL_WORKFLOW,
   ];
 
  /* static final RoutesList _instance = RoutesList._();

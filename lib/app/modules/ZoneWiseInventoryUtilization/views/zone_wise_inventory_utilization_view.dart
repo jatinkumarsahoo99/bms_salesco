@@ -33,7 +33,10 @@ class ZoneWiseInventoryUtilizationView extends GetView<ZoneWiseInventoryUtilizat
                   Obx(() {
                     return DropDownField.formDropDown1WidthMap(
                       controller.locationList.value,
-                      controller.handleOnChangedLocation,
+                      (val){
+                        controller.selectedLocation = val;
+                        controller.getChannel(val.key??"");
+                      },
                       "Location",
                       .15,
                       autoFocus: true,
@@ -52,31 +55,34 @@ class ZoneWiseInventoryUtilizationView extends GetView<ZoneWiseInventoryUtilizat
                   }),
                   DateWithThreeTextField(
                     title: "From Date",
-                    mainTextController: controller.fromTC,
+                    mainTextController: controller.fromDateController,
                     widthRation: .15,
                   ),
                   DateWithThreeTextField(
                     title: "To Date",
-                    mainTextController: controller.fromTC,
+                    mainTextController: controller.toDateController,
                     widthRation: .15,
                   ),
                   InputFields.formFieldNumberMask(
                     hintTxt: "From Time",
-                    controller: TextEditingController(),
+                    controller: controller.fromTimeController,
                     widthRatio: .15,
                   ),
                   InputFields.formFieldNumberMask(
                     hintTxt: "To Time",
-                    controller: TextEditingController(),
+                    controller: controller.toTimeController,
                     widthRatio: .15,
                   ),
                   // InputFields.formField1(
                   //   hintTxt: "Path",
                   //   controller: TextEditingController(),
                   // ),
-                  FormButton(
+                  FormButtonWrapper(
                     btnText: "Generate",
-                    callback: controller.showData,
+                    showIcon: true,
+                    callback:(){
+                      controller.callGenerate();
+                    },
                   ),
                   // FormButton(
                   //   btnText: "Load",
@@ -90,14 +96,14 @@ class ZoneWiseInventoryUtilizationView extends GetView<ZoneWiseInventoryUtilizat
                 () {
                   return Container(
                     margin: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                    decoration: controller.dataTableList.isEmpty
+                    decoration: controller.zoneWiseUtilizationResponseModel!.value.generate!.isEmpty
                         ? BoxDecoration(
                             border: Border.all(
                               color: Colors.grey,
                             ),
                           )
                         : null,
-                    child: controller.dataTableList.isEmpty
+                    child: controller.zoneWiseUtilizationResponseModel!.value.generate!.isEmpty
                         ? null
                         : DataGridFromMap3(
                             mode: PlutoGridMode.selectWithOneTap,
@@ -106,37 +112,16 @@ class ZoneWiseInventoryUtilizationView extends GetView<ZoneWiseInventoryUtilizat
                             specificWidth: {
                               "clientname": 200,
                             },
-                            onload: (event) {
-                              controller.manager = event.stateManager;
-                              event.stateManager.setSelectingMode(PlutoGridSelectingMode.row);
-                              event.stateManager.setSelecting(true);
-                              event.stateManager.moveScrollByRow(PlutoMoveDirection.down, controller.lastSelctedIdx);
-                              event.stateManager.setCurrentCell(
-                                event.stateManager.getRowByIdx(controller.lastSelctedIdx)?.cells['isActive'],
-                                controller.lastSelctedIdx,
-                              );
-                            },
-                            actionOnPress: (position, isSpaceCalled) {
-                              if (isSpaceCalled) {
-                                controller.lastSelctedIdx = position.rowIdx ?? 0;
-                                controller.manager!.changeCellValue(
-                                  controller.manager!.currentCell!,
-                                  controller.manager!.currentCell!.value == "true" ? "false" : "true",
-                                  force: true,
-                                  callOnChangedEvent: true,
-                                  notify: true,
-                                );
-                              }
-                            },
-                            colorCallback: (row) =>
-                                (row.row.cells.containsValue(controller.manager?.currentCell)) ? Colors.deepPurple.shade200 : Colors.white,
-                            onEdit: (event) {
-                              controller.lastSelctedIdx = event.rowIdx;
-                              controller.dataTableList[event.rowIdx].cancel = (event.value == "true");
-                            },
-                            uncheckCheckBoxStr: "false",
-                            checkBoxStrComparison: "true",
-                            mapData: controller.dataTableList.value.map((e) => e.toJson()).toList(),
+                      onColumnHeaderDoubleTap: (String val){
+                              print(">>>>>"+val);
+                      },
+                      onRowDoubleTap: (val){
+
+                      },
+                      showSrNo: true,
+                      hideCode: false,
+                      formatDate: false,
+                            mapData:controller.zoneWiseUtilizationResponseModel!.value.generate!.map((e) => e.toJson()).toList(),
                           ),
                   );
                 },
