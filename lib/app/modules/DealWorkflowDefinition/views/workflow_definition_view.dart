@@ -321,7 +321,7 @@ class WorkflowDefinitionView extends GetView<WorkflowDefinitionController> {
                                         child: FormButtonWrapper(
                                           btnText: "Clear",
                                           callback: () {
-                                            controllerX.clearNew();
+                                            controllerX.clearAll();
                                           },
                                           showIcon: false,
                                         ),

@@ -9,10 +9,12 @@ import '../modules/AsrunDetailsReport/bindings/asrun_details_report_binding.dart
 import '../modules/AuditStatusReport/bindings/audit_status_report_binding.dart';
 import '../modules/AutoTimeLock/bindings/auto_time_lock_binding.dart';
 import '../modules/ChangeRONumber/bindings/change_r_o_number_binding.dart';
+import '../modules/CommonDocs/bindings/common_docs_binding.dart';
+import '../modules/CommonDocs/views/common_docs_view.dart';
 import '../modules/DealRecoSummary/bindings/deal_reco_summary_binding.dart';
+import '../modules/DealWorkflowDefinition/bindings/workflow_definition_binding.dart';
 import '../modules/Design/bindings/design_binding.dart';
 import '../modules/Design/views/design_view.dart';
-import '../modules/DealWorkflowDefinition/bindings/workflow_definition_binding.dart';
 import '../modules/EDI_Mapping/bindings/e_d_i_mapping_binding.dart';
 import '../modules/EdiRoBooking/bindings/edi_ro_booking_binding.dart';
 import '../modules/EdiRoBooking/views/edi_ro_booking_view.dart';
@@ -36,7 +38,6 @@ import '../modules/SameDayCollection/bindings/same_day_collection_binding.dart';
 import '../modules/TapeIDCampaign/bindings/tape_i_d_campaign_binding.dart';
 import '../modules/Update_Executive/bindings/update_executive_binding.dart';
 import '../modules/UserGroupsForDealWorkflow/bindings/user_groups_for_deal_workflow_binding.dart';
-
 import '../modules/ViewOldDeal/bindings/view_old_deal_binding.dart';
 import '../modules/ViewOldDeal/views/view_old_deal_view.dart';
 import '../modules/ZoneWiseInventoryUtilization/bindings/zone_wise_inventory_utilization_binding.dart';
@@ -49,7 +50,7 @@ class AppPages {
 
   static const INITIAL = kReleaseMode
       ? Routes.HOME
-      : Routes.RATE_CARDFROM_DEAL_WORKFLOW +
+      : Routes.AMAGI_SPOT_PLANNING +
           "?personalNo=R9vVPL7er1Os/usemWG/Iw==&loginCode=0iGe3vK5h2KGjfSKZTpmsQ==&formName=OI8ukDpPPVN0I2BEXu2h4nuFu%2BZm1ZRpvP8NL4XCXzQ%3D";
 
   static final routes = [
@@ -119,7 +120,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.EDI_RO_BOOKING,
-      page: () =>  EdiRoBookingView(),
+      page: () => EdiRoBookingView(),
       binding: EdiRoBookingBinding(),
     ),
     GetPage(
@@ -131,7 +132,7 @@ class AppPages {
     GetPage(
       name: _Paths.E_D_I_MAPPING,
       page: () => AuthGuard(childName: _Paths.E_D_I_MAPPING),
-     /* transition: Transition.zoom,
+      /* transition: Transition.zoom,
       transitionDuration: Duration(seconds: 1),*/
 
       // EDIMappingView(),
@@ -143,7 +144,8 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.COMMERCIAL_LANGUAGE_SPECIFICATION,
-      page: () => AuthGuard(childName: _Paths.COMMERCIAL_LANGUAGE_SPECIFICATION),
+      page: () =>
+          AuthGuard(childName: _Paths.COMMERCIAL_LANGUAGE_SPECIFICATION),
     ),
     GetPage(
       name: _Paths.ONE_SPOT_BOOKING_SKY_MEDIA,
@@ -153,7 +155,8 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.PERIODIC_DEAL_UTILISATION_FORMAT2,
-      page: () => AuthGuard(childName: _Paths.PERIODIC_DEAL_UTILISATION_FORMAT2),
+      page: () =>
+          AuthGuard(childName: _Paths.PERIODIC_DEAL_UTILISATION_FORMAT2),
       // PeriodicDealUtilisationFormat2View(),
       binding: PeriodicDealUtilisationFormat2Binding(),
     ),
@@ -176,8 +179,8 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.VIEW_OLD_DEAL,
-      page: () =>  AuthGuard(childName: _Paths.VIEW_OLD_DEAL),
-          // ViewOldDealView(),
+      page: () => AuthGuard(childName: _Paths.VIEW_OLD_DEAL),
+      // ViewOldDealView(),
       binding: ViewOldDealBinding(),
     ),
     GetPage(
@@ -255,5 +258,10 @@ class AppPages {
       page: () => const DesignView(),
       binding: DesignBinding(),
     ),
+    GetPage(
+      name: _Paths.COMMON_DOCS,
+      page: () => const CommonDocsView(documentKey: ''),
+      binding: CommonDocsBinding(),
+    )
   ];
 }

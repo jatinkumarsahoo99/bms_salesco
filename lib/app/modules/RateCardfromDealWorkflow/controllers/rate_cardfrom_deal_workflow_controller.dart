@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:bms_salesco/app/data/DropDownValue.dart';
 import 'package:excel/excel.dart';
@@ -6,15 +7,20 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
 import '../../../../widgets/LoadingDialog.dart';
 import '../../../controller/ConnectorControl.dart';
+import '../../../controller/HomeController.dart';
+import '../../../controller/MainController.dart';
 import '../../../data/PermissionModel.dart';
 import '../../../providers/ApiFactory.dart';
 import '../../../providers/ExportData.dart';
 import '../../../providers/Utils.dart';
 import '../../../routes/app_pages.dart';
+import '../../CommonDocs/controllers/common_docs_controller.dart';
+import '../../CommonDocs/views/common_docs_view.dart';
 import '../../SameDayCollection/model/same_day_collection_model.dart';
 import '../RateCardFromDealWorkFlowModel.dart';
 
@@ -28,6 +34,7 @@ class RateCardfromDealWorkflowController extends GetxController {
   var checkedAll = false.obs;
   PlutoGridStateManager? manager;
   int lastSelctedIdx = 0;
+  TextEditingController pathController = TextEditingController();
   @override
   void onInit() {
     formPermissions = Utils.fetchPermissions1(
@@ -113,8 +120,10 @@ class RateCardfromDealWorkflowController extends GetxController {
         });
   }
 
-  RateCardFromDealWorkFlowModel? rateCardFromDealWorkFlowModel = RateCardFromDealWorkFlowModel(export: []);
-  RateCardFromDealWorkFlowModel? gridData = RateCardFromDealWorkFlowModel(export: []);
+  RateCardFromDealWorkFlowModel? rateCardFromDealWorkFlowModel =
+      RateCardFromDealWorkFlowModel(export: []);
+  RateCardFromDealWorkFlowModel gridData =
+      RateCardFromDealWorkFlowModel(export: []);
   getExportData() {
     LoadingDialog.call();
     Map<String, dynamic> sendData = {
@@ -159,37 +168,103 @@ class RateCardfromDealWorkflowController extends GetxController {
   }
 
   pickFile() async {
-    FilePickerResult? result =
-        await FilePicker.platform.pickFiles();
-
+    LoadingDialog.call();
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      allowedExtensions: ['xlsx', 'xls'],
+      type: FileType.custom,
+    );
+    closeDialogIfOpen();
     if (result != null && result.files.single != null) {
-      // loadBtn(result.files[0],result);
-      Uint8List? fileBytes = result.files.first.bytes;
-      var excel = Excel.decodeBytes(result.files.first.bytes as List<int>);
+      // print(">>>>>>filename"+(result.files[0].name.toString()));
+      pathController.text = result.files[0].name.toString();
 
-      for (var table in excel.tables.keys) {
-        // print(table); //sheet Name
-        // print(excel.tables[table]?.maxCols);
-        // print(excel.tables[table]?.maxRows);
-        for (var row in excel.tables[table]!.rows) {
-          print('>>>>>>>>>>>>>>>>'+row.toList().toString());
-        }
-      }
+      loadBtn(result);
     } else {
+      LoadingDialog.showErrorDialog("Please try again");
       // User canceled the pic5ker
       print(">>>>dataCancel");
     }
   }
 
-  loadBtn(PlatformFile file,FilePickerResult res) {
-    // print("file"+file.path.toString());
-    // var bytes = File(file.path!).readAsBytesSync();
-    var bytes = file.bytes;
-    Uint8List? fileBytes = res.files.first.bytes;
-    String fileContent = String.fromCharCodes(fileBytes!);
-    // print(fileContent);
-    Map<String, dynamic> mapData = jsonDecode(fileContent);
-    print(">>>>>>>>>mapData"+mapData.toString());
+  loadBtn(FilePickerResult result) {
+    LoadingDialog.call();
+    var jsonData = <String, dynamic>{};
+    try {
+      Uint8List? fileBytes = result.files.first.bytes;
+      var excel = Excel.decodeBytes(result.files.first.bytes as List<int>);
+
+      int sheet = 0;
+      for (var table in excel.tables.keys) {
+        var tableData = <Map<String, dynamic>>[];
+        sheet = sheet + 1;
+        // Extract headers from the first row
+        var headers = excel.tables[table]!
+            .row(0)
+            .map((cell) => cell?.value.toString())
+            .toList();
+
+        print(">>>>>" + headers.toString());
+
+        for (var rowIdx = 1; rowIdx <= excel.tables[table]!.maxRows; rowIdx++) {
+          var rowData = <String, dynamic>{};
+          var row = excel.tables[table]!.row(rowIdx);
+          for (var colIdx = 0; colIdx < row.length; colIdx++) {
+            var header = headers[colIdx];
+            var cellValue = row[colIdx]?.value.toString();
+            rowData[header ?? ""] = cellValue;
+          }
+          if (rowData.isNotEmpty) {
+            tableData.add(rowData);
+          }
+        }
+        jsonData['S${sheet}'] = tableData;
+      }
+      if (jsonData.containsKey('S1') && jsonData['S1'] != null) {
+        gridData = RateCardFromDealWorkFlowModel.fromJson1(jsonData);
+        closeDialogIfOpen();
+        update(['grid']);
+      } else {
+        gridData = RateCardFromDealWorkFlowModel(export: []);
+        closeDialogIfOpen();
+        update(['grid']);
+      }
+    } catch (e) {
+      print(">>>>" + e.toString());
+      gridData = RateCardFromDealWorkFlowModel(export: []);
+      closeDialogIfOpen();
+      update(['grid']);
+      LoadingDialog.showErrorDialog(e.toString());
+    }
+  }
+
+  saveBtn() {
+    LoadingDialog.call();
+    Map<String, dynamic> postData = {
+      "locationcode": selectedLocation?.key ?? "",
+      "channelcode": selectedChannel?.key ?? "",
+      "modifiedby": Get.find<MainController>().user?.logincode ?? "",
+      "typeRateCards": gridData.export?.map((e) => e.toJson1()).toList()
+    };
+    Get.find<ConnectorControl>().POSTMETHOD(
+        api: ApiFactory.Rate_Card_From_Deal_Workflow_SAVE,
+        json: postData,
+        fun: (map) {
+          closeDialogIfOpen();
+          print(">>" + map.toString());
+          if (map is Map &&
+              map.containsKey('message') &&
+              map['message'] != null) {
+            clearAll();
+            LoadingDialog.callDataSavedMessage(map['message'] ?? "");
+          } else {
+            LoadingDialog.showErrorDialog((map ?? "").toString());
+          }
+        });
+  }
+
+  clearAll() {
+    Get.delete<RateCardfromDealWorkflowController>();
+    Get.find<HomeController>().clearPage1();
   }
 
   closeDialogIfOpen() {
@@ -198,11 +273,30 @@ class RateCardfromDealWorkflowController extends GetxController {
     }
   }
 
+  docs() async {
+    String documentKey = "";
+    if(selectedLocation == null || selectedChannel == null){
+      documentKey = "";
+    }else{
+      documentKey = "Rate card " + (selectedLocation?.key??"") + (selectedChannel?.key??"");
+    }
+
+    Get.defaultDialog(
+      title: "Documents",
+      content: CommonDocsView(documentKey: documentKey),
+    ).then((value) {
+      Get.delete<CommonDocsController>(tag: "commonDocs");
+    });
+  }
+
+
   formHandler(btn) {
     if (btn == "Clear") {
-      clearPage();
+      clearAll();
     } else if (btn == "Save") {
-      // saveRecord();
+      saveBtn();
+    }else if(btn == "Docs"){
+      docs();
     }
   }
 }

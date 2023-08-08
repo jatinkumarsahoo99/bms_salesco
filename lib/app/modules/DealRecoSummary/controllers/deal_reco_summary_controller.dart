@@ -185,7 +185,7 @@ class DealRecoSummaryController extends GetxController {
         fun: ( map) {
           Get.back();
           print(">>>>>>"+map.toString());
-          if(map is Map && map.containsKey('gentare') && map['gentare'] != null && map['gentare'].length > 0){
+          if(map is Map && map.containsKey('genrate') && map['genrate'] != null && map['genrate'].length > 0){
             dealRecoSummaryModel = DealRecoSummaryModel.fromJson(map as Map<String,dynamic>) ;
             update(['grid']);
           }else{

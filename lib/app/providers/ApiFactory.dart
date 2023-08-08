@@ -127,6 +127,13 @@ class ApiFactory {
     return "$BASE_URL_COMMON/api/CommonSearch/DeleteSearchVariance?VarianceId=$varianceId";
   }
 
+  ////////////////////// DOCS /////////////////////////////
+
+  static String COMMON_DOCS_LOAD(String docKey) => "$BASE_URL_COMMON/api/CommonDoc/loadDocument?DocumentKey=$docKey";
+  static String COMMON_DOCS_VIEW(String docId) => "$BASE_URL_COMMON/api/CommonDoc/ViewDocument?DocId=$docId";
+  static String get COMMON_DOCS_ADD => "$BASE_URL_COMMON/api/CommonDoc/AddDocument";
+  static String COMMON_DOCS_DELETE(String docId) => "$BASE_URL_COMMON/api/CommonDoc/DeleteDocument?DocumentID=$docId";
+
   /////////////////////////////////////////////////////////
   //////////////////////////// RO RECIEVED /////////////////////////////////
 
@@ -690,7 +697,10 @@ class ApiFactory {
   static String get Rate_Card_From_Deal_Workflow_Export => "$BASE_URL/api/DPRateCard/Export";
   static String get Rate_Card_From_Deal_Workflow_SAVE=> "$BASE_URL/api/DPRateCard/Save";
 
-
+///////////////////////////////////////////// Amagi Spot Planning //////////////////////////
+  static String get Amagi_Spot_Planning_LOAD => "$BASE_URL/api/AmagiSpotPlanning/GetLocation";
+  static String get Amagi_Spot_Planning_Get_Channel => "$BASE_URL/api/AmagiSpotPlanning/GetChannel?LocationCode=";
+  static String get Amagi_Spot_Planning_Get_Generate => "$BASE_URL/api/AmagiSpotPlanning/Generate";
 
   ///
   ///
