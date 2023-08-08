@@ -503,7 +503,6 @@ class ConnectorControl extends GetConnect {
                 // "accept-language": (AppData.selectedLanguage=="English")?"en":"ar",
                 'Content-Type': 'application/json',
                 "Authorization": "Bearer " + ((Get.find<MainController>().user != null) ? Get.find<MainController>().user?.token ?? "" : ""),
-
                 "PersonnelNo": ((Get.find<MainController>().user != null) ? Aes.encrypt(Get.find<MainController>().user?.personnelNo ?? "") : ""),
                 "Userid": ((Get.find<MainController>().user != null) ? Aes.encrypt(Get.find<MainController>().user?.logincode ?? "") : ""),
                 "FormName": ((Get.find<MainController>().formName != null) ? Get.find<MainController>().formName ?? "" : "")

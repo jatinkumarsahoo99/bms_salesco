@@ -13,8 +13,13 @@ import '../../../providers/Utils.dart';
 
 import '../controllers/rate_cardfrom_deal_workflow_controller.dart';
 
-class RateCardfromDealWorkflowView extends GetView<RateCardfromDealWorkflowController> {
-  const RateCardfromDealWorkflowView({Key? key}) : super(key: key);
+class RateCardfromDealWorkflowView
+    extends GetView<RateCardfromDealWorkflowController> {
+   RateCardfromDealWorkflowView({Key? key}) : super(key: key);
+
+   RateCardfromDealWorkflowController controller = Get.put<RateCardfromDealWorkflowController>
+     (RateCardfromDealWorkflowController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,9 +39,9 @@ class RateCardfromDealWorkflowView extends GetView<RateCardfromDealWorkflowContr
                     return DropDownField.formDropDown1WidthMap(
                       controller.locationList.value,
                       // controller.handleOnChangedLocation,
-                      (val){
+                      (val) {
                         controller.selectedLocation = val;
-                        controller.getChannel(val.key??"");
+                        controller.getChannel(val.key ?? "");
                       },
                       "Location",
                       .15,
@@ -48,7 +53,10 @@ class RateCardfromDealWorkflowView extends GetView<RateCardfromDealWorkflowContr
                   Obx(() {
                     return DropDownField.formDropDown1WidthMap(
                       controller.channelList.value,
-                      (val) => controller.selectedChannel = val,
+                      (val) {
+                        controller.selectedChannel = val;
+                        controller.getExportData();
+                      },
                       "Channel",
                       .15,
                       selected: controller.selectedChannel,
@@ -56,75 +64,49 @@ class RateCardfromDealWorkflowView extends GetView<RateCardfromDealWorkflowContr
                   }),
                   InputFields.formField1(
                     hintTxt: "Path",
-                    controller: TextEditingController(),
+                    controller: controller.pathController,
+                    width: 0.2
                   ),
                   FormButton(
-                    btnText: "Show",
-                    // callback: controller.showData,
+                    btnText: "Export",
+                    callback: () {
+                      controller.exportBtn();
+                    },
                   ),
                   FormButton(
                     btnText: "Load",
-                    // callback: controller.handleCheckAndUncheck,
+                    callback: controller.pickFile,
                   ),
                 ],
               ),
             ),
-            Expanded(
-              child: Obx(
-                () {
-                  return Container(
+            GetBuilder<RateCardfromDealWorkflowController>(
+              id: "grid",
+              builder: (controller) {
+                return Expanded(
+                  child:Container(
                     margin: EdgeInsets.all(16),
-                    decoration: controller.dataTableList.isEmpty
+                    decoration: controller.gridData.export!.isEmpty
                         ? BoxDecoration(
-                            border: Border.all(
-                              color: Colors.grey,
-                            ),
-                          )
+                      border: Border.all(
+                        color: Colors.grey,
+                      ),
+                    )
                         : null,
-                    child: controller.dataTableList.isEmpty
+                    child: controller.gridData.export!.isEmpty
                         ? null
                         : DataGridFromMap3(
-                            mode: PlutoGridMode.selectWithOneTap,
-                            checkBoxColumnKey: ["cancel"],
-                            actionIconKey: ['cancel'],
-                            specificWidth: {
-                              "clientname": 200,
-                            },
-                            onload: (event) {
-                              controller.manager = event.stateManager;
-                              event.stateManager.setSelectingMode(PlutoGridSelectingMode.row);
-                              event.stateManager.setSelecting(true);
-                              event.stateManager.moveScrollByRow(PlutoMoveDirection.down, controller.lastSelctedIdx);
-                              event.stateManager.setCurrentCell(
-                                event.stateManager.getRowByIdx(controller.lastSelctedIdx)?.cells['isActive'],
-                                controller.lastSelctedIdx,
-                              );
-                            },
-                            actionOnPress: (position, isSpaceCalled) {
-                              if (isSpaceCalled) {
-                                controller.lastSelctedIdx = position.rowIdx ?? 0;
-                                controller.manager!.changeCellValue(
-                                  controller.manager!.currentCell!,
-                                  controller.manager!.currentCell!.value == "true" ? "false" : "true",
-                                  force: true,
-                                  callOnChangedEvent: true,
-                                  notify: true,
-                                );
-                              }
-                            },
-                            colorCallback: (row) =>
-                                (row.row.cells.containsValue(controller.manager?.currentCell)) ? Colors.deepPurple.shade200 : Colors.white,
-                            onEdit: (event) {
-                              controller.lastSelctedIdx = event.rowIdx;
-                              controller.dataTableList[event.rowIdx].cancel = (event.value == "true");
-                            },
-                            uncheckCheckBoxStr: "false",
-                            checkBoxStrComparison: "true",
-                            mapData: controller.dataTableList.value.map((e) => e.toJson()).toList(),
-                          ),
-                  );
-                },
-              ),
+                      mode: PlutoGridMode.selectWithOneTap,
+                      showSrNo: false,
+                      hideCode: false,
+                      formatDate: false,
+                      mapData: controller.gridData.export!
+                          .map((e) => e.toJson())
+                          .toList(),
+                    ),
+                  )
+                );
+              }
             ),
 
             /// bottom common buttons
@@ -147,9 +129,13 @@ class RateCardfromDealWorkflowView extends GetView<RateCardfromDealWorkflowContr
                               for (var btn in btncontroller.buttons!) ...{
                                 FormButtonWrapper(
                                   btnText: btn["name"],
-                                  callback: ((Utils.btnAccessHandler(btn['name'], controller.formPermissions!) == null))
+                                  callback: ((Utils.btnAccessHandler(
+                                              btn['name'],
+                                              controller.formPermissions!) ==
+                                          null))
                                       ? null
-                                      : () => controller.formHandler(btn['name']),
+                                      : () =>
+                                          controller.formHandler(btn['name']),
                                 )
                               },
                             ],
