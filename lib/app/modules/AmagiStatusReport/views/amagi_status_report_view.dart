@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:pluto_grid/pluto_grid.dart';
 
 import '../../../../widgets/DateTime/DateWithThreeTextField.dart';
 import '../../../../widgets/FormButton.dart';
 import '../../../../widgets/dropdown.dart';
+import '../../../../widgets/gridFromMap.dart';
 import '../../../../widgets/radio_row.dart';
+import '../../../controller/HomeController.dart';
+import '../../../controller/MainController.dart';
+import '../../../data/PermissionModel.dart';
+import '../../../providers/Utils.dart';
 import '../controllers/amagi_status_report_controller.dart';
 
 class AmagiStatusReportView extends GetView<AmagiStatusReportController> {
@@ -42,31 +48,32 @@ class AmagiStatusReportView extends GetView<AmagiStatusReportController> {
                         controllerX.locationList.value??[],
                             (value) {
                           controllerX.selectedLocation = value;
+                          controllerX.getChannel(value.key??"");
                         }, "Location", .15,
                         isEnable: controllerX.isEnable.value,
                         selected: controllerX.selectedLocation,
-                        dialogHeight: Get.height * .7,
+                        dialogHeight: Get.height * .35,
                         autoFocus: true,),),
 
                       Obx(()=>DropDownField.formDropDown1WidthMap(
-                        controllerX.locationList.value??[],
+                        controllerX.channelList.value??[],
                             (value) {
-
+                              controllerX.selectedChannel = value;
                         }, "channel", .15,
                         isEnable: controllerX.isEnable.value,
-                        selected: controllerX.selectedLocation,
-                        dialogHeight: Get.height * .7,
+                        selected: controllerX.selectedChannel,
+                        dialogHeight: Get.height * .35,
                         autoFocus: true,),),
 
                       DateWithThreeTextField(
                         title: "From",
-                        mainTextController: TextEditingController(),
+                        mainTextController: controllerX.fromDateController,
                         widthRation: .1,
                         isEnable: controllerX.isEnable.value,
                       ),
                       DateWithThreeTextField(
                         title: "To",
-                        mainTextController: TextEditingController(),
+                        mainTextController: controllerX.toDateController,
                         widthRation: .1,
                         isEnable: controllerX.isEnable.value,
                       ),
@@ -109,22 +116,27 @@ class AmagiStatusReportView extends GetView<AmagiStatusReportController> {
                       padding: const EdgeInsets.all(8.0),
                       child: Container(
                         decoration: BoxDecoration(
-                            border: Border.all(color: Colors.black)),
+                            border: Border.all(color: Colors.grey)),
                         child:  GetBuilder<AmagiStatusReportController>(
                             id: "grid",
                             builder: (controllerX) {
-                              return Container(
-                                decoration: BoxDecoration(
-                                    border: Border.all(color: Colors.black)),
-
-                              );
+                              return  (controllerX.responseData['report'].length > 0)?
+                               DataGridFromMap(
+                                  showSrNo: false,
+                                  hideCode: false,
+                                  formatDate: false,
+                                  mode: PlutoGridMode.selectWithOneTap,
+                                  mapData: (controllerX.responseData['report']),
+                                  // mapData: (controllerX.dataList)!,
+                                  widthRatio: Get.width / 9 - 1,
+                              ):Container();
                             }
                         ),
 
                       ),
                     ),
                   ),
-                  /*SizedBox(height: 5),
+                  SizedBox(height: 5),
                   GetBuilder<HomeController>(
                       id: "buttons",
                       init: Get.find<HomeController>(),
@@ -153,7 +165,7 @@ class AmagiStatusReportView extends GetView<AmagiStatusReportController> {
                           );
                         }
                         return Container(child: Text("No"),);
-                      })*/
+                      })
                   /// bottom common buttons
                 ],
               ),

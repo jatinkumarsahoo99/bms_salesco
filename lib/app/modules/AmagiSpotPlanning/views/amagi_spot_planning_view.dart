@@ -122,7 +122,8 @@ class AmagiSpotPlanningView extends GetView<AmagiSpotPlanningController> {
                         child:  GetBuilder<AmagiSpotPlanningController>(
                             id: "grid",
                             builder: (controllerX) {
-                              return (controllerX.responseData['report'].length > 0)? Container(
+                              return (controllerX.responseData['report'].length > 0)?
+                              Container(
                                 child: DataGridFromMap(
                                   showSrNo: false,
                                   hideCode: false,

@@ -8,7 +8,7 @@ import '../../../data/DropDownValue.dart';
 import '../../../providers/ApiFactory.dart';
 
 class AmagiSpotPlanningController extends GetxController {
-  //TODO: Implement AmagiSpotPlanningController
+
 
   Rx<bool> isEnable = Rx<bool>(true);
   final count = 0.obs;
@@ -18,14 +18,13 @@ class AmagiSpotPlanningController extends GetxController {
   DropDownValue? selectedLocation;
   DropDownValue? selectedChannel;
 
-  RxString selectValue=RxString("");
+  RxString selectValue = RxString("");
 
   TextEditingController scheduleDateController = TextEditingController();
   bool isMasterSpots = false;
   bool isChannel = false;
   bool isClient = false;
   bool isData = false;
-
 
   fetchAllLoaderData() {
     LoadingDialog.call();
@@ -35,33 +34,38 @@ class AmagiSpotPlanningController extends GetxController {
         fun: (map) {
           Get.back();
           locationList.clear();
-          if(map is Map && map.containsKey('location') &&  map['location'] !=  null ){
-            map['location'].forEach((e){
-              locationList.add(new DropDownValue.fromJsonDynamic(e, "locationCode", "locationName"));
+          if (map is Map &&
+              map.containsKey('location') &&
+              map['location'] != null) {
+            map['location'].forEach((e) {
+              locationList.add(DropDownValue.fromJsonDynamic(
+                  e, "locationCode", "locationName"));
             });
           }
         });
   }
 
-  getChannel(String locationCode){
+  getChannel(String locationCode) {
     LoadingDialog.call();
     Get.find<ConnectorControl>().GETMETHODCALL(
-        api: ApiFactory.Amagi_Spot_Planning_Get_Channel+locationCode,
+        api: ApiFactory.Amagi_Spot_Planning_Get_Channel + locationCode,
         // "https://jsonkeeper.com/b/D537"
         fun: (map) {
           Get.back();
           channelList.clear();
-          if(map is Map && map.containsKey('channel') &&  map['channel'] !=  null ){
-            map['channel'].forEach((e){
-              channelList.add(new DropDownValue.fromJsonDynamic(e, "channelCode", "channelName"));
+          if (map is Map &&
+              map.containsKey('channel') &&
+              map['channel'] != null) {
+            map['channel'].forEach((e) {
+              channelList.add(new DropDownValue.fromJsonDynamic(
+                  e, "channelCode", "channelName"));
             });
           }
         });
   }
 
-
-  Future<void>getRadioType(String radioName) async {
-    switch(radioName){
+  Future<void> getRadioType(String radioName) async {
+    switch (radioName) {
       case "Master Spots":
         isMasterSpots = true;
         isChannel = false;
@@ -87,27 +91,25 @@ class AmagiSpotPlanningController extends GetxController {
         isData = true;
         break;
     }
-
   }
 
-  String  convertDate(String date){
-    return (DateFormat('yyyy-MM-dd').format(DateFormat('dd-MM-yyyy').parse(date)));
+  String convertDate(String date) {
+    return (DateFormat('yyyy-MM-dd')
+        .format(DateFormat('dd-MM-yyyy').parse(date)));
   }
 
-
-  Map<String ,dynamic> responseData = {
-    'report':[]
-  };
+  Map<String, dynamic> responseData = {'report': []};
   closeDialogIfOpen() {
     if (Get.isDialogOpen ?? false) {
       Get.back();
     }
   }
-    generateBtn(){
+
+  generateBtn() {
     LoadingDialog.call();
-    Map<String,dynamic> postData = {
-      "locationCode": selectedLocation?.key??"",
-      "channelcode": selectedChannel?.key??"",
+    Map<String, dynamic> postData = {
+      "locationCode": selectedLocation?.key ?? "",
+      "channelcode": selectedChannel?.key ?? "",
       "scheduleDate": convertDate(scheduleDateController.text),
       "isMasterSpots": isMasterSpots,
       "isChannel": isChannel,
@@ -120,13 +122,13 @@ class AmagiSpotPlanningController extends GetxController {
         // "https://jsonkeeper.com/b/D537"
         fun: (map) {
           closeDialogIfOpen();
-          if(map is Map && map.containsKey('report') && map['report']  != null){
-            responseData = map as Map<String,dynamic>;
+          if (map is Map &&
+              map.containsKey('report') &&
+              map['report'] != null) {
+            responseData = map as Map<String, dynamic>;
             update(['grid']);
-          }else{
-            responseData = {
-              'report':[]
-            };
+          } else {
+            responseData = {'report': []};
             update(['grid']);
           }
         });
@@ -142,9 +144,8 @@ class AmagiSpotPlanningController extends GetxController {
     fetchAllLoaderData();
     super.onReady();
   }
-  formHandler(String string) {
 
-  }
+  formHandler(String string) {}
 
   @override
   void onClose() {
