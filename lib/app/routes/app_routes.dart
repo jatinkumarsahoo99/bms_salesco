@@ -82,6 +82,7 @@ abstract class RoutesList {
     _Paths.VIEW_OLD_DEAL,
     _Paths.ZONE_WISE_INVENTORY_UTILIZATION,
     _Paths.RATE_CARDFROM_DEAL_WORKFLOW,
+    _Paths.RESCHEDULE_IMPORT,
   ];
 
   /* static final RoutesList _instance = RoutesList._();

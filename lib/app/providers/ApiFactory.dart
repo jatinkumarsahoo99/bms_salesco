@@ -702,6 +702,18 @@ class ApiFactory {
   static String get Amagi_Spot_Planning_Get_Channel => "$BASE_URL/api/AmagiSpotPlanning/GetChannel?LocationCode=";
   static String get Amagi_Spot_Planning_Get_Generate => "$BASE_URL/api/AmagiSpotPlanning/Generate";
 
+  ///////////////////////////////////////// Amagi Status Report /////////////////////////////////////////////
+  static String get Amagi_Status_Report_LOAD => "$BASE_URL/api/AmagiStatusReport/AmagiSTatusLoad";
+  static String get Amagi_Status_Report_Get_Channel => "$BASE_URL/api/AmagiStatusReport/GetChannel?locationcode=";
+  static String get Amagi_Status_Report_RetrieveData => "$BASE_URL/api/AmagiStatusReport/RetrieveData";
+
+  //////////////////////////////////////// Reschedule Import //////////////////////////////////////
+  static String get Reschedule_Import_LOAD => "$BASE_URL/api/RescheduleImport/GetLocation";
+  static String get Reschedule_Import_Get_Channel => "$BASE_URL/api/RescheduleImport/GetChannel?locationcode=";
+  static String get Reschedule_Import_ReImport => "$BASE_URL/api/RescheduleImport/ReImport";
+
+
+
   ///
   ///
   ///
