@@ -137,8 +137,21 @@ class AmagiStatusReportController extends GetxController {
           closeDialogIfOpen();
           if (map is Map &&
               map.containsKey('response') &&
-              map['response'] != null) {
+              map['response'] != null &&  map['response'].length >0) {
             responseData = map as Map<String, dynamic>;
+
+            for(int j=0;j<responseData['response'].length ;j++){
+              List<String> keys = responseData['response'][j].keys.toList();
+              print(">>>keys"+keys.toString());
+              for(int i=0;i<keys.length;i++){
+                if(
+                    responseData['response'][j][keys[i]].toString().trim() == "{}"){
+                  print(">>>>>>>>map"+responseData['response'][j][keys[i]].toString());
+                  responseData['response'][j][keys[i]] = "";
+                }
+              }
+            }
+
             update(['grid']);
           } else {
             responseData = {'response': []};

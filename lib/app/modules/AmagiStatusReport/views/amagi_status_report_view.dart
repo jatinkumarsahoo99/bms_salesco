@@ -26,7 +26,7 @@ class AmagiStatusReportView extends GetView<AmagiStatusReportController> {
     return Scaffold(
       body: Center(
         child: SizedBox(
-          width: size.width * 0.84,
+          width: size.width * 0.96,
           child: Dialog(
             child: Padding(
               padding: const EdgeInsets.all(8.0),
@@ -34,7 +34,7 @@ class AmagiStatusReportView extends GetView<AmagiStatusReportController> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   AppBar(
-                    title: Text('Amagi Spot Status'),
+                    title: Text('Amagi Status Report'),
                     centerTitle: true,
                     backgroundColor: Colors.deepPurple,
                   ),
@@ -83,7 +83,7 @@ class AmagiStatusReportView extends GetView<AmagiStatusReportController> {
                         child: FormButtonWrapper(
                           btnText: "Retrieve",
                           callback: () {
-                            // controllerX.callGetRetrieve();
+                            controllerX.retrieveData();
                           },
                           showIcon: false,
                         ),
@@ -93,7 +93,7 @@ class AmagiStatusReportView extends GetView<AmagiStatusReportController> {
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: RadioRow(
+                    child:Obx(()=>RadioRow(
                       items: [
                         "Day Wise",
                         "Time Band",
@@ -107,8 +107,11 @@ class AmagiStatusReportView extends GetView<AmagiStatusReportController> {
                         print(">>>>"+v);
                         controllerX.selectValue.value=v;
                         controllerX.selectValue.refresh();
+                        controllerX.getRadioStatus(v).then((value) {
+                          controllerX.retrieveData();
+                        });
                       },
-                    ),
+                    ),) ,
                   ),
                   Expanded(
                     // flex: 9,
@@ -120,13 +123,13 @@ class AmagiStatusReportView extends GetView<AmagiStatusReportController> {
                         child:  GetBuilder<AmagiStatusReportController>(
                             id: "grid",
                             builder: (controllerX) {
-                              return  (controllerX.responseData['report'].length > 0)?
+                              return  (controllerX.responseData['response'].length > 0)?
                                DataGridFromMap(
                                   showSrNo: false,
                                   hideCode: false,
                                   formatDate: false,
                                   mode: PlutoGridMode.selectWithOneTap,
-                                  mapData: (controllerX.responseData['report']),
+                                  mapData: (controllerX.responseData['response']),
                                   // mapData: (controllerX.dataList)!,
                                   widthRatio: Get.width / 9 - 1,
                               ):Container();
