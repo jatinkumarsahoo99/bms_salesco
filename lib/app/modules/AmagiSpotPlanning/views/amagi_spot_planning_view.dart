@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:pluto_grid/pluto_grid.dart';
 
 import '../../../../widgets/DateTime/DateWithThreeTextField.dart';
 import '../../../../widgets/FormButton.dart';
 import '../../../../widgets/dropdown.dart';
+import '../../../../widgets/gridFromMap.dart';
 import '../../../../widgets/radio_row.dart';
 
 import '../../../controller/HomeController.dart';
@@ -25,7 +27,7 @@ class AmagiSpotPlanningView extends GetView<AmagiSpotPlanningController> {
     return Scaffold(
       body: Center(
         child: SizedBox(
-          width: size.width * 0.84,
+          width: size.width * 0.99,
           child: Dialog(
             child: Padding(
               padding: const EdgeInsets.all(8.0),
@@ -47,25 +49,26 @@ class AmagiSpotPlanningView extends GetView<AmagiSpotPlanningController> {
                         controllerX.locationList.value??[],
                             (value) {
                           controllerX.selectedLocation = value;
+                          controllerX.getChannel(value.key??"");
                         }, "Location", .21,
                         isEnable: controllerX.isEnable.value,
                         selected: controllerX.selectedLocation,
-                        dialogHeight: Get.height * .7,
+                        dialogHeight: Get.height * .35,
                         autoFocus: true,),),
 
                       Obx(()=>DropDownField.formDropDown1WidthMap(
-                        controllerX.locationList.value??[],
+                        controllerX.channelList.value??[],
                             (value) {
-
+                              controllerX.selectedChannel = value;
                         }, "channel", .21,
                         isEnable: controllerX.isEnable.value,
-                        selected: controllerX.selectedLocation,
-                        dialogHeight: Get.height * .7,
+                        selected: controllerX.selectedChannel,
+                        dialogHeight: Get.height * .35,
                         autoFocus: true,),),
 
                       DateWithThreeTextField(
                         title: "Scheduled Date",
-                        mainTextController: TextEditingController(),
+                        mainTextController: controllerX.scheduleDateController,
                         widthRation: .1,
                         isEnable: controllerX.isEnable.value,
                       ),
@@ -75,7 +78,7 @@ class AmagiSpotPlanningView extends GetView<AmagiSpotPlanningController> {
                         child: FormButtonWrapper(
                           btnText: "Data",
                           callback: () {
-                            // controllerX.callGetRetrieve();
+                            controllerX.generateBtn();
                           },
                           showIcon: false,
                         ),
@@ -83,23 +86,31 @@ class AmagiSpotPlanningView extends GetView<AmagiSpotPlanningController> {
 
                     ],
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: RadioRow(
-                      items: [
-                        "Master Spots",
-                        "Channel",
-                        "Client",
-                        "Data"
-                      ],
-                      groupValue:
-                      controllerX.selectValue.value ?? "",
-                      onchange: (String v) {
-                        print(">>>>"+v);
-                        controllerX.selectValue.value=v;
-                        controllerX.selectValue.refresh();
-                      },
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                     Obx(()=>Padding(
+                       padding: const EdgeInsets.all(8.0),
+                       child: RadioRow(
+                         items: [
+                           "Master Spots",
+                           "Channel",
+                           "Client",
+                           "Data"
+                         ],
+                         groupValue:
+                         controllerX.selectValue.value ?? "",
+                         onchange: (String v) {
+                           print(">>>>"+v);
+                           controllerX.selectValue.value=v;
+                           controllerX.selectValue.refresh();
+                           controllerX.getRadioType(v).then((value) {
+                             controllerX.generateBtn();
+                           });
+                         },
+                       ),
+                     )) ,
+                    ],
                   ),
                   Expanded(
                     // flex: 9,
@@ -107,22 +118,29 @@ class AmagiSpotPlanningView extends GetView<AmagiSpotPlanningController> {
                       padding: const EdgeInsets.all(8.0),
                       child: Container(
                         decoration: BoxDecoration(
-                            border: Border.all(color: Colors.black)),
+                            border: Border.all(color: Colors.grey)),
                         child:  GetBuilder<AmagiSpotPlanningController>(
                             id: "grid",
                             builder: (controllerX) {
-                              return Container(
-                                decoration: BoxDecoration(
-                                    border: Border.all(color: Colors.black)),
-
-                              );
+                              return (controllerX.responseData['report'].length > 0)?
+                              Container(
+                                child: DataGridFromMap(
+                                  showSrNo: false,
+                                  hideCode: false,
+                                  formatDate: false,
+                                  mode: PlutoGridMode.selectWithOneTap,
+                                  mapData: (controllerX.responseData['report']),
+                                  // mapData: (controllerX.dataList)!,
+                                  widthRatio: Get.width / 9 - 1,
+                                ),
+                              ):Container();
                             }
                         ),
 
                       ),
                     ),
                   ),
-                  /*SizedBox(height: 5),
+                  SizedBox(height: 3),
                   GetBuilder<HomeController>(
                       id: "buttons",
                       init: Get.find<HomeController>(),
@@ -151,7 +169,7 @@ class AmagiSpotPlanningView extends GetView<AmagiSpotPlanningController> {
                           );
                         }
                         return Container(child: Text("No"),);
-                      })*/
+                      })
                   /// bottom common buttons
                 ],
               ),

@@ -22,12 +22,15 @@ abstract class Routes {
   static const WORKFLOW_DEFINITION = _Paths.WORKFLOW_DEFINITION;
   static const E_D_I_MAPPING = _Paths.E_D_I_MAPPING;
   static const COMMERCIAL_CREATION_AUTO = _Paths.COMMERCIAL_CREATION_AUTO;
-  static const COMMERCIAL_LANGUAGE_SPECIFICATION = _Paths.COMMERCIAL_LANGUAGE_SPECIFICATION;
+  static const COMMERCIAL_LANGUAGE_SPECIFICATION =
+      _Paths.COMMERCIAL_LANGUAGE_SPECIFICATION;
   static const ONE_SPOT_BOOKING_SKY_MEDIA = _Paths.ONE_SPOT_BOOKING_SKY_MEDIA;
-  static const PERIODIC_DEAL_UTILISATION_FORMAT2 = _Paths.PERIODIC_DEAL_UTILISATION_FORMAT2;
+  static const PERIODIC_DEAL_UTILISATION_FORMAT2 =
+      _Paths.PERIODIC_DEAL_UTILISATION_FORMAT2;
   static const UPDATE_EXECUTIVE = _Paths.UPDATE_EXECUTIVE;
   // static const USER_GROUPS_FOR_DEAL_WORKFLOW = _Paths.USER_GROUPS_FOR_DEAL_WORKFLOW;
-  static const USER_GROUPS_FOR_DEAL_WORKFLOW = _Paths.USER_GROUPS_FOR_DEAL_WORKFLOW;
+  static const USER_GROUPS_FOR_DEAL_WORKFLOW =
+      _Paths.USER_GROUPS_FOR_DEAL_WORKFLOW;
   static const NEW_SHORT_CONTENT_FORM = _Paths.NEW_SHORT_CONTENT_FORM;
   static const VIEW_OLD_DEAL = _Paths.VIEW_OLD_DEAL;
 
@@ -46,6 +49,7 @@ abstract class Routes {
   static const COMMERCIAL_CREATION_AUTO_DETAILS =
       _Paths.COMMERCIAL_CREATION_AUTO_DETAILS;
   static const DESIGN = _Paths.DESIGN;
+  static const COMMON_DOCS = _Paths.COMMON_DOCS;
 }
 
 abstract class RoutesList {
@@ -74,10 +78,14 @@ abstract class RoutesList {
     _Paths.PRODUCT_LEVEL2,
     _Paths.PRODUCT_LEVEL3,
     _Paths.GEO_PROGRAM_UPDATE,
-    _Paths.WORKFLOW_DEFINITION
+    _Paths.WORKFLOW_DEFINITION,
+    _Paths.VIEW_OLD_DEAL,
+    _Paths.ZONE_WISE_INVENTORY_UTILIZATION,
+    _Paths.RATE_CARDFROM_DEAL_WORKFLOW,
+    _Paths.RESCHEDULE_IMPORT,
   ];
 
- /* static final RoutesList _instance = RoutesList._();
+  /* static final RoutesList _instance = RoutesList._();
 
   factory RoutesList(){
     return _instance;
@@ -106,7 +114,8 @@ abstract class _Paths {
   static const COMMERCIAL_CREATION_AUTO = '/frmCommercialMasterAutoCreate';
   static const COMMERCIAL_LANGUAGE_SPECIFICATION = '/frmCommercialLanguageSpec';
   static const ONE_SPOT_BOOKING_SKY_MEDIA = '/frmDigiTextBooking';
-  static const PERIODIC_DEAL_UTILISATION_FORMAT2 = '/frmPeriodicDealUtilisation';
+  static const PERIODIC_DEAL_UTILISATION_FORMAT2 =
+      '/frmPeriodicDealUtilisation';
   static const UPDATE_EXECUTIVE = '/frmbreakpatternxmlgenration';
   static const USER_GROUPS_FOR_DEAL_WORKFLOW = '/frmDP_UserGroups';
   static const NEW_SHORT_CONTENT_FORM = '/frmNewForm';
@@ -126,4 +135,5 @@ abstract class _Paths {
   static const COMMERCIAL_CREATION_AUTO_DETAILS =
       '/commercial-creation-auto-details';
   static const DESIGN = '/design';
+  static const COMMON_DOCS = '/common-docs';
 }

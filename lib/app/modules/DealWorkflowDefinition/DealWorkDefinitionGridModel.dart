@@ -66,11 +66,25 @@ class Display {
     return data;
   }
 
-  Map<String, dynamic> toJson1() {
+
+  Map<String, dynamic> toJson2() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['approvalSequenceID'] = this.approvalSequenceID;
     data['sequenceName'] = this.sequenceName;
     data['formName'] = this.formName;
+    data['groupID'] = this.groupID;
+    data['groupName'] = this.groupName;
+    data['personnelNo'] = this.personnelNo;
+    data['employees'] = this.employees;
+    // data['employeeCode'] = this.personnelNo;
+    return data;
+  }
+
+  Map<String, dynamic> toJson1() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['approvalSequenceID'] = this.approvalSequenceID;
+    data['sequenceName'] = this.sequenceName;
+    data['formName'] = this.formName??"";
     data['groupID'] = (this.groupID == 0)?null:this.groupID;
     data['GroupName'] = this.groupName??"";
     data['personnelNo'] = this.personnelNo??"";

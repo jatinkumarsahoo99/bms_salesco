@@ -321,7 +321,7 @@ class WorkflowDefinitionView extends GetView<WorkflowDefinitionController> {
                                         child: FormButtonWrapper(
                                           btnText: "Clear",
                                           callback: () {
-                                            controllerX.clearNew();
+                                            controllerX.clearAll();
                                           },
                                           showIcon: false,
                                         ),
@@ -412,7 +412,7 @@ class WorkflowDefinitionView extends GetView<WorkflowDefinitionController> {
                                     },
                                     mapData: (controllerX
                                         .dealWorkDefinitionGridModel!.display
-                                        ?.map((e) => e.toJson())
+                                        ?.map((e) => e.toJson2())
                                         .toList())!,
                                     // mapData: (controllerX.dataList)!,
                                     widthRatio: Get.width / 9 - 1,

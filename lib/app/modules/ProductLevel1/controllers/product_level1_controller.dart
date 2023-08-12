@@ -145,6 +145,11 @@ class ProductLevel1Controller extends GetxController {
         strViewName: "DP_View_ApprovalTrail",
         isAppBarReq: true));
   }
+  closeDialogIfOpen() {
+    if (Get.isDialogOpen ?? false) {
+      Get.back();
+    }
+  }
   @override
   void onReady() {
     super.onReady();

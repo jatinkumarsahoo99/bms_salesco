@@ -571,6 +571,7 @@ class DataGridFromMap3 extends StatelessWidget {
           columns: segColumn,
           onRowDoubleTap: onRowDoubleTap,
           onSelected: onSelected,
+
           rows: segRows,
         ),
       ),

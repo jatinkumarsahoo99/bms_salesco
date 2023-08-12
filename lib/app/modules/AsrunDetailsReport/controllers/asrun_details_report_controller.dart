@@ -67,6 +67,11 @@ class AsrunDetailsReportController extends GetxController {
     Get.delete<AsrunDetailsReportController>();
     Get.find<HomeController>().clearPage1();
   }
+  closeDialogIfOpen() {
+    if (Get.isDialogOpen ?? false) {
+      Get.back();
+    }
+  }
 
   fetchGetGenerate(){
     List<ChannelListModel> channelListFilter=[];

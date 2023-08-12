@@ -96,6 +96,7 @@ class UpdateExecutiveController extends GetxController {
   }
 
   getClientList(){
+    LoadingDialog.call();
     Map<String,dynamic> sendData = {
       "locationcode":selectedLocation?.value?.key??"",
       "channelcode":selectedChannel?.value?.key??""
@@ -105,9 +106,10 @@ class UpdateExecutiveController extends GetxController {
         json: sendData,
         // "https://jsonkeeper.com/b/D537"
         fun: ( map) {
+          Get.back();
           clientList.clear();
           if(map is Map && map.containsKey('client') && map['client'] != null && map['client'].length >0 ){
-            List<DropDownValue> dataList = [];
+            RxList<DropDownValue> dataList = RxList([]);
             map['client'].forEach((e){
               dataList.add(DropDownValue.fromJsonDynamic(e, "clientcode", "clientname"));
             });
@@ -119,6 +121,7 @@ class UpdateExecutiveController extends GetxController {
   }
 
   getAgencyList(){
+    LoadingDialog.call();
     Map<String,dynamic> sendData = {
       "locationcode":selectedLocation?.value?.key??"",
       "channelcode":selectedChannel?.value?.key??"",
@@ -129,6 +132,7 @@ class UpdateExecutiveController extends GetxController {
         json: sendData,
         // "https://jsonkeeper.com/b/D537"
         fun: ( map) {
+          Get.back();
           agencyList.clear();
           if(map is Map && map.containsKey('agency') && map['agency'] != null && map['agency'].length >0 ){
             map['agency'].forEach((e){
@@ -221,7 +225,11 @@ class UpdateExecutiveController extends GetxController {
         });
 
 }
-
+  closeDialogIfOpen() {
+    if (Get.isDialogOpen ?? false) {
+      Get.back();
+    }
+  }
   @override
   void onInit() {
     fetchAllLoaderData();

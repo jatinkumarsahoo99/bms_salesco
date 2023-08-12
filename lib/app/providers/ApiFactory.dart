@@ -127,6 +127,13 @@ class ApiFactory {
     return "$BASE_URL_COMMON/api/CommonSearch/DeleteSearchVariance?VarianceId=$varianceId";
   }
 
+  ////////////////////// DOCS /////////////////////////////
+
+  static String COMMON_DOCS_LOAD(String docKey) => "$BASE_URL_COMMON/api/CommonDoc/loadDocument?DocumentKey=$docKey";
+  static String COMMON_DOCS_VIEW(String docId) => "$BASE_URL_COMMON/api/CommonDoc/ViewDocument?DocId=$docId";
+  static String get COMMON_DOCS_ADD => "$BASE_URL_COMMON/api/CommonDoc/AddDocument";
+  static String COMMON_DOCS_DELETE(String docId) => "$BASE_URL_COMMON/api/CommonDoc/DeleteDocument?DocumentID=$docId";
+
   /////////////////////////////////////////////////////////
   //////////////////////////// RO RECIEVED /////////////////////////////////
 
@@ -671,6 +678,40 @@ class ApiFactory {
   static String get PRODUCT_MASTER_GET_PRODUCT_LEVEL_THREE => "$BASE_URL/api/ProductMaster/GetProductLevelThree";
   static String get PRODUCT_MASTER_GET_RETRIEVE_RECORD => "$BASE_URL/api/ProductMaster/GetRetrieveRecord";
   static String get PRODUCT_MASTER_POST => "$BASE_URL/api/ProductMaster/PostSave";
+
+  ///////////////////////////////////// ViewOldDeals //////////////////////////////////////
+  static String get ViewOldDeals_LOAD => "$BASE_URL/api/ViewOldDeals/viewdeal_Load";
+  static String get ViewOldDeals_GET_CLIENT => "$BASE_URL/api/ViewOldDeals/GetClient";
+  static String get ViewOldDeals_GET_AGENCY => "$BASE_URL/api/ViewOldDeals/GetAgency";
+  static String get ViewOldDeals_GET_DEAL => "$BASE_URL/api/ViewOldDeals/GetDeal";
+  static String get ViewOldDeals_GET_DEAL_LEAVE => "$BASE_URL/api/ViewOldDeals/GetDeal_leave";
+
+  //////////////////////////////////// ZoneWiseInventory ////////////////////////////////////////////
+  static String get ZoneWiseInventory_LOAD => "$BASE_URL/api/ZoneWiseInventory/GetLocation";
+  static String get ZoneWiseInventory_GET_CHANNEL => "$BASE_URL/api/ZoneWiseInventory/GetChannel";
+  static String get ZoneWiseInventory_GENERATE => "$BASE_URL/api/ZoneWiseInventory/Generate";
+
+  /////////////////////////////////// RateCardfromDealWorkflow /////////////////////////////////
+  static String get Rate_Card_From_Deal_Workflow_LOAD => "$BASE_URL/api/DPRateCard/GetLocationLoad";
+  static String get Rate_Card_From_Deal_Workflow_GET_Channel => "$BASE_URL/api/DPRateCard/GetChannel";
+  static String get Rate_Card_From_Deal_Workflow_Export => "$BASE_URL/api/DPRateCard/Export";
+  static String get Rate_Card_From_Deal_Workflow_SAVE=> "$BASE_URL/api/DPRateCard/Save";
+
+///////////////////////////////////////////// Amagi Spot Planning //////////////////////////
+  static String get Amagi_Spot_Planning_LOAD => "$BASE_URL/api/AmagiSpotPlanning/GetLocation";
+  static String get Amagi_Spot_Planning_Get_Channel => "$BASE_URL/api/AmagiSpotPlanning/GetChannel?LocationCode=";
+  static String get Amagi_Spot_Planning_Get_Generate => "$BASE_URL/api/AmagiSpotPlanning/Generate";
+
+  ///////////////////////////////////////// Amagi Status Report /////////////////////////////////////////////
+  static String get Amagi_Status_Report_LOAD => "$BASE_URL/api/AmagiStatusReport/AmagiSTatusLoad";
+  static String get Amagi_Status_Report_Get_Channel => "$BASE_URL/api/AmagiStatusReport/GetChannel?locationcode=";
+  static String get Amagi_Status_Report_RetrieveData => "$BASE_URL/api/AmagiStatusReport/RetrieveData";
+
+  //////////////////////////////////////// Reschedule Import //////////////////////////////////////
+  static String get Reschedule_Import_LOAD => "$BASE_URL/api/RescheduleImport/GetLocation";
+  static String get Reschedule_Import_Get_Channel => "$BASE_URL/api/RescheduleImport/GetChannel?locationcode=";
+  static String get Reschedule_Import_ReImport => "$BASE_URL/api/RescheduleImport/ReImport";
+
 
 
   ///

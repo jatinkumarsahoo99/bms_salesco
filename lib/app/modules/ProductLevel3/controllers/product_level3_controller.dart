@@ -226,7 +226,11 @@ class ProductLevel3Controller extends GetxController {
     Get.delete<ProductLevel3Controller>();
     Get.find<HomeController>().clearPage1();
   }
-
+  closeDialogIfOpen() {
+    if (Get.isDialogOpen ?? false) {
+      Get.back();
+    }
+  }
   @override
   void onInit() {
     fetchAllLoaderData();
