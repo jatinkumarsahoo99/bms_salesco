@@ -82,9 +82,9 @@ class EDIMappingController extends GetxController {
           // print(">>>>>>"+ jsonEncode(map).toString());
           if(map is Map && map.containsKey("populateEntity") && map['populateEntity'] != null){
             populateEntityModel = PopulateEntityModel.fromJson(map as Map<String,dynamic>);
-            update(['grid']);
+            update(['top']);
           }else{
-            update(['grid']);
+            update(['top']);
             populateEntityModel = null;
           }
         });
