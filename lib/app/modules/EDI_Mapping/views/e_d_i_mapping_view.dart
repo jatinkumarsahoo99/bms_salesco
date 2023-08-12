@@ -172,12 +172,10 @@ class EDIMappingView extends StatelessWidget {
                                                                   controllerX.selectedIndex = index;
                                                                   controllerX.update(['grid']);
                                                                 },
-                                                                child: Expanded(
-                                                                  child: Container(
-                                                                      color:(controllerX.selectedIndex == index)? Colors.deepPurpleAccent:Colors.white,
-                                                                      child: Text(controllerX.populateEntityModel?.populateEntity?.clientMaster?[index].softClient??"",
-                                                                        style: TextStyle(color: Colors.black,fontSize: 12),)),
-                                                                )),
+                                                                child: Container(
+                                                                    color:(controllerX.selectedIndex == index)? Colors.deepPurpleAccent:Colors.white,
+                                                                    child: Text(controllerX.populateEntityModel?.populateEntity?.clientMaster?[index].softClient??"",
+                                                                      style: TextStyle(color: Colors.black,fontSize: 12),))),
                                                           );
 
                                                         }):Container()
@@ -203,12 +201,10 @@ class EDIMappingView extends StatelessWidget {
                                                                     controllerX.selectedIndex = index;
                                                                     controllerX.update(['grid']);
                                                                   },
-                                                                  child: Expanded(
-                                                                    child: Container(
-                                                                        color:(controllerX.selectedIndex == index)? Colors.deepPurpleAccent:Colors.white,
-                                                                        child: Text(controllerX.populateEntityModel?.populateEntity?.agencyMaster?[index].softAgency??"",
-                                                                          style: TextStyle(color: Colors.black,fontSize: 12),)),
-                                                                  )),
+                                                                  child: Container(
+                                                                      color:(controllerX.selectedIndex == index)? Colors.deepPurpleAccent:Colors.white,
+                                                                      child: Text(controllerX.populateEntityModel?.populateEntity?.agencyMaster?[index].softAgency??"",
+                                                                        style: TextStyle(color: Colors.black,fontSize: 12),))),
                                                             );
 
                                                           }):Container()
@@ -234,12 +230,10 @@ class EDIMappingView extends StatelessWidget {
                                                                     controllerX.selectedIndex = index;
                                                                     controllerX.update(['grid']);
                                                                   },
-                                                                  child: Expanded(
-                                                                    child: Container(
-                                                                        color:(controllerX.selectedIndex == index)? Colors.deepPurpleAccent:Colors.white,
-                                                                        child: Text(controllerX.populateEntityModel?.populateEntity?.channelMaster?[index].SoftChannel??"",
-                                                                          style: TextStyle(color: Colors.black,fontSize: 12),)),
-                                                                  )),
+                                                                  child: Container(
+                                                                      color:(controllerX.selectedIndex == index)? Colors.deepPurpleAccent:Colors.white,
+                                                                      child: Text(controllerX.populateEntityModel?.populateEntity?.channelMaster?[index].SoftChannel??"",
+                                                                        style: TextStyle(color: Colors.black,fontSize: 12),))),
                                                             );
 
                                                           }):Container()
