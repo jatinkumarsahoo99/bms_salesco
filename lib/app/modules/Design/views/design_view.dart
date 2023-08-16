@@ -35,16 +35,47 @@ class DesignView extends GetView<DesignController> {
                 decoration: BoxDecoration(
                   color: ColorData.primary,
                   borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(SizeDefine2.componentborderRadius),
+                    topRight:
+                        Radius.circular(SizeDefine2.componentborderRadius),
                     bottomLeft: Radius.circular(20),
                     bottomRight: Radius.circular(20),
                   ),
                 ),
               ),
             ),
-            Expanded(flex: 6, child: SizedBox()),
+            Expanded(
+              flex: 6,
+              child: ListView(
+                children: [
+                  SizedBox(height: 10),
+                  Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                    child: ExpansionTile(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20)
+                      ),
+                      title: Text(
+                        'Scheduling',
+                        style: GoogleFonts.poppins(
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      // backgroundColor: ColorData.bgComponent,
+                      // collapsedBackgroundColor: ColorData.bgComponent,
+                      leading: Icon(Icons.trending_up_sharp),
+                      children: [
+                        Text('data1'),
+                        Text('data1'),
+                        Text('data1'),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30,vertical: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
               child: InkWell(
                 child: Ink(
                   width: double.infinity,
@@ -57,14 +88,14 @@ class DesignView extends GetView<DesignController> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      const Icon(Icons.logout,color: Colors.white,size: 14),
+                      const Icon(Icons.logout, color: Colors.white, size: 14),
                       const SizedBox(width: 15),
                       Text(
                         'Logout',
                         style: GoogleFonts.poppins(
                           fontWeight: FontWeight.w600,
                           color: Colors.white,
-                          fontSize: SizeDefine2.componentTitle+2,
+                          fontSize: SizeDefine2.componentTitle + 1,
                         ),
                       )
                     ],
