@@ -1,3 +1,4 @@
+import 'package:bms_salesco/app/providers/ColorData.dart';
 import 'package:bms_salesco/app/providers/SizeDefine.dart';
 import 'package:flutter/material.dart';
 // import 'package:get/get.dart';
@@ -22,8 +23,8 @@ class NormalTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: (context.width * (widthRatio ?? .2)),
-      height: 48,
+     width: context.width * (widthRatio ?? .3),
+      height: SizeDefine2.componentHeight,
       child: Padding(
         padding: const EdgeInsets.only(top: 5),
         child: TextFormField(
@@ -31,39 +32,39 @@ class NormalTextField extends StatelessWidget {
           autofocus: autoFocus ?? false,
           textAlignVertical: TextAlignVertical.center,
           decoration: InputDecoration(
-            focusColor: const Color(0xFFF5F5F5),
-            hoverColor: const Color(0xFFF5F5F5),
-            fillColor: const Color(0xFFF5F5F5),
+            focusColor: ColorData.bgComponent,
+            hoverColor: ColorData.bgComponent,
+            fillColor: ColorData.bgComponent,
             filled: true,
             isDense: true,
             isCollapsed: true,
             contentPadding: const EdgeInsets.only(right: 10),
-            prefixIcon: const Icon(Icons.crisis_alert_sharp, size: 16),
-            prefixIconColor: Colors.deepPurpleAccent,
+            prefixIcon: Icon(Icons.crisis_alert_sharp, size: SizeDefine2.componentIcon),
+            prefixIconColor: ColorData.primary,
             labelText: label ?? "",
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(
+              borderRadius: BorderRadius.circular(SizeDefine2.componentborderRadius),
+              borderSide: const BorderSide(
                 color: Colors.transparent,
               ),
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(
+              borderSide: const BorderSide(
                 color: Colors.transparent,
               ),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(
-                color: Colors.deepPurpleAccent,
+              borderSide: const BorderSide(
+                color: ColorData.primary,
               ),
             ),
-            labelStyle: GoogleFonts.poppins(fontWeight: FontWeight.normal, fontSize: SizeDefine2.componentHint, color: const Color(0xFFABABAB)),
+            labelStyle: GoogleFonts.poppins(fontWeight: FontWeight.normal, fontSize: SizeDefine2.componentHint, color: ColorData.hintText),
             floatingLabelStyle: GoogleFonts.poppins(
               fontWeight: FontWeight.w600,
-              fontSize: SizeDefine2.componentHint,
-              color: Colors.deepPurpleAccent,
+              fontSize: SizeDefine2.componentHint+2,
+              color: ColorData.primary,
             ),
           ),
           style: GoogleFonts.poppins(fontWeight: FontWeight.normal, fontSize: SizeDefine2.componentTitle, color: Colors.black),

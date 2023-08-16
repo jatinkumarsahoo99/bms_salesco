@@ -1,13 +1,15 @@
 import 'package:bms_salesco/app/data/DropDownValue.dart';
+import 'package:bms_salesco/app/providers/ColorData.dart';
+import 'package:bms_salesco/app/providers/SizeDefine.dart';
 import 'package:bms_salesco/widgets/CheckBox/multi_check_box.dart';
-import 'package:bms_salesco/widgets/DataGrid/app_data_grid_widget.dart';
 import 'package:bms_salesco/widgets/DropDowns/list_drop_down.dart';
 import 'package:bms_salesco/widgets/InputFields/normal_text_field.dart';
-import 'package:bms_salesco/widgets/Switch/app_switch_widget.dart';
 import 'package:bms_salesco/widgets/TabBar/app_tap_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 
+import '../../../../widgets/DataGrid/app_data_grid_widget.dart';
 import '../../../../widgets/DropDowns/list_check_box_drop_down.dart';
 import '../../../../widgets/Radio/multi_radio_widget.dart';
 import '../controllers/design_controller.dart';
@@ -17,6 +19,62 @@ class DesignView extends GetView<DesignController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: Drawer(
+        width: MediaQuery.of(context).size.width * .25,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topRight: Radius.circular(SizeDefine2.componentborderRadius),
+            bottomRight: Radius.circular(SizeDefine2.componentborderRadius),
+          ),
+        ),
+        child: Column(
+          children: [
+            Expanded(
+              flex: 2,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: ColorData.primary,
+                  borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(SizeDefine2.componentborderRadius),
+                    bottomLeft: Radius.circular(20),
+                    bottomRight: Radius.circular(20),
+                  ),
+                ),
+              ),
+            ),
+            Expanded(flex: 6, child: SizedBox()),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 30,vertical: 10),
+              child: InkWell(
+                child: Ink(
+                  width: double.infinity,
+                  height: 38,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    color: ColorData.primary,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const Icon(Icons.logout,color: Colors.white,size: 14),
+                      const SizedBox(width: 15),
+                      Text(
+                        'Logout',
+                        style: GoogleFonts.poppins(
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
+                          fontSize: SizeDefine2.componentTitle+2,
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
       appBar: AppBar(
         backgroundColor: Colors.deepPurpleAccent,
         title: const Text('DesignView'),
@@ -47,11 +105,16 @@ class DesignView extends GetView<DesignController> {
                 ListDropDownCheckBox(
                   focusNode: FocusNode(),
                   items: [
-                    MultiCheckBoxModel(DropDownValue(key: "1", value: "Zee-Bihar-HD"), false),
-                    MultiCheckBoxModel(DropDownValue(key: "1", value: "Zee TV"), true),
-                    MultiCheckBoxModel(DropDownValue(key: "1", value: "Zing"), true),
-                    MultiCheckBoxModel(DropDownValue(key: "1", value: "Zee Marathi"), true),
-                    MultiCheckBoxModel(DropDownValue(key: "1", value: "Zee Bojpuri"), true),
+                    MultiCheckBoxModel(
+                        DropDownValue(key: "1", value: "Zee-Bihar-HD"), false),
+                    MultiCheckBoxModel(
+                        DropDownValue(key: "1", value: "Zee TV"), true),
+                    MultiCheckBoxModel(
+                        DropDownValue(key: "1", value: "Zing"), true),
+                    MultiCheckBoxModel(
+                        DropDownValue(key: "1", value: "Zee Marathi"), true),
+                    MultiCheckBoxModel(
+                        DropDownValue(key: "1", value: "Zee Bojpuri"), true),
                   ],
                   title: "Multi Channel",
                   onSelect: (DropDownValue? val) {},
@@ -63,32 +126,50 @@ class DesignView extends GetView<DesignController> {
                   widthRatio: .15,
                   label: "Tape ID",
                 ),
-                MultiAppRadio(items: ['items1', 'items2', 'items3'], groupValue: 'items1'),
+                MultiAppRadio(
+                    items: ['items1', 'items2', 'items3'],
+                    groupValue: 'items1'),
                 // AppSwitchWidget(
                 //   onn: true,
                 // ),
-                // CustomPaint(
-                //   painter: MyPainter(),
-                //   size: Size(200, 100),
-                // child: Container(
-                //   width: 200,
-                //   height: 100,
-                //   color: Colors.green,
-                // ),
-                // ),
-                // ClipPath(
-                //   child: Container(
-                //     width: 200,
-                //     height: 200,
-                //     color: Colors.red,
-                //   ),
-                //   clipper: CustomClipPath(),
-                // ),
+                InkWell(
+                  onTap: () {},
+                  borderRadius:
+                      BorderRadius.circular(SizeDefine2.componentborderRadius),
+                  child: Ink(
+                    decoration: ShapeDecoration(
+                      color: Colors.deepPurple.withOpacity(.2),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(
+                            SizeDefine2.componentborderRadius),
+                      ),
+                    ),
+                    height: 28,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(Icons.save, size: 14, color: ColorData.primary),
+                          SizedBox(width: 5),
+                          Text(
+                            'Save',
+                            style: GoogleFonts.poppins(
+                              fontSize: SizeDefine2.componentTitle,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
               ],
             ),
             SizedBox(height: 10),
             AppTabBar(
-              tabsTitle: ['First Tab', 'Second Tab'],
+              tabsTitle: ['First Tab', 'b'],
               selectedTab: "First Tab",
               onSelect: (selectedTab) {},
             ),
@@ -158,56 +239,4 @@ class DesignView extends GetView<DesignController> {
       ),
     );
   }
-}
-
-class MyPainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    Paint paint = Paint();
-    Path path = Path();
-
-    // Path number 1
-
-    paint.color = Colors.green;
-    path = Path();
-    path.lineTo(0, size.height * 0.55);
-    path.cubicTo(0, size.height * 0.39, size.width * 0.07, size.height * 0.3, size.width * 0.13, size.height * 0.38);
-    path.cubicTo(size.width * 0.13, size.height * 0.38, size.width * 0.13, size.height * 0.39, size.width * 0.13, size.height * 0.39);
-    path.cubicTo(size.width * 0.16, size.height * 0.44, size.width / 5, size.height * 0.43, size.width * 0.24, size.height * 0.37);
-    path.cubicTo(size.width * 0.24, size.height * 0.37, size.width * 0.39, size.height * 0.07, size.width * 0.39, size.height * 0.07);
-    path.cubicTo(size.width * 0.41, size.height * 0.03, size.width * 0.44, 0, size.width * 0.48, 0);
-    path.cubicTo(size.width * 0.48, 0, size.width * 0.95, 0, size.width * 0.95, 0);
-    path.cubicTo(size.width * 0.98, 0, size.width, size.height * 0.06, size.width, size.height * 0.13);
-    path.cubicTo(size.width, size.height * 0.13, size.width, size.height * 0.87, size.width, size.height * 0.87);
-    path.cubicTo(size.width, size.height * 0.94, size.width * 0.98, size.height, size.width * 0.95, size.height);
-    path.cubicTo(size.width * 0.95, size.height, size.width * 0.47, size.height, size.width * 0.47, size.height);
-    path.cubicTo(size.width * 0.44, size.height, size.width * 0.41, size.height * 0.98, size.width * 0.39, size.height * 0.95);
-    path.cubicTo(size.width * 0.39, size.height * 0.95, size.width * 0.24, size.height * 0.71, size.width * 0.24, size.height * 0.71);
-    path.cubicTo(size.width / 5, size.height * 0.66, size.width * 0.17, size.height * 0.66, size.width * 0.13, size.height * 0.7);
-    path.cubicTo(size.width * 0.13, size.height * 0.7, size.width * 0.12, size.height * 0.72, size.width * 0.12, size.height * 0.72);
-    path.cubicTo(size.width * 0.07, size.height * 0.8, 0, size.height * 0.7, 0, size.height * 0.55);
-    path.cubicTo(0, size.height * 0.55, 0, size.height * 0.55, 0, size.height * 0.55);
-    path.cubicTo(0, size.height * 0.55, 0, size.height * 0.55, 0, size.height * 0.55);
-    canvas.drawPath(path, paint);
-  }
-
-  @override
-  bool shouldRepaint(CustomPainter oldDelegate) {
-    return true;
-  }
-}
-
-class CustomClipPath extends CustomClipper<Path> {
-  var radius = 5.0;
-  @override
-  Path getClip(Size size) {
-    Path path = Path();
-    path.lineTo(size.width / 2, size.height);
-    // path.lineTo(size.width / 2, size.height);
-    path.lineTo(size.width, 0.0);
-    return path;
-  }
-
-  @override
-  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }

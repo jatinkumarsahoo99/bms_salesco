@@ -22,7 +22,9 @@ class SizeDefine {
 }
 
 class SizeDefine2 {
-  static double componentIcon = 16;
+  static double componentborderRadius = 10;
+  static double componentIcon = 14;
   static double componentHint = 10;
-  static double componentTitle = 12;
+  static double componentTitle = 11;
+  static double componentHeight = 38;
 }

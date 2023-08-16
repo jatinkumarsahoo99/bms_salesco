@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:get/utils.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../app/providers/ColorData.dart';
 import '../../app/providers/SizeDefine.dart';
 
 class ListDropDown extends StatelessWidget {
@@ -41,7 +42,7 @@ class ListDropDown extends StatelessWidget {
     DropDownValue? selectedVal = selectedValue;
     return SizedBox(
       width: context.width * (widthRatio ?? .3),
-      height: 48,
+      height: SizeDefine2.componentHeight,
       child: StatefulBuilder(
         builder: (context, setState) {
           return Stack(
@@ -49,10 +50,10 @@ class ListDropDown extends StatelessWidget {
               /// icon widget
               Positioned(
                 left: 5,
-                top: 18,
+                top: (SizeDefine2.componentHeight-9)/2,
                 child: Icon(
                   iconData ?? Icons.pin_drop,
-                  color: Colors.deepPurpleAccent,
+                  color: ColorData.primary,
                   size: SizeDefine2.componentIcon,
                 ),
               ),
@@ -61,7 +62,7 @@ class ListDropDown extends StatelessWidget {
               if (selectedVal != null) ...{
                 Positioned(
                   right: 20,
-                  top: 18,
+                  top: 14,
                   left: 35,
                   child: Text(
                     selectedVal?.value ?? title,
@@ -75,7 +76,7 @@ class ListDropDown extends StatelessWidget {
               /// floating text and hint text
               AnimatedPositioned(
                 right: (hasFocus || selectedVal != null) ? null : 20,
-                top: (hasFocus || selectedVal != null) ? 0 : 19,
+                top: (hasFocus || selectedVal != null) ? 0 : 14,
                 left: (hasFocus || selectedVal != null) ? 30 : 35,
                 duration: Duration(milliseconds: 200),
                 child: (hasFocus || selectedVal != null)
@@ -95,7 +96,7 @@ class ListDropDown extends StatelessWidget {
                             style: GoogleFonts.poppins(
                               fontWeight: FontWeight.w600,
                               fontSize: SizeDefine2.componentHint,
-                              color: Colors.deepPurpleAccent,
+                              color: ColorData.primary,
                             ),
                           ),
                         ),
@@ -105,9 +106,9 @@ class ListDropDown extends StatelessWidget {
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: GoogleFonts.poppins(
-                          fontWeight: FontWeight.normal,
+                          fontWeight: FontWeight.w400,
                           fontSize: SizeDefine2.componentHint,
-                          color: const Color(0xFFABABAB),
+                          color: ColorData.hintText,
                         ),
                       ),
               ),
@@ -115,14 +116,14 @@ class ListDropDown extends StatelessWidget {
               /// dropdown icon
               Positioned(
                 right: 0,
-                top: 16,
+                top:  (SizeDefine2.componentHeight-9)/2,
                 child: SizedBox(
-                  width: 20,
-                  height: 20,
+                  width: 15,
+                  height: 15,
                   child: DecoratedBox(
                     decoration: BoxDecoration(
-                      color: Colors.deepPurpleAccent,
-                      borderRadius: BorderRadius.circular(7),
+                      color: ColorData.primary,
+                      borderRadius: BorderRadius.circular(5),
                     ),
                     child: AnimatedRotation(
                       turns: menuOpen ? 1 : 2,
@@ -130,7 +131,7 @@ class ListDropDown extends StatelessWidget {
                       child: Icon(
                         menuOpen ? Icons.arrow_drop_up_rounded : Icons.arrow_drop_down_rounded,
                         color: Colors.white,
-                        size: 20,
+                        size: SizeDefine2.componentIcon,
                       ),
                     ),
                   ),
@@ -141,11 +142,12 @@ class ListDropDown extends StatelessWidget {
               Positioned(
                 bottom: 0,
                 right: 6,
+                left: 0,
                 child: InkWell(
                   focusNode: focusNode,
                   hoverColor: Colors.transparent,
                   focusColor: Colors.transparent,
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(SizeDefine2.componentborderRadius),
                   autofocus: autoFocus ?? false,
                   onFocusChange: (value) {
                     if (onFocusChange != null) {
@@ -303,14 +305,14 @@ class ListDropDown extends StatelessWidget {
                   },
                   child: Ink(
                     width: context.width * (widthRatio ?? .3),
-                    height: 40,
+                    height: SizeDefine2.componentHeight-8 ,
                     decoration: BoxDecoration(
                       border: Border.all(
-                        color: hasFocus ? Colors.deepPurpleAccent : Colors.transparent,
+                        color: hasFocus ? ColorData.primary : Colors.transparent,
                         width: hasFocus ? 1 : 0,
                       ),
-                      borderRadius: BorderRadius.circular(10),
-                      color: const Color(0xFFF5F5F5),
+                      borderRadius: BorderRadius.circular(SizeDefine2.componentborderRadius),
+                      color: ColorData.bgComponent,
                     ),
                   ),
                 ),

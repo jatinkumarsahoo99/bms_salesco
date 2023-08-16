@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:get/utils.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../app/providers/ColorData.dart';
 import '../../app/providers/SizeDefine.dart';
 
 class ListDropDownCheckBox extends StatelessWidget {
@@ -42,7 +43,7 @@ class ListDropDownCheckBox extends StatelessWidget {
     String? selectedVal = getSelectedName();
     return SizedBox(
       width: context.width * (widthRatio ?? .3),
-      height: 48,
+      height: SizeDefine2.componentHeight,
       child: StatefulBuilder(
         builder: (context, setState) {
           return Stack(
@@ -50,10 +51,10 @@ class ListDropDownCheckBox extends StatelessWidget {
               /// icon widget
               Positioned(
                 left: 5,
-                top: 18,
+                top: (SizeDefine2.componentHeight-9)/2,
                 child: Icon(
                   iconData ?? Icons.pin_drop,
-                  color: Colors.deepPurpleAccent,
+                  color: ColorData.primary,
                   size: SizeDefine2.componentIcon,
                 ),
               ),
@@ -62,10 +63,10 @@ class ListDropDownCheckBox extends StatelessWidget {
               if (selectedVal != null) ...{
                 Positioned(
                   right: 20,
-                  top: 18,
+                  top: 14,
                   left: 35,
                   child: Text(
-                    selectedVal!,
+                    selectedVal ?? title,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: GoogleFonts.poppins(fontWeight: FontWeight.normal, fontSize: SizeDefine2.componentTitle, color: Colors.black),
@@ -73,10 +74,11 @@ class ListDropDownCheckBox extends StatelessWidget {
                 ),
               },
 
+
               /// floating text and hint text
               AnimatedPositioned(
                 right: (hasFocus || selectedVal != null) ? null : 20,
-                top: (hasFocus || selectedVal != null) ? 0 : 19,
+                top: (hasFocus || selectedVal != null) ? 0 : 14,
                 left: (hasFocus || selectedVal != null) ? 30 : 35,
                 duration: Duration(milliseconds: 200),
                 child: (hasFocus || selectedVal != null)
@@ -96,7 +98,7 @@ class ListDropDownCheckBox extends StatelessWidget {
                             style: GoogleFonts.poppins(
                               fontWeight: FontWeight.w600,
                               fontSize: SizeDefine2.componentHint,
-                              color: Colors.deepPurpleAccent,
+                              color: ColorData.primary,
                             ),
                           ),
                         ),
@@ -105,22 +107,26 @@ class ListDropDownCheckBox extends StatelessWidget {
                         title,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style:
-                            GoogleFonts.poppins(fontWeight: FontWeight.normal, fontSize: SizeDefine2.componentHint, color: const Color(0xFFABABAB)),
+                        style: GoogleFonts.poppins(
+                          fontWeight: FontWeight.w400,
+                          fontSize: SizeDefine2.componentHint,
+                          color: ColorData.hintText,
+                        ),
                       ),
               ),
+
 
               /// dropdown icon
               Positioned(
                 right: 0,
-                top: 16,
+                top:  (SizeDefine2.componentHeight-9)/2,
                 child: SizedBox(
-                  width: 20,
-                  height: 20,
+                  width: 15,
+                  height: 15,
                   child: DecoratedBox(
                     decoration: BoxDecoration(
-                      color: Colors.deepPurpleAccent,
-                      borderRadius: BorderRadius.circular(7),
+                      color: ColorData.primary,
+                      borderRadius: BorderRadius.circular(5),
                     ),
                     child: AnimatedRotation(
                       turns: menuOpen ? 1 : 2,
@@ -128,7 +134,7 @@ class ListDropDownCheckBox extends StatelessWidget {
                       child: Icon(
                         menuOpen ? Icons.arrow_drop_up_rounded : Icons.arrow_drop_down_rounded,
                         color: Colors.white,
-                        size: 20,
+                        size: SizeDefine2.componentIcon,
                       ),
                     ),
                   ),
@@ -285,14 +291,14 @@ class ListDropDownCheckBox extends StatelessWidget {
                   },
                   child: Ink(
                     width: context.width * (widthRatio ?? .3),
-                    height: 40,
+                    height: SizeDefine2.componentHeight-8 ,
                     decoration: BoxDecoration(
                       border: Border.all(
-                        color: hasFocus ? Colors.deepPurpleAccent : Colors.transparent,
+                        color: hasFocus ? ColorData.primary : Colors.transparent,
                         width: hasFocus ? 1 : 0,
                       ),
-                      borderRadius: BorderRadius.circular(10),
-                      color: const Color(0xFFF5F5F5),
+                      borderRadius: BorderRadius.circular(SizeDefine2.componentborderRadius),
+                      color: ColorData.bgComponent,
                     ),
                   ),
                 ),

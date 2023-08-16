@@ -167,6 +167,8 @@ class _AppDataGridWidgetState extends State<AppDataGridWidget> {
           PlutoColumn(
             title: element.key,
             field: element.key,
+            minWidth: 0,
+            
             enableRowChecked: widget.singleCheckBoxColumnName != null && widget.singleCheckBoxColumnName!.contains(element.key),
             enableEditingMode: widget.editingColumnName != null && widget.editingColumnName!.contains(element.key),
             enableAutoEditing: widget.editingColumnName != null && widget.editingColumnName!.contains(element.key),
