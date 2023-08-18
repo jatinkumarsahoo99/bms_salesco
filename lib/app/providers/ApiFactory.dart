@@ -34,6 +34,8 @@ class ApiFactory {
   static String LOGOUT_API = "$BASE_URL_LOGIN/api/Login/GetLogout?PersonnelNo=";
   static String USER_INFO = "$BASE_URL_LOGIN/api/Login/GetUserinfo";
   static String PERMISSION_API = "$BASE_URL_COMMON/api/MDI/GetAllFormDetailsAndPermission?Userid=";
+  static String USER_SETTINGS = "$BASE_URL_COMMON/api/MDI/SaveUserSettingData";
+  static String FETCH_USER_SETTING = "$BASE_URL_COMMON/api/MDI/GetUserSetting";
   static String MS_PROFILE = "$BASE_URL_LOGIN/api/Login/PostUserProfile";
   static String MS_TOKEN_BACKEND = "$BASE_URL_LOGIN/api/Login/PostApiToken";
 
@@ -795,6 +797,14 @@ class ApiFactory {
       "$BASE_URL/api/MakeGoodReport/GetAgency?LocationName=$locationName&ChannelName=$channelName&Clientname=$clientName";
   static String get MAKE_GOOD_REPORT_GET_BRAND => "$BASE_URL/api/MakeGoodReport/GetBrand";
   static String get MAKE_GOOD_REPORT_GET_GENERATE => "$BASE_URL/api/MakeGoodReport/Generate";
+  ///////////////////////// MAKE-GOOD-REPORT-END//////
+  ///
+  ///
+  ///////////////////////// MAKE-GOOD-REPORT-START//////
+  static String get COMMERCIAL_LANG_SPEC_LOCATION => "$BASE_URL/api/CommercialLanguageSpec/GetLocation";
+  static String COMMERCIAL_LANG_SPEC_CHANNEL(String locName) => "$BASE_URL/api/CommercialLanguageSpec/GetLocationsLeave?LocationCode=$locName";
+  static String COMMERCIAL_LANG_SPEC_DISPLAY(String loc,String chanl) => "$BASE_URL/api/CommercialLanguageSpec/GetDisplay?LocationCode=$loc&channlecode=$chanl";
+  static String get COMMERCIAL_LANG_SPEC_SAVE => "$BASE_URL/api/CommercialLanguageSpec/PostSave";
   ///////////////////////// MAKE-GOOD-REPORT-END//////
   ///
   ///

@@ -7,6 +7,7 @@ import '../../../../widgets/FormButton.dart';
 import '../../../../widgets/LoadingScreen.dart';
 import '../../../../widgets/dropdown.dart';
 import '../../../../widgets/gridFromMap.dart';
+import '../../../../widgets/gridFromMap1.dart';
 import '../../../controller/HomeController.dart';
 import '../../../controller/MainController.dart';
 import '../../../data/PermissionModel.dart';
@@ -30,7 +31,7 @@ class CommercialLanguageSpecificationView
               init: controllerX,
               id: "updateView",
               builder: (control) {
-                if (controllerX.locationList == null) {
+                if (controllerX.locationList.value == null || ((controllerX.locationList.value.length??0)==0)) {
                   return SizedBox(
                       width: Get.width,
                       height: Get.height * 0.2,
@@ -47,8 +48,8 @@ class CommercialLanguageSpecificationView
                       Obx(() => DropDownField.formDropDown1WidthMap(
                         controllerX.locationList.value,
                             (data) {
-                          // controllerX.selectLocation = data;
-                          // controllerX.getChannel(data.key);
+                          controllerX.selectLocation = data;
+                          controllerX.getChannels(data.key??"");
                         },
                         "Location",
                         controllerX.widthSize,
@@ -60,8 +61,7 @@ class CommercialLanguageSpecificationView
                       Obx(() => DropDownField.formDropDown1WidthMap(
                         controllerX.channelList.value,
                             (data) {
-                          // controllerX.selectChannel = data;
-                          // controllerX.getChannelLeave();
+                          controllerX.selectChannel = data;
                         },
                         "Channel",
                         controllerX.widthSize,
@@ -75,7 +75,7 @@ class CommercialLanguageSpecificationView
                         child: FormButton(
                           btnText: "Display",
                           callback: () {
-                            // controllerX.btnRemove_Click();
+                            controllerX.getDisplay();
                             // controllerX.addTable();
                           },
                           showIcon: false,
@@ -87,36 +87,28 @@ class CommercialLanguageSpecificationView
               },
             ),
             // Divider(),
-            /* GetBuilder<SegmentController>(
-                init: controllerX,
-                id: "segmentDefaultLoad",
-                builder: (controller) {
-                  return Expanded(
-                      child: */ /*(controller.actualDefaults != null &&
-                              (controller.actualDefaults?.isNotEmpty)! &&
-                              controller.tableSegment != null)
-                          ? */ /*
-                          _dataTable2() */ /*: Container()*/ /*);
-                }),*/
             GetBuilder<CommercialLanguageSpecificationController>(
                 id: "listUpdate",
                 init: controllerX,
                 // init: CreateBreakPatternController(),
                 builder: (controller) {
                   print("Called this Update >>>listUpdate");
-                  if (controller.tableList != null &&
-                      ((controller.tableList.length ?? 0) > 0)) {
+                  if (controller.commercialLangModel != null &&
+                      ((controller.commercialLangModel?.display?.length ?? 0) > 0)) {
                     return Expanded(
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 10),
-                        child: DataGridFromMap(
-                          mapData: (controller.tableList
+                        child: DataGridFromMap1(
+                          mapData: (controller.commercialLangModel?.display
                               ?.map((e) => e.toJson())
                               .toList())!,
                           widthRatio: (Get.width / 9) + 5,
                           showSrNo: true,
+                          checkRow: true,
+                          hideKeys: ["isSelect"],
+                          checkRowKey: "selectLanguage",
                           onload: (PlutoGridOnLoadedEvent grid) {
-                            // controllerX.stateManager = grid.stateManager;
+                            controllerX.stateManager = grid.stateManager;
                           },
                           mode: PlutoGridMode.selectWithOneTap,
                           // actionIcon: Icons.delete_forever_rounded,
@@ -188,7 +180,7 @@ class CommercialLanguageSpecificationView
   formHandler(btn) {
     switch(btn){
       case "Save":
-        // controllerX.save();
+        controllerX.save();
         break;
       case "Clear":
         Get.find<HomeController>().clearPage1();

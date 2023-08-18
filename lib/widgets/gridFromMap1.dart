@@ -1,5 +1,7 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'package:bms_salesco/app/providers/extensions/string_extensions.dart';
+
 // import 'package:bms_programming/app/providers/extensions/string_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
@@ -14,52 +16,74 @@ import '../app/providers/Utils.dart';
 import '../app/styles/theme.dart';
 
 class DataGridFromMap1 extends StatelessWidget {
-  DataGridFromMap1(
-      {Key? key,
-      required this.mapData,
-      this.colorCallback,
-      this.showSrNo = false,
-      this.hideCode = true,
-      this.widthRatio,
-      this.showonly,
-      this.enableSort = false,
-      this.onload,
-      this.hideKeys,
-      this.mode,
-      this.actionIcon,
-      this.actionIconKey,
-      this.actionOnPress,
-      this.onSelected,
-      this.onRowDoubleTap,
-      this.formatDate = true,
-      this.dateFromat = "dd-MM-yyyy",
-      this.onFocusChange})
-      : super(key: key);
+  DataGridFromMap1({
+    Key? key,
+    required this.mapData,
+    this.colorCallback,
+    this.showSrNo = true,
+    this.hideCode = true,
+    this.widthRatio,
+    this.showonly,
+    this.enableSort = false,
+    this.onload,
+    this.hideKeys,
+    this.mode,
+    this.editKeys,
+    this.onEdit,
+    this.actionIcon,
+    this.keyMapping,
+    this.actionIconKey,
+    this.columnAutoResize = true,
+    this.actionOnPress,
+    this.onSelected,
+    this.checkRowKey = "selected",
+    this.onRowDoubleTap,
+    this.formatDate = true,
+    this.dateFromat = "dd-MM-yyyy",
+    this.onFocusChange,
+    this.checkRow,
+    this.doPasccal = true,
+    this.exportFileName,
+    this.focusNode,
+    this.previousWidgetFN,
+    this.specificWidth,
+  }) : super(key: key);
   final List mapData;
   bool enableSort;
+  final Map<String, double>? specificWidth;
   final bool? showSrNo;
   final bool? hideCode;
   final PlutoGridMode? mode;
-  final Function(bool)? onFocusChange;
   final bool? formatDate;
+  final bool? checkRow;
+  final String? checkRowKey;
+  final Map? keyMapping;
   final String? dateFromat;
+  final String? exportFileName;
   final List<String>? showonly;
   final Function(PlutoGridOnRowDoubleTapEvent)? onRowDoubleTap;
-
+  final Function(PlutoGridOnChangedEvent)? onEdit;
+  final Function(bool)? onFocusChange;
   final List? hideKeys;
   final Function(PlutoGridOnSelectedEvent)? onSelected;
   final double? widthRatio;
   final IconData? actionIcon;
   final String? actionIconKey;
+  final bool columnAutoResize;
+  final List<String>? editKeys;
   final Function? actionOnPress;
+  final bool doPasccal;
   Color Function(PlutoRowColorContext)? colorCallback;
   Function(PlutoGridOnLoadedEvent)? onload;
+  final GlobalKey rebuildKey = GlobalKey();
+  FocusNode? focusNode;
+  FocusNode? previousWidgetFN;
 
   @override
   Widget build(BuildContext context) {
-    FocusNode _focusNode = FocusNode();
-    GlobalKey _globalKey = GlobalKey();
     List<PlutoColumn> segColumn = [];
+
+    focusNode ??= FocusNode();
     List<PlutoRow> segRows = [];
     if (showSrNo!) {
       segColumn.add(PlutoColumn(
@@ -67,14 +91,14 @@ class DataGridFromMap1 extends StatelessWidget {
           enableRowChecked: false,
           readOnly: true,
           enableSorting: enableSort,
-          enableEditingMode: false,
+          enableRowDrag: false,
           enableDropToResize: true,
           enableContextMenu: false,
-          width: Utils.getColumnSize(
-            key: "no",
-          ),
+          width: 25,
           enableAutoEditing: false,
-          hide: hideCode! && key.toString().toLowerCase() != "hourcode" && key.toString().toLowerCase().contains("code"),
+          hide: hideCode! &&
+              key.toString().toLowerCase() != "hourcode" &&
+              key.toString().toLowerCase().contains("code"),
           enableColumnDrag: false,
           field: "no",
           type: PlutoColumnType.text()));
@@ -82,14 +106,22 @@ class DataGridFromMap1 extends StatelessWidget {
     if (showonly != null && showonly!.isNotEmpty) {
       for (var key in showonly!) {
         if ((mapData[0] as Map).containsKey(key)) {
-          segColumn.add(PlutoColumn(
-              title: key == "fpcCaption" ? "FPC Caption" : key.toString().pascalCaseToNormal(),
-              enableRowChecked: false,
-              readOnly: true,
-              renderer: ((rendererContext) {
-                if (actionIconKey != null) {
-                  if (key == actionIconKey) {
-                    return InkWell(
+          segColumn.add(
+            PlutoColumn(
+                title: doPasccal
+                    ? keyMapping != null
+                        ? keyMapping!.containsKey(key)
+                            ? keyMapping![key]
+                            : key == "fpcCaption"
+                                ? "FPC Caption"
+                                : key.toString().pascalCaseToNormal()
+                        : key.toString().pascalCaseToNormal()
+                    : key.toString(),
+                enableRowChecked:
+                    (checkRow == true && key == checkRowKey) ? true : false,
+                renderer: ((rendererContext) {
+                  if (actionIconKey != null && key == actionIconKey) {
+                    return GestureDetector(
                       child: Icon(
                         actionIcon,
                         size: 19,
@@ -98,64 +130,79 @@ class DataGridFromMap1 extends StatelessWidget {
                         actionOnPress!(rendererContext.rowIdx);
                       },
                     );
+                    // if () {
+                    // } else {
+                    //   return GestureDetector(
+                    //     onSecondaryTapDown: (detail) {
+                    //       DataGridMenu().showGridMenu(
+                    //           rendererContext.stateManager, detail, context);
+                    //     },
+                    //     child: Text(
+                    //       rendererContext.cell.value.toString(),
+                    //       style: TextStyle(
+                    //         fontSize: SizeDefine.columnTitleFontSize,
+                    //       ),
+                    //     ),
+                    //   );
+                    // }
                   } else {
                     return GestureDetector(
                       onSecondaryTapDown: (detail) {
-                        DataGridMenu().showGridMenu(rendererContext.stateManager, detail, context);
+                        DataGridMenu().showGridMenu(
+                            rendererContext.stateManager, detail, context,
+                            exportFileName: exportFileName);
                       },
                       child: Text(
-                        rendererContext.cell.value.toString(),
+                        (rendererContext.cell.value ?? "").toString(),
                         style: TextStyle(
                           fontSize: SizeDefine.columnTitleFontSize,
                         ),
                       ),
                     );
                   }
-                } else {
-                  return GestureDetector(
-                    onSecondaryTapDown: (detail) {
-                      DataGridMenu().showGridMenu(rendererContext.stateManager, detail, context);
-                    },
-                    child: Text(
-                      rendererContext.cell.value.toString(),
-                      style: TextStyle(
-                        fontSize: SizeDefine.columnTitleFontSize,
-                      ),
-                    ),
-                  );
-                }
-              }),
-              enableSorting: enableSort,
-              enableRowDrag: false,
-              enableEditingMode: false,
-              enableDropToResize: true,
-              enableContextMenu: false,
-              width: Utils.getColumnSize(key: key, value: mapData[0][key]),
-              enableAutoEditing: false,
-              hide: showonly == null
-                  ? (hideKeys != null && hideKeys!.contains(key)) ||
-                      hideCode! && key.toString().toLowerCase() != "hourcode" && key.toString().toLowerCase().contains("code")
-                  : !showonly!.contains(key),
-              enableColumnDrag: false,
-              field: key,
-              type: PlutoColumnType.text()));
+                }),
+                enableSorting: enableSort,
+                enableRowDrag: false,
+                enableEditingMode: editKeys != null && editKeys!.contains(key),
+                enableDropToResize: true,
+                enableContextMenu: false,
+                width: Utils.getColumnSize(
+                  key: key,
+                  value: mapData[0][key].toString(),
+                ),
+                enableAutoEditing: false,
+                hide: showonly == null
+                    ? (hideKeys != null && hideKeys!.contains(key)) ||
+                        hideCode! &&
+                            key.toString().toLowerCase() != "hourcode" &&
+                            key.toString().toLowerCase().contains("code")
+                    : !showonly!.contains(key),
+                enableColumnDrag: false,
+                field: key,
+                type: PlutoColumnType.text()),
+          );
         }
       }
     } else {
       for (var key in mapData[0].keys) {
+        // print("jsone data>>>"+jsonEncode(mapData[0]));
         segColumn.add(PlutoColumn(
-            cellPadding: EdgeInsets.zero,
-            title: key == "fpcCaption" ? "FPC Caption" : key.toString().pascalCaseToNormal(),
-            enableRowChecked: false,
-            readOnly: true,
-            // backgroundColor: Colors.red,
+            titlePadding: EdgeInsets.only(),
+            title: doPasccal
+                ? key == "fpcCaption"
+                    ? "FPC Caption"
+                    : key.toString().pascalCaseToNormal()
+                : key,
+            enableRowChecked:
+                (checkRow == true && key == checkRowKey) ? true : false,
             renderer: ((rendererContext) {
               if (actionIconKey != null) {
                 if (key == actionIconKey) {
-                  return InkWell(
+                  return GestureDetector(
                     child: Icon(
                       actionIcon,
                       size: 19,
+                      color: Theme.of(context).primaryColor,
                     ),
                     onTap: () {
                       actionOnPress!(rendererContext.rowIdx);
@@ -164,7 +211,9 @@ class DataGridFromMap1 extends StatelessWidget {
                 } else {
                   return GestureDetector(
                     onSecondaryTapDown: (detail) {
-                      DataGridMenu().showGridMenu(rendererContext.stateManager, detail, context);
+                      DataGridMenu().showGridMenu(
+                          rendererContext.stateManager, detail, context,
+                          exportFileName: exportFileName);
                     },
                     child: Text(
                       rendererContext.cell.value.toString(),
@@ -174,26 +223,31 @@ class DataGridFromMap1 extends StatelessWidget {
                     ),
                   );
                 }
-              } else {
-                // print("Data is>>>"+(rendererContext.row.cells["color"]?.value.toString()??""));
-                return Container(
-                  height: 25,
-                  padding: EdgeInsets.only(
-                    left: 6,
+              } else if (checkRow == key) {
+                return GestureDetector(
+                  onSecondaryTapDown: (detail) {
+                    DataGridMenu().showGridMenu(
+                        rendererContext.stateManager, detail, context,
+                        exportFileName: exportFileName);
+                  },
+                  child: Text(
+                    "",
+                    style: TextStyle(
+                      fontSize: SizeDefine.columnTitleFontSize,
+                    ),
                   ),
-                  alignment: Alignment.centerLeft,
-                  color:
-                      (key == "epsNo" || key == "tapeid" || key == "status") ? ColorData.cellColor(rendererContext.row.cells[key]?.value, key) : null,
-                  child: GestureDetector(
-                    onSecondaryTapDown: (detail) {
-                      DataGridMenu().showGridMenu(rendererContext.stateManager, detail, context);
-                    },
-                    child: Text(
-                      rendererContext.cell.value.toString(),
-                      style: TextStyle(
-                          fontSize: SizeDefine.columnTitleFontSize,
-                          fontWeight:
-                              rendererContext.row.cells["modifed"]?.value.toString().toLowerCase() == "y" ? FontWeight.bold : FontWeight.normal),
+                );
+              } else {
+                return GestureDetector(
+                  onSecondaryTapDown: (detail) {
+                    DataGridMenu().showGridMenu(
+                        rendererContext.stateManager, detail, context,
+                        exportFileName: exportFileName);
+                  },
+                  child: Text(
+                    rendererContext.cell.value.toString(),
+                    style: TextStyle(
+                      fontSize: SizeDefine.columnTitleFontSize,
                     ),
                   ),
                 );
@@ -201,14 +255,16 @@ class DataGridFromMap1 extends StatelessWidget {
             }),
             enableSorting: enableSort,
             enableRowDrag: false,
-            enableEditingMode: false,
+            enableEditingMode: editKeys != null && editKeys!.contains(key),
             enableDropToResize: true,
             enableContextMenu: false,
             width: Utils.getColumnSize(key: key, value: mapData[0][key]),
             enableAutoEditing: false,
             hide: showonly == null
                 ? (hideKeys != null && hideKeys!.contains(key)) ||
-                    hideCode! && key.toString().toLowerCase() != "hourcode" && key.toString().toLowerCase().contains("code")
+                    hideCode! &&
+                        key.toString().toLowerCase() != "hourcode" &&
+                        key.toString().toLowerCase().contains("code")
                 : !showonly!.contains(key),
             enableColumnDrag: false,
             field: key,
@@ -228,27 +284,50 @@ class DataGridFromMap1 extends StatelessWidget {
           cells[element.key] = PlutoCell(
             value: element.key == "selected" || element.value == null
                 ? ""
-                : element.key.toString().toLowerCase().contains("date") && formatDate!
-                    ? DateFormat(dateFromat).format(DateTime.parse(element.value.toString().replaceAll("T", " ")))
+                : element.key.toString().toLowerCase().contains("date") &&
+                        formatDate!
+                    ? DateFormat(dateFromat).format(DateTime.parse(
+                        element.value.toString().replaceAll("T", " ")))
                     : element.value.toString(),
           );
         }
-        segRows.add(PlutoRow(cells: cells, sortIdx: i));
+        cells["selectLanguage"] = PlutoCell(value: "");
+        segRows.add(PlutoRow(
+          cells: cells,
+          sortIdx: i,
+          checked: cells["isSelect"]?.value=="true"?true:false
+        ));
       } catch (e) {
-        log("problem in adding rows");
+        print("problem in adding rows");
       }
     }
+
     return Scaffold(
-      key: _globalKey,
+      key: rebuildKey,
       body: Focus(
-        autofocus: false,
-        focusNode: _focusNode,
         onFocusChange: onFocusChange,
+        focusNode: focusNode,
+        autofocus: false,
         child: PlutoGrid(
+            onChanged: onEdit,
             mode: mode ?? PlutoGridMode.normal,
-            configuration: plutoGridConfiguration(focusNode: _focusNode),
+            configuration: plutoGridConfiguration(
+              focusNode: focusNode!,
+              autoScale: columnAutoResize,
+              actionOnPress: actionOnPress,
+              actionKey: actionIconKey,
+              previousWidgetFN: previousWidgetFN,
+            ),
             rowColorCallback: colorCallback,
-            onLoaded: onload,
+            onLoaded: (load) {
+              load.stateManager.setColumnSizeConfig(PlutoGridColumnSizeConfig(
+                  autoSizeMode: PlutoAutoSizeMode.none,
+                  resizeMode: PlutoResizeMode.normal));
+              load.stateManager.setKeepFocus(false);
+              if (onload != null) {
+                onload!(load);
+              }
+            },
             columns: segColumn,
             onRowDoubleTap: onRowDoubleTap,
             onSelected: onSelected,

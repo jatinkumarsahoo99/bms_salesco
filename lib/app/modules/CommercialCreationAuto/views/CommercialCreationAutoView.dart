@@ -47,6 +47,16 @@ class CommercialCreationAutoView
                         0.3,
                         searchReq: true,
                       )),
+                  /*  FormButton1(
+                    btnText: "User setting test post",
+                    callback: () {
+                      controllerX.postUserSetting();
+                    },
+                  ),
+                  FormButton1(
+                    btnText: "User setting test get",
+                    callback: () {},
+                  ),*/
                 ],
               ),
             ),
@@ -76,6 +86,8 @@ class CommercialCreationAutoView
                           onload: (PlutoGridOnLoadedEvent grid) {
                             controllerX.stateManager = grid.stateManager;
                           },
+                          widthSpecificColumn: controllerX.userGridSetting
+                              as Map<String, double>,
                           hideKeys: ["acid"],
                           mode: PlutoGridMode.selectWithOneTap,
                           // actionIcon: Icons.delete_forever_rounded,
@@ -167,6 +179,10 @@ class CommercialCreationAutoView
       case "Clear":
         Get.find<HomeController>().clearPage1();
         Get.delete<CommercialCreationAutoController>();
+        break;
+      case "Exit":
+        print("Exit called");
+        controllerX.postUserSetting();
         break;
     }
   }

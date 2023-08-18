@@ -9,4 +9,10 @@ extension StringExtension on String {
         .toList()
         .join(" ");
   }
+
+  String normalCaseToPascalCase(String input) {
+    return input.replaceAllMapped(RegExp(r'(\w)(\w*)'),
+            (match) => '${match.group(1)?.toUpperCase()}${match.group(2)?.toLowerCase()}');
+  }
+
 }
