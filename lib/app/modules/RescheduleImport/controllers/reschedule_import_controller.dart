@@ -35,7 +35,7 @@ class RescheduleImportController extends GetxController {
   @override
   void onInit() {
     formPermissions = Utils.fetchPermissions1(
-        Routes.RATE_CARDFROM_DEAL_WORKFLOW.replaceAll("/", ""));
+        Routes.RESCHEDULE_IMPORT.replaceAll("/", ""));
     super.onInit();
   }
   
@@ -82,6 +82,7 @@ class RescheduleImportController extends GetxController {
               channelList.add(DropDownValue.fromJsonDynamic(
                   e, "channelCode", "channelName"));
             });
+
           }
         },
         failed: (resp) {
@@ -111,6 +112,7 @@ class RescheduleImportController extends GetxController {
               locationList.add(new DropDownValue.fromJsonDynamic(
                   e, "locationCode", "locationName"));
             });
+            selectedLocation = locationList[0];
           }
         },
         failed: (resp) {

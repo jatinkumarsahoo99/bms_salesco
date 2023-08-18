@@ -58,6 +58,7 @@ class OneSpotBookingSkyMediaView extends StatelessWidget {
                                 isEnable: controllerX.isEnable,
                                 selected: controllerX.selectedLocation?.value,
                                 dialogHeight: Get.height * .35,
+                                inkWellFocusNode: controllerX.locationNode,
                                 autoFocus: true,),),
                               SizedBox(
                                 width: MediaQuery.of(context).size.width*0.3,
@@ -70,6 +71,7 @@ class OneSpotBookingSkyMediaView extends StatelessWidget {
                                     "Channel",
                                     .3,
                                     dialogHeight: Get.height * .35,
+                                    inkWellFocusNode: controllerX.channelNode,
                                      autoFocus: false,
                                     selected: controllerX.selectedChannel?.value,
                                   );
@@ -180,6 +182,7 @@ class OneSpotBookingSkyMediaView extends StatelessWidget {
                           // autoFocus: true,
                           // focusNode: controllerX.brandName,
                           isEnable: controllerX.isEnable,
+                          focusNode: controllerX.bookingRegNode,
                           onchanged: (value) {
 
                           },
@@ -192,6 +195,7 @@ class OneSpotBookingSkyMediaView extends StatelessWidget {
                           // autoFocus: true,
                           // focusNode: controllerX.brandName,
                           isEnable: controllerX.isEnable,
+                          focusNode: controllerX.amountNode,
                           onchanged: (value) {
 
                           },

@@ -15,7 +15,12 @@ class OneSpotBookingSkyMediaController extends GetxController {
   bool isEnable = true;
   final count = 0.obs;
   var clientDetails = RxList<DropDownValue>();
-  Rx<bool> inactiveGroup = Rx<bool>(false);
+  Rx<bool> inactiveGroup = Rx<bool>(true);
+
+  FocusNode locationNode = FocusNode();
+  FocusNode channelNode = FocusNode();
+  FocusNode bookingRegNode = FocusNode();
+  FocusNode amountNode = FocusNode();
 
   RxList<DropDownValue> locationList = RxList([]);
   RxList<DropDownValue> channelList = RxList([]);
@@ -99,6 +104,8 @@ class OneSpotBookingSkyMediaController extends GetxController {
             if(map['onLeaveChannel'].containsKey('lstclientmaster') &&
                 map['onLeaveChannel']['lstclientmaster'] != null &&
                 map['onLeaveChannel']['lstclientmaster'].length >0  ){
+              inactiveGroup.value = false;
+              inactiveGroup.refresh();
                 // clientList.add(new DropDownValue.fromJsonDynamic(e,"clientcode","clientname") );
                 selectedClient?.value = DropDownValue(
                     value:map['onLeaveChannel']['lstclientmaster'][0]['clientname'],
@@ -110,7 +117,6 @@ class OneSpotBookingSkyMediaController extends GetxController {
                 // agencyList.add(new DropDownValue.fromJsonDynamic(e,"clientcode","clientname") );
                 selectedAgency?.value  = DropDownValue(key:map['onLeaveChannel']['lstagencymaster'][0]['agencycode'] ,
                     value:map['onLeaveChannel']['lstagencymaster'][0]['agencyname']);
-
             }
             if(map['onLeaveChannel'].containsKey('lstbrandmaster') &&
                 map['onLeaveChannel']['lstbrandmaster'] != null &&
