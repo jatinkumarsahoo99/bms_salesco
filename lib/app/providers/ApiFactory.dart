@@ -34,6 +34,8 @@ class ApiFactory {
   static String LOGOUT_API = "$BASE_URL_LOGIN/api/Login/GetLogout?PersonnelNo=";
   static String USER_INFO = "$BASE_URL_LOGIN/api/Login/GetUserinfo";
   static String PERMISSION_API = "$BASE_URL_COMMON/api/MDI/GetAllFormDetailsAndPermission?Userid=";
+  static String USER_SETTINGS = "$BASE_URL_COMMON/api/MDI/SaveUserSettingData";
+  static String FETCH_USER_SETTING = "$BASE_URL_COMMON/api/MDI/GetUserSetting";
   static String MS_PROFILE = "$BASE_URL_LOGIN/api/Login/PostUserProfile";
   static String MS_TOKEN_BACKEND = "$BASE_URL_LOGIN/api/Login/PostApiToken";
 
