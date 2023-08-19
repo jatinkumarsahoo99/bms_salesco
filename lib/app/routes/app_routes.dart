@@ -125,7 +125,7 @@ abstract class _Paths {
   static const ZONE_WISE_INVENTORY_UTILIZATION = '/frmZoneWiseInventory';
   static const RESCHEDULE_IMPORT = '/frmRescheduleImport';
   static const AMAGI_SPOT_PLANNING = '/frmAma_Planning';
-  static const AMAGI_SPOTS_REPLACEMENT = '/amagi-spots-replacement';
+  static const AMAGI_SPOTS_REPLACEMENT = '/frmSPReports';
   static const AMAGI_STATUS_REPORT = '/frmAmagiSTatus';
   static const INTERNATIONAL_SALES_REPORT = '/Rocanelationotherrevune';
   static const PRODUCT_LEVEL1 = '/frmProductLevel1';

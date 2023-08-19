@@ -78,7 +78,7 @@ class WorkflowDefinitionView extends GetView<WorkflowDefinitionController> {
                                     ),
                                   ),
                                   SizedBox(
-                                    height: 4,
+                                    height: 2,
                                   ),
                                   Obx(
                                     () => DropDownField.formDropDown1WidthMap(
@@ -96,7 +96,7 @@ class WorkflowDefinitionView extends GetView<WorkflowDefinitionController> {
                                     ),
                                   ),
                                   SizedBox(
-                                    height: 4,
+                                    height: 2,
                                   ),
                                   Obx(
                                     () => DropDownField.formDropDown1WidthMap(
@@ -125,7 +125,7 @@ class WorkflowDefinitionView extends GetView<WorkflowDefinitionController> {
                                     ),
                                   ),
                                   SizedBox(
-                                    height: 4,
+                                    height: 2,
                                   ),
                                   Obx(
                                     () => DropDownField.formDropDown1WidthMap(
@@ -143,7 +143,7 @@ class WorkflowDefinitionView extends GetView<WorkflowDefinitionController> {
                                     ),
                                   ),
                                   SizedBox(
-                                    height: 4,
+                                    height: 2,
                                   ),
                                   Obx(
                                     () => DropDownField.formDropDown1WidthMap(
@@ -161,7 +161,7 @@ class WorkflowDefinitionView extends GetView<WorkflowDefinitionController> {
                                     ),
                                   ),
                                   SizedBox(
-                                    height: 4,
+                                    height: 2,
                                   ),
                                   Obx(
                                     () => DropDownField.formDropDown1WidthMap(
@@ -183,9 +183,6 @@ class WorkflowDefinitionView extends GetView<WorkflowDefinitionController> {
                                       dialogHeight: Get.height * .35,
                                       autoFocus: true,
                                     ),
-                                  ),
-                                  SizedBox(
-                                    height: 4,
                                   ),
                                   Obx(() => RadioRow(
                                         items: ["Employee", "User Group"],
@@ -209,9 +206,6 @@ class WorkflowDefinitionView extends GetView<WorkflowDefinitionController> {
                                           }
                                         },
                                       )),
-                                  SizedBox(
-                                    height: 4,
-                                  ),
                                  Obx(()=>DropDownField.formDropDownSearchAPI2(
                                      GlobalKey(),
                                      context,
@@ -234,7 +228,7 @@ class WorkflowDefinitionView extends GetView<WorkflowDefinitionController> {
                                    // maxLength: 1
                                  ),) ,
                                   SizedBox(
-                                    height: 4,
+                                    height: 2,
                                   ),
                                  Obx(()=>DropDownField.formDropDownSearchAPI2(
                                      GlobalKey(),
@@ -258,7 +252,7 @@ class WorkflowDefinitionView extends GetView<WorkflowDefinitionController> {
                                    // maxLength: 1
                                  ),) ,
                                   SizedBox(
-                                    height: 4,
+                                    height: 2,
                                   ),
                                   InputFields.formField1(
                                     hintTxt: "Step Name",
@@ -283,26 +277,26 @@ class WorkflowDefinitionView extends GetView<WorkflowDefinitionController> {
                                     onchanged: (value) {},
                                     autoFocus: true,
                                   ),
-                                  SizedBox(
-                                    height: 4,
-                                  ),
                                   Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Obx(() => RadioRow(
-                                            items: ["Before", "After"],
-                                            groupValue: controllerX
-                                                    .selectRadio2.value ??
-                                                "",
-                                            onchange: (String v) {
-                                              print(">>>>" + v);
-                                              controllerX.selectRadio2.value =
-                                                  v;
-                                              controllerX.selectRadio2
-                                                  .refresh();
-                                            },
-                                          )),
+                                      Obx(() => Padding(
+                                        padding: const EdgeInsets.only(top: 8.0,left: 0),
+                                        child: RadioRow(
+                                              items: ["Before", "After"],
+                                              groupValue: controllerX
+                                                      .selectRadio2.value ??
+                                                  "",
+                                              onchange: (String v) {
+                                                print(">>>>" + v);
+                                                controllerX.selectRadio2.value =
+                                                    v;
+                                                controllerX.selectRadio2
+                                                    .refresh();
+                                              },
+                                            ),
+                                      )),
                                       Padding(
                                         padding: const EdgeInsets.only(
                                             top: 14.0, left: 10, right: 10),
@@ -312,7 +306,7 @@ class WorkflowDefinitionView extends GetView<WorkflowDefinitionController> {
 
                                             controllerX.btnAddClick();
                                           },
-                                          showIcon: false,
+                                          showIcon: true,
                                         ),
                                       ),
                                       Padding(
@@ -323,7 +317,7 @@ class WorkflowDefinitionView extends GetView<WorkflowDefinitionController> {
                                           callback: () {
                                             controllerX.clearAll();
                                           },
-                                          showIcon: false,
+                                          showIcon: true,
                                         ),
                                       ),
                                       Padding(
@@ -335,7 +329,7 @@ class WorkflowDefinitionView extends GetView<WorkflowDefinitionController> {
                                             showCopyTo(context);
                                             // controllerX.callGetRetrieve();
                                           },
-                                          showIcon: false,
+                                          showIcon: true,
                                         ),
                                       ),
                                     ],

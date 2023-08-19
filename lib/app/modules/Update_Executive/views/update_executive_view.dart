@@ -6,6 +6,7 @@ import '../../../../widgets/DateTime/DateWithThreeTextField.dart';
 import '../../../../widgets/FormButton.dart';
 import '../../../../widgets/dropdown.dart';
 import '../../../../widgets/input_fields.dart';
+import '../../../providers/SizeDefine.dart';
 import '../controllers/update_executive_controller.dart';
 
 class UpdateExecutiveView extends GetView<UpdateExecutiveController> {
@@ -20,7 +21,7 @@ class UpdateExecutiveView extends GetView<UpdateExecutiveController> {
     return Scaffold(
       body: Center(
         child: SizedBox(
-          width: size.width * .55,
+          width: size.width * .65,
           child: Dialog(
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -30,9 +31,8 @@ class UpdateExecutiveView extends GetView<UpdateExecutiveController> {
                   centerTitle: true,
                   backgroundColor: Colors.deepPurple,
                 ),
-                SizedBox(height: 5),
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.only(left: 8.0,bottom: 0,top: 3,right: 8),
                   child: FocusTraversalGroup(
                     policy: OrderedTraversalPolicy(),
                     child: Column(
@@ -128,71 +128,61 @@ class UpdateExecutiveView extends GetView<UpdateExecutiveController> {
                           selected: controllerX.selectedZone?.value,
                           dialogHeight: Get.height * .35,
                           autoFocus: false,),),
+                        Obx(()=>DropDownField.formDropDown1WidthMap(
+                          controllerX.agencyList.value??[],
+                              (value) {
+                            controllerX.selectedAgency?.value = value;
+                          }, "Agency",
+                          0.46,
+                          isEnable: controllerX.isEnable,
+                          inkWellFocusNode: controllerX.agencyNode,
+                          selected: controllerX.selectedAgency?.value,
+                          dialogHeight: Get.height * .35,
+                          autoFocus: false,),),
                         SizedBox(
-                          width:MediaQuery.of(context).size.width*0.46,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              DateWithThreeTextField(
-                                title: "Date",
-                                mainTextController:controllerX.date1Controller,
-                                widthRation: .1,
-                                isEnable: controllerX.isEnable,
-                              ),
-                              SizedBox(
-                                width: MediaQuery.of(context).size.width*0.3,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    DateWithThreeTextField(
-                                      title: "Date",
-                                      mainTextController: controllerX.date2Controller,
-                                      widthRation: .1,
-                                      isEnable: controllerX.isEnable,
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          top: 14.0, left: 10, right: 10),
-                                      child: SizedBox(
-                                        width: MediaQuery.of(context).size.width*0.1,
-                                        child: FormButtonWrapper(
-                                          btnText: "Show T.O",
-                                          callback: () {
-                                            controllerX.getVerify();
-                                          },
-                                          showIcon: false,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
+                          height: 1,
+                        ),
+                        Obx(()=>DropDownField.formDropDown1WidthMap(
+                          controllerX.agencyList.value??[],
+                              (value) {
+                            controllerX.selectedAgency?.value = value;
+                          }, "Agency",
+                          0.46,
+                          isEnable: controllerX.isEnable,
+                          inkWellFocusNode: controllerX.agencyNode,
+                          selected: controllerX.selectedAgency?.value,
+                          dialogHeight: Get.height * .35,
+                          autoFocus: false,),),
+                        SizedBox(
+                          width: size.width*0.46,
+                          child: Align(
+                            alignment: Alignment.topLeft,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                 Obx(()=>Checkbox(
+                                     value: controllerX.selectAll.value,
+                                     visualDensity:VisualDensity(horizontal: -4) ,
+                                    onChanged: (val){
+                                      controllerX.selectAll.value = val!;
+                                      controllerX.selectAllList();
 
-                            ],
+                                    })),
+                                SizedBox(
+                                  width: 3,
+                                ),
+                                Container(
+                                  child: Text("Select All", style: TextStyle(
+                                    fontSize: SizeDefine.labelSize1,
+                                    fontWeight: FontWeight.w500,
+                                  ),),
+                                )
+                              ],
+                            ),
                           ),
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            SizedBox(
-                              width: 10,
-                            ),
-                             Obx(()=>Checkbox(value: controllerX.selectAll.value,
-                                onChanged: (val){
-                                  controllerX.selectAll.value = val!;
-                                  controllerX.selectAllList();
-
-                                })),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Container(
-                              child: Text("Select All"),
-                            )
-                          ],
-                        ),
                         Padding(
-                          padding: const EdgeInsets.all(8.0),
+                          padding: const EdgeInsets.only(right: 8.0,left: 8,top: 2,bottom: 0),
                           child: Container(
                             decoration: BoxDecoration(
                                 border: Border.all(color: Colors.grey)),
@@ -257,8 +247,6 @@ class UpdateExecutiveView extends GetView<UpdateExecutiveController> {
 
                           ),
                         ),
-
-
                         Obx(()=>DropDownField.formDropDown1WidthMap(
                           controllerX.correctExecutiveNameList.value??[],
                               (value) {
@@ -274,11 +262,9 @@ class UpdateExecutiveView extends GetView<UpdateExecutiveController> {
                     ),
                   ),
                 ),
-                SizedBox(height: 20),
-
+                SizedBox(height: 8),
                 /// bottom common buttons
                 SizedBox(
-                  height: 40,
                   child: Wrap(
                     spacing: 5,
                     runSpacing: 15,
@@ -293,7 +279,7 @@ class UpdateExecutiveView extends GetView<UpdateExecutiveController> {
                     ],
                   ),
                 ),
-                SizedBox(height: 20),
+                SizedBox(height: 5),
               ],
             ),
           ),

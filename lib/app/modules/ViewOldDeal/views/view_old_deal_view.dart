@@ -22,12 +22,13 @@ class ViewOldDealView extends GetView<ViewOldDealController> {
       body: GetBuilder<ViewOldDealController>(
         id: "ref",
         builder: (controllerX) {
-          return Column(
-            children: [
-              Card(
-                child: Container(
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: [
+                Container(
                   width: Get.width,
-                  padding: const EdgeInsets.all(4.0),
+                  padding: const EdgeInsets.all(0.0),
                   child: Wrap(
                     crossAxisAlignment: WrapCrossAlignment.end,
                     runSpacing: 5,
@@ -121,10 +122,10 @@ class ViewOldDealView extends GetView<ViewOldDealController> {
                     ],
                   ),
                 ),
-              ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                SizedBox(
+                  height: 5,
+                ),
+                Expanded(
                   child: Container(
                     decoration: BoxDecoration(border: Border.all(color: Colors.grey)),
                     child: (controllerX.viewOldDealResponseModel?.deal?.lstdealusage != null
@@ -143,50 +144,48 @@ class ViewOldDealView extends GetView<ViewOldDealController> {
                     ):Container(),
                   ),
                 ),
-              ),
-              Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Row(
-                        children: [
-                          InputFields.formField1(
-                            hintTxt: "Deal Amount",
-                            width: .155,
-                            controller: controllerX.dealAmountController
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          InputFields.formField1(
-                            hintTxt: "Total Deal Duration",
-                            width: .155,
-                            controller: controllerX.totalDealDurationController
-                          ),
-                        ],
-                      ),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          FormButtonWrapper(btnText: "Clear",callback: (){
-                            print("clear");
-                            Get.delete<ViewOldDealController>();
-                            Get.find<HomeController>().clearPage1();
-                          }),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          FormButtonWrapper(btnText: "Exit"),
-                        ],
-                      ),
-                    ],
-                  ),
+                SizedBox(
+                  height: 5,
                 ),
-              )
-            ],
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Row(
+                      children: [
+                        InputFields.formField1(
+                          hintTxt: "Deal Amount",
+                          width: .155,
+                          controller: controllerX.dealAmountController
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        InputFields.formField1(
+                          hintTxt: "Total Deal Duration",
+                          width: .155,
+                          controller: controllerX.totalDealDurationController
+                        ),
+                      ],
+                    ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        FormButtonWrapper(btnText: "Clear",callback: (){
+                          print("clear");
+                          Get.delete<ViewOldDealController>();
+                          Get.find<HomeController>().clearPage1();
+                        }),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        FormButtonWrapper(btnText: "Exit"),
+                      ],
+                    ),
+                  ],
+                )
+              ],
+            ),
           );
         }
       ),

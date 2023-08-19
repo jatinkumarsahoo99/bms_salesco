@@ -42,7 +42,7 @@ class DealRecoSummaryView extends GetView<DealRecoSummaryController> {
                   height: 5,
                 ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(left: 8.0),
@@ -150,6 +150,9 @@ class DealRecoSummaryView extends GetView<DealRecoSummaryController> {
                           ],
                         ),
                       ),
+                    ),
+                    SizedBox(
+                      width: size.width*0.07,
                     ),
                     Padding(
                       padding: const EdgeInsets.only(right: 8.0),
