@@ -26,7 +26,7 @@ class OneSpotBookingSkyMediaView extends StatelessWidget {
     return Scaffold(
       body: Center(
         child: SizedBox(
-          width: size.width * .55,
+          width: size.width * .62,
           child: Dialog(
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -36,7 +36,7 @@ class OneSpotBookingSkyMediaView extends StatelessWidget {
                   centerTitle: true,
                   backgroundColor: Colors.deepPurple,
                 ),
-                SizedBox(height: 20),
+                SizedBox(height: 8),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: FocusTraversalGroup(
@@ -205,7 +205,7 @@ class OneSpotBookingSkyMediaView extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(height: 20),
+                SizedBox(height: 8),
 
                 /// bottom common buttons
                 GetBuilder<HomeController>(
@@ -217,9 +217,10 @@ class OneSpotBookingSkyMediaView extends StatelessWidget {
                           .lastWhere((element) =>
                       element.appFormName == "frmDigiTextBooking");
                       if (controller.buttons != null) {
-                        return ButtonBar(
-                          alignment: MainAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.min,
+                        return Wrap(
+                          spacing: 5,
+                          runSpacing: 15,
+                          alignment: WrapAlignment.center,
                           children: [
                             for (var btn in controller.buttons!)
                               if(btn["name"] != "Docs" && btn["name"] != "Delete"
@@ -239,7 +240,7 @@ class OneSpotBookingSkyMediaView extends StatelessWidget {
                       }
                       return Container();
                     }),
-                SizedBox(height: 20),
+                SizedBox(height: 8),
               ],
             ),
           ),

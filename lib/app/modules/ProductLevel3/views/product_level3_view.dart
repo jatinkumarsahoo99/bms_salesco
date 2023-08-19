@@ -23,83 +23,81 @@ class ProductLevel3View extends GetView<ProductLevel3Controller> {
     return Scaffold(
       body: Center(
         child: SizedBox(
-          width: size.width * 0.54,
+          width: size.width * 0.64,
           child: Dialog(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  AppBar(
-                    title: Text('Product Type Master'),
-                    centerTitle: true,
-                    backgroundColor: Colors.deepPurple,
-                  ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey)),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Obx(()=>DropDownField.formDropDown1WidthMap(
-                            controllerX.typeList.value??[],
-                                (value) {
-                              controllerX.selectedType?.value = value;
-                              controllerX.fetchProductLevel1(value.key??"");
-                            }, "Type", .41,
-                            isEnable: controllerX.isEnable.value,
-                            selected: controllerX.selectedType?.value,
-                            inkWellFocusNode: controllerX.typeNode,
-                            dialogHeight: Get.height * .3,
-                            autoFocus: true,),),
-                          Obx(()=>DropDownField.formDropDown1WidthMap(
-                            controllerX.level1List.value??[],
-                                (value) {
-                              controllerX.selectedLevel1?.value = value;
-                              controllerX.fetchProductLevel2(int.parse((value.key??"0").toString()));
-                            }, "Level 1", .41,
-                            isEnable: controllerX.isEnable.value,
-                            selected: controllerX.selectedLevel1?.value,
-                            inkWellFocusNode: controllerX.level1Node,
-                            dialogHeight: Get.height * .3,
-                            autoFocus: true,),),
-                          Obx(()=>DropDownField.formDropDown1WidthMap(
-                            controllerX.level2List.value??[],
-                                (value) {
-                              controllerX.selectedLevel2?.value = value;
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                AppBar(
+                  title: Text('Product Type Master'),
+                  centerTitle: true,
+                  backgroundColor: Colors.deepPurple,
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+                Container(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Obx(()=>DropDownField.formDropDown1WidthMap(
+                          controllerX.typeList.value??[],
+                              (value) {
+                            controllerX.selectedType?.value = value;
+                            controllerX.fetchProductLevel1(value.key??"");
+                          }, "Type", .5,
+                          isEnable: controllerX.isEnable.value,
+                          selected: controllerX.selectedType?.value,
+                          inkWellFocusNode: controllerX.typeNode,
+                          dialogHeight: Get.height * .3,
+                          autoFocus: true,),),
+                        Obx(()=>DropDownField.formDropDown1WidthMap(
+                          controllerX.level1List.value??[],
+                              (value) {
+                            controllerX.selectedLevel1?.value = value;
+                            controllerX.fetchProductLevel2(int.parse((value.key??"0").toString()));
+                          }, "Level 1", .5,
+                          isEnable: controllerX.isEnable.value,
+                          selected: controllerX.selectedLevel1?.value,
+                          inkWellFocusNode: controllerX.level1Node,
+                          dialogHeight: Get.height * .3,
+                          autoFocus: true,),),
+                        Obx(()=>DropDownField.formDropDown1WidthMap(
+                          controllerX.level2List.value??[],
+                              (value) {
+                            controllerX.selectedLevel2?.value = value;
 
-                            }, "Level 2", .41,
-                            isEnable: controllerX.isEnable.value,
-                            selected: controllerX.selectedLevel2?.value,
-                            inkWellFocusNode: controllerX.level2Node,
-                            dialogHeight: Get.height * .3,
-                            autoFocus: true,),),
-                          InputFields.formField1(
-                            hintTxt: "Level 3",
-                            controller: controllerX.level3Controller,
-                            focusNode: controllerX.level3Node,
-                            width:  0.41,
-                            // autoFocus: true,
-                            // focusNode: controllerX.brandName,
-                            // isEnable: controllerX.isEnable,
-                            onchanged: (value) {
+                          }, "Level 2", .5,
+                          isEnable: controllerX.isEnable.value,
+                          selected: controllerX.selectedLevel2?.value,
+                          inkWellFocusNode: controllerX.level2Node,
+                          dialogHeight: Get.height * .3,
+                          autoFocus: true,),),
+                        InputFields.formField1(
+                          hintTxt: "Level 3",
+                          controller: controllerX.level3Controller,
+                          focusNode: controllerX.level3Node,
+                          width:  0.5,
+                          // autoFocus: true,
+                          // focusNode: controllerX.brandName,
+                          // isEnable: controllerX.isEnable,
+                          onchanged: (value) {
 
-                            },
-                            // autoFocus: true,
-                          ),
+                          },
+                          // autoFocus: true,
+                        ),
 
 
-                        ],
-                      ),
+                      ],
                     ),
                   ),
-                  SizedBox(height: 5),
-                    GetBuilder<HomeController>(
+                ),
+                SizedBox(height: 5),
+                  Align(
+                    alignment: Alignment.center,
+                    child: GetBuilder<HomeController>(
                       id: "buttons",
                       init: Get.find<HomeController>(),
                       builder: (controller) {
@@ -108,9 +106,10 @@ class ProductLevel3View extends GetView<ProductLevel3Controller> {
                             .lastWhere((element) =>
                         element.appFormName == "frmProductLevel3");
                         if (controller.buttons != null) {
-                          return ButtonBar(
-                            alignment: MainAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.min,
+                          return Wrap(
+                            spacing: 5,
+                            runSpacing: 15,
+                            alignment: WrapAlignment.center,
                             children: [
                               for (var btn in controller.buttons!)
                                 FormButtonWrapper(
@@ -127,10 +126,11 @@ class ProductLevel3View extends GetView<ProductLevel3Controller> {
                           );
                         }
                         return Container(child: Text("No"),);
-                      })
-                  /// bottom common buttons
-                ],
-              ),
+                      }),
+                  ),
+                SizedBox(height: 8),
+                /// bottom common buttons
+              ],
             ),
           ),
         ),

@@ -32,138 +32,157 @@ class UserGroupsForDealWorkflowView
         child: SizedBox(
           width: size.width * 0.64,
           child: Dialog(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  AppBar(
-                    title: Text('User groups For Deal Workflow'),
-                    centerTitle: true,
-                    backgroundColor: Colors.deepPurple,
-                  ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  InputFields.formField1(
-                    hintTxt: "Group",
-                    controller: controllerX.groupTextController,
-                    width:  0.36,
-                    autoFocus: false,
-                    // focusNode: controllerX.brandName,
-                    // isEnable: controllerX.isEnable,
-                    onchanged: (value) {
-                      // controllerX.getDisPlay(value);
-                    },
-                    focusNode: controllerX.groupNode
-                    // autoFocus: true,
-                  ),
-                  DropDownField
-                      .formDropDownSearchAPI2(
-                    GlobalKey(),
-                    context,
-                    width: context.width *  0.36,
-                    onchanged: (DropDownValue? val) {
-                      controllerX.selectedEmployee = val;
-                    },
-                    title: 'Employee',
-                    url:ApiFactory.USER_GROUPS_FOR_DEAL_WORKFLOW_EmpSearch,
-                    parseKeyForKey: "PersonnelNo",
-                    parseKeyForValue: 'Employees',
-                    selectedValue: controllerX.selectedEmployee,
-                    autoFocus: false,
-                    // maxLength: 1
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                AppBar(
+                  title: Text('User groups For Deal Workflow'),
+                  centerTitle: true,
+                  backgroundColor: Colors.deepPurple,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+
                     children: [
                       SizedBox(
-                        width: MediaQuery.of(context).size.width*0.1,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            top: 14.0, left: 10, right: 10),
-                        child: FormButtonWrapper(
-                          btnText: "Add",
-                          callback: () {
-                            controllerX.addBtnClick();
-                          },
-                          showIcon: false,
+                        width: MediaQuery.of(context).size.width*0.45,
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 10.0,right: 10,top: 5,bottom: 5),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              InputFields.formField1(
+                                hintTxt: "Group",
+                                controller: controllerX.groupTextController,
+                                width:  0.45,
+                                autoFocus: false,
+                                // focusNode: controllerX.brandName,
+                                // isEnable: controllerX.isEnable,
+                                onchanged: (value) {
+                                  // controllerX.getDisPlay(value);
+                                },
+                                focusNode: controllerX.groupNode
+                                // autoFocus: true,
+                              ),
+                              SizedBox(
+                                height: 3,
+                              ),
+                              DropDownField
+                                  .formDropDownSearchAPI2(
+                                GlobalKey(),
+                                context,
+                                width: context.width *  0.45,
+                                onchanged: (DropDownValue? val) {
+                                  controllerX.selectedEmployee = val;
+                                },
+                                title: 'Employee',
+                                url:ApiFactory.USER_GROUPS_FOR_DEAL_WORKFLOW_EmpSearch,
+                                parseKeyForKey: "PersonnelNo",
+                                parseKeyForValue: 'Employees',
+                                selectedValue: controllerX.selectedEmployee,
+                                autoFocus: false,
+                                // maxLength: 1
+                              ),
+                              SizedBox(
+                                height: 3,
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: 14.0, left: 1, right: 10),
+                                    child: FormButtonWrapper(
+                                      btnText: "Add",
+                                      callback: () {
+                                        controllerX.addBtnClick();
+                                      },
+                                      showIcon: false,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
                       ),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width*0.45,
+                        height: MediaQuery.of(context).size.height*0.5,
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 10.0,right: 10,top: 5,bottom: 5),
+                          child: Container(
+                            decoration: BoxDecoration(
+                                border: Border.all(color: Colors.grey)),
+                            child:  GetBuilder<UserGroupsForDealWorkflowController>(
+                                id: "grid",
+                                builder: (controllerX) {
+                                  return (controllerX.disPlayGroupModel != null &&
+                                      controllerX.disPlayGroupModel?.displayGroup != null &&
+                                      (controllerX.disPlayGroupModel?.displayGroup?.employees?.length??0) >0
+                                  )?DataGridFromMap(
+                                    showSrNo: false,
+                                    hideCode: false,
+                                    formatDate: false,
+                                    mode: PlutoGridMode.selectWithOneTap,
+                                    mapData: (controllerX
+                                        .disPlayGroupModel!.displayGroup
+                                        ?.employees?.map((e) => e.toJson())
+                                        .toList())!,
+                                    // mapData: (controllerX.dataList)!,
+                                    widthRatio: Get.width / 9 - 1,
+                                  ): Container(
+
+                                  );
+                                }
+                            ),
+
+                          ),
+                        ),
+                      ),
+                      /// bottom common buttons
+
                     ],
                   ),
-
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width*0.45,
-                    height: MediaQuery.of(context).size.height*0.5,
-                    child: Padding(
-                      padding: const EdgeInsets.all(18.0),
-                      child: Container(
-                        decoration: BoxDecoration(
-                            border: Border.all(color: Colors.grey)),
-                        child:  GetBuilder<UserGroupsForDealWorkflowController>(
-                            id: "grid",
-                            builder: (controllerX) {
-                              return (controllerX.disPlayGroupModel != null &&
-                                  controllerX.disPlayGroupModel?.displayGroup != null &&
-                                  (controllerX.disPlayGroupModel?.displayGroup?.employees?.length??0) >0
-                              )?DataGridFromMap(
-                                showSrNo: false,
-                                hideCode: false,
-                                formatDate: false,
-                                mode: PlutoGridMode.selectWithOneTap,
-                                mapData: (controllerX
-                                    .disPlayGroupModel!.displayGroup
-                                    ?.employees?.map((e) => e.toJson())
-                                    .toList())!,
-                                // mapData: (controllerX.dataList)!,
-                                widthRatio: Get.width / 9 - 1,
-                              ): Container(
-
-                              );
-                            }
-                        ),
-
-                      ),
-                    ),
-                  ),
-                  /// bottom common buttons
-                  Align(
-                    alignment: Alignment.topLeft,
-                    child: GetBuilder<HomeController>(
-                        id: "buttons",
-                        init: Get.find<HomeController>(),
-                        builder: (controller) {
-                          PermissionModel formPermissions = Get.find<MainController>()
-                              .permissionList!
-                              .lastWhere((element) =>
-                          element.appFormName == "frmCommercialMaster");
-                          if (controller.buttons != null) {
-                            return ButtonBar(
-                              alignment: MainAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                for (var btn in controller.buttons!)
-                                  FormButtonWrapper(
-                                    btnText: btn["name"],
-                                    callback: Utils.btnAccessHandler2(btn['name'],
-                                        controller, formPermissions) ==
-                                        null
-                                        ? null
-                                        : () => controllerX.formHandler(
-                                      btn['name'],
-                                    ),
-                                  )
-                              ],
-                            );
-                          }
-                          return Container();
-                        }),
-                  ),
-                  SizedBox(height: 2),
-                ],
-              ),
+                ),
+                Align(
+                  alignment: Alignment.center,
+                  child: GetBuilder<HomeController>(
+                      id: "buttons",
+                      init: Get.find<HomeController>(),
+                      builder: (controller) {
+                        PermissionModel formPermissions = Get.find<MainController>()
+                            .permissionList!
+                            .lastWhere((element) =>
+                        element.appFormName == "frmCommercialMaster");
+                        if (controller.buttons != null) {
+                          return Wrap(
+                            spacing: 5,
+                            runSpacing: 15,
+                            alignment: WrapAlignment.center,
+                            children: [
+                              for (var btn in controller.buttons!)
+                                FormButtonWrapper(
+                                  btnText: btn["name"],
+                                  callback: Utils.btnAccessHandler2(btn['name'],
+                                      controller, formPermissions) ==
+                                      null
+                                      ? null
+                                      : () => controllerX.formHandler(
+                                    btn['name'],
+                                  ),
+                                )
+                            ],
+                          );
+                        }
+                        return Container();
+                      }),
+                ),
+                SizedBox(
+                  height: 8,
+                )
+              ],
             ),
           ),
         ),

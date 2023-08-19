@@ -66,12 +66,12 @@ class ZoneWiseInventoryUtilizationView extends GetView<ZoneWiseInventoryUtilizat
                   InputFields.formFieldNumberMask(
                     hintTxt: "From Time",
                     controller: controller.fromTimeController,
-                    widthRatio: .15,
+                    widthRatio: .1,
                   ),
                   InputFields.formFieldNumberMask(
                     hintTxt: "To Time",
                     controller: controller.toTimeController,
-                    widthRatio: .15,
+                    widthRatio: .1,
                   ),
                   // InputFields.formField1(
                   //   hintTxt: "Path",
