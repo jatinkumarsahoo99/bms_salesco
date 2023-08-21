@@ -28,7 +28,7 @@ class AmagiSpotsReplacementView
         child: SizedBox(
           // width: size.width * 0.94,
           child: Padding(
-            padding: const EdgeInsets.all(3.0),
+            padding: const EdgeInsets.all(5.0),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -41,7 +41,7 @@ class AmagiSpotsReplacementView
                   height: 2,
                 ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Obx(()=>DropDownField.formDropDown1WidthMap(
                       controllerX.locationList.value??[],
@@ -52,6 +52,9 @@ class AmagiSpotsReplacementView
                       selected: controllerX.selectedLocation,
                       dialogHeight: Get.height * .7,
                       autoFocus: true,),),
+                    SizedBox(
+                      width: 3,
+                    ),
                     Obx(()=>DropDownField.formDropDown1WidthMap(
                       controllerX.locationList.value??[],
                           (value) {
@@ -61,12 +64,17 @@ class AmagiSpotsReplacementView
                       selected: controllerX.selectedLocation,
                       dialogHeight: Get.height * .7,
                       autoFocus: true,),),
-
+                    SizedBox(
+                      width: 3,
+                    ),
                     DateWithThreeTextField(
                       title: "Schedule Date",
                       mainTextController: controllerX.frmDate,
                       widthRation: .1,
                       isEnable: controllerX.isEnable,
+                    ),
+                    SizedBox(
+                      width: 3,
                     ),
                     Obx(()=>DropDownField.formDropDown1WidthMap(
                       controllerX.locationList.value??[],
@@ -77,6 +85,9 @@ class AmagiSpotsReplacementView
                       selected: controllerX.selectedLocation,
                       dialogHeight: Get.height * .7,
                       autoFocus: true,),),
+                    SizedBox(
+                      width: 3,
+                    ),
                     Padding(
                       padding: const EdgeInsets.only(
                           top: 14.0, left: 10, right: 10),
@@ -88,7 +99,6 @@ class AmagiSpotsReplacementView
                         ],
                       ),
                     ),
-
                     DateWithThreeTextField(
                       title: "To Date",
                       mainTextController: controllerX.toDate,
@@ -138,381 +148,379 @@ class AmagiSpotsReplacementView
 
                   ],
                 ),
+                SizedBox(height: 5),
                 Expanded(
                   // flex: 9,
-                  child: Padding(
-                    padding: const EdgeInsets.all(3.0),
-                    child: Container(
-                      decoration: BoxDecoration(
-                          border: Border.all(color: Colors.grey)),
-                      child:  GetBuilder<AmagiSpotsReplacementController>(
-                          id: "grid",
-                          builder: (controllerX) {
-                            return Container(
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                    flex:5,
-                                    child: Column(
-                                      children: [
-                                        Expanded(
-                                          flex:5,
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(3.0),
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                  border: Border.all(color: Colors.grey)),
-                                            ),
+                  child: Container(
+                    decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey)),
+                    child:  GetBuilder<AmagiSpotsReplacementController>(
+                        id: "grid",
+                        builder: (controllerX) {
+                          return Container(
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  flex:5,
+                                  child: Column(
+                                    children: [
+                                      Expanded(
+                                        flex:5,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(3.0),
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                                border: Border.all(color: Colors.grey)),
                                           ),
                                         ),
-                                        Expanded(
-                                          flex:5,
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(3.0),
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                  border: Border.all(color: Colors.grey)),
-                                            ),
+                                      ),
+                                      Expanded(
+                                        flex:5,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(3.0),
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                                border: Border.all(color: Colors.grey)),
                                           ),
                                         ),
+                                      ),
 
-                                      ],
-                                    ),
+                                    ],
                                   ),
-                                  Expanded(
-                                    flex:5,
-                                    child: ListView(
-                                      children: [
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            InputFields.formField1(
-                                              hintTxt: "Available",
-                                              controller: TextEditingController(),
-                                              width:  0.1,
-                                              // autoFocus: true,
-                                              // isEnable: controllerX.isEnable,
-                                              onchanged: (value) {
+                                ),
+                                Expanded(
+                                  flex:5,
+                                  child: ListView(
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          InputFields.formField1(
+                                            hintTxt: "Available",
+                                            controller: TextEditingController(),
+                                            width:  0.1,
+                                            // autoFocus: true,
+                                            // isEnable: controllerX.isEnable,
+                                            onchanged: (value) {
 
-                                              },
-                                              // autoFocus: true,
-                                            ),
-                                            InputFields.formField1(
-                                              hintTxt: "Allocated",
-                                              controller: TextEditingController(),
-                                              width:  0.1,
-                                              // autoFocus: true,
-                                              // isEnable: controllerX.isEnable,
-                                              onchanged: (value) {
-
-                                              },
-                                              // autoFocus: true,
-                                            ),
-                                          ],
-                                        ),
-                                        SizedBox(
-                                          height: 3,
-                                        ),
-
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            InputFields.formField1(
-                                              hintTxt: "Un Allocated",
-                                              controller: TextEditingController(),
-                                              width:  0.1,
-                                              // autoFocus: true,
-                                              // isEnable: controllerX.isEnable,
-                                              onchanged: (value) {
-
-                                              },
-                                              // autoFocus: true,
-                                            ),
-                                            InputFields.formField1(
-                                              hintTxt: "Balance",
-                                              controller: TextEditingController(),
-                                              width:  0.1,
-                                              // autoFocus: true,
-                                              // isEnable: controllerX.isEnable,
-                                              onchanged: (value) {
-
-                                              },
-                                              // autoFocus: true,
-                                            ),
-                                          ],
-                                        ),
-                                        SizedBox(
-                                          height: 3,
-                                        ),
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            InputFields.formField1(
-                                              hintTxt: "Ms Time",
-                                              controller: TextEditingController(),
-                                              width:  0.1,
-                                              // autoFocus: true,
-                                              // isEnable: controllerX.isEnable,
-                                              onchanged: (value) {
-
-                                              },
-                                              // autoFocus: true,
-                                            ),
-                                            InputFields.formField1(
-                                              hintTxt: "LS Alloc",
-                                              controller: TextEditingController(),
-                                              width:  0.1,
-                                              // autoFocus: true,
-                                              // isEnable: controllerX.isEnable,
-                                              onchanged: (value) {
-
-                                              },
-                                              // autoFocus: true,
-                                            ),
-                                          ],
-                                        ),
-                                        SizedBox(
-                                          height: 3,
-                                        ),
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          children: [
-                                            InputFields.formField1(
-                                              hintTxt: "LS Rev",
-                                              controller: TextEditingController(),
-                                              width:  0.2,
-                                              // autoFocus: true,
-                                              // isEnable: controllerX.isEnable,
-                                              onchanged: (value) {
-
-                                              },
-                                              // autoFocus: true,
-                                            ),
-                                          ],
-                                        ),
-                                        SizedBox(
-                                          height: 3,
-                                        ),
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 4.0, left: 10, right: 10),
-                                              child: SizedBox(
-                                                width: MediaQuery.of(context).size.width*0.1,
-                                                child: FormButtonWrapper(
-                                                  btnText: "Deallocate",
-                                                  callback: () {
-                                                    // controllerX.callGetRetrieve();
-                                                  },
-                                                  showIcon: true,
-                                                ),
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 4.0, left: 10, right: 10),
-                                              child: SizedBox(
-                                                width: MediaQuery.of(context).size.width*0.1,
-                                                child: FormButtonWrapper(
-                                                  btnText: "Allocate",
-                                                  callback: () {
-                                                    // controllerX.callGetRetrieve();
-                                                  },
-                                                  showIcon: true,
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        SizedBox(
-                                          height: 3,
-                                        ),
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                          children: [
-                                            Checkbox(value: true, onChanged: (val){}),
-                                            Text("Show Allowed")
-                                          ],
-                                        ),
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 4.0, left: 10, right: 10),
-                                              child: SizedBox(
-                                                width: MediaQuery.of(context).size.width*0.1,
-                                                child: FormButtonWrapper(
-                                                  btnText: "Deal Hold",
-                                                  callback: () {
-                                                    // controllerX.callGetRetrieve();
-                                                  },
-                                                  showIcon: true,
-                                                ),
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 4.0, left: 10, right: 10),
-                                              child: SizedBox(
-                                                width: MediaQuery.of(context).size.width*0.1,
-                                                child: FormButtonWrapper(
-                                                  btnText: "Summary",
-                                                  callback: () {
-                                                    // controllerX.callGetRetrieve();
-                                                  },
-                                                  showIcon: true,
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        SizedBox(
-                                          height: 3,
-                                        ),
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 4.0, left: 10, right: 10),
-                                              child: SizedBox(
-                                                width: MediaQuery.of(context).size.width*0.1,
-                                                child: FormButtonWrapper(
-                                                  btnText: "Un Alloc",
-                                                  callback: () {
-                                                    // controllerX.callGetRetrieve();
-                                                  },
-                                                  showIcon: true,
-                                                ),
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 4.0, left: 10, right: 10),
-                                              child: SizedBox(
-                                                width: MediaQuery.of(context).size.width*0.1,
-                                                child: FormButtonWrapper(
-                                                  btnText: "Clients",
-                                                  callback: () {
-                                                    // controllerX.callGetRetrieve();
-                                                  },
-                                                  showIcon: true,
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        SizedBox(
-                                          height: 3,
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              top: 4.0, left: 10, right: 10),
-                                          child: FormButtonWrapper(
-                                            btnText: "Total",
-                                            callback: () {
-                                              // controllerX.callGetRetrieve();
                                             },
-                                            showIcon: true,
+                                            // autoFocus: true,
+                                          ),
+                                          InputFields.formField1(
+                                            hintTxt: "Allocated",
+                                            controller: TextEditingController(),
+                                            width:  0.1,
+                                            // autoFocus: true,
+                                            // isEnable: controllerX.isEnable,
+                                            onchanged: (value) {
+
+                                            },
+                                            // autoFocus: true,
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: 3,
+                                      ),
+
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          InputFields.formField1(
+                                            hintTxt: "Un Allocated",
+                                            controller: TextEditingController(),
+                                            width:  0.1,
+                                            // autoFocus: true,
+                                            // isEnable: controllerX.isEnable,
+                                            onchanged: (value) {
+
+                                            },
+                                            // autoFocus: true,
+                                          ),
+                                          InputFields.formField1(
+                                            hintTxt: "Balance",
+                                            controller: TextEditingController(),
+                                            width:  0.1,
+                                            // autoFocus: true,
+                                            // isEnable: controllerX.isEnable,
+                                            onchanged: (value) {
+
+                                            },
+                                            // autoFocus: true,
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: 3,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          InputFields.formField1(
+                                            hintTxt: "Ms Time",
+                                            controller: TextEditingController(),
+                                            width:  0.1,
+                                            // autoFocus: true,
+                                            // isEnable: controllerX.isEnable,
+                                            onchanged: (value) {
+
+                                            },
+                                            // autoFocus: true,
+                                          ),
+                                          InputFields.formField1(
+                                            hintTxt: "LS Alloc",
+                                            controller: TextEditingController(),
+                                            width:  0.1,
+                                            // autoFocus: true,
+                                            // isEnable: controllerX.isEnable,
+                                            onchanged: (value) {
+
+                                            },
+                                            // autoFocus: true,
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: 3,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          InputFields.formField1(
+                                            hintTxt: "LS Rev",
+                                            controller: TextEditingController(),
+                                            width:  0.2,
+                                            // autoFocus: true,
+                                            // isEnable: controllerX.isEnable,
+                                            onchanged: (value) {
+
+                                            },
+                                            // autoFocus: true,
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: 3,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                top: 4.0, left: 10, right: 10),
+                                            child: SizedBox(
+                                              width: MediaQuery.of(context).size.width*0.1,
+                                              child: FormButtonWrapper(
+                                                btnText: "Deallocate",
+                                                callback: () {
+                                                  // controllerX.callGetRetrieve();
+                                                },
+                                                showIcon: true,
+                                              ),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                top: 4.0, left: 10, right: 10),
+                                            child: SizedBox(
+                                              width: MediaQuery.of(context).size.width*0.1,
+                                              child: FormButtonWrapper(
+                                                btnText: "Allocate",
+                                                callback: () {
+                                                  // controllerX.callGetRetrieve();
+                                                },
+                                                showIcon: true,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: 3,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                        children: [
+                                          Checkbox(value: true, onChanged: (val){}),
+                                          Text("Show Allowed")
+                                        ],
+                                      ),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                top: 4.0, left: 10, right: 10),
+                                            child: SizedBox(
+                                              width: MediaQuery.of(context).size.width*0.1,
+                                              child: FormButtonWrapper(
+                                                btnText: "Deal Hold",
+                                                callback: () {
+                                                  // controllerX.callGetRetrieve();
+                                                },
+                                                showIcon: true,
+                                              ),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                top: 4.0, left: 10, right: 10),
+                                            child: SizedBox(
+                                              width: MediaQuery.of(context).size.width*0.1,
+                                              child: FormButtonWrapper(
+                                                btnText: "Summary",
+                                                callback: () {
+                                                  // controllerX.callGetRetrieve();
+                                                },
+                                                showIcon: true,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: 3,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                top: 4.0, left: 10, right: 10),
+                                            child: SizedBox(
+                                              width: MediaQuery.of(context).size.width*0.1,
+                                              child: FormButtonWrapper(
+                                                btnText: "Un Alloc",
+                                                callback: () {
+                                                  // controllerX.callGetRetrieve();
+                                                },
+                                                showIcon: true,
+                                              ),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                top: 4.0, left: 10, right: 10),
+                                            child: SizedBox(
+                                              width: MediaQuery.of(context).size.width*0.1,
+                                              child: FormButtonWrapper(
+                                                btnText: "Clients",
+                                                callback: () {
+                                                  // controllerX.callGetRetrieve();
+                                                },
+                                                showIcon: true,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: 3,
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            top: 4.0, left: 10, right: 10),
+                                        child: FormButtonWrapper(
+                                          btnText: "Total",
+                                          callback: () {
+                                            // controllerX.callGetRetrieve();
+                                          },
+                                          showIcon: true,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 3,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+
+                                          InputFields.formField1(
+                                            hintTxt: "Lo Dur",
+                                            controller: TextEditingController(),
+                                            width:  0.1,
+                                            // autoFocus: true,
+                                            // isEnable: controllerX.isEnable,
+                                            onchanged: (value) {
+
+                                            },
+                                            // autoFocus: true,
+                                          ),
+                                          InputFields.formField1(
+                                            hintTxt: "Lo Dur Mis",
+                                            controller: TextEditingController(),
+                                            width:  0.1,
+                                            // autoFocus: true,
+                                            // isEnable: controllerX.isEnable,
+                                            onchanged: (value) {
+
+                                            },
+                                            // autoFocus: true,
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: 3,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+
+                                          InputFields.formField1(
+                                            hintTxt: "Lo Total",
+                                            controller: TextEditingController(),
+                                            width:  0.1,
+                                            // autoFocus: true,
+                                            // isEnable: controllerX.isEnable,
+                                            onchanged: (value) {
+
+                                            },
+                                            // autoFocus: true,
+                                          ),
+                                          InputFields.formField1(
+                                            hintTxt: "Lo Miss",
+                                            controller: TextEditingController(),
+                                            width:  0.1,
+                                            // autoFocus: true,
+                                            // isEnable: controllerX.isEnable,
+                                            onchanged: (value) {
+
+                                            },
+                                            // autoFocus: true,
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: 3,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Expanded(
+                                  flex:10,
+                                  child: Column(
+                                    children: [
+                                      Expanded(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(3.0),
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                                border: Border.all(color: Colors.grey)),
                                           ),
                                         ),
-                                        SizedBox(
-                                          height: 3,
-                                        ),
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: [
-
-                                            InputFields.formField1(
-                                              hintTxt: "Lo Dur",
-                                              controller: TextEditingController(),
-                                              width:  0.1,
-                                              // autoFocus: true,
-                                              // isEnable: controllerX.isEnable,
-                                              onchanged: (value) {
-
-                                              },
-                                              // autoFocus: true,
-                                            ),
-                                            InputFields.formField1(
-                                              hintTxt: "Lo Dur Mis",
-                                              controller: TextEditingController(),
-                                              width:  0.1,
-                                              // autoFocus: true,
-                                              // isEnable: controllerX.isEnable,
-                                              onchanged: (value) {
-
-                                              },
-                                              // autoFocus: true,
-                                            ),
-                                          ],
-                                        ),
-                                        SizedBox(
-                                          height: 3,
-                                        ),
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: [
-
-                                            InputFields.formField1(
-                                              hintTxt: "Lo Total",
-                                              controller: TextEditingController(),
-                                              width:  0.1,
-                                              // autoFocus: true,
-                                              // isEnable: controllerX.isEnable,
-                                              onchanged: (value) {
-
-                                              },
-                                              // autoFocus: true,
-                                            ),
-                                            InputFields.formField1(
-                                              hintTxt: "Lo Miss",
-                                              controller: TextEditingController(),
-                                              width:  0.1,
-                                              // autoFocus: true,
-                                              // isEnable: controllerX.isEnable,
-                                              onchanged: (value) {
-
-                                              },
-                                              // autoFocus: true,
-                                            ),
-                                          ],
-                                        ),
-                                        SizedBox(
-                                          height: 3,
-                                        ),
-                                      ],
-                                    ),
+                                      ),
+                                    ],
                                   ),
-                                  Expanded(
-                                    flex:10,
-                                    child: Column(
-                                      children: [
-                                        Expanded(
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(3.0),
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                  border: Border.all(color: Colors.grey)),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            );
-                          }
-                      ),
-
+                                ),
+                              ],
+                            ),
+                          );
+                        }
                     ),
+
                   ),
                 ),
-
+                SizedBox(height: 5),
                 /// bottom common buttons
                 Align(
                   alignment: Alignment.topLeft,
