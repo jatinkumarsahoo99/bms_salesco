@@ -34,6 +34,8 @@ class ApiFactory {
   static String LOGOUT_API = "$BASE_URL_LOGIN/api/Login/GetLogout?PersonnelNo=";
   static String USER_INFO = "$BASE_URL_LOGIN/api/Login/GetUserinfo";
   static String PERMISSION_API = "$BASE_URL_COMMON/api/MDI/GetAllFormDetailsAndPermission?Userid=";
+  static String USER_SETTINGS = "$BASE_URL_COMMON/api/MDI/SaveUserSettingData";
+  static String FETCH_USER_SETTING = "$BASE_URL_COMMON/api/MDI/GetUserSetting";
   static String MS_PROFILE = "$BASE_URL_LOGIN/api/Login/PostUserProfile";
   static String MS_TOKEN_BACKEND = "$BASE_URL_LOGIN/api/Login/PostApiToken";
 
@@ -126,6 +128,13 @@ class ApiFactory {
     // return BASE_URL + "/api/$screenName/DeleteSearchVariance?VarianceId=$varianceId";
     return "$BASE_URL_COMMON/api/CommonSearch/DeleteSearchVariance?VarianceId=$varianceId";
   }
+
+  ////////////////////// DOCS /////////////////////////////
+
+  static String COMMON_DOCS_LOAD(String docKey) => "$BASE_URL_COMMON/api/CommonDoc/loadDocument?DocumentKey=$docKey";
+  static String COMMON_DOCS_VIEW(String docId) => "$BASE_URL_COMMON/api/CommonDoc/ViewDocument?DocId=$docId";
+  static String get COMMON_DOCS_ADD => "$BASE_URL_COMMON/api/CommonDoc/AddDocument";
+  static String COMMON_DOCS_DELETE(String docId) => "$BASE_URL_COMMON/api/CommonDoc/DeleteDocument?DocumentID=$docId";
 
   /////////////////////////////////////////////////////////
   //////////////////////////// RO RECIEVED /////////////////////////////////
@@ -258,7 +267,19 @@ class ApiFactory {
 
 // END --> Contnet Inward
 
-  /////////////////////////////////////////////////////////////////////////////////////////
+  ///////////////////////////////// New Short Content Form /////////////////////////////////////
+  static String NEW_SHORT_CONTENT_INIT = "$BASE_URL/api/ShortCode/OnLoadShortCode";
+  static String NEW_SHORT_CONTENT_GetVignetee = "$BASE_URL/api/ShortCode/GetVigneteeTypeMaster";
+  static String NEW_SHORT_CONTENT_GetStillTypeMaster = "$BASE_URL/api/ShortCode/GetStillTypeMaster";
+  static String NEW_SHORT_CONTENT_GetSlideTypeMaster = "$BASE_URL/api/ShortCode/GetSlideTypeMaster";
+
+  static String NEW_SHORT_CONTENT_LOCATION_LEAVE(locationCode) => "$BASE_URL/api/ShortCode/OnLeaveLocation?LocationCode=$locationCode";
+  static String NEW_SHORT_CONTENT_Type_LEAVE(formCode) => "$BASE_URL/api/ShortCode/OnLeaveType?FormCode=$formCode";
+  static String NEW_SHORT_CONTENT_Program_Search = "$BASE_URL/api/ShortCode/OnFillComboProgram?TextSourceProgram=";
+  static String NEW_SHORT_CONTENT_HOUSEID_LEAVE(houseCode, ShortName, StrCode) =>
+      "$BASE_URL/api/ShortCode/HouseIDOnLeave?HouseID=$houseCode&TextBoxShortName=$ShortName&strCode=$StrCode";
+  static String NEW_SHORT_CONTENT_SAVE = "$BASE_URL/api/ShortCode/SaveRecords";
+  ////////////////////////////////////////////////////////////////////////////////////////
 
   ////////////////Operatonal FPC Page: UI-> Shreesh Tiwari API-> Ram P Kubde//////////////
 
@@ -571,6 +592,8 @@ class ApiFactory {
       "$BASE_URL/api/ModuleFormTransaction/GetModuleFormDetails?ModuleCode=$moduleCode";
   ///////////////////////// END MODULE FORM TRANSACTION API//////
 
+
+
 ///////////////////////////// Asrun Details Report ///////////////////////////////
 
   static String get ASRUN_DETAILS_REPORT_LOAD => "$BASE_URL/api/AsrundetailsReport/AsrundetailsReportLoad";
@@ -587,6 +610,7 @@ class ApiFactory {
   static String get EDI_MAPPING_CLIENT_SEARCH => "$BASE_URL/api/EDIMapping/GetClientMasterSearch?TextClientMaster=";
   static String get EDI_MAPPING_AGENT_SEARCH => "$BASE_URL/api/EDIMapping/GetAgencyMasterSearch?TextAgencyMaster=";
   static String get EDI_MAPPING_CHANNEL_SEARCH => "$BASE_URL/api/EDIMapping/GetChannelMasterSearch?TextChannelMaster=";
+  static String get EDI_MAPPING_POPULATE_ENTITY => "$BASE_URL/api/EDIMapping/GetPopulateEntity";
 
   ///////////////////////////////////// DealRecoSummary ////////////////////////////////////////////////////
 
@@ -596,6 +620,101 @@ class ApiFactory {
   static String get DEAL_RECO_SUMMARY_GET_DEAL => "$BASE_URL/api/DealReCoSummary/GetDeal";
   static String get DEAL_RECO_SUMMARY_GET_DEAL_LEAVE => "$BASE_URL/api/DealReCoSummary/DealLeave";
   static String get DEAL_RECO_SUMMARY_GENERATE => "$BASE_URL/api/DealReCoSummary/GetGenrate";
+
+  /////////////////////////////// DealWorkFlow Definition ///////////////////////////////////////
+  static String get DEAL_WORK_FLOW_DEFINITION_LOAD => "$BASE_URL/api/DealWorkflowDefinition/GetDWFOnLoad";
+  static String get DEAL_WORK_FLOW_DEFINITION_GET_GROUP_SEARCH => "$BASE_URL/api/DealWorkflowDefinition/GetGroupSearch?TextGroupSearch=";
+  static String get DEAL_WORK_FLOW_DEFINITION_GET_USER_SEARCH => "$BASE_URL/api/DealWorkflowDefinition/GetuserSearch?TextUserSearch=";
+  static String get DEAL_WORK_FLOW_DEFINITION_ON_LEAVE_COPYZONE => "$BASE_URL/api/DealWorkflowDefinition/GetCopyZoneOnLeave?ZoneCode=";
+  static String get DEAL_WORK_FLOW_DEFINITION_ON_LEAVE_ZONE => "$BASE_URL/api/DealWorkflowDefinition/GetZoneOnLeave?ZoneCode=";
+  static String get DEAL_WORK_FLOW_DEFINITION_ON_LEAVE_LOCATION => "$BASE_URL/api/DealWorkflowDefinition/GetLocationOnLeave?LocationCode=";
+  static String get DEAL_WORK_FLOW_DEFINITION_GET_DISPLAY => "$BASE_URL/api/DealWorkflowDefinition/GetDisplay";
+  static String get DEAL_WORK_FLOW_DEFINITION_SAVE => "$BASE_URL/api/DealWorkflowDefinition/Postsave";
+
+  //////////////////////////////////////// GeoProgramUpdate ////////////////////////////
+  static String get GEO_PROGRAM_UPDATE_LOAD => "$BASE_URL/api/GeoProgramUpdate/GetGPUOnLoad";
+  static String get GEO_PROGRAM_UPDATE_UPDATE => "$BASE_URL/api/GeoProgramUpdate/PostUpdate";
+
+  //////////////////////////////// OneSpotBooking ////////////////////////////////
+  static String get ONE_SPOT_BOOKING_LOAD => "$BASE_URL/api/OneSpotBooking/GetOSBOnload";
+  static String get ONE_SPOT_BOOKING_CHANNEL_LEAVE => "$BASE_URL/api/OneSpotBooking/GetChannelOnLeave?locationcode=";
+  static String get ONE_SPOT_BOOKING_SAVE => "$BASE_URL/api/OneSpotBooking/PostSave";
+
+  /////////////////////////////////// International Sales Report /////////////////////////////
+  static String get INTERNATIONAL_SALES_REPORT_GENERATE => "$BASE_URL/api/InternationalSalesReport/Generate";
+  //////////////////////////////////////// PeriodicDealUtilisationFormat2 /////////////////////////////
+  static String get PERIODIC_DEAL_UTILISATION_FORMAT2_LOAD => "$BASE_URL/api/PeriodicDealUtilisation/GetPDUOnload";
+  static String get PERIODIC_DEAL_UTILISATION_FORMAT2_ON_CHANNEL_LEAVE => "$BASE_URL/api/PeriodicDealUtilisation/GetChannelOnLeave";
+
+////////////////////////////////////////////// User Groups For Deal Work flow  //////////////////////////////////////////
+  static String get USER_GROUPS_FOR_DEAL_WORKFLOW_EmpSearch => "$BASE_URL/api/UserGroupsForDealWorkflow/GetEmployeeSearch?TextEmployeeSearch=";
+  static String get USER_GROUPS_FOR_DEAL_WORKFLOW_GET_DISPLAY_GROUP => "$BASE_URL/api/UserGroupsForDealWorkflow/GetDisplayGroup?GroupName=";
+  static String get USER_GROUPS_FOR_DEAL_WORKFLOW_SAVE=> "$BASE_URL/api/UserGroupsForDealWorkflow/Save";
+
+  //////////////////////////////////////////////// Update Executive ////////////////////////////////////////////////////////
+  static String get UPDATE_EXECUTIVE_LOAD => "$BASE_URL/api/UpdateExecutive/GetUEOnLoad";
+  static String get UPDATE_EXECUTIVE_GET_CLIENT => "$BASE_URL/api/UpdateExecutive/Getclient";
+  static String get UPDATE_EXECUTIVE_GET_AGENCY => "$BASE_URL/api/UpdateExecutive/GetAgency";
+  static String get UPDATE_EXECUTIVE_GET_VERIFY => "$BASE_URL/api/UpdateExecutive/GetVerifiy";
+  static String get UPDATE_EXECUTIVE_UPDATE_EXECUTIVE => "$BASE_URL/api/UpdateExecutive/UpdateExecutive";
+
+  ///////////////////////////////////// Product Level 1 //////////////////////////////
+  static String get PRODUCT_LEVEL1_LOAD => "$BASE_URL/api/ProductLevelOne/GetPT1OnLoad";
+  static String get PRODUCT_LEVEL1_RETRIEVE => "$BASE_URL/api/ProductLevelOne/GetRetrieveRecord";
+  static String get PRODUCT_LEVEL1_SAVE => "$BASE_URL/api/ProductLevelOne/PostSave";
+
+  /////////////////////////////////// Product Level 2 ////////////////////////////////
+  static String get PRODUCT_LEVEL2_LOAD => "$BASE_URL/api/ProductLevelTwo/GetPTTwoOnLoad";
+  static String get PRODUCT_LEVEL2_GET_PRODUCT_LEVEL1 => "$BASE_URL/api/ProductLevelTwo/GetProductLevelOne";
+  static String get PRODUCT_LEVEL2_RETRIEVE => "$BASE_URL/api/ProductLevelTwo/GetRetrieveRecord";
+  static String get PRODUCT_LEVEL2_SAVE => "$BASE_URL/api/ProductLevelTwo/PostSave";
+
+  //////////////////////////////// Product Level 3 //////////////////////////////////
+  static String get PRODUCT_LEVEL3_LOAD => "$BASE_URL/api/ProductLevelThree/GetproductType";
+  static String get PRODUCT_LEVEL3_GET_PRODUCT_LEVEL1 => "$BASE_URL/api/ProductLevelThree/GetProductLeaveOne";
+  static String get PRODUCT_LEVEL3_GET_PRODUCT_LEVEL2 => "$BASE_URL/api/ProductLevelThree/GetProductLevelTwo";
+  static String get PRODUCT_LEVEL3_RETRIEVE => "$BASE_URL/api/ProductLevelThree/Retrieverecord";
+  static String get PRODUCT_LEVEL3_SAVE => "$BASE_URL/api/ProductLevelThree/PostSave";
+
+  /////////////////////////////////////// Product Master ///////////////////////////////
+  static String get PRODUCT_MASTER_GET_PRODUCT_LEVEL_THREE => "$BASE_URL/api/ProductMaster/GetProductLevelThree";
+  static String get PRODUCT_MASTER_GET_RETRIEVE_RECORD => "$BASE_URL/api/ProductMaster/GetRetrieveRecord";
+  static String get PRODUCT_MASTER_POST => "$BASE_URL/api/ProductMaster/PostSave";
+
+  ///////////////////////////////////// ViewOldDeals //////////////////////////////////////
+  static String get ViewOldDeals_LOAD => "$BASE_URL/api/ViewOldDeals/viewdeal_Load";
+  static String get ViewOldDeals_GET_CLIENT => "$BASE_URL/api/ViewOldDeals/GetClient";
+  static String get ViewOldDeals_GET_AGENCY => "$BASE_URL/api/ViewOldDeals/GetAgency";
+  static String get ViewOldDeals_GET_DEAL => "$BASE_URL/api/ViewOldDeals/GetDeal";
+  static String get ViewOldDeals_GET_DEAL_LEAVE => "$BASE_URL/api/ViewOldDeals/GetDeal_leave";
+
+  //////////////////////////////////// ZoneWiseInventory ////////////////////////////////////////////
+  static String get ZoneWiseInventory_LOAD => "$BASE_URL/api/ZoneWiseInventory/GetLocation";
+  static String get ZoneWiseInventory_GET_CHANNEL => "$BASE_URL/api/ZoneWiseInventory/GetChannel";
+  static String get ZoneWiseInventory_GENERATE => "$BASE_URL/api/ZoneWiseInventory/Generate";
+
+  /////////////////////////////////// RateCardfromDealWorkflow /////////////////////////////////
+  static String get Rate_Card_From_Deal_Workflow_LOAD => "$BASE_URL/api/DPRateCard/GetLocationLoad";
+  static String get Rate_Card_From_Deal_Workflow_GET_Channel => "$BASE_URL/api/DPRateCard/GetChannel";
+  static String get Rate_Card_From_Deal_Workflow_Export => "$BASE_URL/api/DPRateCard/Export";
+  static String get Rate_Card_From_Deal_Workflow_SAVE=> "$BASE_URL/api/DPRateCard/Save";
+
+///////////////////////////////////////////// Amagi Spot Planning //////////////////////////
+  static String get Amagi_Spot_Planning_LOAD => "$BASE_URL/api/AmagiSpotPlanning/GetLocation";
+  static String get Amagi_Spot_Planning_Get_Channel => "$BASE_URL/api/AmagiSpotPlanning/GetChannel?LocationCode=";
+  static String get Amagi_Spot_Planning_Get_Generate => "$BASE_URL/api/AmagiSpotPlanning/Generate";
+
+  ///////////////////////////////////////// Amagi Status Report /////////////////////////////////////////////
+  static String get Amagi_Status_Report_LOAD => "$BASE_URL/api/AmagiStatusReport/AmagiSTatusLoad";
+  static String get Amagi_Status_Report_Get_Channel => "$BASE_URL/api/AmagiStatusReport/GetChannel?locationcode=";
+  static String get Amagi_Status_Report_RetrieveData => "$BASE_URL/api/AmagiStatusReport/RetrieveData";
+
+  //////////////////////////////////////// Reschedule Import //////////////////////////////////////
+  static String get Reschedule_Import_LOAD => "$BASE_URL/api/RescheduleImport/GetLocation";
+  static String get Reschedule_Import_Get_Channel => "$BASE_URL/api/RescheduleImport/GetChannel?locationcode=";
+  static String get Reschedule_Import_ReImport => "$BASE_URL/api/RescheduleImport/ReImport";
+
+
 
   ///
   ///
@@ -678,6 +797,14 @@ class ApiFactory {
       "$BASE_URL/api/MakeGoodReport/GetAgency?LocationName=$locationName&ChannelName=$channelName&Clientname=$clientName";
   static String get MAKE_GOOD_REPORT_GET_BRAND => "$BASE_URL/api/MakeGoodReport/GetBrand";
   static String get MAKE_GOOD_REPORT_GET_GENERATE => "$BASE_URL/api/MakeGoodReport/Generate";
+  ///////////////////////// MAKE-GOOD-REPORT-END//////
+  ///
+  ///
+  ///////////////////////// MAKE-GOOD-REPORT-START//////
+  static String get COMMERCIAL_LANG_SPEC_LOCATION => "$BASE_URL/api/CommercialLanguageSpec/GetLocation";
+  static String COMMERCIAL_LANG_SPEC_CHANNEL(String locName) => "$BASE_URL/api/CommercialLanguageSpec/GetLocationsLeave?LocationCode=$locName";
+  static String COMMERCIAL_LANG_SPEC_DISPLAY(String loc,String chanl) => "$BASE_URL/api/CommercialLanguageSpec/GetDisplay?LocationCode=$loc&channlecode=$chanl";
+  static String get COMMERCIAL_LANG_SPEC_SAVE => "$BASE_URL/api/CommercialLanguageSpec/PostSave";
   ///////////////////////// MAKE-GOOD-REPORT-END//////
   ///
   ///

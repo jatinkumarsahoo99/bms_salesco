@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 ThemeData primaryThemeData = ThemeData(
   focusColor: Colors.deepPurple[200],
@@ -30,4 +31,10 @@ ThemeData primaryThemeData = ThemeData(
       borderSide: const BorderSide(color: Colors.deepPurpleAccent),
     ),
   ),
+  textTheme:  TextTheme(
+    headline1:GoogleFonts.oswald(
+      textStyle: TextStyle(color: Colors.white, letterSpacing: .5,fontSize: 20),
+    ),
+  ),
+
 );

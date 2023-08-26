@@ -1,6 +1,8 @@
 class EnvironmentModel {
   String? appLoginUrl;
   String? apiLoginUrl;
+  String? appSalescoUrl;
+  String? apiSalescoUrl;
   String? appCommonUrl;
   String? apiCommonUrl;
   String? appAdminUrl;
@@ -31,6 +33,8 @@ class EnvironmentModel {
   EnvironmentModel.fromJson(Map<String, dynamic> json) {
     appLoginUrl = json['app-login-url'];
     apiLoginUrl = json['api-login-url'];
+    appSalescoUrl = json['app-salesco-url'];
+    apiSalescoUrl = json['api-salesco-url'];
     appCommonUrl = json['app-common-url'];
     apiCommonUrl = json['api-common-url'];
     appAdminUrl = json['app-admin-url'];

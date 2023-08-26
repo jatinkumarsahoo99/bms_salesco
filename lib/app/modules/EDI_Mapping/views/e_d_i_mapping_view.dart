@@ -10,10 +10,11 @@ import '../../../controller/MainController.dart';
 import '../../../data/DropDownValue.dart';
 import '../../../data/PermissionModel.dart';
 import '../../../providers/ApiFactory.dart';
+import '../../../providers/SizeDefine.dart';
 import '../../../providers/Utils.dart';
 import '../controllers/e_d_i_mapping_controller.dart';
 
-class EDIMappingView extends GetView<EDIMappingController> {
+class EDIMappingView extends StatelessWidget {
    EDIMappingView({Key? key}) : super(key: key);
 
    EDIMappingController controllerX =
@@ -27,47 +28,50 @@ class EDIMappingView extends GetView<EDIMappingController> {
         child: SizedBox(
           width: size.width * 0.74,
           child: Dialog(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    // mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      AppBar(
-                        title: Text('EDI Client Agency Channel Mapping'),
-                        centerTitle: true,
-                        backgroundColor: Colors.deepPurple,
+            child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  // mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    AppBar(
+                      title: Text('EDI Client Agency Channel Mapping'),
+                      centerTitle: true,
+                      backgroundColor: Colors.deepPurple,
                       ),
-                        SizedBox(
-                        height: 5,
-                        ),
-                        Expanded(
-                          child: GetBuilder<EDIMappingController>(
-                            id: "top",
-                            builder: (controllerX) {
-                              return Column(
+                      SizedBox(
+                      height: 5,
+                      ),
+                      Expanded(
+                        child: GetBuilder<EDIMappingController>(
+                          id: "top",
+                          builder: (controllerX) {
+                            return Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Obx(() => RadioRow(
-                                    items: [
-                                      "Client",
-                                      "Agency",
-                                      "Channel"
-                                    ],
-                                    groupValue:
-                                    controllerX.selectValue.value ?? "",
-                                    onchange: (String v) {
-                                      print(">>>>"+v);
-                                      controllerX.selectValue.value=v;
-                                      controllerX.checkRadio(v);
-                                      // controllerX.selectValue.refresh();
-                                      // controllerX.update(['top']);
-                                    },
+                                  Obx(() => Padding(
+                                    padding: const EdgeInsets.only(left: 5.0),
+                                    child: RadioRow(
+                                      items: [
+                                        "Client",
+                                        "Agency",
+                                        "Channel"
+                                      ],
+                                      groupValue:
+                                      controllerX.selectValue.value ?? "",
+                                      onchange: (String v) {
+                                        print(">>>>"+v);
+                                        controllerX.selectValue.value=v;
+                                        controllerX.checkRadio(v);
+                                        // controllerX.selectValue.refresh();
+                                        // controllerX.update(['top']);
+                                      },
+                                    ),
                                   )),
                                   Padding(
-                                    padding: const EdgeInsets.all(8.0),
+                                    padding: const EdgeInsets.only(left: 8.0,top: 2),
                                     child: (controllerX.isClient)? DropDownField
                                         .formDropDownSearchAPI2(
                                       GlobalKey(),
@@ -76,6 +80,7 @@ class EDIMappingView extends GetView<EDIMappingController> {
                                       onchanged: (DropDownValue? val) {
                                         print(">>>" + val.toString());
                                         controllerX.selectedClient = val;
+                                        // controllerX.callPopulateEntity();
                                         // controllerX.getProductDetails(val?.key??"");
                                         // controllerX.fetchClientDetails((val?.value ??"")??"");
                                       },
@@ -94,6 +99,7 @@ class EDIMappingView extends GetView<EDIMappingController> {
                                       onchanged: (DropDownValue? val) {
                                         print(">>>" + val.toString());
                                         controllerX.selectedAgency = val;
+                                        // controllerX.callPopulateEntity();
                                         // controllerX.getProductDetails(val?.key??"");
                                         // controllerX.fetchClientDetails((val?.value ??"")??"");
                                       },
@@ -112,6 +118,7 @@ class EDIMappingView extends GetView<EDIMappingController> {
                                       onchanged: (DropDownValue? val) {
                                         print(">>>" + val.toString());
                                         controllerX.selectedChannel = val;
+                                        // controllerX.callPopulateEntity();
                                         // controllerX.getProductDetails(val?.key??"");
                                         // controllerX.fetchClientDetails((val?.value ??"")??"");
                                       },
@@ -144,62 +151,206 @@ class EDIMappingView extends GetView<EDIMappingController> {
                                     child: Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: Container(
-                                        decoration: BoxDecoration(
-                                            border: Border.all(color: Colors.black)),
                                         child:  GetBuilder<EDIMappingController>(
                                             id: "grid",
                                             builder: (controllerX) {
-                                              return Container(
+
+                                              switch(controllerX.radioName){
+                                                case "Client":
+                                                  return Container(
+                                                    decoration: BoxDecoration(
+                                                        border: Border.all(color: Colors.grey)),
+                                                    child:(controllerX.populateEntityModel != null &&
+                                                        controllerX.populateEntityModel?.populateEntity != null &&
+                                                        controllerX.populateEntityModel?.
+                                                        populateEntity?.clientMaster != null &&
+                                                        (controllerX.populateEntityModel?.populateEntity?.clientMaster?.length??0) >0
+                                                    )? ListView.builder(
+                                                        itemCount:controllerX.populateEntityModel?.
+                                                        populateEntity?.clientMaster?.length ,
+                                                        itemBuilder: (BuildContext context,int index){
+                                                          return Padding(
+                                                            padding: const EdgeInsets.all(3.0),
+                                                            child: InkWell(
+                                                                onTap: (){
+                                                                  controllerX.selectedIndex = index;
+                                                                  controllerX.update(['grid']);
+                                                                },
+                                                                child: Container(
+                                                                    color:(controllerX.selectedIndex == index)? Colors.deepPurpleAccent:Colors.white,
+                                                                    child: Text(controllerX.populateEntityModel?.populateEntity?.clientMaster?[index].softClient??"",
+                                                                        style: TextStyle(
+                                                                          fontSize: SizeDefine.labelSize1,
+                                                                          fontWeight: FontWeight.w500,
+                                                                        ),))),
+                                                          );
+
+                                                        }):Container()
+                                                  );
+                                                  break;
+                                                case "Agency":
+                                                  return Container(
+                                                      decoration: BoxDecoration(
+                                                          border: Border.all(color: Colors.grey)),
+                                                      child:(controllerX.populateEntityModel != null &&
+                                                          controllerX.populateEntityModel?.populateEntity != null &&
+                                                          controllerX.populateEntityModel?.
+                                                          populateEntity?.agencyMaster != null &&
+                                                          (controllerX.populateEntityModel?.populateEntity?.agencyMaster?.length??0) >0
+                                                      )? ListView.builder(
+                                                          itemCount:controllerX.populateEntityModel?.
+                                                          populateEntity?.agencyMaster?.length ,
+                                                          itemBuilder: (BuildContext context,int index){
+                                                            return Padding(
+                                                              padding: const EdgeInsets.all(3.0),
+                                                              child: InkWell(
+                                                                  onTap: (){
+                                                                    controllerX.selectedIndex = index;
+                                                                    controllerX.update(['grid']);
+                                                                  },
+                                                                  child: Container(
+                                                                      color:(controllerX.selectedIndex == index)? Colors.deepPurpleAccent:Colors.white,
+                                                                      child: Text(controllerX.populateEntityModel?.populateEntity?.agencyMaster?[index].softAgency??"",
+                                                                        style: TextStyle(color: Colors.black,fontSize: 12),))),
+                                                            );
+
+                                                          }):Container()
+                                                  );
+                                                  break;
+                                                case "Channel":
+                                                  return Container(
+                                                      decoration: BoxDecoration(
+                                                          border: Border.all(color: Colors.grey)),
+                                                      child:(controllerX.populateEntityModel != null &&
+                                                          controllerX.populateEntityModel?.populateEntity != null &&
+                                                          controllerX.populateEntityModel?.
+                                                          populateEntity?.channelMaster != null &&
+                                                          (controllerX.populateEntityModel?.populateEntity?.channelMaster?.length??0) >0
+                                                      )? ListView.builder(
+                                                          itemCount:controllerX.populateEntityModel?.
+                                                          populateEntity?.channelMaster?.length ,
+                                                          itemBuilder: (BuildContext context,int index){
+                                                            return Padding(
+                                                              padding: const EdgeInsets.all(3.0),
+                                                              child: InkWell(
+                                                                  onTap: (){
+                                                                    controllerX.selectedIndex = index;
+                                                                    controllerX.update(['grid']);
+                                                                  },
+                                                                  child: Container(
+                                                                      color:(controllerX.selectedIndex == index)? Colors.deepPurpleAccent:Colors.white,
+                                                                      child: Text(controllerX.populateEntityModel?.populateEntity?.channelMaster?[index].SoftChannel??"",
+                                                                        style: TextStyle(color: Colors.black,fontSize: 12),))),
+                                                            );
+
+                                                          }):Container()
+                                                  );
+                                                  break;
+                                                default:
+                                                  return Container();
+
+                                              }
+
+
+
+                                             /* return Container(
                                                 decoration: BoxDecoration(
-                                                    border: Border.all(color: Colors.black)),
-                                              );
+                                                    border: Border.all(color: Colors.grey)),
+                                                child:(controllerX.populateEntityModel != null &&
+                                                    controllerX.populateEntityModel?.populateEntity != null
+                                                )? (controllerX.isClient)?( controllerX.populateEntityModel?.populateEntity?.clientMaster != null &&
+                                                    (controllerX.populateEntityModel?.populateEntity?.clientMaster?.length??0) >0)?
+                                                ListView.builder(
+                                                    itemCount:controllerX.populateEntityModel?.
+                                                    populateEntity?.clientMaster?.length ,
+                                                    itemBuilder: (BuildContext context,int index){
+                                                      return Padding(
+                                                        padding: const EdgeInsets.all(3.0),
+                                                        child: InkWell(
+                                                            onTap: (){
+                                                              controllerX.selectedIndex = index;
+                                                              controllerX.update(['grid']);
+                                                            },
+                                                            child: Expanded(
+                                                              child: Container(
+                                                                  color:(controllerX.selectedIndex == index)? Colors.deepPurpleAccent:Colors.white,
+                                                                  child: Text(controllerX.populateEntityModel?.populateEntity?.clientMaster?[index].softClient??"",
+                                                                    style: TextStyle(color: Colors.black,fontSize: 12),)),
+                                                            )),
+                                                      );
+
+                                                    }):Container():
+                                                (controllerX.isAgency)?
+                                                ( controllerX.populateEntityModel?.populateEntity?.agencyMaster != null &&
+                                                    (controllerX.populateEntityModel?.populateEntity?.agencyMaster?.length??0) >0)?
+                                                ListView.builder(
+                                                    itemCount:controllerX.populateEntityModel?.
+                                                    populateEntity?.agencyMaster?.length ,
+                                                    itemBuilder: (BuildContext context,int index){
+                                                      return Padding(
+                                                        padding: const EdgeInsets.all(3.0),
+                                                        child: InkWell(
+                                                            onTap: (){
+                                                              controllerX.selectedIndex = index;
+                                                              controllerX.update(['grid']);
+                                                            },
+                                                            child: Expanded(
+                                                              child: Container(
+                                                                  color:(controllerX.selectedIndex == index)? Colors.deepPurpleAccent:Colors.white,
+                                                                  child: Text(controllerX.populateEntityModel?.populateEntity?.agencyMaster?[index].softAgency??"",
+                                                                    style: TextStyle(color: Colors.black,fontSize: 12),)),
+                                                            )),
+                                                      );
+
+                                                    }):Container():Container():Container(),
+                                              );*/
                                             }
                                         ),
                                       ),
                                     ),
                                   ),
                                 ],
+                              ),
+                            );
+                          }
+                        ),
+                      ),
+                    /// bottom common buttons
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: GetBuilder<HomeController>(
+                          id: "buttons",
+                          init: Get.find<HomeController>(),
+                          builder: (controller) {
+                            PermissionModel formPermissions = Get.find<MainController>()
+                                .permissionList!
+                                .lastWhere((element) =>
+                            element.appFormName == "frmEDIClientAgencyChannelMapping");
+                            if (controller.buttons != null) {
+                              return ButtonBar(
+                                alignment: MainAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  for (var btn in controller.buttons!)
+                                    FormButtonWrapper(
+                                      btnText: btn["name"],
+                                      callback: Utils.btnAccessHandler2(btn['name'],
+                                          controller, formPermissions) ==
+                                          null
+                                          ? null
+                                          : () => controllerX.formHandler(
+                                        btn['name'],
+                                      ),
+                                    )
+                                ],
                               );
                             }
-                          ),
-                        ),
-                      /// bottom common buttons
-                      Align(
-                        alignment: Alignment.topLeft,
-                        child: GetBuilder<HomeController>(
-                            id: "buttons",
-                            init: Get.find<HomeController>(),
-                            builder: (controller) {
-                              PermissionModel formPermissions = Get.find<MainController>()
-                                  .permissionList!
-                                  .lastWhere((element) =>
-                              element.appFormName == "frmCommercialMaster");
-                              if (controller.buttons != null) {
-                                return ButtonBar(
-                                  alignment: MainAxisAlignment.start,
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    for (var btn in controller.buttons!)
-                                      FormButtonWrapper(
-                                        btnText: btn["name"],
-                                        callback: Utils.btnAccessHandler2(btn['name'],
-                                            controller, formPermissions) ==
-                                            null
-                                            ? null
-                                            : () => controllerX.formHandler(
-                                          btn['name'],
-                                        ),
-                                      )
-                                  ],
-                                );
-                              }
-                              return Container();
-                            }),
-                      ),
-                      SizedBox(height: 2),
-                    ],
-                  ),
-            ),
+                            return Container();
+                          }),
+                    ),
+                    SizedBox(height: 2),
+                  ],
+                ),
           ),
         ),
       ),

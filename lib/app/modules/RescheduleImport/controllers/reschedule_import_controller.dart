@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:bms_salesco/app/data/DropDownValue.dart';
 import 'package:excel/excel.dart';
 import 'package:file_picker/file_picker.dart';
@@ -7,16 +9,19 @@ import 'package:pluto_grid/pluto_grid.dart';
 
 import '../../../../widgets/LoadingDialog.dart';
 import '../../../controller/ConnectorControl.dart';
+import '../../../controller/HomeController.dart';
 import '../../../data/PermissionModel.dart';
 import '../../../providers/ApiFactory.dart';
 import '../../../providers/Utils.dart';
 import '../../../routes/app_pages.dart';
 import '../../SameDayCollection/model/same_day_collection_model.dart';
+import '../RescheduleImportModel.dart';
 
 class RescheduleImportController extends GetxController {
   var locationList = <DropDownValue>[].obs, channelList = <DropDownValue>[].obs;
   DropDownValue? selectedLocation, selectedChannel;
   var locationFN = FocusNode();
+  var channelFN = FocusNode();
   var fromTC = TextEditingController();
   List<PermissionModel>? formPermissions;
   var dataTableList = <dynamic>[].obs;
@@ -24,23 +29,16 @@ class RescheduleImportController extends GetxController {
   PlutoGridStateManager? manager;
   int lastSelctedIdx = 0;
   var fileName = "".obs;
+  FilePickerResult? result;
+  RescheduleImportModel? rescheduleImportModel =
+  RescheduleImportModel(lstreimport: []);
   @override
   void onInit() {
-    formPermissions = Utils.fetchPermissions1(Routes.RATE_CARDFROM_DEAL_WORKFLOW.replaceAll("/", ""));
+    formPermissions = Utils.fetchPermissions1(
+        Routes.RESCHEDULE_IMPORT.replaceAll("/", ""));
     super.onInit();
   }
-
-  clearPage() {
-    fromTC.clear();
-    dataTableList.clear();
-    selectedLocation = null;
-    selectedChannel = null;
-    locationList.refresh();
-    channelList.refresh();
-    locationFN.requestFocus();
-    lastSelctedIdx = 0;
-    manager = null;
-  }
+  
 
   @override
   void onReady() {
@@ -49,71 +47,21 @@ class RescheduleImportController extends GetxController {
   }
 
   saveRecord() {
-    if (selectedLocation == null) {
-      LoadingDialog.showErrorDialog("Please select Location");
-    } else if (selectedChannel == null) {
-      LoadingDialog.showErrorDialog("Please select Channel");
-    } else if (dataTableList.isEmpty) {
-      LoadingDialog.showErrorDialog("Please load data first.");
-    } else {
       LoadingDialog.call();
       Get.find<ConnectorControl>().POSTMETHOD(
-        api: ApiFactory.SAME_DAY_COLLECTION_SAVE_DATA,
-        fun: (resp) {
-          Get.back();
-          if (resp is Map<String, dynamic> && resp['save'] != null) {
-            if (!(resp['save']['isError'] as bool)) {
-              LoadingDialog.callDataSaved(
-                msg: resp['save']['genericMessage'].toString(),
-                callback: () {
-                  clearPage();
-                },
-              );
-            } else {
-              LoadingDialog.showErrorDialog(resp['save']['errorMessage'].toString());
-            }
-          } else if (resp is Map<String, dynamic> && resp['status'] == "failure") {
-            LoadingDialog.showErrorDialog(resp['message'].toString());
-          } else {
-            LoadingDialog.showErrorDialog(resp.toString());
+        api: ApiFactory.Reschedule_Import_ReImport,
+        fun: (map) {
+          closeDialogIfOpen();
+          if(map is Map && map.containsKey('message') && map['message'] != null ){
+            clearAll();
+            LoadingDialog.callDataSavedMessage(map['message']);
+
+          }else{
+            LoadingDialog.showErrorDialog(map.toString());
           }
         },
-        json: dataTableList.map((element) => element.toJson(fromSame: true)).toList(),
+        json: rescheduleImportModel?.toJson(),
       );
-    }
-  }
-
-  showData() {
-    if (selectedLocation == null) {
-      LoadingDialog.showErrorDialog("Please select Location");
-    } else if (selectedChannel == null) {
-      LoadingDialog.showErrorDialog("Please select Channel");
-    } else {
-      LoadingDialog.call();
-      Get.find<ConnectorControl>().GETMETHODCALL(
-          api: ApiFactory.SAME_DAY_COLLECTION_SHOW_DATA(selectedLocation?.key ?? "", selectedChannel?.key ?? ""),
-          fun: (resp) {
-            closeDialogIfOpen();
-            if (resp != null && resp is Map<String, dynamic> && resp['show'] != null) {
-              dataTableList.clear();
-              dataTableList.addAll((resp['show'] as List<dynamic>).map((e) => SameDayCollectionModel.fromJson(e)).toList());
-            } else {
-              if (resp is Map<String, dynamic> && resp['status'] == "failure") {
-                LoadingDialog.showErrorDialog(resp['message'].toString());
-              } else {
-                LoadingDialog.showErrorDialog(resp.toString());
-              }
-            }
-          },
-          failed: (resp) {
-            closeDialogIfOpen();
-            if (resp is Map<String, dynamic> && resp['status'] == "failure") {
-              LoadingDialog.showErrorDialog(resp['message'].toString());
-            } else {
-              LoadingDialog.showErrorDialog(resp.toString());
-            }
-          });
-    }
   }
 
   handleOnChangedLocation(DropDownValue? val) {
@@ -122,20 +70,19 @@ class RescheduleImportController extends GetxController {
       closeDialogIfOpen();
       LoadingDialog.call();
       Get.find<ConnectorControl>().GETMETHODCALL(
-        api: ApiFactory.SAME_DAY_COLLECTION_ON_LEAVE_LOCATION(val.key.toString()),
+        api: ApiFactory.Reschedule_Import_Get_Channel + (val.key ?? ""),
         fun: (resp) {
           closeDialogIfOpen();
-          if (resp != null && resp is Map<String, dynamic> && resp['channel'] != null && resp['channel'] is List<dynamic>) {
-            channelList.clear();
-            selectedChannel = null;
-            channelList.addAll((resp['channel'] as List<dynamic>)
-                .map((e) => DropDownValue(
-                      key: e['channelCode'].toString(),
-                      value: e['channelName'].toString(),
-                    ))
-                .toList());
-          } else {
-            LoadingDialog.showErrorDialog(resp.toString());
+          channelList.clear();
+          if (resp is Map &&
+              resp.containsKey("channel") &&
+              resp['channel'] != null &&
+              resp['channel'].length > 0) {
+            resp['channel'].forEach((e) {
+              channelList.add(DropDownValue.fromJsonDynamic(
+                  e, "channelCode", "channelName"));
+            });
+
           }
         },
         failed: (resp) {
@@ -153,27 +100,19 @@ class RescheduleImportController extends GetxController {
   getOnLoadData() {
     LoadingDialog.call();
     Get.find<ConnectorControl>().GETMETHODCALL(
-        api: ApiFactory.SAME_DAY_COLLECTION_ON_LOAD,
+        api: ApiFactory.Reschedule_Import_LOAD,
         fun: (resp) {
           closeDialogIfOpen();
-          if (resp != null && resp is Map<String, dynamic> && resp['location'] != null && resp['location'] is List<dynamic>) {
-            locationList.value.addAll((resp['location'] as List<dynamic>)
-                .map((e) => DropDownValue(
-                      key: e['locationCode'].toString(),
-                      value: e['locationName'].toString(),
-                    ))
-                .toList());
-            if (locationList.isNotEmpty) {
-              selectedLocation = locationList.first;
-              locationList.refresh();
-              handleOnChangedLocation(selectedLocation);
-            }
-          } else {
-            if (resp is Map<String, dynamic> && resp['status'] == "failure") {
-              LoadingDialog.showErrorDialog(resp['message'].toString());
-            } else {
-              LoadingDialog.showErrorDialog(resp.toString());
-            }
+          locationList.clear();
+          if (resp is Map &&
+              resp.containsKey('location') &&
+              resp['location'] != null &&
+              resp['location'].length > 0) {
+            resp['location'].forEach((e) {
+              locationList.add(new DropDownValue.fromJsonDynamic(
+                  e, "locationCode", "locationName"));
+            });
+            selectedLocation = locationList[0];
           }
         },
         failed: (resp) {
@@ -194,48 +133,62 @@ class RescheduleImportController extends GetxController {
 
   formHandler(btn) {
     if (btn == "Clear") {
-      clearPage();
-    } else if (btn == "Save") {
-      saveRecord();
+      clearAll();
     }
   }
 
-  void handleCheckAndUncheck() {
-    checkedAll.value = !checkedAll.value;
-    if (dataTableList.isNotEmpty) {
-      dataTableList.value = dataTableList.value.map((e) {
-        e.cancel = checkedAll.value;
-        return e;
-      }).toList();
-      dataTableList.refresh();
-    }
+  void handleCheckAndUncheck() {}
+  clearAll() {
+    Get.delete<RescheduleImportController>();
+    Get.find<HomeController>().clearPage1();
   }
+
 
   Future<void> selectFile() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
+    LoadingDialog.call();
+    result = await FilePicker.platform.pickFiles(
       allowMultiple: false,
       allowedExtensions: ['xlsx'],
       type: FileType.custom,
     );
-    if (result != null && result.files.isNotEmpty) {
-      var excel = Excel.decodeBytes(result.files[0].bytes!.toList());
-      var tempList = <Map<dynamic, dynamic>>[];
-      for (var sheetName in excel.tables.keys) {
-        for (var row in (excel.tables[sheetName]!.rows)) {
-          // row ko iterate
-          var data = <dynamic, dynamic>{};
-          for (var i = 0; i < row.length; i++) {
-            /// row key cells
-            data[excel.tables[sheetName]!.rows.first[i]?.value.toString()] = row[i]?.value.toString();
-          }
-          tempList.add(data);
-        }
-      }
+    fileName.value = result?.files[0].name ?? "";
+    closeDialogIfOpen();
+  }
 
-      print(tempList);
-      tempList.removeAt(0);
-      dataTableList.value = tempList;
-      fileName.value = result.files[0].name;
+  showBtn() {
+    try {
+      if (result != null && result!.files.isNotEmpty) {
+        var excel = Excel.decodeBytes(result!.files[0].bytes!.toList());
+        var tempList = <Map<String, dynamic>>[];
+        for (var sheetName in excel.tables.keys) {
+          for (var row in (excel.tables[sheetName]!.rows)) {
+            // row ko iterate
+            var data = <String, dynamic>{};
+            for (var i = 0; i < row.length; i++) {
+              /// row key cells
+              data[(excel.tables[sheetName]!.rows.first[i]?.value).toString()] =
+                  row[i]?.value.toString();
+            }
+            tempList.add(data);
+          }
+        }
+
+        tempList.removeAt(0);
+        // print(jsonEncode(tempList));
+        Map<String, dynamic> postData = {
+          "lstreimport": tempList,
+          "locationCode": selectedLocation?.key ?? "",
+          "channelCode": selectedChannel?.key ?? ""
+        };
+        rescheduleImportModel = RescheduleImportModel.fromJson(postData);
+        print(">>>>>>tojson" + rescheduleImportModel!.toJson().toString());
+        dataTableList.value = tempList;
+      } else {
+        LoadingDialog.showErrorDialog("Please select file");
+      }
+    } catch (e) {
+      print(">>>>>"+e.toString());
+      LoadingDialog.showErrorDialog(e.toString());
     }
   }
 }

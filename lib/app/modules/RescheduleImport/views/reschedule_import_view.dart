@@ -13,8 +13,14 @@ import '../../../providers/Utils.dart';
 import '../controllers/reschedule_import_controller.dart';
 
 class RescheduleImportView extends GetView<RescheduleImportController> {
-  const RescheduleImportView({Key? key}) : super(key: key);
-  @override
+   RescheduleImportView({Key? key}) : super(key: key);
+
+
+   RescheduleImportController controller = Get.put<RescheduleImportController>
+     (RescheduleImportController());
+
+
+   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SizedBox(
@@ -47,6 +53,7 @@ class RescheduleImportView extends GetView<RescheduleImportController> {
                       "Channel",
                       .15,
                       selected: controller.selectedChannel,
+                      inkWellFocusNode: controller.channelFN
                     );
                   }),
                   Obx(
@@ -64,7 +71,7 @@ class RescheduleImportView extends GetView<RescheduleImportController> {
                   ),
                   FormButton(
                     btnText: "Show",
-                    callback: controller.handleCheckAndUncheck,
+                    callback: controller.showBtn,
                   ),
                 ],
               ),
@@ -100,7 +107,7 @@ class RescheduleImportView extends GetView<RescheduleImportController> {
                 padding: const EdgeInsets.only(bottom: 10),
                 child: FormButton(
                   btnText: "Import",
-                  callback: controller.handleCheckAndUncheck,
+                  callback: controller.saveRecord,
                 ),
               ),
             ),

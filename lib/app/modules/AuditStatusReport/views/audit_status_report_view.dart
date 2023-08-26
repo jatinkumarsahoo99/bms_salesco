@@ -11,6 +11,7 @@ import '../../../../widgets/radio_row.dart';
 import '../../../controller/HomeController.dart';
 import '../../../controller/MainController.dart';
 import '../../../data/PermissionModel.dart';
+import '../../../providers/SizeDefine.dart';
 import '../../../providers/Utils.dart';
 import '../controllers/audit_status_report_controller.dart';
 
@@ -173,7 +174,10 @@ class AuditStatusReportView  extends StatelessWidget  {
                                             )) ,
                                             Text(
                                               "Channel",
-                                              style: TextStyle(fontSize: 12),
+                                              style:TextStyle(
+                                                fontSize: SizeDefine.labelSize1,
+                                                fontWeight: FontWeight.w500,
+                                              ),
                                             ),
                                           ],
                                         ),
@@ -220,8 +224,10 @@ class AuditStatusReportView  extends StatelessWidget  {
                                                           Expanded(
                                                             child: Text(
                                                               controllerX.channelList[index].channelName?? "ZEE",
-                                                              style: TextStyle(
-                                                                  fontSize: 12),
+                                                              style:TextStyle(
+                                                                fontSize: SizeDefine.labelSize1,
+                                                                fontWeight: FontWeight.w500,
+                                                              ),
                                                             ),
                                                           )
                                                         ],
@@ -238,6 +244,7 @@ class AuditStatusReportView  extends StatelessWidget  {
                                         height: 10,
                                       ),
                                       Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
                                            DateWithThreeTextField(
                                               title: "Date",
@@ -249,13 +256,13 @@ class AuditStatusReportView  extends StatelessWidget  {
                                             ),
                                           Padding(
                                             padding: const EdgeInsets.only(
-                                                top: 14.0, left: 10, right: 10),
+                                                top: 14.0, left: 0, right: 0),
                                             child: FormButtonWrapper(
                                               btnText: "Generate Audit Status",
                                               callback: () {
                                                 controllerX.fetchGetGenerateAuditStatus();
                                               },
-                                              showIcon: false,
+                                              showIcon: true,
                                             ),
                                           ),
                                         ],
@@ -263,7 +270,10 @@ class AuditStatusReportView  extends StatelessWidget  {
                                       SizedBox(
                                         height: 5,
                                       ),
-                                      Text("T.O. List",  style: TextStyle(fontSize: 12),),
+                                      Text("T.O. List",   style:TextStyle(
+                                        fontSize: SizeDefine.labelSize1,
+                                        fontWeight: FontWeight.w500,
+                                      ),),
                                       SizedBox(
                                         height: 5,
                                       ),
@@ -303,7 +313,7 @@ class AuditStatusReportView  extends StatelessWidget  {
                                                     callback: () {
                                                       controllerX.fetchGetGenerateTOList();
                                                     },
-                                                    showIcon: false,
+                                                    showIcon: true,
                                                   ),
                                                 ),
                                               ),

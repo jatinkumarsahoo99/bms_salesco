@@ -1,7 +1,9 @@
 // import 'package:bms/providers/aad/model/config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:get/get.dart';
 
+import '../controller/MainController.dart';
 import '../data/system_envirtoment.dart';
 import 'ApiFactory.dart';
 
@@ -15,8 +17,6 @@ class Const {
   static GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
   static const instrumentationKey = 'b15b7ae4-ff42-4746-862c-d0c852787f55';
   static const appVersion = '1.0.4';
-
-
 
   static List<SystemEnviroment> systemEnviroments = [
     SystemEnviroment(value: "Data Migration", url: ""),
@@ -42,10 +42,7 @@ class Const {
   static double FIVE_MIN = 5;
   static double ONE_MIN = 7;
 
-
-
-
-  static String getInstrumentKey() {
+  /*static String getInstrumentKey() {
     switch (ApiFactory.Enviroment.toLowerCase()) {
       case "prod":
         return "5029c09c-acd8-44e1-83cf-9a34094599a2";
@@ -212,10 +209,13 @@ class Const {
         return "https://app-salesco-bms-dev.zeeconnect.in";
     }
   }
-
-/*static String getInstrumentKey() {
-    if(!kDebugMode){
-      return Get.find<MainController>().environmentModel?.appInsrtumentationKey??"";
+*/
+  static String getInstrumentKey() {
+    if (!kDebugMode) {
+      return Get.find<MainController>()
+              .environmentModel
+              ?.appInsrtumentationKey ??
+          "";
     }
     switch (ApiFactory.Enviroment.toLowerCase()) {
       case "prod":
@@ -229,10 +229,9 @@ class Const {
     }
   }
 
-
   static String getBaseLoginAPIUrl() {
-    if(!kDebugMode){
-      return Get.find<MainController>().environmentModel?.apiLoginUrl??"";
+    if (!kDebugMode) {
+      return Get.find<MainController>().environmentModel?.apiLoginUrl ?? "";
     }
     switch (ApiFactory.Enviroment.toLowerCase()) {
       case "prod":
@@ -246,9 +245,25 @@ class Const {
     }
   }
 
+  static String getBaseSalescoAPIUrl() {
+    if (!kDebugMode) {
+      return Get.find<MainController>().environmentModel?.apiSalescoUrl ?? "";
+    }
+    switch (ApiFactory.Enviroment.toLowerCase()) {
+      case "prod":
+        return "https://api-salesco-bms.zeeconnect.in";
+      case "uat":
+        return "https://api-salesco-bms-dev.zeeconnect.in";
+      case "dev":
+        return "https://api-salesco-bms-dev.zeeconnect.in";
+      default:
+        return "https://api-salesco-bms-dev.zeeconnect.in";
+    }
+  }
+
   static String getBaseCommonAPIUrl() {
-    if(!kDebugMode){
-      return Get.find<MainController>().environmentModel?.apiCommonUrl??"";
+    if (!kDebugMode) {
+      return Get.find<MainController>().environmentModel?.apiCommonUrl ?? "";
     }
     switch (ApiFactory.Enviroment.toLowerCase()) {
       case "prod":
@@ -263,8 +278,9 @@ class Const {
   }
 
   static String getBaseProgrammingAPIUrl() {
-    if(!kDebugMode){
-      return Get.find<MainController>().environmentModel?.apiProgrammingUrl??"";
+    if (!kDebugMode) {
+      return Get.find<MainController>().environmentModel?.apiProgrammingUrl ??
+          "";
     }
     switch (ApiFactory.Enviroment.toLowerCase()) {
       case "prod":
@@ -279,8 +295,8 @@ class Const {
   }
 
   static String getBaseAdminAPIUrl() {
-    if(!kDebugMode){
-      return Get.find<MainController>().environmentModel?.apiAdminUrl??"";
+    if (!kDebugMode) {
+      return Get.find<MainController>().environmentModel?.apiAdminUrl ?? "";
     }
     switch (ApiFactory.Enviroment.toLowerCase()) {
       case "prod":
@@ -295,8 +311,9 @@ class Const {
   }
 
   static String getBaseSchedulingAPIUrl() {
-    if(!kDebugMode){
-      return Get.find<MainController>().environmentModel?.apiSchedulingUrl??"";
+    if (!kDebugMode) {
+      return Get.find<MainController>().environmentModel?.apiSchedulingUrl ??
+          "";
     }
     switch (ApiFactory.Enviroment.toLowerCase()) {
       case "prod":
@@ -311,8 +328,8 @@ class Const {
   }
 
   static String getWebLoginUrl() {
-    if(!kDebugMode){
-      return Get.find<MainController>().environmentModel?.appLoginUrl??"";
+    if (!kDebugMode) {
+      return Get.find<MainController>().environmentModel?.appLoginUrl ?? "";
     }
     switch (ApiFactory.Enviroment.toLowerCase()) {
       case "prod":
@@ -327,8 +344,8 @@ class Const {
   }
 
   static String getWebCommonUrl() {
-    if(!kDebugMode){
-      return Get.find<MainController>().environmentModel?.appCommonUrl??"";
+    if (!kDebugMode) {
+      return Get.find<MainController>().environmentModel?.appCommonUrl ?? "";
     }
     switch (ApiFactory.Enviroment.toLowerCase()) {
       case "prod":
@@ -343,8 +360,9 @@ class Const {
   }
 
   static String getWebProgrammingUrl() {
-    if(!kDebugMode){
-      return Get.find<MainController>().environmentModel?.appProgrammingUrl??"";
+    if (!kDebugMode) {
+      return Get.find<MainController>().environmentModel?.appProgrammingUrl ??
+          "";
     }
     switch (ApiFactory.Enviroment.toLowerCase()) {
       case "prod":
@@ -359,8 +377,8 @@ class Const {
   }
 
   static String getWebAdminUrl() {
-    if(!kDebugMode){
-      return Get.find<MainController>().environmentModel?.appAdminUrl??"";
+    if (!kDebugMode) {
+      return Get.find<MainController>().environmentModel?.appAdminUrl ?? "";
     }
     switch (ApiFactory.Enviroment.toLowerCase()) {
       case "prod":
@@ -373,9 +391,11 @@ class Const {
         return "https://app-admin-bms-dev.zeeconnect.in";
     }
   }
+
   static String getWebSchedulingUrl() {
-    if(!kDebugMode){
-      return Get.find<MainController>().environmentModel?.appSchedulingUrl??"";
+    if (!kDebugMode) {
+      return Get.find<MainController>().environmentModel?.appSchedulingUrl ??
+          "";
     }
     switch (ApiFactory.Enviroment.toLowerCase()) {
       case "prod":
@@ -387,5 +407,21 @@ class Const {
       default:
         return "https://app-scheduling-bms-dev.zeeconnect.in";
     }
-  }*/
+  }
+
+  static String getWebSalescoUrl() {
+    if (!kDebugMode) {
+      return Get.find<MainController>().environmentModel?.appSalescoUrl ?? "";
+    }
+    switch (ApiFactory.Enviroment.toLowerCase()) {
+      case "prod":
+        return "https://salesco-bms.zeeconnect.in";
+      case "uat":
+        return "https://app-salesco-bms-uat.zeeconnect.in";
+      case "dev":
+        return "https://app-salesco-bms-dev.zeeconnect.in";
+      default:
+        return "https://app-salesco-bms-dev.zeeconnect.in";
+    }
+  }
 }

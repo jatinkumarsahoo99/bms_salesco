@@ -2,6 +2,7 @@ import 'package:bms_salesco/app/providers/extensions/string_extensions.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 // import 'package:flutter/src/foundation/key.dart';
 // import 'package:flutter/src/widgets/framework.dart';
 import 'package:intl/intl.dart';
@@ -13,6 +14,7 @@ import '../app/providers/Utils.dart';
 import '../app/styles/theme.dart';
 
 class DataGridFromMap extends StatelessWidget {
+  final Map<String, double>? widthSpecificColumn;
   DataGridFromMap({
     Key? key,
     required this.mapData,
@@ -44,6 +46,7 @@ class DataGridFromMap extends StatelessWidget {
     this.focusNode,
     this.previousWidgetFN,
     this.specificWidth,
+    this.widthSpecificColumn,
   }) : super(key: key);
   final List mapData;
   bool enableSort;
@@ -91,7 +94,10 @@ class DataGridFromMap extends StatelessWidget {
           enableRowDrag: false,
           enableDropToResize: true,
           enableContextMenu: false,
-          width: 25,
+          minWidth: 5,
+          width: (widthSpecificColumn != null && widthSpecificColumn!.containsKey("no"))
+              ? widthSpecificColumn!["no"]!
+              : Utils.getColumnSize(key: "no", value: mapData[0][key]),
           enableAutoEditing: false,
           hide: hideCode! && key.toString().toLowerCase() != "hourcode" && key.toString().toLowerCase().contains("code"),
           enableColumnDrag: false,
@@ -158,10 +164,15 @@ class DataGridFromMap extends StatelessWidget {
                 enableEditingMode: editKeys != null && editKeys!.contains(key),
                 enableDropToResize: true,
                 enableContextMenu: false,
-                width: Utils.getColumnSize(
+                /*width: Utils.getColumnSize(
                   key: key,
                   value: mapData[0][key].toString(),
-                ),
+                ),*/
+                minWidth: 5,
+                width: (widthSpecificColumn != null && widthSpecificColumn!.containsKey(key))
+                    ? widthSpecificColumn![key]!
+                    : Utils.getColumnSize(key: key, value: mapData[0][key]),
+
                 enableAutoEditing: false,
                 hide: showonly == null
                     ? (hideKeys != null && hideKeys!.contains(key)) ||
@@ -228,7 +239,11 @@ class DataGridFromMap extends StatelessWidget {
             enableEditingMode: editKeys != null && editKeys!.contains(key),
             enableDropToResize: true,
             enableContextMenu: false,
-            width: Utils.getColumnSize(key: key, value: mapData[0][key]),
+            // width: Utils.getColumnSize(key: key, value: mapData[0][key]),
+            minWidth: 5,
+            width: (widthSpecificColumn != null && widthSpecificColumn!.containsKey(key))
+                ? widthSpecificColumn![key]!
+                : Utils.getColumnSize(key: key, value: mapData[0][key]),
             enableAutoEditing: false,
             hide: showonly == null
                 ? (hideKeys != null && hideKeys!.contains(key)) ||
@@ -571,6 +586,7 @@ class DataGridFromMap3 extends StatelessWidget {
           columns: segColumn,
           onRowDoubleTap: onRowDoubleTap,
           onSelected: onSelected,
+
           rows: segRows,
         ),
       ),

@@ -150,10 +150,13 @@ class FormButton extends StatelessWidget {
       onPressed: (isEnabled ?? true)
           ? (btnText == "Exit")
               ? () {
+                  if (callback != null) {
+                    callback!();
+                  }
                   LoadingDialog.callExitForm(() {
                     if (html.window.location.href.contains("loginCode")) {
                       Utils.callJSToExit(param: "exit|${Utils.getFormName()}");
-                      callback!();
+                      // callback!();
                     } else {
                       Get.back();
                     }

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../app/providers/SizeDefine.dart';
+
 class RadioRow extends StatefulWidget {
   final List items;
   final String groupValue;
@@ -37,23 +39,27 @@ class _RadioRowState extends State<RadioRow> {
     return widget.items
         .map(
           (e) => Padding(
-            padding: const EdgeInsets.only(left: 5),
+            padding: const EdgeInsets.only(left: 0),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Radio<String>(
-                  value: e,
-                  groupValue: widget.groupValue,
-                  onChanged: widget.disabledRadios?.contains(e) ?? false
-                      ? null
-                      : (value) {
-                          widget.onchange!(value);
-                        },
-                ),
+                    value: e,
+                    groupValue: widget.groupValue,
+                    visualDensity: const VisualDensity(horizontal: -4),
+                    onChanged: widget.disabledRadios?.contains(e) ?? false
+                        ? null
+                        : (value) {
+                            widget.onchange!(value);
+                          }),
                 Text(
                   e,
                   style: TextStyle(
-                    color: widget.disabledRadios?.contains(e) ?? false ? Colors.grey : Colors.black,
+                    color: widget.disabledRadios?.contains(e) ?? false
+                        ? Colors.grey
+                        : Colors.black,
+                    fontSize: SizeDefine.labelSize1,
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
               ],

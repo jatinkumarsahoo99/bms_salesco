@@ -106,7 +106,7 @@ class AmagiSpotsReplacementView
                             callback: () {
                               // controllerX.fetchGetGenerate();
                             },
-                            showIcon: false,
+                            showIcon: true,
                           ),
                         ),
                         Padding(
@@ -117,7 +117,7 @@ class AmagiSpotsReplacementView
                             callback: () {
                               // controllerX.fetchGetGenerate();
                             },
-                            showIcon: false,
+                            showIcon: true,
                           ),
                         ),
                         Padding(
@@ -128,7 +128,7 @@ class AmagiSpotsReplacementView
                             callback: () {
                               // controllerX.fetchGetGenerate();
                             },
-                            showIcon: false,
+                            showIcon: true,
                           ),
                         ),
                       ],
@@ -144,13 +144,11 @@ class AmagiSpotsReplacementView
                     padding: const EdgeInsets.all(3.0),
                     child: Container(
                       decoration: BoxDecoration(
-                          border: Border.all(color: Colors.black)),
+                          border: Border.all(color: Colors.grey)),
                       child:  GetBuilder<AmagiSpotsReplacementController>(
                           id: "grid",
                           builder: (controllerX) {
                             return Container(
-                              decoration: BoxDecoration(
-                                  border: Border.all(color: Colors.black)),
                               child: Row(
                                 children: [
                                   Expanded(
@@ -163,7 +161,7 @@ class AmagiSpotsReplacementView
                                             padding: const EdgeInsets.all(3.0),
                                             child: Container(
                                               decoration: BoxDecoration(
-                                                  border: Border.all(color: Colors.black)),
+                                                  border: Border.all(color: Colors.grey)),
                                             ),
                                           ),
                                         ),
@@ -173,7 +171,7 @@ class AmagiSpotsReplacementView
                                             padding: const EdgeInsets.all(3.0),
                                             child: Container(
                                               decoration: BoxDecoration(
-                                                  border: Border.all(color: Colors.black)),
+                                                  border: Border.all(color: Colors.grey)),
                                             ),
                                           ),
                                         ),
@@ -308,7 +306,7 @@ class AmagiSpotsReplacementView
                                                   callback: () {
                                                     // controllerX.callGetRetrieve();
                                                   },
-                                                  showIcon: false,
+                                                  showIcon: true,
                                                 ),
                                               ),
                                             ),
@@ -322,7 +320,7 @@ class AmagiSpotsReplacementView
                                                   callback: () {
                                                     // controllerX.callGetRetrieve();
                                                   },
-                                                  showIcon: false,
+                                                  showIcon: true,
                                                 ),
                                               ),
                                             ),
@@ -351,7 +349,7 @@ class AmagiSpotsReplacementView
                                                   callback: () {
                                                     // controllerX.callGetRetrieve();
                                                   },
-                                                  showIcon: false,
+                                                  showIcon: true,
                                                 ),
                                               ),
                                             ),
@@ -365,7 +363,7 @@ class AmagiSpotsReplacementView
                                                   callback: () {
                                                     // controllerX.callGetRetrieve();
                                                   },
-                                                  showIcon: false,
+                                                  showIcon: true,
                                                 ),
                                               ),
                                             ),
@@ -387,7 +385,7 @@ class AmagiSpotsReplacementView
                                                   callback: () {
                                                     // controllerX.callGetRetrieve();
                                                   },
-                                                  showIcon: false,
+                                                  showIcon: true,
                                                 ),
                                               ),
                                             ),
@@ -401,7 +399,7 @@ class AmagiSpotsReplacementView
                                                   callback: () {
                                                     // controllerX.callGetRetrieve();
                                                   },
-                                                  showIcon: false,
+                                                  showIcon: true,
                                                 ),
                                               ),
                                             ),
@@ -418,7 +416,7 @@ class AmagiSpotsReplacementView
                                             callback: () {
                                               // controllerX.callGetRetrieve();
                                             },
-                                            showIcon: false,
+                                            showIcon: true,
                                           ),
                                         ),
                                         SizedBox(
@@ -498,7 +496,7 @@ class AmagiSpotsReplacementView
                                             padding: const EdgeInsets.all(3.0),
                                             child: Container(
                                               decoration: BoxDecoration(
-                                                  border: Border.all(color: Colors.black)),
+                                                  border: Border.all(color: Colors.grey)),
                                             ),
                                           ),
                                         ),
@@ -525,11 +523,12 @@ class AmagiSpotsReplacementView
                         PermissionModel formPermissions = Get.find<MainController>()
                             .permissionList!
                             .lastWhere((element) =>
-                        element.appFormName == "frmCommercialMaster");
+                        element.appFormName == "frmSPReports");
                         if (controller.buttons != null) {
-                          return ButtonBar(
-                            alignment: MainAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.min,
+                          return Wrap(
+                            spacing: 5,
+                            runSpacing: 15,
+                            alignment: WrapAlignment.center,
                             children: [
                               for (var btn in controller.buttons!)
                                 FormButtonWrapper(

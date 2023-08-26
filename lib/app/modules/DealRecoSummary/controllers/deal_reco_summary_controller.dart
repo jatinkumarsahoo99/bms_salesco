@@ -31,7 +31,17 @@ class DealRecoSummaryController extends GetxController {
   FocusNode dealNoFocusNode = FocusNode();
   bool isFocusActive = false;
 
-
+  FocusNode locationNode = FocusNode();
+  FocusNode channelNode = FocusNode();
+  FocusNode clientNode = FocusNode();
+  FocusNode agencyNode = FocusNode();
+  FocusNode zoneNode = FocusNode();
+  FocusNode executiveNamNode = FocusNode();
+  closeDialogIfOpen() {
+    if (Get.isDialogOpen ?? false) {
+      Get.back();
+    }
+  }
   fetchAllLoaderData() {
     // LoadingDialog.call();
     Get.find<ConnectorControl>().GETMETHODCALL(
@@ -63,24 +73,32 @@ class DealRecoSummaryController extends GetxController {
   }
 
   fetchClient(String locationName){
+    LoadingDialog.call();
     Get.find<ConnectorControl>().GETMETHODCALL(
         api: ApiFactory.DEAL_RECO_SUMMARY_GET_CLIENT+locationName,
         // "https://jsonkeeper.com/b/D537"
         fun: ( map) {
-          // Get.back();
+          Get.back();
+          clientList.clear();
           // print(">>>>>>"+map.toString());
           if(map is Map && map.containsKey('client') && map['client'] != null && map['client'].length > 0){
-            clientList.clear();
+            RxList<DropDownValue>? dataList = RxList([]);
               map['client'].forEach((e){
-                clientList.add(DropDownValue.fromJsonDynamic(e, "clientcode", "clientname"));
+                dataList.add(DropDownValue.fromJsonDynamic(e, "clientcode", "clientname"));
               });
+            clientList = dataList;
           }
+
 
         });
 
   }
 
+
+
+
   fetchAgency(){
+    LoadingDialog.call();
     Map<String, dynamic> postData = {
       "LocationName": selectedLocation?.value??"",
       "ChannelName": ((selectedChannel?.value)??""),
@@ -90,13 +108,15 @@ class DealRecoSummaryController extends GetxController {
         api: ApiFactory.DEAL_RECO_SUMMARY_GET_AGENCY,
         json: postData,
         fun: ( map) {
-          // Get.back();
+          Get.back();
+          agencyList.clear();
           // print(">>>>>>"+map.toString());
           if(map is Map && map.containsKey('agency') && map['agency'] != null && map['agency'].length > 0){
-            agencyList.clear();
+            RxList<DropDownValue>? dataList = RxList([]);
             map['agency'].forEach((e){
-              agencyList.add(DropDownValue.fromJsonDynamic(e, "agencycode", "agencyname"));
+              dataList.add(DropDownValue.fromJsonDynamic(e, "agencycode", "agencyname"));
             });
+            agencyList = dataList;
           }
 
         });
@@ -123,6 +143,7 @@ class DealRecoSummaryController extends GetxController {
   }
 
   fetchADealNo(){
+    LoadingDialog.call();
     Map<String, dynamic> postData = {
       "LocationName": selectedLocation?.value??"",
       "ChannelName": ((selectedChannel?.value)??""),
@@ -133,13 +154,15 @@ class DealRecoSummaryController extends GetxController {
         api: ApiFactory.DEAL_RECO_SUMMARY_GET_DEAL,
         json: postData,
         fun: ( map) {
-          // Get.back();
+          Get.back();
           // print(">>>>>>"+map.toString());
+          dealNoList.clear();
           if(map is Map && map.containsKey('deal') && map['deal'] != null && map['deal'].length > 0){
-            dealNoList.clear();
+            RxList<DropDownValue>? dataList = RxList([]);
             map['deal'].forEach((e){
-              dealNoList.add(DropDownValue.fromJsonDynamic(e, "dealnumber1", "dealNumber"));
+              dataList.add(DropDownValue.fromJsonDynamic(e, "dealnumber1", "dealNumber"));
             });
+            dealNoList = dataList;
           }
 
         });
@@ -162,7 +185,7 @@ class DealRecoSummaryController extends GetxController {
         fun: ( map) {
           Get.back();
           print(">>>>>>"+map.toString());
-          if(map is Map && map.containsKey('gentare') && map['gentare'] != null && map['gentare'].length > 0){
+          if(map is Map && map.containsKey('genrate') && map['genrate'] != null && map['genrate'].length > 0){
             dealRecoSummaryModel = DealRecoSummaryModel.fromJson(map as Map<String,dynamic>) ;
             update(['grid']);
           }else{

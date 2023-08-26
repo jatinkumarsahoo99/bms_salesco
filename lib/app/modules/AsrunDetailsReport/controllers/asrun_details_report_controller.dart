@@ -67,6 +67,11 @@ class AsrunDetailsReportController extends GetxController {
     Get.delete<AsrunDetailsReportController>();
     Get.find<HomeController>().clearPage1();
   }
+  closeDialogIfOpen() {
+    if (Get.isDialogOpen ?? false) {
+      Get.back();
+    }
+  }
 
   fetchGetGenerate(){
     List<ChannelListModel> channelListFilter=[];
@@ -97,7 +102,7 @@ class AsrunDetailsReportController extends GetxController {
           json: postData,
           fun: (map) {
             Get.back();
-            print("map>>>"+ jsonEncode(map).toString());
+            // print("map>>>"+ jsonEncode(map).toString());
             if(map is Map && map.containsKey('generate') && map['generate'] != null
                 && map['generate'].length >0 ){
               asrunDetailsReportModel = AsrunDetailsReportModel.fromJson(map as Map<String,dynamic>);

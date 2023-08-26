@@ -2,6 +2,7 @@ import 'package:bms_salesco/app/controller/MainController.dart';
 import 'package:bms_salesco/app/modules/AmagiSpotPlanning/views/amagi_spot_planning_view.dart';
 import 'package:bms_salesco/app/modules/AmagiSpotsReplacement/views/amagi_spots_replacement_view.dart';
 import 'package:bms_salesco/app/modules/MakeGoodReport/views/make_good_report_view.dart';
+import 'package:bms_salesco/app/modules/NewShortContentForm/views/new_short_content_form_view.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -11,6 +12,7 @@ import '../../widgets/NoDataFoundPage.dart';
 import '../modules/AmagiStatusReport/views/amagi_status_report_view.dart';
 import '../modules/AutoTimeLock/views/auto_time_lock_view.dart';
 import '../modules/ChangeRONumber/views/change_r_o_number_view.dart';
+import '../modules/DealWorkflowDefinition/views/workflow_definition_view.dart';
 import '../modules/CommercialCreationAutoDetails/views/CommercialCreationAutoDetailsView.dart';
 import '../modules/GeoProgramUpdate/views/geo_program_update_view.dart';
 import '../modules/InternationalSalesReport/views/international_sales_report_view.dart';
@@ -25,7 +27,7 @@ import '../modules/AuditStatusReport/views/audit_status_report_view.dart';
 import '../modules/DealRecoSummary/views/deal_reco_summary_view.dart';
 import '../modules/EDI_Mapping/views/e_d_i_mapping_view.dart';
 
-import '../modules/OnSpotBookingSkyMedia/views/on_spot_booking_sky_media_view.dart';
+import '../modules/OneSpotBookingSkyMedia/views/one_spot_booking_sky_media_view.dart';
 import '../modules/PeriodicDealUtilisationFormat2/views/periodic_deal_utilisation_format2_view.dart';
 import '../modules/RateCardfromDealWorkflow/views/rate_cardfrom_deal_workflow_view.dart';
 import '../modules/RescheduleImport/views/reschedule_import_view.dart';
@@ -38,7 +40,7 @@ import '../modules/SameDayCollection/views/same_day_collection_view.dart';
 import '../modules/TapeIDCampaign/views/tape_i_d_campaign_view.dart';
 import '../modules/Update_Executive/views/update_executive_view.dart';
 import '../modules/UserGroupsForDealWorkflow/views/user_groups_for_deal_workflow_view.dart';
-import '../modules/WorkflowDefinition/views/workflow_definition_view.dart';
+import '../modules/ViewOldDeal/views/view_old_deal_view.dart';
 import '../modules/ZoneWiseInventoryUtilization/views/zone_wise_inventory_utilization_view.dart';
 
 import '../routes/app_pages.dart';
@@ -103,11 +105,14 @@ class AuthGuard extends StatelessWidget {
             case Routes.GEO_PROGRAM_UPDATE:
               currentWidget = GeoProgramUpdateView();
               break;
+            case Routes.NEW_SHORT_CONTENT_FORM:
+              currentWidget = NewShortContentFormView();
+              break;
             case Routes.WORKFLOW_DEFINITION:
               currentWidget = WorkflowDefinitionView();
               break;
-            case Routes.ON_SPOT_BOOKING_SKY_MEDIA:
-              currentWidget = OnSpotBookingSkyMediaView();
+            case Routes.ONE_SPOT_BOOKING_SKY_MEDIA:
+              currentWidget = OneSpotBookingSkyMediaView();
               break;
             case Routes.PERIODIC_DEAL_UTILISATION_FORMAT2:
               currentWidget = PeriodicDealUtilisationFormat2View();
@@ -162,6 +167,9 @@ class AuthGuard extends StatelessWidget {
               break;
             case Routes.COMMERCIAL_CREATION_AUTO_DETAILS:
               currentWidget = CommercialCreationAutoDetailsView();
+              break;
+            case Routes.VIEW_OLD_DEAL:
+              currentWidget = ViewOldDealView();
               break;
             default:
               currentWidget = const NoDataFoundPage();

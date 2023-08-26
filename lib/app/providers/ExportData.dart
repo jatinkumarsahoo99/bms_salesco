@@ -18,13 +18,35 @@ class ExportData {
       var excel = Excel.createExcel();
       Sheet sheetObject = excel[screenName];
       excel.setDefaultSheet(screenName);
-      sheetObject.appendRow((jsonList![0]).keys.listData());
+      sheetObject.appendRow((jsonList![0]).keys.toList());
       for (var element in jsonList!) {
         sheetObject.appendRow((element as Map).values.toList());
       }
       var value = excel.encode()!;
       String time = DateTime.now().toString();
       var fileBytes = excel.save(fileName: "$screenName-$time.xlsx");
+      // FlutterFileSaver()
+      //     .writeFileAsBytes(
+      //       fileName: 'fpc_search.xlsx',
+      //       bytes: value as Uint8List,
+      //     )
+      //     .then((value) => Snack.callSuccess("File save to $value"));
+    } else {
+      Snack.callError("NO DATA TO EXPORT");
+    }
+  }
+  exportExcelFromJsonList1(jsonList, screenName) {
+    if (jsonList!.isNotEmpty) {
+      var excel = Excel.createExcel();
+      Sheet sheetObject = excel[screenName];
+      excel.setDefaultSheet(screenName);
+      sheetObject.appendRow((jsonList![0]).keys.toList());
+      for (var element in jsonList!) {
+        sheetObject.appendRow((element as Map).values.toList());
+      }
+      var value = excel.encode()!;
+      String time = DateTime.now().toString();
+      var fileBytes = excel.save(fileName: "$screenName.xlsx");
       // FlutterFileSaver()
       //     .writeFileAsBytes(
       //       fileName: 'fpc_search.xlsx',

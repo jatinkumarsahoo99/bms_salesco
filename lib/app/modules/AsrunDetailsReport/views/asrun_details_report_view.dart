@@ -9,10 +9,11 @@ import '../../../../widgets/gridFromMap.dart';
 import '../../../controller/HomeController.dart';
 import '../../../controller/MainController.dart';
 import '../../../data/PermissionModel.dart';
+import '../../../providers/SizeDefine.dart';
 import '../../../providers/Utils.dart';
 import '../controllers/asrun_details_report_controller.dart';
 
-class AsrunDetailsReportView extends GetView<AsrunDetailsReportController> {
+class AsrunDetailsReportView extends StatelessWidget {
    AsrunDetailsReportView({Key? key}) : super(key: key);
 
    AsrunDetailsReportController controllerX =
@@ -25,7 +26,7 @@ class AsrunDetailsReportView extends GetView<AsrunDetailsReportController> {
     return Scaffold(
       body: Center(
         child: Padding(
-          padding: const EdgeInsets.all(3.0),
+          padding: const EdgeInsets.all(8.0),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -38,191 +39,191 @@ class AsrunDetailsReportView extends GetView<AsrunDetailsReportController> {
                 height: 2,
               ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Expanded(
-                    flex: 7,
-                    child: FocusTraversalGroup(
-                      policy: OrderedTraversalPolicy(),
-                      child: Column(
-                        children: [
-                          Obx(()=>DropDownField.formDropDown1WidthMap(
-                            controllerX.locationList.value??[],
-                                (value) {
-                              controllerX.selectedLocation = value;
-                            }, "Location", .41,
-                            isEnable: controllerX.isEnable,
-                            selected: controllerX.selectedLocation,
-                            dialogHeight: Get.height * .35,
-                            autoFocus: true,),),
-                          Padding(
-                            padding:
-                            const EdgeInsets.only(top: 3.0),
-                            child: Row(
-                              children: [
-                                SizedBox(
-                                  width: MediaQuery.of(context).size.width*0.1,
-                                ),
-                                Obx(()=>Checkbox(
-                                  value: controllerX.checked.value,
-                                  side: const BorderSide(color: Colors.deepPurpleAccent),
-                                  onChanged: (bool? value) {
-                                    controllerX.checked.value = value!;
-                                    if(value!){
-                                      for (var element in controllerX
-                                          .channelList) {
-                                        element.ischecked = true;
-                                      }
-                                      controllerX.update(['updateList']);
-                                    }else{
-                                      for (var element in controllerX
-                                          .channelList) {
-                                        element.ischecked = false;
-                                      }
-                                      controllerX.update(['updateList']);
-                                    }
-
-                                  },
-                                )) ,
-                                Text(
-                                  "Channel",
-                                  style: TextStyle(fontSize: 12),
-                                ),
-                              ],
-                            ),
-                          ),
-                          SizedBox(height: 3),
-                          Container(
-                            height: MediaQuery.of(context).size.height * .17,
-                            width: MediaQuery.of(context).size.width*0.41,
-                            // margin: EdgeInsets.symmetric(vertical: 10),
-                            child: GetBuilder<
-                                AsrunDetailsReportController>(
-                              id: "updateList",
-                              builder: (control) {
-                                return Stack(
-                                  children: [
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        border: Border.all(
-                                            color: Colors
-                                                .deepPurpleAccent),
-                                        borderRadius:
-                                        BorderRadius.circular(
-                                            0),
-                                      ),
-                                      margin: EdgeInsets.only(top: 1,left: 0,bottom: 0,right: 0),
-                                      child: ListView.builder(
-                                        controller:
-                                        ScrollController(),
-                                        itemCount:controllerX.channelList.length,
-                                        itemBuilder:
-                                            (context, int index) {
-                                          return Padding(
-                                            padding: const EdgeInsets.only(left: 5.0,right: 5,bottom: 3,top: 0),
-                                            child: Row(
-                                              children: [
-                                                Checkbox(
-                                                  value: controllerX.channelList[index].ischecked,
-                                                  side: const BorderSide(color: Colors.deepPurpleAccent),
-                                                  onChanged:
-                                                      (bool? value) {
-                                                        controllerX.channelList[index].ischecked = value;
-                                                        controllerX.update(['updateList']);
-                                                  },
-                                                ),
-                                                Expanded(
-                                                  child: Text(
-                                                    controllerX.channelList[index].channelName?? "ZEE",
-                                                    style: TextStyle(
-                                                        fontSize: 12,fontWeight: FontWeight.bold),
-                                                  ),
-                                                )
-                                              ],
-                                            ),
-                                          );
-                                        },
-                                      ),
-                                    ),
-                                  ],
-                                );
-                              },
-                            ),
-                          ),
-
-                        ],
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    flex: 2,
+                  FocusTraversalGroup(
+                    policy: OrderedTraversalPolicy(),
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        DateWithThreeTextField(
-                          title: "From Date",
-                          mainTextController: controllerX.frmDate,
-                          widthRation: .1,
+                        Obx(()=>DropDownField.formDropDown1WidthMap(
+                          controllerX.locationList.value??[],
+                              (value) {
+                            controllerX.selectedLocation = value;
+                          }, "Location", .41,
                           isEnable: controllerX.isEnable,
-                        ),
-                        DateWithThreeTextField(
-                          title: "To Date",
-                          mainTextController: controllerX.toDate,
-                          widthRation: .1,
-                          isEnable: controllerX.isEnable,
-                        ),
+                          selected: controllerX.selectedLocation,
+                          dialogHeight: Get.height * .35,
+                          autoFocus: true,),),
                         Padding(
-                          padding: const EdgeInsets.only(
-                              top: 14.0, left: 10, right: 10),
-                          child: FormButtonWrapper(
-                            btnText: "Genrate",
-                            callback: () {
-                              controllerX.fetchGetGenerate();
-                            },
-                            showIcon: false,
+                          padding:
+                          const EdgeInsets.only(top: 3.0,left: 0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Obx(()=>Checkbox(
+                                value: controllerX.checked.value,
+                                side: const BorderSide(color: Colors.deepPurpleAccent),
+                                onChanged: (bool? value) {
+                                  controllerX.checked.value = value!;
+                                  if(value!){
+                                    for (var element in controllerX
+                                        .channelList) {
+                                      element.ischecked = true;
+                                    }
+                                    controllerX.update(['updateList']);
+                                  }else{
+                                    for (var element in controllerX
+                                        .channelList) {
+                                      element.ischecked = false;
+                                    }
+                                    controllerX.update(['updateList']);
+                                  }
+
+                                },
+                              )) ,
+                              Text(
+                                "Channel",
+                                style: TextStyle(
+                                  fontSize: SizeDefine.labelSize1,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
+                        SizedBox(height: 3),
+                        Container(
+                          height: MediaQuery.of(context).size.height * .17,
+                          width: MediaQuery.of(context).size.width*0.41,
+                          // margin: EdgeInsets.symmetric(vertical: 10),
+                          child: GetBuilder<
+                              AsrunDetailsReportController>(
+                            id: "updateList",
+                            builder: (control) {
+                              return Stack(
+                                children: [
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                          color: Colors
+                                              .deepPurpleAccent),
+                                      borderRadius:
+                                      BorderRadius.circular(
+                                          0),
+                                    ),
+                                    margin: EdgeInsets.only(top: 1,left: 0,bottom: 0,right: 0),
+                                    child: ListView.builder(
+                                      controller:
+                                      ScrollController(),
+                                      itemCount:controllerX.channelList.length,
+                                      itemBuilder:
+                                          (context, int index) {
+                                        return Padding(
+                                          padding: const EdgeInsets.only(left: 5.0,right: 5,bottom: 3,top: 0),
+                                          child: Row(
+                                            children: [
+                                              Checkbox(
+                                                value: controllerX.channelList[index].ischecked,
+                                                side: const BorderSide(color: Colors.deepPurpleAccent),
+                                                onChanged:
+                                                    (bool? value) {
+                                                      controllerX.channelList[index].ischecked = value;
+                                                      controllerX.update(['updateList']);
+                                                },
+                                              ),
+                                              Expanded(
+                                                child: Text(
+                                                  controllerX.channelList[index].channelName?? "ZEE",
+                                                  style: TextStyle(
+                                                    fontSize: SizeDefine.labelSize1,
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              );
+                            },
+                          ),
+                        ),
+
                       ],
                     ),
                   ),
-                  Container(
-                    width: MediaQuery.of(context).size.width*0.2,
-                  )
+                  SizedBox(
+                    width: size.width*0.07,
+                  ),
+                  Column(
+                    children: [
+                      DateWithThreeTextField(
+                        title: "From Date",
+                        mainTextController: controllerX.frmDate,
+                        widthRation: .1,
+                        isEnable: controllerX.isEnable,
+                      ),
+                      DateWithThreeTextField(
+                        title: "To Date",
+                        mainTextController: controllerX.toDate,
+                        widthRation: .1,
+                        isEnable: controllerX.isEnable,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            top: 14.0, left: 10, right: 10),
+                        child: FormButtonWrapper(
+                          btnText: "Genrate",
+                          callback: () {
+                            controllerX.fetchGetGenerate();
+                          },
+                          showIcon: true,
+                        ),
+                      ),
+                    ],
+                  ),
 
                 ],
               ),
+              SizedBox(
+                height: 8,
+              ),
               Expanded(
                 // flex: 9,
-                child: Padding(
-                  padding: const EdgeInsets.all(3.0),
-                  child: Container(
-                    child:  GetBuilder<AsrunDetailsReportController>(
-                        id: "grid",
-                        builder: (controllerX) {
-                          return Container(
-                            child: (controllerX.asrunDetailsReportModel != null &&
-                                controllerX.asrunDetailsReportModel!.generate != null &&
-                                controllerX.asrunDetailsReportModel!.generate!.length >0
-                            )?DataGridFromMap(
-                              showSrNo: false,
-                              hideCode: false,
-                              formatDate: false,
-                              mapData: (controllerX.asrunDetailsReportModel!.generate
-                                  ?.map((e) => e.toJson())
-                                  .toList())!,
-                              // mapData: (controllerX.dataList)!,
-                              widthRatio: Get.width / 9 - 1,
-                            ):Container(
-                              decoration: BoxDecoration(
-                                  border: Border.all(color: Colors.grey)),
-                            ),
-                          );
-                        }
-                    ),
-
+                child: Container(
+                  child:  GetBuilder<AsrunDetailsReportController>(
+                      id: "grid",
+                      builder: (controllerX) {
+                        return Container(
+                          child: (controllerX.asrunDetailsReportModel != null &&
+                              controllerX.asrunDetailsReportModel!.generate != null &&
+                              controllerX.asrunDetailsReportModel!.generate!.length >0
+                          )?DataGridFromMap(
+                            showSrNo: false,
+                            hideCode: false,
+                            formatDate: false,
+                            mapData: (controllerX.asrunDetailsReportModel!.generate
+                                ?.map((e) => e.toJson())
+                                .toList())!,
+                            // mapData: (controllerX.dataList)!,
+                            widthRatio: Get.width / 9 - 1,
+                          ):Container(
+                            decoration: BoxDecoration(
+                                border: Border.all(color: Colors.grey)),
+                          ),
+                        );
+                      }
                   ),
+
                 ),
               ),
-
+              SizedBox(
+                height: 8,
+              ),
               /// bottom common buttons
               Align(
                 alignment: Alignment.topLeft,
@@ -235,9 +236,10 @@ class AsrunDetailsReportView extends GetView<AsrunDetailsReportController> {
                           .lastWhere((element) =>
                       element.appFormName == "frmAsrundetailsReport");
                       if (controller.buttons != null) {
-                        return ButtonBar(
-                          alignment: MainAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.min,
+                        return Wrap(
+                          spacing: 5,
+                          runSpacing: 15,
+                          alignment: WrapAlignment.center,
                           children: [
                             for (var btn in controller.buttons!)
                               FormButtonWrapper(

@@ -60,10 +60,10 @@ PlutoGridConfiguration plutoGridConfiguration({
             LogicalKeySet(LogicalKeyboardKey.enter): CustomEnterKeyAction(actionOnPress: actionOnPress, actionKey: actionKey),
           },
         ),
-        columnSize: PlutoGridColumnSizeConfig(
+       /* columnSize: PlutoGridColumnSizeConfig(
           resizeMode: PlutoResizeMode.normal,
           autoSizeMode: autoScale ? PlutoAutoSizeMode.scale : PlutoAutoSizeMode.none,
-        ),
+        ),*/
         style: PlutoGridStyleConfig(
             rowHeight: 35,
             columnHeight: 30,

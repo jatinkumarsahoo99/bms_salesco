@@ -1,4 +1,4 @@
-FROM zeelakscontainer.azurecr.io/bms-web-va:1.2 AS build-env
+FROM zeelakscontainer.azurecr.io/bms-web-va:1.3 AS build-env
 ARG Environment_name
 
 # Prerequisites
@@ -38,7 +38,7 @@ WORKDIR /app/
 RUN flutter build web --dart-define=ENV=${Environment_name}
 #RUN flutter run
 
-FROM zeelakscontainer.azurecr.io/bms-web-va:1.2
+FROM zeelakscontainer.azurecr.io/bms-web-va:1.3
 RUN apt-get update
 RUN apt-get install curl -y
 RUN curl -sL https://deb.nodesource.com/setup_19.x | bash
@@ -48,8 +48,11 @@ WORKDIR /app
 COPY --from=build-env /app/build/web /app/public-flutter
 COPY ./server/app.js /app/app.js
 COPY ./server/package.json /app/package.json
+COPY startup.sh .
+RUN chmod 777 startup.sh
 RUN npm install
 ENV NODE_ENV production
 ENV ENVIRONMENT production
 EXPOSE 3000
-CMD pm2-docker app.js
+#CMD pm2-docker app.js
+CMD sh ./startup.sh && pm2-docker app.js
