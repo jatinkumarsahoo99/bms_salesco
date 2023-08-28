@@ -176,6 +176,13 @@ class ApiFactory {
   static String RO_RECEIVED_SAVE = "$BASE_URL/api/ROReceived/SaveRecords";
 
 ///////////////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////// EDI RO BOOKING ///////////////////////////////////////////
+
+  static String EDI_RO_INIT = "$BASE_URL/api/EDIRoBooking/OnLoadXmlRoBooking";
+
+///////////////////////////////////////////////////////////////////////////////////////////
+
 ////////////////////////// Create Break Pattern ///////////////////////////////////////////
   static String CREATE_BREAK_PATTERN_INIT = "$BASE_URL/api/CreateBreakPattern/Initialize";
 
@@ -592,8 +599,6 @@ class ApiFactory {
       "$BASE_URL/api/ModuleFormTransaction/GetModuleFormDetails?ModuleCode=$moduleCode";
   ///////////////////////// END MODULE FORM TRANSACTION API//////
 
-
-
 ///////////////////////////// Asrun Details Report ///////////////////////////////
 
   static String get ASRUN_DETAILS_REPORT_LOAD => "$BASE_URL/api/AsrundetailsReport/AsrundetailsReportLoad";
@@ -649,7 +654,7 @@ class ApiFactory {
 ////////////////////////////////////////////// User Groups For Deal Work flow  //////////////////////////////////////////
   static String get USER_GROUPS_FOR_DEAL_WORKFLOW_EmpSearch => "$BASE_URL/api/UserGroupsForDealWorkflow/GetEmployeeSearch?TextEmployeeSearch=";
   static String get USER_GROUPS_FOR_DEAL_WORKFLOW_GET_DISPLAY_GROUP => "$BASE_URL/api/UserGroupsForDealWorkflow/GetDisplayGroup?GroupName=";
-  static String get USER_GROUPS_FOR_DEAL_WORKFLOW_SAVE=> "$BASE_URL/api/UserGroupsForDealWorkflow/Save";
+  static String get USER_GROUPS_FOR_DEAL_WORKFLOW_SAVE => "$BASE_URL/api/UserGroupsForDealWorkflow/Save";
 
   //////////////////////////////////////////////// Update Executive ////////////////////////////////////////////////////////
   static String get UPDATE_EXECUTIVE_LOAD => "$BASE_URL/api/UpdateExecutive/GetUEOnLoad";
@@ -697,7 +702,7 @@ class ApiFactory {
   static String get Rate_Card_From_Deal_Workflow_LOAD => "$BASE_URL/api/DPRateCard/GetLocationLoad";
   static String get Rate_Card_From_Deal_Workflow_GET_Channel => "$BASE_URL/api/DPRateCard/GetChannel";
   static String get Rate_Card_From_Deal_Workflow_Export => "$BASE_URL/api/DPRateCard/Export";
-  static String get Rate_Card_From_Deal_Workflow_SAVE=> "$BASE_URL/api/DPRateCard/Save";
+  static String get Rate_Card_From_Deal_Workflow_SAVE => "$BASE_URL/api/DPRateCard/Save";
 
 ///////////////////////////////////////////// Amagi Spot Planning //////////////////////////
   static String get Amagi_Spot_Planning_LOAD => "$BASE_URL/api/AmagiSpotPlanning/GetLocation";
@@ -713,8 +718,6 @@ class ApiFactory {
   static String get Reschedule_Import_LOAD => "$BASE_URL/api/RescheduleImport/GetLocation";
   static String get Reschedule_Import_Get_Channel => "$BASE_URL/api/RescheduleImport/GetChannel?locationcode=";
   static String get Reschedule_Import_ReImport => "$BASE_URL/api/RescheduleImport/ReImport";
-
-
 
   ///
   ///
@@ -803,7 +806,8 @@ class ApiFactory {
   ///////////////////////// MAKE-GOOD-REPORT-START//////
   static String get COMMERCIAL_LANG_SPEC_LOCATION => "$BASE_URL/api/CommercialLanguageSpec/GetLocation";
   static String COMMERCIAL_LANG_SPEC_CHANNEL(String locName) => "$BASE_URL/api/CommercialLanguageSpec/GetLocationsLeave?LocationCode=$locName";
-  static String COMMERCIAL_LANG_SPEC_DISPLAY(String loc,String chanl) => "$BASE_URL/api/CommercialLanguageSpec/GetDisplay?LocationCode=$loc&channlecode=$chanl";
+  static String COMMERCIAL_LANG_SPEC_DISPLAY(String loc, String chanl) =>
+      "$BASE_URL/api/CommercialLanguageSpec/GetDisplay?LocationCode=$loc&channlecode=$chanl";
   static String get COMMERCIAL_LANG_SPEC_SAVE => "$BASE_URL/api/CommercialLanguageSpec/PostSave";
   ///////////////////////// MAKE-GOOD-REPORT-END//////
   ///
