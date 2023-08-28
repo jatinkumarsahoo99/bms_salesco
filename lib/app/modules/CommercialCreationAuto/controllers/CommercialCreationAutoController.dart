@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:bms_salesco/app/controller/HomeController.dart';
 import 'package:bms_salesco/app/controller/MainController.dart';
 import 'package:bms_salesco/widgets/LoadingDialog.dart';
 import 'package:get/get.dart';
@@ -14,10 +15,12 @@ class CommercialCreationAutoController extends GetxController {
   PlutoGridStateManager? stateManager;
   Rxn<ComercialAutoLoadModel>? loadModel = Rxn<ComercialAutoLoadModel>(null);
   Map<String, double> userGridSetting = {};
+  List<Map<String, double>>? userGridSetting1 = [];
 
   @override
   void onInit() {
-    fetchUserSetting();
+    fetchUserSetting1();
+    // fetchUserSetting();
     getLoad();
     super.onInit();
   }
@@ -119,5 +122,10 @@ class CommercialCreationAutoController extends GetxController {
             });
           }
         });
+  }
+
+  fetchUserSetting1() async {
+    userGridSetting1 = await Get.find<HomeController>().fetchUserSetting();
+    print("Hi Test");
   }
 }

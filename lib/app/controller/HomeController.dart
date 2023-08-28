@@ -74,7 +74,6 @@ class HomeController extends GetxController {
   }
   Future<List<Map<String, double>>>? fetchUserSetting() {
     List<Map<String, double>> data=[];
-    Map<String, double> userGridSetting = {};
     Get.find<ConnectorControl>().GETMETHODCALL(
         api: ApiFactory.FETCH_USER_SETTING +
             "?formName=${Get.find<MainController>().formName}",
@@ -83,9 +82,10 @@ class HomeController extends GetxController {
           if (map is Map &&
               map.containsKey("userSetting") &&
               map["userSetting"] != null) {
+
             map["userSetting"].forEach((e){
               Map<String, double> userGridSetting = {};
-              jsonDecode(e).forEach((key, value) {
+              jsonDecode(e["userSettings"]).forEach((key, value) {
                 print("Data key is>>" +
                     key.toString() +
                     " value is>>>" +
