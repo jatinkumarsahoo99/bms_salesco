@@ -126,6 +126,9 @@ class CommercialCreationAutoController extends GetxController {
 
   fetchUserSetting1() async {
     userGridSetting1 = await Get.find<HomeController>().fetchUserSetting();
-    print("Hi Test");
+    userGridSetting1?.forEach((e){
+      print("Data in UI>>>"+e.toString());
+    });
+    update(["listUpdate"]);
   }
 }
