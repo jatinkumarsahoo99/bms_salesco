@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:bms_salesco/app/controller/HomeController.dart';
 import 'package:bms_salesco/app/controller/MainController.dart';
 import 'package:bms_salesco/widgets/LoadingDialog.dart';
 import 'package:get/get.dart';
@@ -13,10 +14,13 @@ import '../ComercialAutoLoadModel.dart';
 class CommercialCreationAutoController extends GetxController {
   PlutoGridStateManager? stateManager;
   Rxn<ComercialAutoLoadModel>? loadModel = Rxn<ComercialAutoLoadModel>(null);
-  Map<String,double> userGridSetting={};
+  Map<String, double> userGridSetting = {};
+  List<Map<String, double>>? userGridSetting1 = [];
+
   @override
   void onInit() {
-    fetchUserSetting();
+    fetchUserSetting1();
+    // fetchUserSetting();
     getLoad();
     super.onInit();
   }
@@ -54,11 +58,33 @@ class CommercialCreationAutoController extends GetxController {
         });
   }
 
+  void postUserSetting1(
+      {required List<PlutoGridStateManager> listStateManager}) {
+    if (listStateManager == null || listStateManager.length > 0) return;
+    List data = [];
+    for (int i = 0; i < listStateManager.length; i++) {
+      Map<String, dynamic> singleMap = {};
+      stateManager?.columns.forEach((element) {
+        singleMap[element.field] = element.width;
+      });
+      String? mapData = jsonEncode(singleMap);
+      data.add({
+        "formName": Get.find<MainController>().formName ?? "",
+        "controlName": (i + 1).toString() + "_table",
+        "userSettings": mapData
+      });
+    }
+    Get.find<ConnectorControl>().POSTMETHOD(
+        api: ApiFactory.USER_SETTINGS,
+        json: {"lstUserSettings": data},
+        fun: (map) {});
+  }
+
   postUserSetting() {
     if (stateManager == null) return;
     Map<String, dynamic> singleMap = {};
     stateManager?.columns.forEach((element) {
-      singleMap[element.field]=element.width;
+      singleMap[element.field] = element.width;
     });
     String? mapData = jsonEncode(singleMap);
     // Map<String, dynamic>? mapDataResult = jsonDecode(mapData);
@@ -79,17 +105,30 @@ class CommercialCreationAutoController extends GetxController {
 
   fetchUserSetting() {
     Get.find<ConnectorControl>().GETMETHODCALL(
-        api: ApiFactory.FETCH_USER_SETTING+"?formName=${Get.find<MainController>().formName}",
+        api: ApiFactory.FETCH_USER_SETTING +
+            "?formName=${Get.find<MainController>().formName}",
         fun: (map) {
-          print("Data is>>"+jsonEncode(map));
-          if(map is Map && map.containsKey("userSetting") && map["userSetting"]!=null){
-            // userGridSetting=jsonDecode(map["userSetting"][0]["userSettings"]);
-            // print("Data is1>>"+jsonEncode(userGridSetting));
-            jsonDecode(map["userSetting"][0]["userSettings"]).forEach((key,value) {
-              print("Data key is>>"+key.toString()+" value is>>>"+value.toString());
-              userGridSetting[key]=value;
+          print("Data is>>" + jsonEncode(map));
+          if (map is Map &&
+              map.containsKey("userSetting") &&
+              map["userSetting"] != null) {
+            jsonDecode(map["userSetting"][0]["userSettings"])
+                .forEach((key, value) {
+              print("Data key is>>" +
+                  key.toString() +
+                  " value is>>>" +
+                  value.toString());
+              userGridSetting[key] = value;
             });
           }
         });
+  }
+
+  fetchUserSetting1() async {
+    userGridSetting1 = await Get.find<HomeController>().fetchUserSetting();
+    userGridSetting1?.forEach((e){
+      print("Data in UI>>>"+e.toString());
+    });
+    update(["listUpdate"]);
   }
 }
