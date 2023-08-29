@@ -32,12 +32,12 @@ class AsrunDetailsReportController extends GetxController {
 
 
   fetchAllLoaderData() {
-    // LoadingDialog.call();
+    LoadingDialog.call();
     Get.find<ConnectorControl>().GETMETHODCALL(
         api: ApiFactory.ASRUN_DETAILS_REPORT_LOAD,
         // "https://jsonkeeper.com/b/D537"
         fun: ( map) {
-          // Get.back();
+          closeDialogIfOpen();
           // print(">>>>>>"+map.toString());
           if(map is Map && map.containsKey('pageload') && map['pageload'] != null){
             locationList.clear();
@@ -60,7 +60,9 @@ class AsrunDetailsReportController extends GetxController {
               update(['updateList']);
             }
           }
-
+          else{
+            LoadingDialog.showErrorDialog((map??"Something went wrong").toString());
+          }
         });
   }
   clearAll(){
@@ -119,12 +121,13 @@ class AsrunDetailsReportController extends GetxController {
 
   @override
   void onInit() {
-    fetchAllLoaderData();
+
     super.onInit();
   }
 
   @override
   void onReady() {
+    fetchAllLoaderData();
     super.onReady();
   }
 
