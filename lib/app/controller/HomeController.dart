@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:html' as html;
 
@@ -34,35 +35,47 @@ class HomeController extends GetxController {
   }
 
   clearPage1() {
-    String extractName = (html.window.location.href.split("?")[0]).split(ApiFactory.SPLIT_CLEAR_PAGE)[1];
+    String extractName = (html.window.location.href.split("?")[0])
+        .split(ApiFactory.SPLIT_CLEAR_PAGE)[1];
     print("Extract name>>>>" + extractName);
-    var uri = Uri.dataFromString(html.window.location.href); //converts string to a uri
+    var uri = Uri.dataFromString(
+        html.window.location.href); //converts string to a uri
     Map<String, String> params = uri.queryParameters;
     print("Params are>>>>" + params.toString());
     if (RoutesList.listRoutes.contains("/" + extractName)) {
       if (extractName == "frmDailyFPC") {
         html.window.location.reload();
       } else {
-        String personalNo = Aes.encrypt(Get.find<MainController>().user?.personnelNo ?? "") ?? "";
-        String loginCode = (Aes.encrypt(Get.find<MainController>().user?.logincode ?? "") ?? "");
-        String formName = (Aes.encrypt(Get.find<MainController>().formName ?? "") ?? "");
-        Get.offAndToNamed("/" + extractName, parameters: {"loginCode": loginCode, "personalNo": personalNo, "formName": formName});
+        String personalNo =
+            Aes.encrypt(Get.find<MainController>().user?.personnelNo ?? "") ??
+                "";
+        String loginCode =
+            (Aes.encrypt(Get.find<MainController>().user?.logincode ?? "") ??
+                "");
+        String formName =
+            (Aes.encrypt(Get.find<MainController>().formName ?? "") ?? "");
+        Get.offAndToNamed("/" + extractName, parameters: {
+          "loginCode": loginCode,
+          "personalNo": personalNo,
+          "formName": formName
+        });
       }
     }
   }
 
   void postUserGridSetting(
       {required List<PlutoGridStateManager> listStateManager}) {
-    if (listStateManager == null || listStateManager.length == 0) return;
+    if (listStateManager == null || listStateManager.isEmpty) return;
     List data = [];
     for (int i = 0; i < listStateManager.length; i++) {
       Map<String, dynamic> singleMap = {};
-      listStateManager[0].columns.forEach((element) {
+      listStateManager[i].columns.forEach((element) {
         singleMap[element.field] = element.width;
       });
       String? mapData = jsonEncode(singleMap);
       data.add({
-        "formName": Get.find<MainController>().formName ?? "",
+        "formName":
+            Get.find<MainController>().formName.replaceAll(" ", "") ?? "",
         "controlName": (i + 1).toString() + "_table",
         "userSettings": mapData
       });
@@ -72,18 +85,20 @@ class HomeController extends GetxController {
         json: {"lstUserSettings": data},
         fun: (map) {});
   }
+
   Future<List<Map<String, double>>>? fetchUserSetting() {
-    List<Map<String, double>> data=[];
+    Completer<List<Map<String, double>>> completer =
+        Completer<List<Map<String, double>>>();
+    List<Map<String, double>> data = [];
     Get.find<ConnectorControl>().GETMETHODCALL(
         api: ApiFactory.FETCH_USER_SETTING +
-            "?formName=${Get.find<MainController>().formName}",
+            "?formName=${Get.find<MainController>().formName.replaceAll(" ", "")}",
         fun: (map) {
           print("Data is>>" + jsonEncode(map));
           if (map is Map &&
               map.containsKey("userSetting") &&
               map["userSetting"] != null) {
-
-            map["userSetting"].forEach((e){
+            map["userSetting"].forEach((e) {
               Map<String, double> userGridSetting = {};
               jsonDecode(e["userSettings"]).forEach((key, value) {
                 print("Data key is>>" +
@@ -94,10 +109,13 @@ class HomeController extends GetxController {
               });
               data.add(userGridSetting);
             });
-            return data;
-          }else{
-            return null;
+            completer.complete(data);
+            // return data;
+          } else {
+            completer.complete(null);
+            // return null;
           }
         });
+    return completer.future;
   }
 }
