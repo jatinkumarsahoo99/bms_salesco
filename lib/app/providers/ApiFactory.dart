@@ -180,6 +180,8 @@ class ApiFactory {
 ////////////////////////// EDI RO BOOKING ///////////////////////////////////////////
 
   static String EDI_RO_INIT = "$BASE_URL/api/EDIRoBooking/OnLoadXmlRoBooking";
+  static String EDI_RO_FILE_LEAVE(fileName, effectiveDate) =>
+      "$BASE_URL/api/EDIRoBooking/OnLeaveFileName?FileName=$fileName&EffectiveDate=$effectiveDate";
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 

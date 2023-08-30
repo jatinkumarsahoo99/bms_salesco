@@ -48,10 +48,16 @@ class EdiRoBookingView extends StatelessWidget {
                             alignment: WrapAlignment.spaceBetween,
                             children: [
                               DropDownField.formDropDown1WidthMap(
-                                controller.initData?.softListMyFiles?.map(( e) => DropDownValue(key: e.convertedFileName, value: e.convertedFileName)).toList(),
-                                (valeu) {},
+                                controller.initData?.softListMyFiles
+                                    ?.map((e) => DropDownValue(key: e.convertedFileName, value: e.convertedFileName))
+                                    .toList(),
+                                (valeu) {
+                                  controller.selectedFile = valeu;
+                                  controller.effectiveDateLeave();
+                                },
                                 "Filename",
                                 .445,
+                                selected: controller.selectedFile,
                                 autoFocus: true,
                               ),
                               DropDownField.formDropDown1WidthMap(
@@ -63,7 +69,7 @@ class EdiRoBookingView extends StatelessWidget {
                               ),
                               SizedBox(width: Get.width * 0.08, child: FormButtonWrapper(btnText: "Show & Link")),
                               DropDownField.formDropDown1WidthMap(
-                                 controller.initData?.lstLocation?.map((e) => DropDownValue(key: e.locationCode, value: e.locationName)).toList(),
+                                controller.initData?.lstLocation?.map((e) => DropDownValue(key: e.locationCode, value: e.locationName)).toList(),
                                 (valeu) {},
                                 "Location",
                                 .22,
@@ -141,7 +147,7 @@ class EdiRoBookingView extends StatelessWidget {
                             children: [
                               DateWithThreeTextField(
                                 title: "Eff Date",
-                                mainTextController: TextEditingController(),
+                                mainTextController: controller.effectiveDate,
                                 widthRation: .12,
                               ),
                               DateWithThreeTextField(
@@ -194,7 +200,7 @@ class EdiRoBookingView extends StatelessWidget {
                                 ),
                               ),
                               DropDownField.formDropDown1WidthMap(
-                                 controller.initData?.executives?.map((e) => DropDownValue(key: e.personnelCode, value: e.personnelName)).toList(),
+                                controller.initData?.executives?.map((e) => DropDownValue(key: e.personnelCode, value: e.personnelName)).toList(),
                                 (valeu) {},
                                 "Executive",
                                 .18,
@@ -312,12 +318,13 @@ class EdiRoBookingView extends StatelessWidget {
                                     width: 0.05,
                                   ),
                                   DropDownField.formDropDown1WidthMap(
-                                     controller.initData?.lstSpotPosType?.map((e) => DropDownValue(key: e.spotPositionTypeCode, value: e.spotPositionTypeName)).toList(),
+                                    controller.initData?.lstSpotPosType
+                                        ?.map((e) => DropDownValue(key: e.spotPositionTypeCode, value: e.spotPositionTypeName))
+                                        .toList(),
                                     (valeu) {},
                                     "Position",
-                                    
                                     .105,
-                                    selected:controller.selectedPromo ,
+                                    selected: controller.selectedPromo,
                                     autoFocus: true,
                                   ),
                                   InputFields.formField1(
