@@ -1,6 +1,7 @@
 import 'package:bms_salesco/app/controller/MainController.dart';
 import 'package:bms_salesco/app/modules/AmagiSpotPlanning/views/amagi_spot_planning_view.dart';
 import 'package:bms_salesco/app/modules/AmagiSpotsReplacement/views/amagi_spots_replacement_view.dart';
+import 'package:bms_salesco/app/modules/EdiRoBooking/views/edi_ro_booking_view.dart';
 import 'package:bms_salesco/app/modules/MakeGoodReport/views/make_good_report_view.dart';
 import 'package:bms_salesco/app/modules/NewShortContentForm/views/new_short_content_form_view.dart';
 import 'package:flutter/foundation.dart';
@@ -83,6 +84,9 @@ class AuthGuard extends StatelessWidget {
               break;
             case Routes.SAME_DAY_COLLECTION:
               currentWidget = const SameDayCollectionView();
+              break;
+            case Routes.EDI_RO_BOOKING:
+              currentWidget = EdiRoBookingView();
               break;
             case Routes.TAPE_I_D_CAMPAIGN:
               currentWidget = const TapeIDCampaignView();

@@ -50,7 +50,7 @@ class AppPages {
 
   static const INITIAL = kReleaseMode
       ? Routes.HOME
-      : Routes.ZONE_WISE_INVENTORY_UTILIZATION +
+      : Routes.EDI_RO_BOOKING +
           "?personalNo=R9vVPL7er1Os/usemWG/Iw==&loginCode=0iGe3vK5h2KGjfSKZTpmsQ==&formName=OI8ukDpPPVN0I2BEXu2h4nuFu%2BZm1ZRpvP8NL4XCXzQ%3D";
 
   static final routes = [
@@ -120,8 +120,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.EDI_RO_BOOKING,
-      page: () => EdiRoBookingView(),
-      binding: EdiRoBookingBinding(),
+      page: () => AuthGuard(childName: _Paths.EDI_RO_BOOKING),
     ),
     GetPage(
       name: _Paths.WORKFLOW_DEFINITION,
@@ -144,8 +143,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.COMMERCIAL_LANGUAGE_SPECIFICATION,
-      page: () =>
-          AuthGuard(childName: _Paths.COMMERCIAL_LANGUAGE_SPECIFICATION),
+      page: () => AuthGuard(childName: _Paths.COMMERCIAL_LANGUAGE_SPECIFICATION),
     ),
     GetPage(
       name: _Paths.ONE_SPOT_BOOKING_SKY_MEDIA,
@@ -155,8 +153,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.PERIODIC_DEAL_UTILISATION_FORMAT2,
-      page: () =>
-          AuthGuard(childName: _Paths.PERIODIC_DEAL_UTILISATION_FORMAT2),
+      page: () => AuthGuard(childName: _Paths.PERIODIC_DEAL_UTILISATION_FORMAT2),
       // PeriodicDealUtilisationFormat2View(),
       binding: PeriodicDealUtilisationFormat2Binding(),
     ),
