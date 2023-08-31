@@ -86,10 +86,8 @@ class CommercialCreationAutoView
                           onload: (PlutoGridOnLoadedEvent grid) {
                             controllerX.stateManager = grid.stateManager;
                           },
-                        /*  widthSpecificColumn: controllerX.userGridSetting
-                              as Map<String, double>,*/
-                          widthSpecificColumn: controllerX.userGridSetting1![0]
-                              as Map<String, double>,
+                          // widthSpecificColumn: controllerX.userGridSetting1?[0]??{},
+                          widthSpecificColumn: controllerX.userGridSetting,
                           hideKeys: ["acid"],
                           mode: PlutoGridMode.selectWithOneTap,
                           // actionIcon: Icons.delete_forever_rounded,
