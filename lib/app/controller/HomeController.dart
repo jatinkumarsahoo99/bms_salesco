@@ -105,6 +105,7 @@ class HomeController extends GetxController {
     Completer<List<Map<String, Map<String, double>>>> completer =
         Completer<List<Map<String, Map<String, double>>>>();
     List<Map<String, Map<String, double>>> data = [];
+    try {
       Get.find<ConnectorControl>().GETMETHODCALL(
           api:
               "${ApiFactory.FETCH_USER_SETTING}?formName=${Get.find<MainController>().formName.replaceAll(" ", "")}",
@@ -129,6 +130,9 @@ class HomeController extends GetxController {
               // return null;
             }
           });
+    } catch (e) {
+      completer.complete(data);
+    }
     return completer.future;
   }
 
@@ -219,20 +223,18 @@ class HomeController extends GetxController {
         json: {"lstUserSettings": data},
         fun: (map) {});
   }
-
   Future<List<Map<String, double>>>? fetchUserSetting() {
-    Completer<List<Map<String, double>>> completer =
-        Completer<List<Map<String, double>>>();
-    List<Map<String, double>> data = [];
+    List<Map<String, double>> data=[];
     Get.find<ConnectorControl>().GETMETHODCALL(
         api: ApiFactory.FETCH_USER_SETTING +
-            "?formName=${Get.find<MainController>().formName.replaceAll(" ", "")}",
+            "?formName=${Get.find<MainController>().formName}",
         fun: (map) {
           print("Data is>>" + jsonEncode(map));
           if (map is Map &&
               map.containsKey("userSetting") &&
               map["userSetting"] != null) {
-            map["userSetting"].forEach((e) {
+
+            map["userSetting"].forEach((e){
               Map<String, double> userGridSetting = {};
               jsonDecode(e["userSettings"]).forEach((key, value) {
                 print("Data key is>>" +
@@ -243,13 +245,10 @@ class HomeController extends GetxController {
               });
               data.add(userGridSetting);
             });
-            completer.complete(data);
-            // return data;
-          } else {
-            completer.complete(null);
-            // return null;
+            return data;
+          }else{
+            return null;
           }
         });
-    return completer.future;
   }
 }

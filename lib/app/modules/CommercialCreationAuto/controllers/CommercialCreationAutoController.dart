@@ -14,13 +14,16 @@ import '../ComercialAutoLoadModel.dart';
 class CommercialCreationAutoController extends GetxController {
   PlutoGridStateManager? stateManager;
   Rxn<ComercialAutoLoadModel>? loadModel = Rxn<ComercialAutoLoadModel>(null);
-  Map<String, double> userGridSetting = {};
-  List<Map<String, double>>? userGridSetting1 = [];
+  List<Map<String,Map<String, double>>>? userGridSetting1;
+  fetchUserSetting1() async {
+    userGridSetting1 = await Get.find<HomeController>().fetchUserSetting1();
+    update(["grid"]);
+  }
 
   @override
   void onInit() {
     // fetchUserSetting1();
-    fetchUserSetting();
+    fetchUserSetting1();
     getLoad();
     super.onInit();
   }
@@ -103,32 +106,6 @@ class CommercialCreationAutoController extends GetxController {
         fun: (map) {});
   }
 
-  fetchUserSetting() {
-    Get.find<ConnectorControl>().GETMETHODCALL(
-        api: ApiFactory.FETCH_USER_SETTING +
-            "?formName=${Get.find<MainController>().formName.replaceAll(" ", "")}",
-        fun: (map) {
-          print("Data is>>" + jsonEncode(map));
-          if (map is Map &&
-              map.containsKey("userSetting") &&
-              map["userSetting"] != null) {
-            jsonDecode(map["userSetting"][0]["userSettings"])
-                .forEach((key, value) {
-              print("Data key is>>" +
-                  key.toString() +
-                  " value is>>>" +
-                  value.toString());
-              userGridSetting[key] = value;
-            });
-          }
-        });
-  }
 
-  fetchUserSetting1() async {
-    userGridSetting1 = await Get.find<HomeController>().fetchUserSetting();
-    userGridSetting1?.forEach((e){
-      print("Data in UI>>>"+e.toString());
-    });
-    update(["listUpdate"]);
-  }
+
 }
