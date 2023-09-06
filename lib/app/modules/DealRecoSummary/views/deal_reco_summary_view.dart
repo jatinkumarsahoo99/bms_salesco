@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:pluto_grid/pluto_grid.dart';
 
 import '../../../../widgets/DateTime/DateWithThreeTextField.dart';
 import '../../../../widgets/FormButton.dart';
@@ -233,6 +234,11 @@ class DealRecoSummaryView extends GetView<DealRecoSummaryController> {
                                     .toList())!,
                                 // mapData: (controllerX.dataList)!,
                                 widthRatio: Get.width / 9 - 1,
+                                onload: (PlutoGridOnLoadedEvent load){
+                                  controllerX.stateManager = load.stateManager;
+                                },
+                                widthSpecificColumn: Get.find<HomeController>().getGridWidthByKey(
+                                    userGridSettingList: controllerX.userGridSetting1),
                               ),
 
                             ):Container(
