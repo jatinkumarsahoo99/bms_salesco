@@ -105,7 +105,6 @@ class HomeController extends GetxController {
     Completer<List<Map<String, Map<String, double>>>> completer =
         Completer<List<Map<String, Map<String, double>>>>();
     List<Map<String, Map<String, double>>> data = [];
-    try {
       Get.find<ConnectorControl>().GETMETHODCALL(
           api:
               "${ApiFactory.FETCH_USER_SETTING}?formName=${Get.find<MainController>().formName.replaceAll(" ", "")}",
@@ -130,9 +129,6 @@ class HomeController extends GetxController {
               // return null;
             }
           });
-    } catch (e) {
-      completer.complete(data);
-    }
     return completer.future;
   }
 
