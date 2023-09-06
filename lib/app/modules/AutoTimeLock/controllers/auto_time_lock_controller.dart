@@ -4,6 +4,7 @@ import 'package:pluto_grid/pluto_grid.dart';
 
 import '../../../../widgets/LoadingDialog.dart';
 import '../../../controller/ConnectorControl.dart';
+import '../../../controller/HomeController.dart';
 import '../../../data/DropDownValue.dart';
 import '../../../data/PermissionModel.dart';
 import '../../../providers/ApiFactory.dart';
@@ -20,9 +21,15 @@ class AutoTimeLockController extends GetxController {
   int lastSelectedIdx = 0;
   var dataTableList = <AutoTimeLockModel>[].obs;
 
+  List<Map<String,Map<String, double>>>? userGridSetting1;
+  fetchUserSetting1() async {
+    userGridSetting1 = await Get.find<HomeController>().fetchUserSetting1();
+    update(["grid"]);
+  }
   @override
   void onInit() {
     formPermissions = Utils.fetchPermissions1(Routes.AUTO_TIME_LOCK.replaceAll("/", ""));
+    fetchUserSetting1();
     super.onInit();
   }
 
@@ -121,6 +128,12 @@ class AutoTimeLockController extends GetxController {
       clearPage();
     } else if (btn == "Save") {
       saveData();
+    }
+    else if(btn == "Exit"){
+      Get.find<HomeController>().postUserGridSetting1(
+          listStateManager: [
+            stateManager
+          ]);
     }
   }
 }

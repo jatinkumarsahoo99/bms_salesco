@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:pluto_grid/pluto_grid.dart';
 
 import '../../../../widgets/LoadingDialog.dart';
 import '../../../controller/ConnectorControl.dart';
+import '../../../controller/HomeController.dart';
 import '../../../data/DropDownValue.dart';
 import '../../../providers/ApiFactory.dart';
 
@@ -68,6 +70,13 @@ class AmagiStatusReportController extends GetxController {
     }
   }
 
+  PlutoGridStateManager? stateManager;
+  List<Map<String,Map<String, double>>>? userGridSetting1;
+
+  fetchUserSetting1() async {
+    userGridSetting1 = await Get.find<HomeController>().fetchUserSetting1();
+    update(["grid"]);
+  }
 
   fetchAllLoaderData() {
     LoadingDialog.call();
@@ -163,6 +172,7 @@ class AmagiStatusReportController extends GetxController {
 
   @override
   void onInit() {
+    fetchUserSetting1();
     super.onInit();
   }
 
@@ -176,7 +186,13 @@ class AmagiStatusReportController extends GetxController {
   void onClose() {
     super.onClose();
   }
-  formHandler(String string) {
+  formHandler(String str) {
+    if(str == "Exit"){
+      Get.find<HomeController>().postUserGridSetting1(
+          listStateManager: [
+            stateManager
+          ]);
+    }
 
   }
   void increment() => count.value++;

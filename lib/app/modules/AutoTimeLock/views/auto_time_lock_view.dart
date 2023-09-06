@@ -154,6 +154,8 @@ class AutoTimeLockView extends GetView<AutoTimeLockController> {
                                 event.stateManager.setCurrentCell(
                                     event.stateManager.getRowByIdx(controller.lastSelectedIdx)?.cells['channelName'], controller.lastSelectedIdx);
                               },
+                           widthSpecificColumn: Get.find<HomeController>().getGridWidthByKey(
+                            userGridSettingList: controller.userGridSetting1),
                             ),
                     );
                   },
