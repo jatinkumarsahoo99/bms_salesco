@@ -203,16 +203,17 @@ class HomeController extends GetxController {
 
   void postUserGridSetting(
       {required List<PlutoGridStateManager> listStateManager}) {
-    if (listStateManager.length > 0) return;
+    if (listStateManager == null || listStateManager.isEmpty) return;
     List data = [];
     for (int i = 0; i < listStateManager.length; i++) {
       Map<String, dynamic> singleMap = {};
-      listStateManager[0].columns.forEach((element) {
+      listStateManager[i].columns.forEach((element) {
         singleMap[element.field] = element.width;
       });
       String? mapData = jsonEncode(singleMap);
       data.add({
-        "formName": Get.find<MainController>().formName ?? "",
+        "formName":
+            Get.find<MainController>().formName.replaceAll(" ", "") ?? "",
         "controlName": (i + 1).toString() + "_table",
         "userSettings": mapData
       });
@@ -224,10 +225,12 @@ class HomeController extends GetxController {
   }
 
   Future<List<Map<String, double>>>? fetchUserSetting() {
+    Completer<List<Map<String, double>>> completer =
+        Completer<List<Map<String, double>>>();
     List<Map<String, double>> data = [];
     Get.find<ConnectorControl>().GETMETHODCALL(
         api: ApiFactory.FETCH_USER_SETTING +
-            "?formName=${Get.find<MainController>().formName}",
+            "?formName=${Get.find<MainController>().formName.replaceAll(" ", "")}",
         fun: (map) {
           print("Data is>>" + jsonEncode(map));
           if (map is Map &&
@@ -244,10 +247,13 @@ class HomeController extends GetxController {
               });
               data.add(userGridSetting);
             });
-            return data;
+            completer.complete(data);
+            // return data;
           } else {
-            return null;
+            completer.complete(null);
+            // return null;
           }
         });
+    return completer.future;
   }
 }

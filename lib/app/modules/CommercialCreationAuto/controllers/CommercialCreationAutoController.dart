@@ -19,8 +19,8 @@ class CommercialCreationAutoController extends GetxController {
 
   @override
   void onInit() {
-    fetchUserSetting1();
-    // fetchUserSetting();
+    // fetchUserSetting1();
+    fetchUserSetting();
     getLoad();
     super.onInit();
   }
@@ -106,7 +106,7 @@ class CommercialCreationAutoController extends GetxController {
   fetchUserSetting() {
     Get.find<ConnectorControl>().GETMETHODCALL(
         api: ApiFactory.FETCH_USER_SETTING +
-            "?formName=${Get.find<MainController>().formName}",
+            "?formName=${Get.find<MainController>().formName.replaceAll(" ", "")}",
         fun: (map) {
           print("Data is>>" + jsonEncode(map));
           if (map is Map &&
