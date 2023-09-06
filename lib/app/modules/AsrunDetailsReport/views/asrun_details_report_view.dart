@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:pluto_grid/pluto_grid.dart';
 
 import '../../../../widgets/DateTime/DateWithThreeTextField.dart';
 import '../../../../widgets/FormButton.dart';
@@ -201,16 +202,21 @@ class AsrunDetailsReportView extends StatelessWidget {
                         return Container(
                           child: (controllerX.asrunDetailsReportModel != null &&
                               controllerX.asrunDetailsReportModel!.generate != null &&
-                              controllerX.asrunDetailsReportModel!.generate!.length >0
+                              controllerX.asrunDetailsReportModel!.generate!.isNotEmpty
                           )?DataGridFromMap(
                             showSrNo: false,
                             hideCode: false,
                             formatDate: false,
+                            widthSpecificColumn: Get.find<HomeController>().getGridWidthByKey(
+                                userGridSettingList: controllerX.userGridSetting1),
                             mapData: (controllerX.asrunDetailsReportModel!.generate
                                 ?.map((e) => e.toJson())
-                                .toList())!,
+                                .toList())??[{"noData":"noData"}],
                             // mapData: (controllerX.dataList)!,
                             widthRatio: Get.width / 9 - 1,
+                            onload: (PlutoGridOnLoadedEvent load){
+                              controllerX.stateManager = load.stateManager;
+                            },
                           ):Container(
                             decoration: BoxDecoration(
                                 border: Border.all(color: Colors.grey)),

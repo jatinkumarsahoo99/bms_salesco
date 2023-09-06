@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:pluto_grid/pluto_grid.dart';
 
 import '../../../../widgets/LoadingDialog.dart';
 import '../../../controller/ConnectorControl.dart';
@@ -30,6 +31,12 @@ class AsrunDetailsReportController extends GetxController {
   TextEditingController toDate = TextEditingController();
   AsrunDetailsReportModel ?asrunDetailsReportModel;
 
+  PlutoGridStateManager? stateManager;
+  List<Map<String,Map<String, double>>>? userGridSetting1;
+  fetchUserSetting1() async {
+    userGridSetting1 = await Get.find<HomeController>().fetchUserSetting1();
+    update(["grid"]);
+  }
 
   fetchAllLoaderData() {
     LoadingDialog.call();
@@ -121,7 +128,7 @@ class AsrunDetailsReportController extends GetxController {
 
   @override
   void onInit() {
-
+    fetchUserSetting1();
     super.onInit();
   }
 
@@ -138,6 +145,11 @@ class AsrunDetailsReportController extends GetxController {
   formHandler(String string) {
     if (string == "Clear") {
       clearAll();
+    }  if(string == "Exit"){
+      Get.find<HomeController>().postUserGridSetting1(
+          listStateManager: [
+            stateManager
+          ]);
     }
   }
   void increment() => count.value++;

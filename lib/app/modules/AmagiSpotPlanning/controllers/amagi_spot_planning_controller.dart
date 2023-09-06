@@ -1,9 +1,14 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:pluto_grid/pluto_grid.dart';
 
 import '../../../../widgets/LoadingDialog.dart';
 import '../../../controller/ConnectorControl.dart';
+import '../../../controller/HomeController.dart';
+import '../../../controller/MainController.dart';
 import '../../../data/DropDownValue.dart';
 import '../../../providers/ApiFactory.dart';
 
@@ -25,6 +30,33 @@ class AmagiSpotPlanningController extends GetxController {
   bool isChannel = false;
   bool isClient = false;
   bool isData = false;
+
+  PlutoGridStateManager? stateManager;
+  List<Map<String,Map<String, double>>>? userGridSetting1;
+
+  fetchUserSetting1() async {
+    userGridSetting1 = await Get.find<HomeController>().fetchUserSetting1();
+    update(["grid"]);
+  }
+
+/*  Map<String,double> getGridWidthByKey(String? key,List<Map<String,Map<String, double>>>? userGridSettingList){
+    Map<String,double> gridWidths = {};
+    if((userGridSettingList?.length??0) > 0){
+      for(int i=0;i< (userGridSettingList?.length??0) ;i++){
+        if(((userGridSettingList?[i].keys.toList())??[]).contains(key??"")){
+          gridWidths = userGridSettingList?[i][key] as Map<String ,double>;
+          break;
+        }else{
+          continue;
+        }
+      }
+      print(">>>>>>>>>>>>>ifgridWidths"+gridWidths.toString());
+      return gridWidths;
+    }else{
+      print(">>>>>>>>>>>>>elsegridWidths"+gridWidths.toString());
+      return gridWidths;
+    }
+  }*/
 
   fetchAllLoaderData() {
     LoadingDialog.call();
@@ -136,6 +168,7 @@ class AmagiSpotPlanningController extends GetxController {
 
   @override
   void onInit() {
+    fetchUserSetting1();
     super.onInit();
   }
 
@@ -145,7 +178,14 @@ class AmagiSpotPlanningController extends GetxController {
     super.onReady();
   }
 
-  formHandler(String string) {}
+  formHandler(String str) {
+    if(str == 'Exit'){
+      Get.find<HomeController>().postUserGridSetting1(
+          listStateManager: [
+            stateManager
+          ],tableNamesList: ['tbl1']);
+    }
+  }
 
   @override
   void onClose() {
