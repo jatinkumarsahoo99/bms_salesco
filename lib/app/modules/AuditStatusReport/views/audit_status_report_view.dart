@@ -349,6 +349,10 @@ class AuditStatusReportView  extends StatelessWidget  {
                                             btnText: "Exit",
                                             callback: () {
                                               Get.delete<AuditStatusReportController>();
+                                              Get.find<HomeController>().postUserGridSetting1(
+                                                  listStateManager: [
+                                                    controllerX.stateManager1,controllerX.stateManager2
+                                                  ],tableNamesList: ['tbl1','tbl2']);
                                             },
                                           ),
                                         ],

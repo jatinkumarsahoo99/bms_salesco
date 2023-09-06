@@ -74,6 +74,14 @@ class WorkflowDefinitionController extends GetxController {
   FocusNode typeNode = FocusNode();
   FocusNode userNode = FocusNode();
   FocusNode groupNode = FocusNode();
+
+  List<Map<String,Map<String, double>>>? userGridSetting1;
+  fetchUserSetting1() async {
+    userGridSetting1 = await Get.find<HomeController>().fetchUserSetting1();
+    update(["grid"]);
+  }
+
+
   closeDialogIfOpen() {
     if (Get.isDialogOpen ?? false) {
       Get.back();
@@ -509,6 +517,7 @@ class WorkflowDefinitionController extends GetxController {
   @override
   void onInit() {
     fetchAllLoaderData();
+    fetchUserSetting1();
     super.onInit();
   }
 
@@ -539,6 +548,11 @@ class WorkflowDefinitionController extends GetxController {
       clearAll();
     }else if(string == "Search"){
       search();
+    }  else if(string == "Exit"){
+      Get.find<HomeController>().postUserGridSetting1(
+          listStateManager: [
+            gridStateManager
+          ]);
     }
   }
 
