@@ -404,6 +404,8 @@ class WorkflowDefinitionView extends GetView<WorkflowDefinitionController> {
                                               PlutoMoveDirection.down);
                                       controllerX.onDoubleTap(val?.rowIdx ?? 0);
                                     },
+                              widthSpecificColumn: Get.find<HomeController>().getGridWidthByKey(
+                                  userGridSettingList: controllerX.userGridSetting1),
                                     mapData: (controllerX
                                         .dealWorkDefinitionGridModel!.display
                                         ?.map((e) => e.toJson2())
