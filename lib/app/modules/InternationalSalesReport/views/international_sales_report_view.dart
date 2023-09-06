@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:pluto_grid/pluto_grid.dart';
 
 import '../../../../widgets/DateTime/DateWithThreeTextField.dart';
 import '../../../../widgets/FormButton.dart';
@@ -105,6 +106,10 @@ class InternationalSalesReportView
                           btnText: "Exit",
                           callback: () {
                             Get.delete<InternationalSalesReportController>();
+                            Get.find<HomeController>().postUserGridSetting1(
+                                listStateManager: [
+                                  controllerX.stateManager1,controllerX.stateManager2
+                                ],tableNamesList: ['tbl1','tbl2']);
                           },
                           showIcon: true,
                         ),
@@ -135,6 +140,11 @@ class InternationalSalesReportView
                               .toList())!,
                           // mapData: (controllerX.dataList)!,
                           widthRatio: Get.width / 9 - 1,
+                          widthSpecificColumn: Get.find<HomeController>().getGridWidthByKey(
+                              userGridSettingList: controllerX.userGridSetting1,key: "tbl1"),
+                          onload: (PlutoGridOnLoadedEvent load){
+                            controllerX.stateManager1 = load.stateManager;
+                          },
                         ): Container(
                           decoration: BoxDecoration(
                               border: Border.all(color: Colors.grey)),
@@ -150,6 +160,11 @@ class InternationalSalesReportView
                               .toList())!,
                           // mapData: (controllerX.dataList)!,
                           widthRatio: Get.width / 9 - 1,
+                          widthSpecificColumn: Get.find<HomeController>().getGridWidthByKey(
+                              userGridSettingList: controllerX.userGridSetting1,key: "tbl2"),
+                          onload: (PlutoGridOnLoadedEvent load){
+                            controllerX.stateManager2 = load.stateManager;
+                          },
                         ):Container(
                           decoration: BoxDecoration(
                               border: Border.all(color: Colors.grey)),

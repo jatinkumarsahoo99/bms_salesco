@@ -376,8 +376,10 @@ class DataGridFromMap3 extends StatelessWidget {
     this.focusNode,
     this.gridStyle,
     this.specificWidth,
+    this.widthSpecificColumn
   }) : super(key: key);
   final FocusNode? previousWidgetFN;
+  final Map<String, double>? widthSpecificColumn;
   final Map<String, double>? specificWidth;
   PlutoGridStyleConfig? gridStyle;
   final List<String>? enableColumnDoubleTap;
@@ -435,7 +437,11 @@ class DataGridFromMap3 extends StatelessWidget {
           enableRowDrag: false,
           enableDropToResize: true,
           enableContextMenu: false,
-          width: 25,
+          minWidth: 25,
+          width: (widthSpecificColumn != null &&
+              widthSpecificColumn!.containsKey("no"))
+              ? widthSpecificColumn!["no"]!
+              : Utils.getColumnSize(key: "no", value: mapData[0][key]),
           enableAutoEditing: false,
           hide: hideCode! &&
               key.toString().toLowerCase() != "hourcode" &&
@@ -566,8 +572,10 @@ class DataGridFromMap3 extends StatelessWidget {
           enableEditingMode: editKeys != null && editKeys!.contains(key),
           enableDropToResize: true,
           enableContextMenu: false,
-          minWidth: specificWidth != null && specificWidth!.containsKey(key)
-              ? specificWidth![key]!
+          minWidth: 5,
+          width: (widthSpecificColumn != null &&
+              widthSpecificColumn!.containsKey(key))
+              ? widthSpecificColumn![key]!
               : Utils.getColumnSize(key: key, value: mapData[0][key]),
           // width: Utils.getColumnSize(key: key, value: mapData[0][key]),
           enableAutoEditing: false,
@@ -620,9 +628,12 @@ class DataGridFromMap3 extends StatelessWidget {
           ).copyWith(style: gridStyle),
           rowColorCallback: colorCallback,
           onLoaded: (load) {
-            load.stateManager.setColumnSizeConfig(PlutoGridColumnSizeConfig(
-                autoSizeMode: PlutoAutoSizeMode.none,
-                resizeMode: PlutoResizeMode.normal));
+            if (widthSpecificColumn == null || widthSpecificColumn == {}) {
+              load.stateManager.setColumnSizeConfig(PlutoGridColumnSizeConfig(
+                  autoSizeMode: PlutoAutoSizeMode.none,
+                  resizeMode: PlutoResizeMode.normal));
+            }
+
             load.stateManager.setKeepFocus(false);
             if (onload != null) {
               onload!(load);

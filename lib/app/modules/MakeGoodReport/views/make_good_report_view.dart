@@ -144,6 +144,11 @@ class MakeGoodReportView extends GetView<MakeGoodReportController> {
                                 "cancelDate": 150,
                                 "scheduleDate": 100,
                               },
+                        onload: (PlutoGridOnLoadedEvent load){
+                          controller.stateManager = load.stateManager;
+                        },
+                        widthSpecificColumn: Get.find<HomeController>().getGridWidthByKey(
+                            userGridSettingList: controller.userGridSetting1?.value),
                               // mapData: controller.dataTableList.value.map((e) => e.toJson()).toList(),
                               mapData: controller.dataTableList.value,
                               formatDate: false,

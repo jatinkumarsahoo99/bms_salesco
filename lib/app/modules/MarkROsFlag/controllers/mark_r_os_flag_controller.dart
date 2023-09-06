@@ -6,6 +6,7 @@ import 'package:pluto_grid/pluto_grid.dart';
 
 import '../../../../widgets/LoadingDialog.dart';
 import '../../../controller/ConnectorControl.dart';
+import '../../../controller/HomeController.dart';
 import '../../../data/DropDownValue.dart';
 import '../../../data/PermissionModel.dart';
 import '../../../providers/ApiFactory.dart';
@@ -26,9 +27,16 @@ class MarkROsFlagController extends GetxController {
   var buttonsList = ["Save Today", "Save All Days"];
   bool madeChanges = false;
 
+  Rxn<List<Map<String,Map<String, double>>>>? userGridSetting1;
+  fetchUserSetting1() async {
+    userGridSetting1?.value = await Get.find<HomeController>().fetchUserSetting1();
+    update(["grid"]);
+  }
+
   @override
   void onInit() {
     formPermissions = Utils.fetchPermissions1(Routes.MARK_R_OS_FLAG.replaceAll("/", ""));
+    fetchUserSetting1();
     super.onInit();
   }
 
@@ -181,5 +189,11 @@ class MarkROsFlagController extends GetxController {
     if (btn == "Clear") {
       clearPage();
     } else if (btn == "Save") {}
+   else if(btn == "Exit"){
+      Get.find<HomeController>().postUserGridSetting1(
+          listStateManager: [
+            stateManager,
+          ]);
+    }
   }
 }

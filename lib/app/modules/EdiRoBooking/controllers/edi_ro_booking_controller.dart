@@ -4,8 +4,10 @@ import 'package:bms_salesco/widgets/LoadingDialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:pluto_grid/pluto_grid.dart';
 
 import '../../../controller/ConnectorControl.dart';
+import '../../../controller/HomeController.dart';
 import '../../../providers/ApiFactory.dart';
 
 class EdiRoBookingController extends GetxController {
@@ -17,9 +19,18 @@ class EdiRoBookingController extends GetxController {
   DropDownValue? selectedFile;
   DropDownValue? selectedPromo;
   TextEditingController effectiveDate = TextEditingController();
+
+  PlutoGridStateManager? stateManager;
+  List<Map<String,Map<String, double>>>? userGridSetting1;
+  fetchUserSetting1() async {
+    userGridSetting1 = await Get.find<HomeController>().fetchUserSetting1();
+    update(["grid"]);
+  }
+
   @override
   void onInit() {
     getInitData();
+    fetchUserSetting1();
     super.onInit();
   }
 
