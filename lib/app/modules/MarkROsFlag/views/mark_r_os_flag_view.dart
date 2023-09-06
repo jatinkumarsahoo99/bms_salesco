@@ -125,7 +125,8 @@ class MarkROsFlagView extends GetView<MarkROsFlagController> {
                                 event.stateManager.setCurrentCell(
                                     event.stateManager.getRowByIdx(controller.lastSelectedIdx)?.cells['telecastDate'], controller.lastSelectedIdx);
                               },
-                            ),
+                        widthSpecificColumn: Get.find<HomeController>().getGridWidthByKey(
+                            userGridSettingList: controller.userGridSetting1?.value),),
                     );
                   },
                 ),

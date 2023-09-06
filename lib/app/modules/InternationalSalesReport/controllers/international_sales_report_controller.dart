@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:pluto_grid/pluto_grid.dart';
 
 import '../../../../widgets/LoadingDialog.dart';
 import '../../../controller/ConnectorControl.dart';
+import '../../../controller/HomeController.dart';
 import '../../../data/DropDownValue.dart';
 import '../../../providers/ApiFactory.dart';
 import '../InternationalSalesReportModel.dart';
@@ -24,6 +26,15 @@ class InternationalSalesReportController extends GetxController {
   TextEditingController fromDateController = TextEditingController() ;
   TextEditingController toDateController = TextEditingController() ;
   bool isSummary = false;
+
+  PlutoGridStateManager? stateManager1;
+  PlutoGridStateManager? stateManager2;
+  List<Map<String,Map<String, double>>>? userGridSetting1;
+  fetchUserSetting1() async {
+    userGridSetting1 = await Get.find<HomeController>().fetchUserSetting1();
+    update(["grid"]);
+  }
+
   getRadioStatus(String val){
     switch(val){
       case "Detail":
@@ -70,6 +81,7 @@ class InternationalSalesReportController extends GetxController {
 
   @override
   void onInit() {
+    fetchUserSetting1();
     super.onInit();
   }
 
