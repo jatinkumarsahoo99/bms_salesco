@@ -5,6 +5,7 @@ import 'package:pluto_grid/pluto_grid.dart';
 
 import '../../../../widgets/LoadingDialog.dart';
 import '../../../controller/ConnectorControl.dart';
+import '../../../controller/HomeController.dart';
 import '../../../data/PermissionModel.dart';
 import '../../../providers/ApiFactory.dart';
 import '../../../providers/Utils.dart';
@@ -21,9 +22,17 @@ class SameDayCollectionController extends GetxController {
   var checkedAll = false.obs;
   PlutoGridStateManager? manager;
   int lastSelctedIdx = 0;
+  List<Map<String, Map<String, double>>>? userGridSetting1;
+  fetchUserSetting1() async {
+    userGridSetting1 = await Get.find<HomeController>().fetchUserSetting1();
+    update(["grid"]);
+  }
+
   @override
   void onInit() {
-    formPermissions = Utils.fetchPermissions1(Routes.SAME_DAY_COLLECTION.replaceAll("/", ""));
+    formPermissions =
+        Utils.fetchPermissions1(Routes.SAME_DAY_COLLECTION.replaceAll("/", ""));
+    fetchUserSetting1();
     super.onInit();
   }
 
@@ -67,15 +76,19 @@ class SameDayCollectionController extends GetxController {
                 },
               );
             } else {
-              LoadingDialog.showErrorDialog(resp['save']['errorMessage'].toString());
+              LoadingDialog.showErrorDialog(
+                  resp['save']['errorMessage'].toString());
             }
-          } else if (resp is Map<String, dynamic> && resp['status'] == "failure") {
+          } else if (resp is Map<String, dynamic> &&
+              resp['status'] == "failure") {
             LoadingDialog.showErrorDialog(resp['message'].toString());
           } else {
             LoadingDialog.showErrorDialog(resp.toString());
           }
         },
-        json: dataTableList.map((element) => element.toJson(fromSame: true)).toList(),
+        json: dataTableList
+            .map((element) => element.toJson(fromSame: true))
+            .toList(),
       );
     }
   }
@@ -88,12 +101,17 @@ class SameDayCollectionController extends GetxController {
     } else {
       LoadingDialog.call();
       Get.find<ConnectorControl>().GETMETHODCALL(
-          api: ApiFactory.SAME_DAY_COLLECTION_SHOW_DATA(selectedLocation?.key ?? "", selectedChannel?.key ?? ""),
+          api: ApiFactory.SAME_DAY_COLLECTION_SHOW_DATA(
+              selectedLocation?.key ?? "", selectedChannel?.key ?? ""),
           fun: (resp) {
             closeDialogIfOpen();
-            if (resp != null && resp is Map<String, dynamic> && resp['show'] != null) {
+            if (resp != null &&
+                resp is Map<String, dynamic> &&
+                resp['show'] != null) {
               dataTableList.clear();
-              dataTableList.addAll((resp['show'] as List<dynamic>).map((e) => SameDayCollectionModel.fromJson(e)).toList());
+              dataTableList.addAll((resp['show'] as List<dynamic>)
+                  .map((e) => SameDayCollectionModel.fromJson(e))
+                  .toList());
             } else {
               if (resp is Map<String, dynamic> && resp['status'] == "failure") {
                 LoadingDialog.showErrorDialog(resp['message'].toString());
@@ -119,10 +137,14 @@ class SameDayCollectionController extends GetxController {
       closeDialogIfOpen();
       LoadingDialog.call();
       Get.find<ConnectorControl>().GETMETHODCALL(
-        api: ApiFactory.SAME_DAY_COLLECTION_ON_LEAVE_LOCATION(val.key.toString()),
+        api: ApiFactory.SAME_DAY_COLLECTION_ON_LEAVE_LOCATION(
+            val.key.toString()),
         fun: (resp) {
           closeDialogIfOpen();
-          if (resp != null && resp is Map<String, dynamic> && resp['channel'] != null && resp['channel'] is List<dynamic>) {
+          if (resp != null &&
+              resp is Map<String, dynamic> &&
+              resp['channel'] != null &&
+              resp['channel'] is List<dynamic>) {
             channelList.clear();
             selectedChannel = null;
             channelList.addAll((resp['channel'] as List<dynamic>)
@@ -153,7 +175,10 @@ class SameDayCollectionController extends GetxController {
         api: ApiFactory.SAME_DAY_COLLECTION_ON_LOAD,
         fun: (resp) {
           closeDialogIfOpen();
-          if (resp != null && resp is Map<String, dynamic> && resp['location'] != null && resp['location'] is List<dynamic>) {
+          if (resp != null &&
+              resp is Map<String, dynamic> &&
+              resp['location'] != null &&
+              resp['location'] is List<dynamic>) {
             locationList.value.addAll((resp['location'] as List<dynamic>)
                 .map((e) => DropDownValue(
                       key: e['locationCode'].toString(),
@@ -194,6 +219,9 @@ class SameDayCollectionController extends GetxController {
       clearPage();
     } else if (btn == "Save") {
       saveRecord();
+    } else if (btn == "Exit") {
+      Get.find<HomeController>()
+          .postUserGridSetting1(listStateManager: [manager]);
     }
   }
 

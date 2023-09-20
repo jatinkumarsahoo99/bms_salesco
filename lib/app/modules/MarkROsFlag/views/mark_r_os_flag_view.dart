@@ -16,6 +16,7 @@ import '../controllers/mark_r_os_flag_controller.dart';
 
 class MarkROsFlagView extends GetView<MarkROsFlagController> {
   const MarkROsFlagView({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,7 +61,8 @@ class MarkROsFlagView extends GetView<MarkROsFlagController> {
                       mainTextController: controller.effectiveDateTC,
                       widthRation: 0.15,
                       onFocusChange: (date) {
-                        controller.weekDaysTC.text = DateFormat('EEEE').format(DateFormat("dd-MM-yyyy").parse(date));
+                        controller.weekDaysTC.text = DateFormat('EEEE')
+                            .format(DateFormat("dd-MM-yyyy").parse(date));
                       },
                       isEnable: controller.bottomControllsEnable.value,
                       startDate: DateTime.now(),
@@ -73,7 +75,9 @@ class MarkROsFlagView extends GetView<MarkROsFlagController> {
                     isEnable: false,
                   ),
                   const SizedBox(width: 10),
-                  FormButton(btnText: "Display", callback: controller.handleGenerateButton)
+                  FormButton(
+                      btnText: "Display",
+                      callback: controller.handleGenerateButton)
                 ],
               ),
 
@@ -92,41 +96,68 @@ class MarkROsFlagView extends GetView<MarkROsFlagController> {
                           : null,
                       child: controller.dataTableList.value.isEmpty
                           ? null
-                          : DataGridFromMap3(
-                              mapData: controller.dataTableList.value.map((e) => e.toJson()).toList(),
-                              checkBoxColumnKey: ['flag'],
-                              checkBoxStrComparison: "true",
-                              uncheckCheckBoxStr: "false",
-                              actionIconKey: ['flag'],
-                              actionOnPress: (position, isSpaceCalled) {
-                                if (isSpaceCalled) {
-                                  controller.lastSelectedIdx = position.rowIdx ?? 0;
-                                  controller.stateManager!.changeCellValue(
-                                    controller.stateManager!.currentCell!,
-                                    controller.stateManager!.currentCell!.value == "true" ? "false" : "true",
-                                    force: true,
-                                    callOnChangedEvent: true,
-                                    notify: true,
-                                  );
-                                }
+                          : GetBuilder<MarkROsFlagController>(
+                              assignId: true,
+                              id: "grid",
+                              builder: (controller) {
+                                return DataGridFromMap3(
+                                  mapData: controller.dataTableList.value
+                                      .map((e) => e.toJson())
+                                      .toList(),
+                                  checkBoxColumnKey: ['flag'],
+                                  checkBoxStrComparison: "true",
+                                  uncheckCheckBoxStr: "false",
+                                  actionIconKey: ['flag'],
+                                  actionOnPress: (position, isSpaceCalled) {
+                                    if (isSpaceCalled) {
+                                      controller.lastSelectedIdx =
+                                          position.rowIdx ?? 0;
+                                      controller.stateManager!.changeCellValue(
+                                        controller.stateManager!.currentCell!,
+                                        controller.stateManager!.currentCell!
+                                                    .value ==
+                                                "true"
+                                            ? "false"
+                                            : "true",
+                                        force: true,
+                                        callOnChangedEvent: true,
+                                        notify: true,
+                                      );
+                                    }
+                                  },
+                                  onEdit: (row) {
+                                    controller.lastSelectedIdx = row.rowIdx;
+                                    controller.madeChanges = true;
+                                    controller.dataTableList[row.rowIdx].flag =
+                                        row.value == "true";
+                                  },
+                                  mode: PlutoGridMode.normal,
+                                  colorCallback: (row) => (row.row.cells
+                                          .containsValue(controller
+                                              .stateManager?.currentCell))
+                                      ? Colors.deepPurple.shade200
+                                      : Colors.white,
+                                  onload: (event) {
+                                    controller.stateManager =
+                                        event.stateManager;
+                                    event.stateManager.setSelectingMode(
+                                        PlutoGridSelectingMode.row);
+                                    event.stateManager.setSelecting(true);
+                                    event.stateManager.setCurrentCell(
+                                        event.stateManager
+                                            .getRowByIdx(
+                                                controller.lastSelectedIdx)
+                                            ?.cells['telecastDate'],
+                                        controller.lastSelectedIdx);
+                                  },
+                                  widthSpecificColumn:
+                                      Get.find<HomeController>()
+                                          .getGridWidthByKey(
+                                              userGridSettingList: controller
+                                                  .userGridSetting1?.value),
+                                );
                               },
-                              onEdit: (row) {
-                                controller.lastSelectedIdx = row.rowIdx;
-                                controller.madeChanges = true;
-                                controller.dataTableList[row.rowIdx].flag = row.value == "true";
-                              },
-                              mode: PlutoGridMode.normal,
-                              colorCallback: (row) =>
-                                  (row.row.cells.containsValue(controller.stateManager?.currentCell)) ? Colors.deepPurple.shade200 : Colors.white,
-                              onload: (event) {
-                                controller.stateManager = event.stateManager;
-                                event.stateManager.setSelectingMode(PlutoGridSelectingMode.row);
-                                event.stateManager.setSelecting(true);
-                                event.stateManager.setCurrentCell(
-                                    event.stateManager.getRowByIdx(controller.lastSelectedIdx)?.cells['telecastDate'], controller.lastSelectedIdx);
-                              },
-                        widthSpecificColumn: Get.find<HomeController>().getGridWidthByKey(
-                            userGridSettingList: controller.userGridSetting1?.value),),
+                            ),
                     );
                   },
                 ),
@@ -142,7 +173,8 @@ class MarkROsFlagView extends GetView<MarkROsFlagController> {
                       child: FormButton(
                         btnText: controller.buttonsList[index],
                         callback: controller.bottomControllsEnable.value
-                            ? () => controller.saveTodayAndAllData(controller.buttonsList[index] == "Save Today")
+                            ? () => controller.saveTodayAndAllData(
+                                controller.buttonsList[index] == "Save Today")
                             : null,
                       ),
                     ),
@@ -167,7 +199,9 @@ class MarkROsFlagView extends GetView<MarkROsFlagController> {
                             for (var btn in btncontroller.buttons!) ...{
                               FormButtonWrapper(
                                 btnText: btn["name"],
-                                callback: ((Utils.btnAccessHandler(btn['name'], controller.formPermissions!) == null))
+                                callback: ((Utils.btnAccessHandler(btn['name'],
+                                            controller.formPermissions!) ==
+                                        null))
                                     ? null
                                     : () => controller.formHandler(btn['name']),
                               )

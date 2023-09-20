@@ -13,6 +13,7 @@ import '../controllers/same_day_collection_controller.dart';
 
 class SameDayCollectionView extends GetView<SameDayCollectionController> {
   const SameDayCollectionView({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,7 +59,9 @@ class SameDayCollectionView extends GetView<SameDayCollectionController> {
                   ),
                   Obx(() {
                     return FormButton(
-                      btnText: !controller.checkedAll.value ? "Check All" : "Clear All",
+                      btnText: !controller.checkedAll.value
+                          ? "Check All"
+                          : "Clear All",
                       callback: controller.handleCheckAndUncheck,
                     );
                   }),
@@ -79,44 +82,69 @@ class SameDayCollectionView extends GetView<SameDayCollectionController> {
                         : null,
                     child: controller.dataTableList.isEmpty
                         ? null
-                        : DataGridFromMap3(
-                            mode: PlutoGridMode.selectWithOneTap,
-                            checkBoxColumnKey: ["cancel"],
-                            actionIconKey: ['cancel'],
-                            specificWidth: {
-                              "clientname": 200,
-                            },
-                            onload: (event) {
-                              controller.manager = event.stateManager;
-                              event.stateManager.setSelectingMode(PlutoGridSelectingMode.row);
-                              event.stateManager.setSelecting(true);
-                              event.stateManager.moveScrollByRow(PlutoMoveDirection.down, controller.lastSelctedIdx);
-                              event.stateManager.setCurrentCell(
-                                event.stateManager.getRowByIdx(controller.lastSelctedIdx)?.cells['isActive'],
-                                controller.lastSelctedIdx,
+                        : GetBuilder<SameDayCollectionController>(
+                            assignId: true,
+                            id: "grid",
+                            builder: (controller) {
+                              return DataGridFromMap3(
+                                mode: PlutoGridMode.selectWithOneTap,
+                                checkBoxColumnKey: ["cancel"],
+                                actionIconKey: ['cancel'],
+                                specificWidth: {
+                                  "clientname": 200,
+                                },
+                                onload: (event) {
+                                  controller.manager = event.stateManager;
+                                  event.stateManager.setSelectingMode(
+                                      PlutoGridSelectingMode.row);
+                                  event.stateManager.setSelecting(true);
+                                  event.stateManager.moveScrollByRow(
+                                      PlutoMoveDirection.down,
+                                      controller.lastSelctedIdx);
+                                  event.stateManager.setCurrentCell(
+                                    event.stateManager
+                                        .getRowByIdx(controller.lastSelctedIdx)
+                                        ?.cells['isActive'],
+                                    controller.lastSelctedIdx,
+                                  );
+                                },
+                                actionOnPress: (position, isSpaceCalled) {
+                                  if (isSpaceCalled) {
+                                    controller.lastSelctedIdx =
+                                        position.rowIdx ?? 0;
+                                    controller.manager!.changeCellValue(
+                                      controller.manager!.currentCell!,
+                                      controller.manager!.currentCell!.value ==
+                                              "true"
+                                          ? "false"
+                                          : "true",
+                                      force: true,
+                                      callOnChangedEvent: true,
+                                      notify: true,
+                                    );
+                                  }
+                                },
+                                colorCallback: (row) => (row.row.cells
+                                        .containsValue(
+                                            controller.manager?.currentCell))
+                                    ? Colors.deepPurple.shade200
+                                    : Colors.white,
+                                onEdit: (event) {
+                                  controller.lastSelctedIdx = event.rowIdx;
+                                  controller.dataTableList[event.rowIdx]
+                                      .cancel = (event.value == "true");
+                                },
+                                widthSpecificColumn: Get.find<HomeController>()
+                                    .getGridWidthByKey(
+                                        userGridSettingList:
+                                            controller.userGridSetting1),
+                                uncheckCheckBoxStr: "false",
+                                checkBoxStrComparison: "true",
+                                mapData: controller.dataTableList.value
+                                    .map((e) => e.toJson())
+                                    .toList(),
                               );
                             },
-                            actionOnPress: (position, isSpaceCalled) {
-                              if (isSpaceCalled) {
-                                controller.lastSelctedIdx = position.rowIdx ?? 0;
-                                controller.manager!.changeCellValue(
-                                  controller.manager!.currentCell!,
-                                  controller.manager!.currentCell!.value == "true" ? "false" : "true",
-                                  force: true,
-                                  callOnChangedEvent: true,
-                                  notify: true,
-                                );
-                              }
-                            },
-                            colorCallback: (row) =>
-                                (row.row.cells.containsValue(controller.manager?.currentCell)) ? Colors.deepPurple.shade200 : Colors.white,
-                            onEdit: (event) {
-                              controller.lastSelctedIdx = event.rowIdx;
-                              controller.dataTableList[event.rowIdx].cancel = (event.value == "true");
-                            },
-                            uncheckCheckBoxStr: "false",
-                            checkBoxStrComparison: "true",
-                            mapData: controller.dataTableList.value.map((e) => e.toJson()).toList(),
                           ),
                   );
                 },
@@ -143,9 +171,13 @@ class SameDayCollectionView extends GetView<SameDayCollectionController> {
                               for (var btn in btncontroller.buttons!) ...{
                                 FormButtonWrapper(
                                   btnText: btn["name"],
-                                  callback: ((Utils.btnAccessHandler(btn['name'], controller.formPermissions!) == null))
+                                  callback: ((Utils.btnAccessHandler(
+                                              btn['name'],
+                                              controller.formPermissions!) ==
+                                          null))
                                       ? null
-                                      : () => controller.formHandler(btn['name']),
+                                      : () =>
+                                          controller.formHandler(btn['name']),
                                 )
                               },
                             ],

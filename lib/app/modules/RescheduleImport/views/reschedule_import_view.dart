@@ -13,14 +13,12 @@ import '../../../providers/Utils.dart';
 import '../controllers/reschedule_import_controller.dart';
 
 class RescheduleImportView extends GetView<RescheduleImportController> {
-   RescheduleImportView({Key? key}) : super(key: key);
+  RescheduleImportView({Key? key}) : super(key: key);
 
+  RescheduleImportController controller =
+      Get.put<RescheduleImportController>(RescheduleImportController());
 
-   RescheduleImportController controller = Get.put<RescheduleImportController>
-     (RescheduleImportController());
-
-
-   @override
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SizedBox(
@@ -48,13 +46,12 @@ class RescheduleImportView extends GetView<RescheduleImportController> {
                   }),
                   Obx(() {
                     return DropDownField.formDropDown1WidthMap(
-                      controller.channelList.value,
-                      (val) => controller.selectedChannel = val,
-                      "Channel",
-                      .15,
-                      selected: controller.selectedChannel,
-                      inkWellFocusNode: controller.channelFN
-                    );
+                        controller.channelList.value,
+                        (val) => controller.selectedChannel = val,
+                        "Channel",
+                        .15,
+                        selected: controller.selectedChannel,
+                        inkWellFocusNode: controller.channelFN);
                   }),
                   Obx(
                     () {
@@ -90,10 +87,23 @@ class RescheduleImportView extends GetView<RescheduleImportController> {
                         : null,
                     child: controller.dataTableList.isEmpty
                         ? null
-                        : DataGridFromMap(
-                            formatDate: false,
-                            mode: PlutoGridMode.selectWithOneTap,
-                            mapData: controller.dataTableList.value,
+                        : GetBuilder<RescheduleImportController>(
+                            assignId: true,
+                            id: "grid",
+                            builder: (controller) {
+                              return DataGridFromMap(
+                                formatDate: false,
+                                mode: PlutoGridMode.selectWithOneTap,
+                                mapData: controller.dataTableList.value,
+                                widthSpecificColumn: Get.find<HomeController>()
+                                    .getGridWidthByKey(
+                                        userGridSettingList:
+                                            controller.userGridSetting1),
+                                onload: (PlutoGridOnLoadedEvent load) {
+                                  controller.stateManager = load.stateManager;
+                                },
+                              );
+                            },
                           ),
                   );
                 },

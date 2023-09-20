@@ -29,6 +29,7 @@ class MakeGoodReportController extends GetxController {
 
   fetchUserSetting1() async {
     userGridSetting1?.value = await Get.find<HomeController>().fetchUserSetting1();
+    update(["grid"]);
   }
 
   @override

@@ -18,11 +18,11 @@ import '../controllers/user_groups_for_deal_workflow_controller.dart';
 
 class UserGroupsForDealWorkflowView
     extends GetView<UserGroupsForDealWorkflowController> {
-   UserGroupsForDealWorkflowView({Key? key}) : super(key: key);
+  UserGroupsForDealWorkflowView({Key? key}) : super(key: key);
 
-
-   UserGroupsForDealWorkflowController controllerX =
-   Get.put<UserGroupsForDealWorkflowController>(UserGroupsForDealWorkflowController());
+  UserGroupsForDealWorkflowController controllerX =
+      Get.put<UserGroupsForDealWorkflowController>(
+          UserGroupsForDealWorkflowController());
 
   @override
   Widget build(BuildContext context) {
@@ -43,41 +43,41 @@ class UserGroupsForDealWorkflowView
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
-
                     children: [
                       SizedBox(
-                        width: MediaQuery.of(context).size.width*0.45,
+                        width: MediaQuery.of(context).size.width * 0.45,
                         child: Padding(
-                          padding: const EdgeInsets.only(left: 10.0,right: 10,top: 5,bottom: 5),
+                          padding: const EdgeInsets.only(
+                              left: 10.0, right: 10, top: 5, bottom: 5),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               InputFields.formField1(
-                                hintTxt: "Group",
-                                controller: controllerX.groupTextController,
-                                width:  0.45,
-                                autoFocus: false,
-                                // focusNode: controllerX.brandName,
-                                // isEnable: controllerX.isEnable,
-                                onchanged: (value) {
-                                  // controllerX.getDisPlay(value);
-                                },
-                                focusNode: controllerX.groupNode
-                                // autoFocus: true,
-                              ),
+                                  hintTxt: "Group",
+                                  controller: controllerX.groupTextController,
+                                  width: 0.45,
+                                  autoFocus: false,
+                                  // focusNode: controllerX.brandName,
+                                  // isEnable: controllerX.isEnable,
+                                  onchanged: (value) {
+                                    // controllerX.getDisPlay(value);
+                                  },
+                                  focusNode: controllerX.groupNode
+                                  // autoFocus: true,
+                                  ),
                               SizedBox(
                                 height: 3,
                               ),
-                              DropDownField
-                                  .formDropDownSearchAPI2(
+                              DropDownField.formDropDownSearchAPI2(
                                 GlobalKey(),
                                 context,
-                                width: context.width *  0.45,
+                                width: context.width * 0.45,
                                 onchanged: (DropDownValue? val) {
                                   controllerX.selectedEmployee = val;
                                 },
                                 title: 'Employee',
-                                url:ApiFactory.USER_GROUPS_FOR_DEAL_WORKFLOW_EmpSearch,
+                                url: ApiFactory
+                                    .USER_GROUPS_FOR_DEAL_WORKFLOW_EmpSearch,
                                 parseKeyForKey: "PersonnelNo",
                                 parseKeyForValue: 'Employees',
                                 selectedValue: controllerX.selectedEmployee,
@@ -108,41 +108,62 @@ class UserGroupsForDealWorkflowView
                         ),
                       ),
                       SizedBox(
-                        width: MediaQuery.of(context).size.width*0.45,
-                        height: MediaQuery.of(context).size.height*0.5,
+                        width: MediaQuery.of(context).size.width * 0.45,
+                        height: MediaQuery.of(context).size.height * 0.5,
                         child: Padding(
-                          padding: const EdgeInsets.only(left: 10.0,right: 10,top: 5,bottom: 5),
+                          padding: const EdgeInsets.only(
+                              left: 10.0, right: 10, top: 5, bottom: 5),
                           child: Container(
                             decoration: BoxDecoration(
                                 border: Border.all(color: Colors.grey)),
-                            child:  GetBuilder<UserGroupsForDealWorkflowController>(
+                            child: GetBuilder<
+                                    UserGroupsForDealWorkflowController>(
                                 id: "grid",
                                 builder: (controllerX) {
-                                  return (controllerX.disPlayGroupModel != null &&
-                                      controllerX.disPlayGroupModel?.displayGroup != null &&
-                                      (controllerX.disPlayGroupModel?.displayGroup?.employees?.length??0) >0
-                                  )?DataGridFromMap(
-                                    showSrNo: false,
-                                    hideCode: false,
-                                    formatDate: false,
-                                    mode: PlutoGridMode.selectWithOneTap,
-                                    mapData: (controllerX
-                                        .disPlayGroupModel!.displayGroup
-                                        ?.employees?.map((e) => e.toJson())
-                                        .toList())!,
-                                    // mapData: (controllerX.dataList)!,
-                                    widthRatio: Get.width / 9 - 1,
-                                  ): Container(
-
-                                  );
-                                }
-                            ),
-
+                                  return (controllerX.disPlayGroupModel !=
+                                              null &&
+                                          controllerX.disPlayGroupModel
+                                                  ?.displayGroup !=
+                                              null &&
+                                          (controllerX
+                                                      .disPlayGroupModel
+                                                      ?.displayGroup
+                                                      ?.employees
+                                                      ?.length ??
+                                                  0) >
+                                              0)
+                                      ? DataGridFromMap(
+                                          showSrNo: false,
+                                          hideCode: false,
+                                          formatDate: false,
+                                          mode: PlutoGridMode.selectWithOneTap,
+                                          mapData: (controllerX
+                                              .disPlayGroupModel!
+                                              .displayGroup
+                                              ?.employees
+                                              ?.map((e) => e.toJson())
+                                              .toList())!,
+                                          // mapData: (controllerX.dataList)!,
+                                          widthRatio: Get.width / 9 - 1,
+                                          onload:
+                                              (PlutoGridOnLoadedEvent load) {
+                                            controllerX.stateManager =
+                                                load.stateManager;
+                                          },
+                                          widthSpecificColumn:
+                                              Get.find<HomeController>()
+                                                  .getGridWidthByKey(
+                                            userGridSettingList:
+                                                controllerX.userGridSetting1,
+                                          ),
+                                        )
+                                      : Container();
+                                }),
                           ),
                         ),
                       ),
-                      /// bottom common buttons
 
+                      /// bottom common buttons
                     ],
                   ),
                 ),
@@ -152,10 +173,12 @@ class UserGroupsForDealWorkflowView
                       id: "buttons",
                       init: Get.find<HomeController>(),
                       builder: (controller) {
-                        PermissionModel formPermissions = Get.find<MainController>()
-                            .permissionList!
-                            .lastWhere((element) =>
-                        element.appFormName == "frmCommercialMaster");
+                        PermissionModel formPermissions =
+                            Get.find<MainController>()
+                                .permissionList!
+                                .lastWhere((element) =>
+                                    element.appFormName ==
+                                    "frmCommercialMaster");
                         if (controller.buttons != null) {
                           return Wrap(
                             spacing: 5,
@@ -166,12 +189,12 @@ class UserGroupsForDealWorkflowView
                                 FormButtonWrapper(
                                   btnText: btn["name"],
                                   callback: Utils.btnAccessHandler2(btn['name'],
-                                      controller, formPermissions) ==
-                                      null
+                                              controller, formPermissions) ==
+                                          null
                                       ? null
                                       : () => controllerX.formHandler(
-                                    btn['name'],
-                                  ),
+                                            btn['name'],
+                                          ),
                                 )
                             ],
                           );
