@@ -4,6 +4,7 @@ import 'package:pluto_grid/pluto_grid.dart';
 
 import '../../../../widgets/LoadingDialog.dart';
 import '../../../controller/ConnectorControl.dart';
+import '../../../controller/HomeController.dart';
 import '../../../data/DropDownValue.dart';
 import '../../../data/PermissionModel.dart';
 import '../../../providers/ApiFactory.dart';
@@ -19,10 +20,17 @@ class MonthlyReportController extends GetxController {
   int lastSelectedIdx = 0;
   var dataTableList = [].obs;
   var selectedRadio = "".obs;
+  Rxn<List<Map<String,Map<String, double>>>>? userGridSetting1;
+  PlutoGridStateManager? stateManager;
+  fetchUserSetting1() async {
+    userGridSetting1?.value = await Get.find<HomeController>().fetchUserSetting1();
+    update(["grid"]);
+  }
 
   @override
   void onInit() {
     formPermissions = Utils.fetchPermissions1(Routes.MONTHLY_REPORT.replaceAll("/", ""));
+    fetchUserSetting1();
     super.onInit();
   }
 
