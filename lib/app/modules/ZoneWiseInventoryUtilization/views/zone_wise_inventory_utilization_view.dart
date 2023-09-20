@@ -12,8 +12,10 @@ import '../../../controller/HomeController.dart';
 import '../../../providers/Utils.dart';
 import '../controllers/zone_wise_inventory_utilization_controller.dart';
 
-class ZoneWiseInventoryUtilizationView extends GetView<ZoneWiseInventoryUtilizationController> {
+class ZoneWiseInventoryUtilizationView
+    extends GetView<ZoneWiseInventoryUtilizationController> {
   const ZoneWiseInventoryUtilizationView({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,9 +35,9 @@ class ZoneWiseInventoryUtilizationView extends GetView<ZoneWiseInventoryUtilizat
                   Obx(() {
                     return DropDownField.formDropDown1WidthMap(
                       controller.locationList.value,
-                      (val){
+                      (val) {
                         controller.selectedLocation = val;
-                        controller.getChannel(val.key??"");
+                        controller.getChannel(val.key ?? "");
                       },
                       "Location",
                       .15,
@@ -80,7 +82,7 @@ class ZoneWiseInventoryUtilizationView extends GetView<ZoneWiseInventoryUtilizat
                   FormButtonWrapper(
                     btnText: "Generate",
                     showIcon: true,
-                    callback:(){
+                    callback: () {
                       controller.callGenerate();
                     },
                   ),
@@ -96,32 +98,47 @@ class ZoneWiseInventoryUtilizationView extends GetView<ZoneWiseInventoryUtilizat
                 () {
                   return Container(
                     margin: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                    decoration: controller.zoneWiseUtilizationResponseModel!.value.generate!.isEmpty
+                    decoration: controller.zoneWiseUtilizationResponseModel!
+                            .value.generate!.isEmpty
                         ? BoxDecoration(
                             border: Border.all(
                               color: Colors.grey,
                             ),
                           )
                         : null,
-                    child: controller.zoneWiseUtilizationResponseModel!.value.generate!.isEmpty
+                    child: controller.zoneWiseUtilizationResponseModel!.value
+                            .generate!.isEmpty
                         ? null
-                        : DataGridFromMap3(
-                            mode: PlutoGridMode.selectWithOneTap,
-                            checkBoxColumnKey: ["cancel"],
-                            actionIconKey: ['cancel'],
-                            specificWidth: {
-                              "clientname": 200,
+                        : GetBuilder<ZoneWiseInventoryUtilizationController>(
+                            assignId: true,
+                            tag: "grid",
+                            builder: (controller) {
+                              return DataGridFromMap3(
+                                mode: PlutoGridMode.selectWithOneTap,
+                                checkBoxColumnKey: ["cancel"],
+                                actionIconKey: ['cancel'],
+                                specificWidth: {
+                                  "clientname": 200,
+                                },
+                                onColumnHeaderDoubleTap: (String val) {
+                                  print(">>>>>" + val);
+                                },
+                                onRowDoubleTap: (val) {},
+                                showSrNo: true,
+                                hideCode: false,
+                                formatDate: false,
+                                mapData: controller
+                                    .zoneWiseUtilizationResponseModel!
+                                    .value
+                                    .generate!
+                                    .map((e) => e.toJson())
+                                    .toList(),
+                                widthSpecificColumn: Get.find<HomeController>()
+                                    .getGridWidthByKey(
+                                        userGridSettingList:
+                                            controller.userGridSetting1),
+                              );
                             },
-                      onColumnHeaderDoubleTap: (String val){
-                              print(">>>>>"+val);
-                      },
-                      onRowDoubleTap: (val){
-
-                      },
-                      showSrNo: true,
-                      hideCode: false,
-                      formatDate: false,
-                            mapData:controller.zoneWiseUtilizationResponseModel!.value.generate!.map((e) => e.toJson()).toList(),
                           ),
                   );
                 },
@@ -148,9 +165,13 @@ class ZoneWiseInventoryUtilizationView extends GetView<ZoneWiseInventoryUtilizat
                               for (var btn in btncontroller.buttons!) ...{
                                 FormButtonWrapper(
                                   btnText: btn["name"],
-                                  callback: ((Utils.btnAccessHandler(btn['name'], controller.formPermissions!) == null))
+                                  callback: ((Utils.btnAccessHandler(
+                                              btn['name'],
+                                              controller.formPermissions!) ==
+                                          null))
                                       ? null
-                                      : () => controller.formHandler(btn['name']),
+                                      : () =>
+                                          controller.formHandler(btn['name']),
                                 )
                               },
                             ],
