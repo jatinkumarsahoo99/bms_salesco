@@ -47,44 +47,52 @@ class TapeIDCampaignView extends GetView<TapeIDCampaignController> {
                         padLeft: 0,
                         focusNode: controller.tapeIdFN,
                       ),
-                      InputFields.formFieldDisable1(hintTxt: "Activity Month",
+                      InputFields.formFieldDisable1(
+                          hintTxt: "Activity Month",
                           value: controller.activityMonth,
                           widthRatio: .15,
                           leftPad: 0),
                       InputFields.formFieldDisable1(
                           hintTxt: "Client",
-                          value: controller.loadModel?.tapeIdDetails
-                              .clientName ?? "",
+                          value:
+                              controller.loadModel?.tapeIdDetails.clientName ??
+                                  "",
                           widthRatio: .15,
                           leftPad: 0),
                       InputFields.formFieldDisable1(
                           hintTxt: "Agency",
-                          value: controller.loadModel?.tapeIdDetails
-                              .agencyName ?? "",
+                          value:
+                              controller.loadModel?.tapeIdDetails.agencyName ??
+                                  "",
                           widthRatio: .15,
                           leftPad: 0),
                       InputFields.formFieldDisable1(
                           hintTxt: "Brand",
-                          value: controller.loadModel?.tapeIdDetails
-                              .brandName ?? "",
+                          value:
+                              controller.loadModel?.tapeIdDetails.brandName ??
+                                  "",
                           widthRatio: .15,
                           leftPad: 0),
                       InputFields.formFieldDisable1(
                           hintTxt: "Caption",
-                          value: controller.loadModel?.tapeIdDetails
-                              .commercialCaption ?? "",
+                          value: controller
+                                  .loadModel?.tapeIdDetails.commercialCaption ??
+                              "",
                           widthRatio: .15,
                           leftPad: 0),
                       InputFields.formFieldDisable1(
                           hintTxt: "Duration",
-                          value: controller.loadModel?.tapeIdDetails
-                              .commercialDuration.toString() ?? "",
+                          value: controller
+                                  .loadModel?.tapeIdDetails.commercialDuration
+                                  .toString() ??
+                              "",
                           widthRatio: .15,
                           leftPad: 0),
                       InputFields.formFieldDisable1(
                           hintTxt: "Agency Tape ID",
-                          value: controller.loadModel?.tapeIdDetails
-                              .agencytapeid ?? "",
+                          value: controller
+                                  .loadModel?.tapeIdDetails.agencytapeid ??
+                              "",
                           widthRatio: .15,
                           leftPad: 0),
                       DateWithThreeTextField(
@@ -92,27 +100,30 @@ class TapeIDCampaignView extends GetView<TapeIDCampaignController> {
                         mainTextController: controller.startDateTC,
                         widthRation: .15,
                         startDate: DateTime.now(),
-                        endDate:
-                        DateTime(controller.now.year, controller.now.month,
-                            (DateTime(
-                                controller.now.year, controller.now.month + 1,
-                                0).day)),
+                        endDate: DateTime(
+                            controller.now.year,
+                            controller.now.month,
+                            (DateTime(controller.now.year,
+                                    controller.now.month + 1, 0)
+                                .day)),
                       ),
                       DateWithThreeTextField(
                         title: "End Date",
                         mainTextController: controller.endDateTC,
                         widthRation: .15,
                         startDate: DateTime.now(),
-                        endDate:
-                        DateTime(controller.now.year, controller.now.month,
-                            (DateTime(
-                                controller.now.year, controller.now.month + 1,
-                                0).day)),
+                        endDate: DateTime(
+                            controller.now.year,
+                            controller.now.month,
+                            (DateTime(controller.now.year,
+                                    controller.now.month + 1, 0)
+                                .day)),
                       ),
                       InputFields.formFieldDisable1(
                           hintTxt: "Created By",
-                          value: controller.loadModel?.tapeIdDetails
-                              .loginName ?? "",
+                          value:
+                              controller.loadModel?.tapeIdDetails.loginName ??
+                                  "",
                           widthRatio: .15,
                           leftPad: 0),
                     ],
@@ -159,147 +170,203 @@ class TapeIDCampaignView extends GetView<TapeIDCampaignController> {
                                 color: Colors.grey,
                               ),
                             ),
-                            child: GetBuilder<TapeIDCampaignController>(
-                              assignId: true,
-                              id: "grid",
-                              builder: (controller) {
-                                return Visibility(
-                                  visible: controller.selectedTab.value == 0,
-                                  replacement: (controller.history
-                                      ?.historyDetails ?? []).isEmpty
-                                      ? const SizedBox()
-                                      : DataGridFromMap3(
-                                    checkBoxColumnKey: ["isActive"],
-                                    actionIconKey: ["isActive"],
-                                    checkBoxStrComparison: "true",
-                                    uncheckCheckBoxStr: "false",
-                                    colorCallback: (row) =>
-                                    (row.row.cells.containsValue(
-                                        controller.historyManager?.currentCell))
-                                        ? Colors.deepPurple.shade200
-                                        : Colors.white,
-                                    onload: (event) {
-                                      controller.historyManager =
-                                          event.stateManager;
-                                      event.stateManager.setSelectingMode(
-                                          PlutoGridSelectingMode.row);
-                                      event.stateManager.setSelecting(true);
-                                      event.stateManager.moveScrollByRow(
-                                          PlutoMoveDirection.down,
-                                          controller.historyEditIdx);
-                                      event.stateManager.setCurrentCell(
-                                        event.stateManager
-                                            .getRowByIdx(
-                                            controller.historyEditIdx)
-                                            ?.cells['isActive'],
-                                        controller.historyEditIdx,
-                                      );
-                                    },
-                                    onEdit: (event) {
-                                      controller.historyEditIdx = event.rowIdx;
-                                      controller.history?.historyDetails[event
-                                          .rowIdx].isActive =
-                                      (event.value == "true");
-                                    },
-                                    actionOnPress: (position, isSpaceCalled) {
-                                      if (isSpaceCalled) {
-                                        controller.historyEditIdx =
-                                            position.rowIdx ?? 0;
-                                        controller.historyManager!
-                                            .changeCellValue(
-                                          controller.historyManager!
-                                              .currentCell!,
-                                          controller.historyManager!
-                                              .currentCell!.value == "true"
-                                              ? "false"
-                                              : "true",
-                                          force: true,
-                                          callOnChangedEvent: true,
-                                          notify: true,
+                            child: Visibility(
+                              visible: controller.selectedTab.value == 0,
+                              replacement: (controller
+                                              .history?.historyDetails ??
+                                          [])
+                                      .isEmpty
+                                  ? const SizedBox()
+                                  : GetBuilder<TapeIDCampaignController>(
+                                      assignId: true,
+                                      id: "grid",
+                                      builder: (controller) {
+                                        return DataGridFromMap3(
+                                          checkBoxColumnKey: ["isActive"],
+                                          actionIconKey: ["isActive"],
+                                          checkBoxStrComparison: "true",
+                                          uncheckCheckBoxStr: "false",
+                                          colorCallback: (row) => (row.row.cells
+                                                  .containsValue(controller
+                                                      .historyManager
+                                                      ?.currentCell))
+                                              ? Colors.deepPurple.shade200
+                                              : Colors.white,
+                                          onload: (event) {
+                                            controller.historyManager =
+                                                event.stateManager;
+                                            event.stateManager.setSelectingMode(
+                                                PlutoGridSelectingMode.row);
+                                            event.stateManager
+                                                .setSelecting(true);
+                                            event.stateManager.moveScrollByRow(
+                                                PlutoMoveDirection.down,
+                                                controller.historyEditIdx);
+                                            event.stateManager.setCurrentCell(
+                                              event.stateManager
+                                                  .getRowByIdx(
+                                                      controller.historyEditIdx)
+                                                  ?.cells['isActive'],
+                                              controller.historyEditIdx,
+                                            );
+                                          },
+                                          onEdit: (event) {
+                                            controller.historyEditIdx =
+                                                event.rowIdx;
+                                            controller
+                                                .history
+                                                ?.historyDetails[event.rowIdx]
+                                                .isActive = (event
+                                                    .value ==
+                                                "true");
+                                          },
+                                          actionOnPress:
+                                              (position, isSpaceCalled) {
+                                            if (isSpaceCalled) {
+                                              controller.historyEditIdx =
+                                                  position.rowIdx ?? 0;
+                                              controller.historyManager!
+                                                  .changeCellValue(
+                                                controller.historyManager!
+                                                    .currentCell!,
+                                                controller
+                                                            .historyManager!
+                                                            .currentCell!
+                                                            .value ==
+                                                        "true"
+                                                    ? "false"
+                                                    : "true",
+                                                force: true,
+                                                callOnChangedEvent: true,
+                                                notify: true,
+                                              );
+                                            }
+                                          },
+                                          mapData: controller
+                                                  .history?.historyDetails
+                                                  .map((e) => e.toJson())
+                                                  .toList() ??
+                                              [],
+                                          widthSpecificColumn:
+                                              Get.find<HomeController>()
+                                                  .getGridWidthByKey(
+                                                      userGridSettingList:
+                                                          controller
+                                                              .userGridSetting1,
+                                                      key: "tbl1"),
                                         );
-                                      }
-                                    },
-                                    mapData: controller.history?.historyDetails
-                                        .map((e) => e.toJson()).toList() ?? [],
-                                    widthSpecificColumn: Get.find<HomeController>().getGridWidthByKey(
-                                        userGridSettingList: controller.userGridSetting1,key: "tbl1"),
-                                  ),
-                                  child: (controller.loadModel?.tapeIdDetails
-                                      .locationLst ?? []).isEmpty
-                                      ? const SizedBox()
-                                      : DataGridFromMap3(
-                                    colorCallback: (row) =>
-                                    (row.row.cells.containsValue(
-                                        controller.locationChannelManager
-                                            ?.currentCell))
-                                        ? Colors.deepPurple.shade200
-                                        : Colors.white,
-                                    onload: (event) {
-                                      controller.locationChannelManager =
-                                          event.stateManager;
-                                      event.stateManager.setSelectingMode(
-                                          PlutoGridSelectingMode.row);
-                                      event.stateManager.setSelecting(true);
-                                      event.stateManager.moveScrollByRow(
-                                          PlutoMoveDirection.down, controller
-                                          .lastLocationChannelEditIdx);
-                                      event.stateManager.setCurrentCell(
-                                          event.stateManager
-                                              .getRowByIdx(controller
-                                              .lastLocationChannelEditIdx)
-                                              ?.cells['selectRow'],
-                                          controller
-                                              .lastLocationChannelEditIdx);
-                                    },
-                                    checkBoxColumnKey: ["selectRow"],
-                                    actionIconKey: ["selectRow"],
-                                    checkBoxStrComparison: "true",
-                                    uncheckCheckBoxStr: "false",
-                                    onEdit: (event) {
-                                      controller.lastLocationChannelEditIdx =
-                                          event.rowIdx;
-                                      controller.loadModel?.tapeIdDetails
-                                          .locationLst?[event.rowIdx]
-                                          .selectRow = (event.value == "true");
-                                      controller.loadModel?.tapeIdDetails
-                                          .locationLst?[event.rowIdx]
-                                          .startDate =
-                                          DateFormat("dd-MMM-yyyy").format(
-                                              DateFormat("dd-MM-yyyy").parse(
-                                                  controller.startDateTC.text));
-                                      controller.loadModel?.tapeIdDetails
-                                          .locationLst?[event.rowIdx].endDate =
-                                          DateFormat("dd-MMM-yyyy").format(
-                                              DateFormat("dd-MM-yyyy").parse(
-                                                  controller.endDateTC.text));
-                                      controller.selectedTab.refresh();
-                                    },
-                                    actionOnPress: (position, isSpaceCalled) {
-                                      if (isSpaceCalled) {
-                                        controller.lastLocationChannelEditIdx =
-                                            position.rowIdx ?? 0;
-                                        controller.locationChannelManager!
-                                            .changeCellValue(
-                                          controller.locationChannelManager!
-                                              .currentCell!,
-                                          controller.locationChannelManager!
-                                              .currentCell!.value == "true"
-                                              ? "false"
-                                              : "true",
-                                          force: true,
-                                          callOnChangedEvent: true,
-                                          notify: true,
+                                      },
+                                    ),
+                              child: (controller.loadModel?.tapeIdDetails
+                                              .locationLst ??
+                                          [])
+                                      .isEmpty
+                                  ? const SizedBox()
+                                  : GetBuilder<TapeIDCampaignController>(
+                                      assignId: true,
+                                      id: "grid",
+                                      builder: (logic) {
+                                        return DataGridFromMap3(
+                                          colorCallback: (row) => (row.row.cells
+                                                  .containsValue(controller
+                                                      .locationChannelManager
+                                                      ?.currentCell))
+                                              ? Colors.deepPurple.shade200
+                                              : Colors.white,
+                                          onload: (event) {
+                                            controller.locationChannelManager =
+                                                event.stateManager;
+                                            event.stateManager.setSelectingMode(
+                                                PlutoGridSelectingMode.row);
+                                            event.stateManager
+                                                .setSelecting(true);
+                                            event.stateManager.moveScrollByRow(
+                                                PlutoMoveDirection.down,
+                                                controller
+                                                    .lastLocationChannelEditIdx);
+                                            event.stateManager.setCurrentCell(
+                                                event.stateManager
+                                                    .getRowByIdx(controller
+                                                        .lastLocationChannelEditIdx)
+                                                    ?.cells['selectRow'],
+                                                controller
+                                                    .lastLocationChannelEditIdx);
+                                          },
+                                          checkBoxColumnKey: ["selectRow"],
+                                          actionIconKey: ["selectRow"],
+                                          checkBoxStrComparison: "true",
+                                          uncheckCheckBoxStr: "false",
+                                          onEdit: (event) {
+                                            controller
+                                                    .lastLocationChannelEditIdx =
+                                                event.rowIdx;
+                                            controller
+                                                    .loadModel
+                                                    ?.tapeIdDetails
+                                                    .locationLst?[event.rowIdx]
+                                                    .selectRow =
+                                                (event.value == "true");
+                                            controller
+                                                    .loadModel
+                                                    ?.tapeIdDetails
+                                                    .locationLst?[event.rowIdx]
+                                                    .startDate =
+                                                DateFormat("dd-MMM-yyyy")
+                                                    .format(
+                                                        DateFormat("dd-MM-yyyy")
+                                                            .parse(controller
+                                                                .startDateTC
+                                                                .text));
+                                            controller
+                                                    .loadModel
+                                                    ?.tapeIdDetails
+                                                    .locationLst?[event.rowIdx]
+                                                    .endDate =
+                                                DateFormat("dd-MMM-yyyy")
+                                                    .format(
+                                                        DateFormat("dd-MM-yyyy")
+                                                            .parse(controller
+                                                                .endDateTC
+                                                                .text));
+                                            controller.selectedTab.refresh();
+                                          },
+                                          actionOnPress:
+                                              (position, isSpaceCalled) {
+                                            if (isSpaceCalled) {
+                                              controller
+                                                      .lastLocationChannelEditIdx =
+                                                  position.rowIdx ?? 0;
+                                              controller.locationChannelManager!
+                                                  .changeCellValue(
+                                                controller
+                                                    .locationChannelManager!
+                                                    .currentCell!,
+                                                controller.locationChannelManager!
+                                                            .currentCell!.value ==
+                                                        "true"
+                                                    ? "false"
+                                                    : "true",
+                                                force: true,
+                                                callOnChangedEvent: true,
+                                                notify: true,
+                                              );
+                                            }
+                                          },
+                                          mapData: controller.loadModel
+                                                  ?.tapeIdDetails.locationLst
+                                                  ?.map((e) => e.toJson())
+                                                  .toList() ??
+                                              [],
+                                          widthSpecificColumn:
+                                              Get.find<HomeController>()
+                                                  .getGridWidthByKey(
+                                                      userGridSettingList:
+                                                          controller
+                                                              .userGridSetting1,
+                                                      key: "tbl2"),
                                         );
-                                      }
-                                    },
-                                    mapData: controller.loadModel?.tapeIdDetails
-                                        .locationLst?.map((e) => e.toJson())
-                                        .toList() ?? [],
-                                    widthSpecificColumn: Get.find<HomeController>().getGridWidthByKey(
-                                        userGridSettingList: controller.userGridSetting1,key: "tbl2"),
-                                  ),
-                                );
-                              },
+                                      },
+                                    ),
                             ),
                           );
                         }),
@@ -325,9 +392,9 @@ class TapeIDCampaignView extends GetView<TapeIDCampaignController> {
                             for (var btn in btncontroller.buttons!) ...{
                               FormButtonWrapper(
                                 btnText: btn["name"],
-                                callback: ((Utils.btnAccessHandler(
-                                    btn['name'], controller.formPermissions!) ==
-                                    null))
+                                callback: ((Utils.btnAccessHandler(btn['name'],
+                                            controller.formPermissions!) ==
+                                        null))
                                     ? null
                                     : () => controller.formHandler(btn['name']),
                               )
