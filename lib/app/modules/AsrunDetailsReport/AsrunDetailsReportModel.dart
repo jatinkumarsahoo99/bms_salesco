@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 class AsrunDetailsReportModel {
   List<Generate>? generate;
 
@@ -40,18 +42,18 @@ class Generate {
   String? fpctime;
   String? bookingNumber;
   String? agencyROnumber;
-  int? bookingDetailCode;
+  String? bookingDetailCode;
   String? clientName;
   String? agencyName;
   String? brandName;
-  int? bookedDuration;
-  int? breakNumber;
-  int? spotPositionNumber;
+  String? bookedDuration;
+  String? breakNumber;
+  String? spotPositionNumber;
   String? positionCode;
   String? personnelName;
   String? zoneName;
   String? dealNumber;
-  int? recordnumber;
+  String? recordnumber;
   String? spotType;
   String? accountname;
   String? productName;
@@ -115,21 +117,21 @@ class Generate {
     segno = json['segno'];
     eventType = json['eventType'];
     programname = json['programname'];
-    fpctime = json['fpctime'];
+    fpctime = ((json['fpctime'] != null && json['fpctime'] != "")? convertDateFormat(json['fpctime']): "").toString();
     bookingNumber = json['bookingNumber'];
     agencyROnumber = json['agencyROnumber'];
-    bookingDetailCode = json['bookingDetailCode'];
+    bookingDetailCode = (( json['bookingDetailCode'] == 0)?"":json['bookingDetailCode']).toString();
     clientName = json['clientName'];
     agencyName = json['agencyName'];
     brandName = json['brandName'];
-    bookedDuration = json['bookedDuration'];
-    breakNumber = json['breakNumber'];
-    spotPositionNumber = json['spotPositionNumber'];
+    bookedDuration = ((json['bookedDuration'] == 0)?"":json['bookedDuration']).toString();
+    breakNumber =( (json['breakNumber'] == 0)?"":json['breakNumber']).toString();
+    spotPositionNumber =(( json['spotPositionNumber'] == 0)?"":json['spotPositionNumber']).toString();
     positionCode = json['positionCode'];
     personnelName = json['personnelName'];
     zoneName = json['zoneName'];
     dealNumber = json['dealNumber'];
-    recordnumber = json['recordnumber'];
+    recordnumber = ((json['recordnumber'] == 0)?"":json['recordnumber']).toString();
     spotType = json['spotType'];
     accountname = json['accountname'];
     productName = json['productName'];
@@ -143,9 +145,9 @@ class Generate {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['locationname'] = this.locationname;
     data['channelname'] = this.channelname;
-    data['eventDate'] = this.eventDate;
-    data['telecastdate'] = this.telecastdate;
-    data['ratingDate'] = this.ratingDate;
+    data['eventDate'] = (eventDate != null && eventDate != "")?convertDateFormat1(eventDate!):"";
+    data['telecastdate'] =  (telecastdate != null && telecastdate != "")?convertDateFormat1(telecastdate!):"";
+    data['ratingDate'] = (ratingDate != null && ratingDate != "")?convertDateFormat1(ratingDate!):"";
     data['eventNo'] = this.eventNo;
     data['starttime'] = this.starttime;
     data['endtime'] = this.endtime;
@@ -180,4 +182,12 @@ class Generate {
     data['flightingCode'] = this.flightingCode;
     return data;
   }
+}
+
+String convertDateFormat(String date){
+  return DateFormat('dd/MM/yyyy HH:mm a').format(DateFormat("yyyy-MM-ddTHH:mm:ss").parse(date));
+}
+
+String convertDateFormat1(String date){
+  return DateFormat('dd/MM/yyyy').format(DateFormat("yyyy-MM-ddTHH:mm:ss").parse(date));
 }

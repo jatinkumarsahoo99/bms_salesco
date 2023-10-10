@@ -1,9 +1,11 @@
 import 'package:bms_salesco/app/modules/MakeGoodReport/model/make_good_report_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pluto_grid/pluto_grid.dart';
 
 import '../../../../widgets/LoadingDialog.dart';
 import '../../../controller/ConnectorControl.dart';
+import '../../../controller/HomeController.dart';
 import '../../../data/DropDownValue.dart';
 import '../../../data/PermissionModel.dart';
 import '../../../providers/ApiFactory.dart';
@@ -22,10 +24,18 @@ class MakeGoodReportController extends GetxController {
   List<PermissionModel>? formPermissions;
   var dataTableList = <dynamic>[].obs;
   var controllsEnable = true.obs;
+  PlutoGridStateManager? stateManager;
+  Rxn<List<Map<String,Map<String, double>>>>? userGridSetting1 = Rxn<List<Map<String,Map<String, double>>>>(null);
+
+  fetchUserSetting1() async {
+    userGridSetting1?.value = await Get.find<HomeController>().fetchUserSetting1();
+    update(["grid"]);
+  }
 
   @override
   void onInit() {
     formPermissions = Utils.fetchPermissions1(Routes.MAKE_GOOD_REPORT.replaceAll("/", ""));
+    fetchUserSetting1();
     super.onInit();
   }
 
@@ -245,6 +255,11 @@ class MakeGoodReportController extends GetxController {
   formHandler(btn) {
     if (btn == "Clear") {
       clearPage();
+    } if(btn == "Exit"){
+      Get.find<HomeController>().postUserGridSetting1(
+          listStateManager: [
+            stateManager,
+          ]);
     }
   }
 }

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:pluto_grid/pluto_grid.dart';
 
 import '../../../../widgets/LoadingDialog.dart';
 import '../../../controller/ConnectorControl.dart';
@@ -30,14 +31,20 @@ class AsrunDetailsReportController extends GetxController {
   TextEditingController toDate = TextEditingController();
   AsrunDetailsReportModel ?asrunDetailsReportModel;
 
+  PlutoGridStateManager? stateManager;
+  List<Map<String,Map<String, double>>>? userGridSetting1;
+  fetchUserSetting1() async {
+    userGridSetting1 = await Get.find<HomeController>().fetchUserSetting1();
+    update(["grid"]);
+  }
 
   fetchAllLoaderData() {
-    // LoadingDialog.call();
+    LoadingDialog.call();
     Get.find<ConnectorControl>().GETMETHODCALL(
         api: ApiFactory.ASRUN_DETAILS_REPORT_LOAD,
         // "https://jsonkeeper.com/b/D537"
         fun: ( map) {
-          // Get.back();
+          closeDialogIfOpen();
           // print(">>>>>>"+map.toString());
           if(map is Map && map.containsKey('pageload') && map['pageload'] != null){
             locationList.clear();
@@ -60,7 +67,9 @@ class AsrunDetailsReportController extends GetxController {
               update(['updateList']);
             }
           }
-
+          else{
+            LoadingDialog.showErrorDialog((map??"Something went wrong").toString());
+          }
         });
   }
   clearAll(){
@@ -119,12 +128,13 @@ class AsrunDetailsReportController extends GetxController {
 
   @override
   void onInit() {
-    fetchAllLoaderData();
+    fetchUserSetting1();
     super.onInit();
   }
 
   @override
   void onReady() {
+    fetchAllLoaderData();
     super.onReady();
   }
 
@@ -135,6 +145,11 @@ class AsrunDetailsReportController extends GetxController {
   formHandler(String string) {
     if (string == "Clear") {
       clearAll();
+    }  if(string == "Exit"){
+      Get.find<HomeController>().postUserGridSetting1(
+          listStateManager: [
+            stateManager
+          ]);
     }
   }
   void increment() => count.value++;

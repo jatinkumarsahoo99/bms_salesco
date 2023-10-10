@@ -31,14 +31,21 @@ class RescheduleImportController extends GetxController {
   var fileName = "".obs;
   FilePickerResult? result;
   RescheduleImportModel? rescheduleImportModel =
-  RescheduleImportModel(lstreimport: []);
+      RescheduleImportModel(lstreimport: []);
+  PlutoGridStateManager? stateManager;
+  List<Map<String, Map<String, double>>>? userGridSetting1;
+  fetchUserSetting1() async {
+    userGridSetting1 = await Get.find<HomeController>().fetchUserSetting1();
+    update(["grid"]);
+  }
+
   @override
   void onInit() {
-    formPermissions = Utils.fetchPermissions1(
-        Routes.RESCHEDULE_IMPORT.replaceAll("/", ""));
+    formPermissions =
+        Utils.fetchPermissions1(Routes.RESCHEDULE_IMPORT.replaceAll("/", ""));
+    fetchUserSetting1();
     super.onInit();
   }
-  
 
   @override
   void onReady() {
@@ -47,21 +54,22 @@ class RescheduleImportController extends GetxController {
   }
 
   saveRecord() {
-      LoadingDialog.call();
-      Get.find<ConnectorControl>().POSTMETHOD(
-        api: ApiFactory.Reschedule_Import_ReImport,
-        fun: (map) {
-          closeDialogIfOpen();
-          if(map is Map && map.containsKey('message') && map['message'] != null ){
-            clearAll();
-            LoadingDialog.callDataSavedMessage(map['message']);
-
-          }else{
-            LoadingDialog.showErrorDialog(map.toString());
-          }
-        },
-        json: rescheduleImportModel?.toJson(),
-      );
+    LoadingDialog.call();
+    Get.find<ConnectorControl>().POSTMETHOD(
+      api: ApiFactory.Reschedule_Import_ReImport,
+      fun: (map) {
+        closeDialogIfOpen();
+        if (map is Map &&
+            map.containsKey('message') &&
+            map['message'] != null) {
+          clearAll();
+          LoadingDialog.callDataSavedMessage(map['message']);
+        } else {
+          LoadingDialog.showErrorDialog(map.toString());
+        }
+      },
+      json: rescheduleImportModel?.toJson(),
+    );
   }
 
   handleOnChangedLocation(DropDownValue? val) {
@@ -82,7 +90,6 @@ class RescheduleImportController extends GetxController {
               channelList.add(DropDownValue.fromJsonDynamic(
                   e, "channelCode", "channelName"));
             });
-
           }
         },
         failed: (resp) {
@@ -134,6 +141,9 @@ class RescheduleImportController extends GetxController {
   formHandler(btn) {
     if (btn == "Clear") {
       clearAll();
+    } else if (btn == "Exit") {
+      Get.find<HomeController>()
+          .postUserGridSetting1(listStateManager: [stateManager]);
     }
   }
 
@@ -142,7 +152,6 @@ class RescheduleImportController extends GetxController {
     Get.delete<RescheduleImportController>();
     Get.find<HomeController>().clearPage1();
   }
-
 
   Future<void> selectFile() async {
     LoadingDialog.call();
@@ -187,7 +196,7 @@ class RescheduleImportController extends GetxController {
         LoadingDialog.showErrorDialog("Please select file");
       }
     } catch (e) {
-      print(">>>>>"+e.toString());
+      print(">>>>>" + e.toString());
       LoadingDialog.showErrorDialog(e.toString());
     }
   }

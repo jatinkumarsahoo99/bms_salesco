@@ -2,8 +2,10 @@ import 'package:bms_salesco/widgets/LoadingDialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:pluto_grid/pluto_grid.dart';
 
 import '../../../controller/ConnectorControl.dart';
+import '../../../controller/HomeController.dart';
 import '../../../data/DropDownValue.dart';
 import '../../../providers/ApiFactory.dart';
 import '../DealRecoSummaryModel.dart';
@@ -37,6 +39,14 @@ class DealRecoSummaryController extends GetxController {
   FocusNode agencyNode = FocusNode();
   FocusNode zoneNode = FocusNode();
   FocusNode executiveNamNode = FocusNode();
+
+  PlutoGridStateManager? stateManager;
+  List<Map<String,Map<String, double>>>? userGridSetting1;
+  fetchUserSetting1() async {
+    userGridSetting1 = await Get.find<HomeController>().fetchUserSetting1();
+    update(["grid"]);
+  }
+
   closeDialogIfOpen() {
     if (Get.isDialogOpen ?? false) {
       Get.back();
@@ -199,6 +209,7 @@ class DealRecoSummaryController extends GetxController {
   @override
   void onInit() {
     fetchAllLoaderData();
+    fetchUserSetting1();
     super.onInit();
   }
 
@@ -212,7 +223,12 @@ class DealRecoSummaryController extends GetxController {
     super.onClose();
   }
   formHandler(String string) {
-
+    if(string == "Exit"){
+      Get.find<HomeController>().postUserGridSetting1(
+          listStateManager: [
+            stateManager
+          ]);
+    }
   }
 
   void increment() => count.value++;

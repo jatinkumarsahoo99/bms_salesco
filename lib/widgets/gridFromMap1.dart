@@ -47,9 +47,11 @@ class DataGridFromMap1 extends StatelessWidget {
     this.focusNode,
     this.previousWidgetFN,
     this.specificWidth,
+    this.widthSpecificColumn
   }) : super(key: key);
   final List mapData;
   bool enableSort;
+  final Map<String, double>? widthSpecificColumn;
   final Map<String, double>? specificWidth;
   final bool? showSrNo;
   final bool? hideCode;
@@ -94,7 +96,11 @@ class DataGridFromMap1 extends StatelessWidget {
           enableRowDrag: false,
           enableDropToResize: true,
           enableContextMenu: false,
-          width: 25,
+          minWidth: 25,
+          width: (widthSpecificColumn != null &&
+              widthSpecificColumn!.containsKey("no"))
+              ? widthSpecificColumn!["no"]!
+              : Utils.getColumnSize(key: "no", value: mapData[0][key]),
           enableAutoEditing: false,
           hide: hideCode! &&
               key.toString().toLowerCase() != "hourcode" &&
@@ -166,10 +172,11 @@ class DataGridFromMap1 extends StatelessWidget {
                 enableEditingMode: editKeys != null && editKeys!.contains(key),
                 enableDropToResize: true,
                 enableContextMenu: false,
-                width: Utils.getColumnSize(
-                  key: key,
-                  value: mapData[0][key].toString(),
-                ),
+                minWidth: 5,
+                width: (widthSpecificColumn != null &&
+                    widthSpecificColumn!.containsKey(key))
+                    ? widthSpecificColumn![key]!
+                    : Utils.getColumnSize(key: key, value: mapData[0][key]),
                 enableAutoEditing: false,
                 hide: showonly == null
                     ? (hideKeys != null && hideKeys!.contains(key)) ||
@@ -258,7 +265,11 @@ class DataGridFromMap1 extends StatelessWidget {
             enableEditingMode: editKeys != null && editKeys!.contains(key),
             enableDropToResize: true,
             enableContextMenu: false,
-            width: Utils.getColumnSize(key: key, value: mapData[0][key]),
+            minWidth: 5,
+            width: (widthSpecificColumn != null &&
+                widthSpecificColumn!.containsKey(key))
+                ? widthSpecificColumn![key]!
+                : Utils.getColumnSize(key: key, value: mapData[0][key]),
             enableAutoEditing: false,
             hide: showonly == null
                 ? (hideKeys != null && hideKeys!.contains(key)) ||
@@ -320,9 +331,12 @@ class DataGridFromMap1 extends StatelessWidget {
             ),
             rowColorCallback: colorCallback,
             onLoaded: (load) {
-              load.stateManager.setColumnSizeConfig(PlutoGridColumnSizeConfig(
-                  autoSizeMode: PlutoAutoSizeMode.none,
-                  resizeMode: PlutoResizeMode.normal));
+              if (widthSpecificColumn == null || widthSpecificColumn == {}) {
+                load.stateManager.setColumnSizeConfig(PlutoGridColumnSizeConfig(
+                    autoSizeMode: PlutoAutoSizeMode.none,
+                    resizeMode: PlutoResizeMode.normal));
+              }
+
               load.stateManager.setKeepFocus(false);
               if (onload != null) {
                 onload!(load);

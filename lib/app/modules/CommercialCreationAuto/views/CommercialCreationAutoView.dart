@@ -86,8 +86,9 @@ class CommercialCreationAutoView
                           onload: (PlutoGridOnLoadedEvent grid) {
                             controllerX.stateManager = grid.stateManager;
                           },
-                          widthSpecificColumn: controllerX.userGridSetting
-                              as Map<String, double>,
+                          // widthSpecificColumn: controllerX.userGridSetting1?[0]??{},
+                          widthSpecificColumn: Get.find<HomeController>().getGridWidthByKey(
+                              userGridSettingList: controllerX.userGridSetting1),
                           hideKeys: ["acid"],
                           mode: PlutoGridMode.selectWithOneTap,
                           // actionIcon: Icons.delete_forever_rounded,
@@ -182,7 +183,11 @@ class CommercialCreationAutoView
         break;
       case "Exit":
         print("Exit called");
-        controllerX.postUserSetting();
+        // controllerX.postUserSetting();
+        Get.find<HomeController>().postUserGridSetting1(
+            listStateManager: [
+              controllerX.stateManager
+            ]);
         break;
     }
   }

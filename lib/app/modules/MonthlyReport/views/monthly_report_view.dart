@@ -6,10 +6,12 @@ import '../../../../widgets/FormButton.dart';
 import '../../../../widgets/dropdown.dart';
 import '../../../../widgets/gridFromMap.dart';
 import '../../../../widgets/radio_row.dart';
+import '../../../controller/HomeController.dart';
 import '../controllers/monthly_report_controller.dart';
 
 class MonthlyReportView extends GetView<MonthlyReportController> {
   const MonthlyReportView({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,6 +23,7 @@ class MonthlyReportView extends GetView<MonthlyReportController> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+
               ///Controllers
               Wrap(
                 crossAxisAlignment: WrapCrossAlignment.end,
@@ -30,7 +33,7 @@ class MonthlyReportView extends GetView<MonthlyReportController> {
                   Obx(() {
                     return DropDownField.formDropDown1WidthMap(
                       controller.locationList.value,
-                      (val) => controller.selectedLocation = val,
+                          (val) => controller.selectedLocation = val,
                       "Location",
                       .15,
                       autoFocus: true,
@@ -41,7 +44,7 @@ class MonthlyReportView extends GetView<MonthlyReportController> {
                   Obx(() {
                     return DropDownField.formDropDown1WidthMap(
                       controller.channelList.value,
-                      (v) => controller.selectedChannel = v,
+                          (v) => controller.selectedChannel = v,
                       "Channel",
                       .15,
                       selected: controller.selectedChannel,
@@ -64,28 +67,43 @@ class MonthlyReportView extends GetView<MonthlyReportController> {
                       onchange: (val) => controller.selectedRadio.value = val,
                     );
                   }),
-                  FormButton(btnText: "Generate", callback: controller.handleGenerateButton)
+                  FormButton(
+                      btnText: "Generate",
+                      callback: controller.handleGenerateButton)
                 ],
               ),
 
               ///Data table
               Expanded(
                 child: Obx(
-                  () {
+                      () {
                     return Container(
                       margin: const EdgeInsets.symmetric(vertical: 10),
                       decoration: controller.dataTableList.value.isEmpty
                           ? BoxDecoration(
-                              border: Border.all(
-                                color: Colors.grey,
-                              ),
-                            )
+                        border: Border.all(
+                          color: Colors.grey,
+                        ),
+                      )
                           : null,
                       child: controller.dataTableList.value.isEmpty
                           ? null
-                          : DataGridFromMap(
-                              mapData: controller.dataTableList.value,
-                            ),
+                          : GetBuilder<MonthlyReportController>(
+                        assignId: true,
+                        id: "grid",
+                        builder: (controller) {
+                          return DataGridFromMap(
+                            mapData: controller.dataTableList.value,
+                            widthSpecificColumn: Get.find<HomeController>()
+                                .getGridWidthByKey(
+                                userGridSettingList:
+                                controller.userGridSetting1?.value),
+                            onload: (event) {
+                              controller.stateManager = event.stateManager;
+                            },
+                          );
+                        },
+                      ),
                     );
                   },
                 ),
@@ -102,7 +120,14 @@ class MonthlyReportView extends GetView<MonthlyReportController> {
                       callback: controller.clearPage,
                     ),
                     const SizedBox(width: 10),
-                    FormButton(btnText: "Exit"),
+                    FormButton(
+                        btnText: "Exit",
+                        callback: () {
+                          Get.find<HomeController>()
+                              .postUserGridSetting1(listStateManager: [
+                            controller.stateManager,
+                          ]);
+                        }),
                   ],
                 ),
               ),

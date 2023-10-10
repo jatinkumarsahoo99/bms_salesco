@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
+import '../../../controller/HomeController.dart';
 import '../../../data/PermissionModel.dart';
 import '../../../providers/Utils.dart';
 import '../../../routes/app_pages.dart';
@@ -13,7 +14,9 @@ import '../model/tape_id_campaign_model.dart';
 
 class TapeIDCampaignController extends GetxController {
   List<PermissionModel>? formPermissions;
-  var tapeIDTC = TextEditingController(), startDateTC = TextEditingController(), endDateTC = TextEditingController();
+  var tapeIDTC = TextEditingController(),
+      startDateTC = TextEditingController(),
+      endDateTC = TextEditingController();
   // var activityMonth = "", client = "", agency = "", brand = "", caption = "", duration = "", agencyTapeID = "", createdBy = "";
   String selectedValuUI = "selectedValuUI", activityMonth = "";
   DateTime now = DateTime.now();
@@ -24,6 +27,12 @@ class TapeIDCampaignController extends GetxController {
   TapeIDCampaignLoadModel? loadModel;
   TapeIdCampaignHistoryModel? history;
   var tapeIdFN = FocusNode();
+
+  List<Map<String, Map<String, double>>>? userGridSetting1;
+  fetchUserSetting1() async {
+    userGridSetting1 = await Get.find<HomeController>().fetchUserSetting1();
+    update(["grid"]);
+  }
 
   @override
   void onReady() {
@@ -37,7 +46,9 @@ class TapeIDCampaignController extends GetxController {
 
   @override
   void onInit() {
-    formPermissions = Utils.fetchPermissions1(Routes.TAPE_I_D_CAMPAIGN.replaceAll("/", ""));
+    formPermissions =
+        Utils.fetchPermissions1(Routes.TAPE_I_D_CAMPAIGN.replaceAll("/", ""));
+    fetchUserSetting1();
     super.onInit();
   }
 
@@ -125,13 +136,17 @@ class TapeIDCampaignController extends GetxController {
   saveRecord() {
     if (loadModel == null || history == null) {
       LoadingDialog.showErrorDialog("Please load data first");
-    } else if (loadModel?.tapeIdDetails.locationLst?.any((e) => e.selectRow ?? false) ?? false) {
+    } else if (loadModel?.tapeIdDetails.locationLst
+            ?.any((e) => e.selectRow ?? false) ??
+        false) {
       LoadingDialog.call();
       Get.find<ConnectorControl>().POSTMETHOD(
         api: ApiFactory.TAPE_ID_CAMPAIGN_SAVE_RECORD,
         fun: (resp) {
           Get.back();
-          if (resp != null && resp is Map<String, dynamic> && resp['saveTape'] != null) {
+          if (resp != null &&
+              resp is Map<String, dynamic> &&
+              resp['saveTape'] != null) {
             if (!(resp['saveTape']['isError'] as bool)) {
               LoadingDialog.callDataSaved(
                 msg: resp['saveTape']['genericMessage'].toString(),
@@ -169,17 +184,24 @@ class TapeIDCampaignController extends GetxController {
         api: ApiFactory.TAPE_ID_CAMPAIGN_UPDATE_HISTORY,
         fun: (resp) {
           Get.back();
-          if (resp != null && resp is Map<String, dynamic> && resp['tapeIdHistoryUpdate'] != null) {
+          if (resp != null &&
+              resp is Map<String, dynamic> &&
+              resp['tapeIdHistoryUpdate'] != null) {
             if (!(resp['tapeIdHistoryUpdate']['isError'] as bool)) {
-              LoadingDialog.callDataSaved(msg: resp['tapeIdHistoryUpdate']['genericMessage'].toString());
+              LoadingDialog.callDataSaved(
+                  msg:
+                      resp['tapeIdHistoryUpdate']['genericMessage'].toString());
             } else {
-              LoadingDialog.showErrorDialog(resp['tapeIdHistoryUpdate']['errorMessage'].toString());
+              LoadingDialog.showErrorDialog(
+                  resp['tapeIdHistoryUpdate']['errorMessage'].toString());
             }
           } else {
             LoadingDialog.showErrorDialog(resp.toString());
           }
         },
-        json: history?.historyDetails.map((e) => e.toJson(fromSave: true)).toList(),
+        json: history?.historyDetails
+            .map((e) => e.toJson(fromSave: true))
+            .toList(),
       );
     }
   }
@@ -189,6 +211,10 @@ class TapeIDCampaignController extends GetxController {
       clearPage();
     } else if (btn == "Save") {
       saveRecord();
+    } else if (btn == "Exit") {
+      Get.find<HomeController>().postUserGridSetting1(
+          listStateManager: [historyManager, locationChannelManager],
+          tableNamesList: ['tbl1', 'tbl2']);
     }
   }
 }

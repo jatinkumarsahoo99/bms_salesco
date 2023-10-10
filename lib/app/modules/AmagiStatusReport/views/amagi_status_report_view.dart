@@ -130,10 +130,15 @@ class AmagiStatusReportView extends GetView<AmagiStatusReportController> {
                             showSrNo: false,
                             hideCode: false,
                             formatDate: false,
+                            widthSpecificColumn:  Get.find<HomeController>().getGridWidthByKey(
+                                userGridSettingList: controllerX.userGridSetting1),
                             mode: PlutoGridMode.selectWithOneTap,
                             mapData: (controllerX.responseData['response']),
                             // mapData: (controllerX.dataList)!,
                             widthRatio: Get.width / 9 - 1,
+                           onload: (PlutoGridOnLoadedEvent load){
+                             controllerX.stateManager = load.stateManager;
+                           },
                         ):Container();
                       }
                   ),

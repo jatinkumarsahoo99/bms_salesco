@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:pluto_grid/pluto_grid.dart';
 
 import '../../../../widgets/LoadingDialog.dart';
 import '../../../controller/ConnectorControl.dart';
@@ -38,6 +39,15 @@ class AuditStatusReportController extends GetxController {
 
   AuditStatusReportModel ?auditStatusReportModel;
   AuditStatusGenerateToList ?auditStatusGenerateToList;
+  PlutoGridStateManager? stateManager1;
+  PlutoGridStateManager? stateManager2;
+  List<Map<String,Map<String, double>>>? userGridSetting1;
+  fetchUserSetting1() async {
+    userGridSetting1 = await Get.find<HomeController>().fetchUserSetting1();
+    update(["grid"]);
+  }
+
+
   fetchAllLoaderData() {
     // LoadingDialog.call();
     Get.find<ConnectorControl>().GETMETHODCALL(
@@ -70,6 +80,7 @@ class AuditStatusReportController extends GetxController {
 
         });
   }
+
   clearAll(){
     Get.delete<AuditStatusReportController>();
     Get.find<HomeController>().clearPage1();
@@ -165,6 +176,7 @@ class AuditStatusReportController extends GetxController {
 
   @override
   void onInit() {
+    fetchUserSetting1();
     fetchAllLoaderData();
     super.onInit();
   }
@@ -179,7 +191,12 @@ class AuditStatusReportController extends GetxController {
     super.onClose();
   }
   formHandler(String string) {
-
+    if(string == "Exit"){
+      Get.find<HomeController>().postUserGridSetting1(
+          listStateManager: [
+            stateManager1,stateManager2
+          ],tableNamesList: ['tbl1','tbl2']);
+    }
   }
   void increment() => count.value++;
 }

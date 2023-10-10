@@ -107,6 +107,8 @@ class CommercialLanguageSpecificationView
                           checkRow: true,
                           hideKeys: ["isSelect"],
                           checkRowKey: "selectLanguage",
+                          widthSpecificColumn: Get.find<HomeController>().getGridWidthByKey(
+                              userGridSettingList: controllerX.userGridSetting1),
                           onload: (PlutoGridOnLoadedEvent grid) {
                             controllerX.stateManager = grid.stateManager;
                           },
@@ -185,6 +187,12 @@ class CommercialLanguageSpecificationView
       case "Clear":
         Get.find<HomeController>().clearPage1();
         Get.delete<CommercialLanguageSpecificationController>();
+        break;
+      case "Exit":
+        Get.find<HomeController>().postUserGridSetting1(
+            listStateManager: [
+              controllerX.stateManager
+            ]);
         break;
     }
   }

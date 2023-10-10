@@ -30,10 +30,18 @@ class ZoneWiseInventoryUtilizationController extends GetxController {
   var checkedAll = false.obs;
   PlutoGridStateManager? manager;
   int lastSelctedIdx = 0;
+  PlutoGridStateManager? stateManager;
+  List<Map<String, Map<String, double>>>? userGridSetting1;
+  fetchUserSetting1() async {
+    userGridSetting1 = await Get.find<HomeController>().fetchUserSetting1();
+    update(["grid"]);
+  }
+
   @override
   void onInit() {
     formPermissions = Utils.fetchPermissions1(
         Routes.RATE_CARDFROM_DEAL_WORKFLOW.replaceAll("/", ""));
+    fetchUserSetting1();
     super.onInit();
   }
 
@@ -47,10 +55,10 @@ class ZoneWiseInventoryUtilizationController extends GetxController {
     locationFN.requestFocus();
     lastSelctedIdx = 0;
     manager = null;
-    zoneWiseUtilizationResponseModel =
-        Rx<ZoneWiseUtilizationResponseModel>(
-            ZoneWiseUtilizationResponseModel(generate: []));
+    zoneWiseUtilizationResponseModel = Rx<ZoneWiseUtilizationResponseModel>(
+        ZoneWiseUtilizationResponseModel(generate: []));
   }
+
   clearAll() {
     Get.delete<ZoneWiseInventoryUtilizationController>();
     Get.find<HomeController>().clearPage1();
@@ -142,7 +150,7 @@ class ZoneWiseInventoryUtilizationController extends GetxController {
       "fromtime": fromTimeController.text ?? "10:00:00:00",
       "totime": toTimeController.text ?? "12:00:00:00"
     };
-    print(">>>map"+postData.toString());
+    print(">>>map" + postData.toString());
     Get.find<ConnectorControl>().POSTMETHOD(
       api: ApiFactory.ZoneWiseInventory_GENERATE,
       json: postData,
@@ -172,6 +180,9 @@ class ZoneWiseInventoryUtilizationController extends GetxController {
   formHandler(btn) {
     if (btn == "Clear") {
       clearAll();
+    } else if (btn == "Exit") {
+      Get.find<HomeController>()
+          .postUserGridSetting1(listStateManager: [stateManager]);
     }
   }
 }

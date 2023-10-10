@@ -50,7 +50,7 @@ class AppPages {
 
   static const INITIAL = kReleaseMode
       ? Routes.HOME
-      : Routes.CHANGE_R_O_NUMBER +
+      : Routes.TAPE_I_D_CAMPAIGN +
           "?personalNo=R9vVPL7er1Os/usemWG/Iw==&loginCode=0iGe3vK5h2KGjfSKZTpmsQ==&formName=OI8ukDpPPVN0I2BEXu2h4nuFu%2BZm1ZRpvP8NL4XCXzQ%3D";
 
   static final routes = [
@@ -120,8 +120,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.EDI_RO_BOOKING,
-      page: () => EdiRoBookingView(),
-      binding: EdiRoBookingBinding(),
+      page: () => AuthGuard(childName: _Paths.EDI_RO_BOOKING),
     ),
     GetPage(
       name: _Paths.WORKFLOW_DEFINITION,
