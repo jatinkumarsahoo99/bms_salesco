@@ -50,10 +50,6 @@ abstract class Routes {
       _Paths.COMMERCIAL_CREATION_AUTO_DETAILS;
   static const DESIGN = _Paths.DESIGN;
   static const COMMON_DOCS = _Paths.COMMON_DOCS;
-  static const BOOKING_STATUS_REPORT = _Paths.BOOKING_STATUS_REPORT;
-  static const COMMERCIAL_TAPE_LISTING = _Paths.COMMERCIAL_TAPE_LISTING;
-  static const DATEWISE_ERROR_SPOTS = _Paths.DATEWISE_ERROR_SPOTS;
-  static const DEALVS_R_O_DATA_REPORT = _Paths.DEALVS_R_O_DATA_REPORT;
 }
 
 abstract class RoutesList {
@@ -140,8 +136,4 @@ abstract class _Paths {
       '/commercial-creation-auto-details';
   static const DESIGN = '/design';
   static const COMMON_DOCS = '/common-docs';
-  static const BOOKING_STATUS_REPORT = '/booking-status-report';
-  static const COMMERCIAL_TAPE_LISTING = '/commercial-tape-listing';
-  static const DATEWISE_ERROR_SPOTS = '/datewise-error-spots';
-  static const DEALVS_R_O_DATA_REPORT = '/dealvs-r-o-data-report';
 }

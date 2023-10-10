@@ -8,19 +8,11 @@ import '../modules/AmagiStatusReport/bindings/amagi_status_report_binding.dart';
 import '../modules/AsrunDetailsReport/bindings/asrun_details_report_binding.dart';
 import '../modules/AuditStatusReport/bindings/audit_status_report_binding.dart';
 import '../modules/AutoTimeLock/bindings/auto_time_lock_binding.dart';
-import '../modules/BookingStatusReport/bindings/booking_status_report_binding.dart';
-import '../modules/BookingStatusReport/views/booking_status_report_view.dart';
 import '../modules/ChangeRONumber/bindings/change_r_o_number_binding.dart';
-import '../modules/CommercialTapeListing/bindings/commercial_tape_listing_binding.dart';
-import '../modules/CommercialTapeListing/views/commercial_tape_listing_view.dart';
 import '../modules/CommonDocs/bindings/common_docs_binding.dart';
 import '../modules/CommonDocs/views/common_docs_view.dart';
-import '../modules/DatewiseErrorSpots/bindings/datewise_error_spots_binding.dart';
-import '../modules/DatewiseErrorSpots/views/datewise_error_spots_view.dart';
 import '../modules/DealRecoSummary/bindings/deal_reco_summary_binding.dart';
 import '../modules/DealWorkflowDefinition/bindings/workflow_definition_binding.dart';
-import '../modules/DealvsRODataReport/bindings/dealvs_r_o_data_report_binding.dart';
-import '../modules/DealvsRODataReport/views/dealvs_r_o_data_report_view.dart';
 import '../modules/Design/bindings/design_binding.dart';
 import '../modules/Design/views/design_view.dart';
 import '../modules/EDI_Mapping/bindings/e_d_i_mapping_binding.dart';
@@ -269,26 +261,6 @@ class AppPages {
       name: _Paths.COMMON_DOCS,
       page: () => const CommonDocsView(documentKey: ''),
       binding: CommonDocsBinding(),
-    ),
-    GetPage(
-      name: _Paths.BOOKING_STATUS_REPORT,
-      page: () => const BookingStatusReportView(),
-      binding: BookingStatusReportBinding(),
-    ),
-    GetPage(
-      name: _Paths.COMMERCIAL_TAPE_LISTING,
-      page: () => const CommercialTapeListingView(),
-      binding: CommercialTapeListingBinding(),
-    ),
-    GetPage(
-      name: _Paths.DATEWISE_ERROR_SPOTS,
-      page: () => const DatewiseErrorSpotsView(),
-      binding: DatewiseErrorSpotsBinding(),
-    ),
-    GetPage(
-      name: _Paths.DEALVS_R_O_DATA_REPORT,
-      page: () => const DealvsRODataReportView(),
-      binding: DealvsRODataReportBinding(),
     ),
   ];
 }
