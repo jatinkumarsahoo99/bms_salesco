@@ -50,6 +50,8 @@ abstract class Routes {
       _Paths.COMMERCIAL_CREATION_AUTO_DETAILS;
   static const DESIGN = _Paths.DESIGN;
   static const COMMON_DOCS = _Paths.COMMON_DOCS;
+  static const RELESE_ORDER_RESCHEDULE_TAPE_I_D =
+      _Paths.RELESE_ORDER_RESCHEDULE_TAPE_I_D;
 }
 
 abstract class RoutesList {
@@ -136,4 +138,5 @@ abstract class _Paths {
       '/commercial-creation-auto-details';
   static const DESIGN = '/design';
   static const COMMON_DOCS = '/common-docs';
+  static const RELESE_ORDER_RESCHEDULE_TAPE_I_D = '/frmRoReschedule_TapeID';
 }

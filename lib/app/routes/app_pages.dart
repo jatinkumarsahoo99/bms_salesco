@@ -32,6 +32,8 @@ import '../modules/ProductLevel2/bindings/product_level2_binding.dart';
 import '../modules/ProductLevel3/bindings/product_level3_binding.dart';
 import '../modules/ProductMaster/bindings/product_master_binding.dart';
 import '../modules/RateCardfromDealWorkflow/bindings/rate_cardfrom_deal_workflow_binding.dart';
+import '../modules/ReleseOrderRescheduleTapeID/bindings/relese_order_reschedule_tape_i_d_binding.dart';
+import '../modules/ReleseOrderRescheduleTapeID/views/relese_order_reschedule_tape_i_d_view.dart';
 import '../modules/RescheduleImport/bindings/reschedule_import_binding.dart';
 import '../modules/RoReceived/bindings/ro_received_binding.dart';
 import '../modules/SameDayCollection/bindings/same_day_collection_binding.dart';
@@ -50,7 +52,7 @@ class AppPages {
 
   static const INITIAL = kReleaseMode
       ? Routes.HOME
-      : Routes.TAPE_I_D_CAMPAIGN +
+      : Routes.RELESE_ORDER_RESCHEDULE_TAPE_I_D +
           "?personalNo=R9vVPL7er1Os/usemWG/Iw==&loginCode=0iGe3vK5h2KGjfSKZTpmsQ==&formName=OI8ukDpPPVN0I2BEXu2h4nuFu%2BZm1ZRpvP8NL4XCXzQ%3D";
 
   static final routes = [
@@ -261,6 +263,11 @@ class AppPages {
       name: _Paths.COMMON_DOCS,
       page: () => const CommonDocsView(documentKey: ''),
       binding: CommonDocsBinding(),
+    ),
+    GetPage(
+      name: _Paths.RELESE_ORDER_RESCHEDULE_TAPE_I_D,
+      page: () => AuthGuard(childName: _Paths.RELESE_ORDER_RESCHEDULE_TAPE_I_D),
+      // binding: ReleseOrderRescheduleTapeIDBinding(),
     ),
   ];
 }
