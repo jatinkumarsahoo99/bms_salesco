@@ -20,6 +20,7 @@ class SameDayCollectionController extends GetxController {
   List<PermissionModel>? formPermissions;
   var dataTableList = <SameDayCollectionModel>[].obs;
   var checkedAll = false.obs;
+  var isControllsEnable = true.obs;
   PlutoGridStateManager? manager;
   int lastSelctedIdx = 0;
   List<Map<String, Map<String, double>>>? userGridSetting1;
@@ -37,6 +38,7 @@ class SameDayCollectionController extends GetxController {
   }
 
   clearPage() {
+    isControllsEnable.value = true;
     fromTC.clear();
     dataTableList.clear();
     selectedLocation = null;
@@ -112,6 +114,7 @@ class SameDayCollectionController extends GetxController {
               dataTableList.addAll((resp['show'] as List<dynamic>)
                   .map((e) => SameDayCollectionModel.fromJson(e))
                   .toList());
+              isControllsEnable.value = false;
             } else {
               if (resp is Map<String, dynamic> && resp['status'] == "failure") {
                 LoadingDialog.showErrorDialog(resp['message'].toString());
@@ -185,11 +188,11 @@ class SameDayCollectionController extends GetxController {
                       value: e['locationName'].toString(),
                     ))
                 .toList());
-            if (locationList.isNotEmpty) {
-              selectedLocation = locationList.first;
-              locationList.refresh();
-              handleOnChangedLocation(selectedLocation);
-            }
+            // if (locationList.isNotEmpty) {
+            //   selectedLocation = locationList.first;
+            //   locationList.refresh();
+            //   handleOnChangedLocation(selectedLocation);
+            // }
           } else {
             if (resp is Map<String, dynamic> && resp['status'] == "failure") {
               LoadingDialog.showErrorDialog(resp['message'].toString());

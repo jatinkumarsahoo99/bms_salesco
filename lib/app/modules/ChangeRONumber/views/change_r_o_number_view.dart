@@ -78,6 +78,7 @@ class ChangeRONumberView extends GetView<ChangeRONumberController> {
                   hintTxt: "Booking No",
                   controller: controller.bookingNoCtr,
                   width: .4,
+                  maxLen: 10,
                 ),
                 SizedBox(height: 20),
                 InputFields.formField1(
