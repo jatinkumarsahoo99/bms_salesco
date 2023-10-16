@@ -10,7 +10,7 @@ class DateWithThreeTextField extends StatefulWidget {
   final int day, month, year;
   final bool monthWithFullName;
   final TextEditingController mainTextController;
-  final bool isEnable;
+  final bool isEnable, hideTitle;
   final double widthRation;
   final void Function(String date)? onFocusChange;
   final DateTime? startDate, endDate, intailDate;
@@ -28,6 +28,7 @@ class DateWithThreeTextField extends StatefulWidget {
     this.widthRation = .15,
     this.onFocusChange,
     this.startDate,
+    this.hideTitle = false,
     this.endDate,
     this.formatting = "yyyy/MM/dd",
     this.intailDate,
@@ -90,7 +91,9 @@ class _DateWithThreeTextFieldState extends State<DateWithThreeTextField> {
       Future.delayed(const Duration(seconds: 1)).then((value) {
         handleOnFocusChange();
         widget.mainTextController.addListener(() {
-          assignNewValeToEditTextField();
+          assignNewValeToEditTextField().then((value) {
+            assignValueToMainTextEditingController();
+          });
         });
       });
     });
@@ -127,16 +130,18 @@ class _DateWithThreeTextFieldState extends State<DateWithThreeTextField> {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        /// TITLE
-        Text(
-          widget.title,
-          style: TextStyle(
-            fontSize: SizeDefine.labelSize1,
-            color: textColor,
-            fontWeight: FontWeight.w500,
+        if (!widget.hideTitle) ...{
+          /// TITLE
+          Text(
+            widget.title,
+            style: TextStyle(
+              fontSize: SizeDefine.labelSize1,
+              color: Colors.black,
+              fontWeight: FontWeight.w500,
+            ),
           ),
-        ),
-        const SizedBox(height: 5),
+          const SizedBox(height: 5),
+        },
 
         /// BOX
         Container(
@@ -198,8 +203,7 @@ class _DateWithThreeTextFieldState extends State<DateWithThreeTextField> {
                               int no = int.tryParse(value) ?? 00;
                               int selectedMonth =
                                   getMonthINTFromMonthStr(textCtr[1].text);
-                              print(selectedMonth - 1);
-                              print(maxDays[selectedMonth - 1]);
+
                               if (no > maxDays[selectedMonth - 1] ||
                                   value == "00") {
                                 textCtr[0].text = "01";
@@ -484,7 +488,7 @@ class _DateWithThreeTextFieldState extends State<DateWithThreeTextField> {
     }
   }
 
-  assignNewValeToEditTextField() {
+  Future<void> assignNewValeToEditTextField() async {
     var now = DateTime.now();
     List<String?> tempDate =
         widget.mainTextController.text.split(widget.splitType);
@@ -493,18 +497,21 @@ class _DateWithThreeTextFieldState extends State<DateWithThreeTextField> {
         originalDate = widget.mainTextController.text;
       }
       tempDate = widget.mainTextController.text.split(widget.splitType);
-      textCtr[0].text = (tempDate[0] ?? now.day.toString()); //DD
+      textCtr[0].text = (tempDate[0] ??
+          (now.day < 10 ? "0${now.day}" : now.day.toString())); //DD
       textCtr[1].text =
           (getMonthsFromIndex(int.tryParse(tempDate[1] ?? "0") ?? 0)); //MMM
       textCtr[2].text = tempDate[2] ?? now.year.toString(); //YYYY
     } else {
-      textCtr[0].text = now.day.toString();
+      textCtr[0].text = now.day < 10 ? "0${now.day}" : now.day.toString();
       textCtr[1].text = getMonthsFromIndex(now.month);
       textCtr[2].text = now.year.toString();
       if (originalDate.isEmpty) {
-        originalDate = "${now.day}-${now.month}-${now.year}";
+        originalDate =
+            "${now.day < 10 ? "0${now.day}" : now.day.toString()}-${now.month}-${now.year}";
       }
     }
+    selectedDateTime = DateFormat("dd-MM-yyyy").parse(originalDate);
   }
 
   assignValueToMainTextEditingController() async {

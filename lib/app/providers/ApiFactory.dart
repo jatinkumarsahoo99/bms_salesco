@@ -1069,4 +1069,36 @@ class ApiFactory {
   ///////////////////////// Deals Vs RO Date Report Start//////////////////////
   static String get DEAL_VS_RO_DATA_REPORT_DATAINITIAL =>
       "$BASE_URL/api/DealvsRODataReport/DealVSRoReportDataInitial";
+  static String DEAL_VS_RO_DATA_REPORT_GET_CHANNEL(String locationCode) =>
+      "$BASE_URL/api/DealvsRODataReport/GetChannelList?LocationCode=$locationCode";
+  static String DEAL_VS_RO_DATA_REPORT_GET_CLIENT(
+          String locationCode, String channelCode, String fromDate) =>
+      "$BASE_URL/api/DealvsRODataReport/GetClientList?LocationCode=$locationCode&ChannelCode=$channelCode&FromDate=$fromDate";
+  static String DEAL_VS_RO_DATA_REPORT_GET_DEAL(
+          String locationCode,
+          String channelCode,
+          String clientCode,
+          String fromDate,
+          String toDate) =>
+      "$BASE_URL/api/DealvsRODataReport/GetDealDetails?LocationCode=$locationCode&ChannelCode=$channelCode&ClientCode=$clientCode&FromDate=$fromDate&ToDate=$toDate";
+  static String DEAL_VS_RO_DATA_REPORT_GENERATE_REPORT(
+          String locationCode,
+          String channelCode,
+          String optDealWise,
+          String optROWise,
+          String fromDate,
+          String toDate,
+          String dealNO) =>
+      "$BASE_URL/api/DealvsRODataReport/GenerateReportData?LocationCode=$locationCode&ChannelCode=$channelCode&optDealWise=$optDealWise&optROWise=$optROWise&FromDate=$fromDate&ToDate=$toDate&DealNo=$dealNO";
+  ///////////////////////// Deals Vs RO Date Report End//////////////////////
+  ///
+  ///
+  ///
+  ///
+  ///
+  //////////////////////////// Booking Status Report Start//////////////////////
+  static String get BOOKING_STATUS_REPORT_GET_LOAD_DATA =>
+      "$BASE_URL/api/BookingStatusReport/GetloadData";
+  static String get BOOKING_STATUS_REPORT_GET_REPORT =>
+      "$BASE_URL/api/BookingStatusReport/GetReport";
 }

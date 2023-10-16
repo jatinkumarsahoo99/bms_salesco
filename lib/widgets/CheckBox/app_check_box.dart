@@ -36,11 +36,14 @@ class AppCheckBox extends StatelessWidget {
           },
         ),
         SizedBox(width: width),
-        Text(
-          title,
-          style: GoogleFonts.poppins(
-            fontWeight: FontWeight.normal,
-            fontSize: 13,
+        Expanded(
+          child: Text(
+            title,
+            overflow: TextOverflow.ellipsis,
+            style: GoogleFonts.poppins(
+              fontWeight: FontWeight.normal,
+              fontSize: 13,
+            ),
           ),
         ),
       ],

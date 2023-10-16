@@ -14,7 +14,8 @@ import '../../../providers/Utils.dart';
 import '../controllers/booking_status_report_controller.dart';
 
 class BookingStatusReportView extends GetView<BookingStatusReportController> {
-  const BookingStatusReportView({Key? key}) : super(key: key);
+  BookingStatusReportController controller =
+      Get.put<BookingStatusReportController>(BookingStatusReportController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,16 +32,18 @@ class BookingStatusReportView extends GetView<BookingStatusReportController> {
               spacing: 5,
               children: [
                 DropDownField().formDropDownCheckBoxMap(
-                  controller.listCheckBox,
+                  controller.locations,
                   (value) {
                     print(value);
                   },
                   "Location",
                   0.16,
-                  onChanged: (index, selectValue) {},
+                  onChanged: (index, selectValue) {
+                    controller.locations[index].isSelected = selectValue;
+                  },
                 ),
                 DropDownField().formDropDownCheckBoxMap(
-                  controller.listCheckBox,
+                  controller.channels,
                   (value) {
                     print(value);
                   },
@@ -49,7 +52,7 @@ class BookingStatusReportView extends GetView<BookingStatusReportController> {
                   onChanged: (index, selectValue) {},
                 ),
                 DropDownField().formDropDownCheckBoxMap(
-                  controller.listCheckBox,
+                  controller.zone,
                   (value) {
                     print(value);
                   },
@@ -58,7 +61,7 @@ class BookingStatusReportView extends GetView<BookingStatusReportController> {
                   onChanged: (index, selectValue) {},
                 ),
                 DropDownField().formDropDownCheckBoxMap(
-                  controller.listCheckBox,
+                  controller.clients,
                   (value) {
                     print(value);
                   },
@@ -67,7 +70,7 @@ class BookingStatusReportView extends GetView<BookingStatusReportController> {
                   onChanged: (index, selectValue) {},
                 ),
                 DropDownField().formDropDownCheckBoxMap(
-                  controller.listCheckBox,
+                  controller.agency,
                   (value) {
                     print(value);
                   },
@@ -76,7 +79,7 @@ class BookingStatusReportView extends GetView<BookingStatusReportController> {
                   onChanged: (index, selectValue) {},
                 ),
                 DropDownField().formDropDownCheckBoxMap(
-                  controller.listCheckBox,
+                  controller.revenue,
                   (value) {
                     print(value);
                   },
@@ -100,7 +103,7 @@ class BookingStatusReportView extends GetView<BookingStatusReportController> {
                       // await controller.loadviewFPCData();
                       // Get.back();
                     },
-                    mainTextController: controller.fromdDate,
+                    mainTextController: controller.fromDate,
                   ),
                 ),
                 const SizedBox(
@@ -137,6 +140,7 @@ class BookingStatusReportView extends GetView<BookingStatusReportController> {
                                       groupValue: controller.bookingType.value,
                                       onChanged: (value) {
                                         controller.bookingType.value = e;
+                                        controller.getRadioStatus(e);
                                       }),
                                   Text(e),
                                   const SizedBox(
@@ -152,7 +156,7 @@ class BookingStatusReportView extends GetView<BookingStatusReportController> {
                 FormButton(
                   btnText: "Genrate",
                   callback: () {
-                    // controller.showBtnData();
+                    controller.genrate();
                   },
                   showIcon: false,
                 ),

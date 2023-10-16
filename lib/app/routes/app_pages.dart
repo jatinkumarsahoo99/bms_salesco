@@ -56,8 +56,8 @@ class AppPages {
 
   static const INITIAL = kReleaseMode
       ? Routes.HOME
-      : Routes.DEALVS_R_O_DATA_REPORT +
-          "?personalNo=R9vVPL7er1Os/usemWG/Iw==&loginCode=0iGe3vK5h2KGjfSKZTpmsQ==&formName=OI8ukDpPPVN0I2BEXu2h4nuFu%2BZm1ZRpvP8NL4XCXzQ%3D";
+      : Routes.BOOKING_STATUS_REPORT +
+          "?personalNo=CX5CP1oS3/epJloRhT/7JQ==&loginCode=2kU6SMfhqW4twroiqMiHoA==&formName=OI8ukDpPPVN0I2BEXu2h4nuFu%2BZm1ZRpvP8NL4XCXzQ%3D";
 
   static final routes = [
     GetPage(
@@ -270,18 +270,18 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.DEALVS_R_O_DATA_REPORT,
-      page: () => DealvsRODataReportView(),
-      binding: DealvsRODataReportBinding(),
+      page: () => AuthGuard(childName: _Paths.DEALVS_R_O_DATA_REPORT),
+      // binding: DealvsRODataReportBinding(),
     ),
     GetPage(
       name: _Paths.BOOKING_STATUS_REPORT,
-      page: () => const BookingStatusReportView(),
-      binding: BookingStatusReportBinding(),
+      page: () => AuthGuard(childName: _Paths.BOOKING_STATUS_REPORT),
+      // binding: BookingStatusReportBinding(),
     ),
     GetPage(
       name: _Paths.PROGRAM_WISE_REVENUE_REPORT,
-      page: () => const ProgramWiseRevenueReportView(),
-      binding: ProgramWiseRevenueReportBinding(),
+      page: () => AuthGuard(childName: _Paths.PROGRAM_WISE_REVENUE_REPORT),
+      // binding: ProgramWiseRevenueReportBinding(),
     ),
   ];
 }

@@ -2739,6 +2739,10 @@ class DropDownField {
                                                   tempList.add(items[i]);
                                                 }
                                               }
+                                            } else {
+                                              tempList.clear();
+                                              tempList.addAll(items);
+                                              tempList.refresh();
                                             }
                                           }),
                                           inputFormatters: [
@@ -3121,10 +3125,10 @@ class DropDownField {
                 Text(
                   hint,
                   style: TextStyle(
-                    fontSize: SizeDefine.labelSize1,
-                    color: textColor,
-                    fontWeight: FontWeight.w500,
-                  ),
+                      fontSize: SizeDefine.labelSize1,
+                      color: textColor,
+                      fontWeight: FontWeight.w500,
+                      overflow: TextOverflow.ellipsis),
                 ),
                 const SizedBox(width: 10),
               },
@@ -3177,8 +3181,9 @@ class DropDownField {
                                       child: Text(
                                     "No Record Found",
                                     style: TextStyle(
-                                      fontSize: SizeDefine.dropDownFontSize - 1,
-                                    ),
+                                        fontSize:
+                                            SizeDefine.dropDownFontSize - 1,
+                                        overflow: TextOverflow.ellipsis),
                                   ))
                                 ]);
                           } else {
@@ -3199,6 +3204,7 @@ class DropDownField {
                               items: [
                                 CustomPopupMenuItem(
                                   textStyle: TextStyle(
+                                      overflow: TextOverflow.ellipsis,
                                       color: Colors.black,
                                       fontSize: SizeDefine.fontSizeInputField),
                                   child: Container(
@@ -3223,7 +3229,10 @@ class DropDownField {
                                                     items[i].isSelected =
                                                         isAllSelected;
                                                     selectedVal.value =
-                                                        getSelectedName(items);
+                                                        isAllSelected
+                                                            ? "All Selected"
+                                                            : "";
+                                                    // getSelectedName(items);
                                                   }
                                                   tempList.refresh();
                                                   re(() {});
@@ -3300,74 +3309,6 @@ class DropDownField {
                                             ),
                                           ),
                                         ),
-                                        // Expanded(
-                                        //   child: Obx(
-                                        //     () {
-                                        //       return ListView(
-                                        //         shrinkWrap: true,
-                                        //         children: tempList
-                                        //             .map(
-                                        //               (element) => Row(
-                                        //                 children: [
-                                        //                   InkWell(
-                                        //                     onTap: () {
-                                        //                       Navigator.pop(
-                                        //                           context);
-                                        //                       selected =
-                                        //                           element;
-                                        //                       re(() {});
-                                        //                       // callback(element);
-                                        //                       FocusScope.of(
-                                        //                               context)
-                                        //                           .requestFocus(
-                                        //                               inkWellFocusNode);
-                                        //                     },
-                                        //                     child: Padding(
-                                        //                       padding:
-                                        //                           const EdgeInsets
-                                        //                                   .symmetric(
-                                        //                               vertical:
-                                        //                                   8),
-                                        //                       child: Text(
-                                        //                         element.val!
-                                        //                                 .value ??
-                                        //                             "null",
-                                        //                         style:
-                                        //                             TextStyle(
-                                        //                           fontSize:
-                                        //                               SizeDefine
-                                        //                                       .dropDownFontSize -
-                                        //                                   1,
-                                        //                         ),
-                                        //                       ),
-                                        //                     ),
-                                        //                   ),
-                                        //                   //                       Padding(
-                                        //                   //   padding: EdgeInsets.only(left: 10),
-                                        //                   //   child: MultiCheckBox(
-                                        //                   //     list: tempList,
-                                        //                   //     canScroll: true,
-                                        //                   //     isHorizontal: false,
-                                        //                   //     width: 12,
-                                        //                   //     onChanged: (index, val) async {
-                                        //                   //       items[index].isSelected = val;
-                                        //                   //       tempList[index].isSelected = val;
-                                        //                   //       // if (onChanged != null) {
-                                        //                   //       //   onChanged!(index, val);
-                                        //                   //       // }
-                                        //                   //       // selectedVal = getSelectedName();
-                                        //                   //       // setState(() {});
-                                        //                   //     },
-                                        //                   //   ),
-                                        //                   // ),
-                                        //                 ],
-                                        //               ),
-                                        //             )
-                                        //             .toList(),
-                                        //       );
-                                        //     },
-                                        //   ),
-                                        // ),
                                       ],
                                     ),
                                   ),
@@ -3427,7 +3368,6 @@ class DropDownField {
 
   getSelectedName(List<MultiCheckBoxModel> items) {
     String? selectedItem;
-
     var tempLis = items
         .where((element) => (element.isSelected ?? false))
         .toList()

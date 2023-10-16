@@ -281,7 +281,9 @@ class DataGridFromMap extends StatelessWidget {
       try {
         for (var element in row.entries) {
           cells[element.key] = PlutoCell(
-            value: element.key == "selected" || element.value == null
+            value: element.key == "selected" ||
+                    element.value == null ||
+                    (element.value is Map)
                 ? ""
                 : element.key.toString().toLowerCase().contains("date") &&
                         formatDate!
@@ -292,7 +294,7 @@ class DataGridFromMap extends StatelessWidget {
         }
         segRows.add(PlutoRow(cells: cells, sortIdx: i));
       } catch (e) {
-        print("problem in adding rows");
+        print("problem in adding rows ${e.toString()}");
       }
     }
 
@@ -335,49 +337,49 @@ class DataGridFromMap extends StatelessWidget {
 }
 
 class DataGridFromMap3 extends StatelessWidget {
-  DataGridFromMap3({
-    Key? key,
-    required this.mapData,
-    this.colorCallback,
-    this.showSrNo = true,
-    this.hideCode = true,
-    this.widthRatio,
-    this.showonly,
-    this.enableSort = false,
-    this.onload,
-    this.hideKeys,
-    this.mode,
-    this.editKeys,
-    this.onEdit,
-    this.actionIcons,
-    this.keyMapping,
-    this.actionIconKey,
-    this.columnAutoResize = true,
-    this.actionOnPress,
-    this.onSelected,
-    this.checkRowKey = "selected",
-    this.onRowDoubleTap,
-    this.formatDate = true,
-    this.dateFromat = "dd-MM-yyyy",
-    this.onFocusChange,
-    this.checkRow,
-    this.doPasccal = true,
-    this.exportFileName,
-    this.checkBoxColumnKey,
-    this.showTitleInCheckBox,
-    this.checkBoxStrComparison,
-    this.uncheckCheckBoxStr,
-    this.spaceActionKey,
-    this.onActionKeyPress,
-    this.enableColumnDoubleTap,
-    this.onColumnHeaderDoubleTap,
-    this.sort = PlutoColumnSort.none,
-    this.previousWidgetFN,
-    this.focusNode,
-    this.gridStyle,
-    this.specificWidth,
-    this.widthSpecificColumn
-  }) : super(key: key);
+  DataGridFromMap3(
+      {Key? key,
+      required this.mapData,
+      this.colorCallback,
+      this.showSrNo = true,
+      this.hideCode = true,
+      this.widthRatio,
+      this.showonly,
+      this.enableSort = false,
+      this.onload,
+      this.hideKeys,
+      this.mode,
+      this.editKeys,
+      this.onEdit,
+      this.actionIcons,
+      this.keyMapping,
+      this.actionIconKey,
+      this.columnAutoResize = true,
+      this.actionOnPress,
+      this.onSelected,
+      this.checkRowKey = "selected",
+      this.onRowDoubleTap,
+      this.formatDate = true,
+      this.dateFromat = "dd-MM-yyyy",
+      this.onFocusChange,
+      this.checkRow,
+      this.doPasccal = true,
+      this.exportFileName,
+      this.checkBoxColumnKey,
+      this.showTitleInCheckBox,
+      this.checkBoxStrComparison,
+      this.uncheckCheckBoxStr,
+      this.spaceActionKey,
+      this.onActionKeyPress,
+      this.enableColumnDoubleTap,
+      this.onColumnHeaderDoubleTap,
+      this.sort = PlutoColumnSort.none,
+      this.previousWidgetFN,
+      this.focusNode,
+      this.gridStyle,
+      this.specificWidth,
+      this.widthSpecificColumn})
+      : super(key: key);
   final FocusNode? previousWidgetFN;
   final Map<String, double>? widthSpecificColumn;
   final Map<String, double>? specificWidth;
@@ -439,7 +441,7 @@ class DataGridFromMap3 extends StatelessWidget {
           enableContextMenu: false,
           minWidth: 25,
           width: (widthSpecificColumn != null &&
-              widthSpecificColumn!.containsKey("no"))
+                  widthSpecificColumn!.containsKey("no"))
               ? widthSpecificColumn!["no"]!
               : Utils.getColumnSize(key: "no", value: mapData[0][key]),
           enableAutoEditing: false,
@@ -574,7 +576,7 @@ class DataGridFromMap3 extends StatelessWidget {
           enableContextMenu: false,
           minWidth: 5,
           width: (widthSpecificColumn != null &&
-              widthSpecificColumn!.containsKey(key))
+                  widthSpecificColumn!.containsKey(key))
               ? widthSpecificColumn![key]!
               : Utils.getColumnSize(key: key, value: mapData[0][key]),
           // width: Utils.getColumnSize(key: key, value: mapData[0][key]),
