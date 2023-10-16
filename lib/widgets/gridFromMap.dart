@@ -376,6 +376,7 @@ class DataGridFromMap3 extends StatelessWidget {
       this.focusNode,
       this.gridStyle,
       this.specificWidth,
+      this.rowHeight = 25,
       this.widthSpecificColumn})
       : super(key: key);
   final FocusNode? previousWidgetFN;
@@ -388,6 +389,7 @@ class DataGridFromMap3 extends StatelessWidget {
   final List mapData;
   final List<String>? showTitleInCheckBox;
   bool enableSort;
+  final double rowHeight;
   final bool? showSrNo;
   final bool? hideCode;
   final PlutoGridMode? mode;
@@ -630,6 +632,7 @@ class DataGridFromMap3 extends StatelessWidget {
           mode: mode ?? PlutoGridMode.normal,
           configuration: plutoGridConfiguration2(
             focusNode: focusNode!,
+            rowHeight: rowHeight,
             autoScale: columnAutoResize,
             actionOnPress: actionOnPress,
             actionKey: actionIconKey ?? [],

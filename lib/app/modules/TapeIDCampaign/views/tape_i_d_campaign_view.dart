@@ -40,13 +40,15 @@ class TapeIDCampaignView extends GetView<TapeIDCampaignController> {
                     runSpacing: 5,
                     children: [
                       InputFields.formField1(
-                        hintTxt: "Enter Tape ID",
-                        controller: controller.tapeIDTC,
-                        width: .15,
-                        autoFocus: true,
-                        padLeft: 0,
-                        focusNode: controller.tapeIdFN,
-                      ),
+                          hintTxt: "Enter Tape ID",
+                          controller: controller.tapeIDTC,
+                          width: .15,
+                          autoFocus: true,
+                          padLeft: 0,
+                          focusNode: controller.tapeIdFN,
+                          inputformatters: [
+                            UpperCaseTextFormatter(),
+                          ]),
                       InputFields.formFieldDisable1(
                           hintTxt: "Activity Month",
                           value: controller.activityMonth,
