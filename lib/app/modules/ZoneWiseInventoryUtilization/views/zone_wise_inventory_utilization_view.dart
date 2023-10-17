@@ -14,7 +14,12 @@ import '../controllers/zone_wise_inventory_utilization_controller.dart';
 
 class ZoneWiseInventoryUtilizationView
     extends GetView<ZoneWiseInventoryUtilizationController> {
-  const ZoneWiseInventoryUtilizationView({Key? key}) : super(key: key);
+   ZoneWiseInventoryUtilizationView({Key? key}) : super(key: key);
+
+  @override
+  ZoneWiseInventoryUtilizationController controller =
+  Get.put<ZoneWiseInventoryUtilizationController>(
+      ZoneWiseInventoryUtilizationController());
 
   @override
   Widget build(BuildContext context) {
@@ -98,17 +103,19 @@ class ZoneWiseInventoryUtilizationView
                 () {
                   return Container(
                     margin: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                    decoration: controller.zoneWiseUtilizationResponseModel!
-                            .value.generate!.isEmpty
+                    decoration:( controller.zoneWiseUtilizationResponseModel?.value.generate == null ||
+                        (controller.zoneWiseUtilizationResponseModel?.value.generate?.length??0) <= 0
+                    )
                         ? BoxDecoration(
                             border: Border.all(
                               color: Colors.grey,
                             ),
                           )
                         : null,
-                    child: controller.zoneWiseUtilizationResponseModel!.value
-                            .generate!.isEmpty
-                        ? null
+                    child: ( controller.zoneWiseUtilizationResponseModel?.value.generate != null ||
+                        (controller.zoneWiseUtilizationResponseModel?.value.generate?.length??0) > 0
+                    )
+                        ? Container()
                         : GetBuilder<ZoneWiseInventoryUtilizationController>(
                             assignId: true,
                             tag: "grid",
@@ -128,11 +135,7 @@ class ZoneWiseInventoryUtilizationView
                                 hideCode: false,
                                 formatDate: false,
                                 mapData: controller
-                                    .zoneWiseUtilizationResponseModel!
-                                    .value
-                                    .generate!
-                                    .map((e) => e.toJson())
-                                    .toList(),
+                                    .zoneWiseUtilizationResponseModel?.value.generate?.map((e) => e.toJson()).toList() as List<dynamic>,
                                 widthSpecificColumn: Get.find<HomeController>()
                                     .getGridWidthByKey(
                                         userGridSettingList:
