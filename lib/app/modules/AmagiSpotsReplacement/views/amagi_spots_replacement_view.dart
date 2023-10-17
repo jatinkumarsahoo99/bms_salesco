@@ -387,6 +387,7 @@ class AmagiSpotsReplacementView
                           eventType: selectEventType?.key,mine: mySta.value,txID:txIdController.text,myProperty: "" ).
                         then((value) {
                           controller.mapList.value = value;
+                          print(">>>>>>>>>>>"+controller.mapList.value.toString());
                           controller.mapList.refresh();
                         });
                         // controller.fetchGetGenerate();

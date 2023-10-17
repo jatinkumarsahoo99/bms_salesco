@@ -1047,7 +1047,8 @@ class AmagiSpotsReplacementController extends GetxController {
     Map<String, dynamic> postData = {
       "locationcode": selectedLocation?.key ?? "",
       "channelcode": selectedChannel?.key ?? "",
-      "telecastdate": DateFormat("dd-MM-yyyy").parse(frmDate.text).toString(),
+      "telecastdate":DateFormat("yyyy-MM-dd")
+          .format(DateFormat("dd-MM-yyyy").parse(frmDate.text)),
       "mine": mine,
       "eventType": eventType,
       "txID": txID,
@@ -1060,10 +1061,19 @@ class AmagiSpotsReplacementController extends GetxController {
           json: postData,
           fun: (map) {
             closeDialogIfOpen();
-            completer.complete([{"data":"Data not found"}]);
+            print(">>>>>>>>>>>>map"+map.toString());
+            if(map is Map && map.containsKey("fastInsertsearch") &&
+                map['fastInsertsearch']['promoResponse'] != null && map['fastInsertsearch']['promoResponse'].length > 0 ){
+              print(">>>>>>>>>>map['fastInsertsearch']"+map['fastInsertsearch'].toString());
+              completer.complete((map['fastInsertsearch']['promoResponse']) as List<dynamic>);
+            }else{
+              print("else call");
+              completer.complete([{"data":"Data not found"}]);
+            }
           });
     } catch (ex) {
       closeDialogIfOpen();
+      print("exception call");
       completer.complete([{"data":"Data not found"}]);
     }
     return completer.future;
