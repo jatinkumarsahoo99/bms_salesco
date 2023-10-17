@@ -139,7 +139,7 @@ abstract class _Paths {
       '/commercial-creation-auto-details';
   static const DESIGN = '/design';
   static const COMMON_DOCS = '/common-docs';
-  static const DEALVS_R_O_DATA_REPORT = '/dealvs-r-o-data-report';
-  static const BOOKING_STATUS_REPORT = '/booking-status-report';
-  static const PROGRAM_WISE_REVENUE_REPORT = '/program-wise-revenue-report';
+  static const DEALVS_R_O_DATA_REPORT = '/frmDealvsRODataReport';
+  static const BOOKING_STATUS_REPORT = '/frmnewbookingstatus';
+  static const PROGRAM_WISE_REVENUE_REPORT = '/frmnewprogramwisereport';
 }
