@@ -29,6 +29,10 @@ class TapeIDCampaignController extends GetxController {
   TapeIdCampaignHistoryModel? history;
   var tapeIdFN = FocusNode();
 
+  var startDate =
+      DateTime.now().subtract(Duration(days: DateTime.now().day - 1));
+  var endDate = DateTime.now();
+
   List<Map<String, Map<String, double>>>? userGridSetting1;
   fetchUserSetting1() async {
     userGridSetting1 = await Get.find<HomeController>().fetchUserSetting1();
@@ -43,10 +47,13 @@ class TapeIDCampaignController extends GetxController {
         tapeIdLeave();
       }
     });
+    startDateTC.addListener(() {});
   }
 
   @override
   void onInit() {
+    endDate = DateTime(startDate.year, startDate.month + 1, 0);
+    print(endDate.toString());
     formPermissions =
         Utils.fetchPermissions1(Routes.TAPE_I_D_CAMPAIGN.replaceAll("/", ""));
     fetchUserSetting1();

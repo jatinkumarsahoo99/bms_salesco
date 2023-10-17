@@ -256,7 +256,7 @@ class LstBookingDetails {
   }
 
   parsedDate(String? dateTime) {
-    (dateTime ?? '').contains("T")
+    return (dateTime ?? '').contains("T")
         ? DateFormat("dd-MM-yyyy")
             .format(DateFormat("yyyy-MM-ddThh:mm:ss").parse(dateTime!))
         : (dateTime ?? '');
