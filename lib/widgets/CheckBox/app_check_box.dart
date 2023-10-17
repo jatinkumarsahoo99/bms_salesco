@@ -31,20 +31,19 @@ class AppCheckBox extends StatelessWidget {
                   onChanged!(tempVal);
                 }
               },
-              splashRadius: 15,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-              side: const BorderSide(
-                color: Colors.deepPurpleAccent,
-              ),
+              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
             );
           },
         ),
         SizedBox(width: width),
-        Text(
-          title,
-          style: GoogleFonts.poppins(
-            fontWeight: FontWeight.normal,
-            fontSize: 13,
+        Expanded(
+          child: Text(
+            title,
+            overflow: TextOverflow.ellipsis,
+            style: GoogleFonts.poppins(
+              fontWeight: FontWeight.normal,
+              fontSize: 13,
+            ),
           ),
         ),
       ],

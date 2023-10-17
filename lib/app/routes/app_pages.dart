@@ -8,11 +8,15 @@ import '../modules/AmagiStatusReport/bindings/amagi_status_report_binding.dart';
 import '../modules/AsrunDetailsReport/bindings/asrun_details_report_binding.dart';
 import '../modules/AuditStatusReport/bindings/audit_status_report_binding.dart';
 import '../modules/AutoTimeLock/bindings/auto_time_lock_binding.dart';
+import '../modules/BookingStatusReport/bindings/booking_status_report_binding.dart';
+import '../modules/BookingStatusReport/views/booking_status_report_view.dart';
 import '../modules/ChangeRONumber/bindings/change_r_o_number_binding.dart';
 import '../modules/CommonDocs/bindings/common_docs_binding.dart';
 import '../modules/CommonDocs/views/common_docs_view.dart';
 import '../modules/DealRecoSummary/bindings/deal_reco_summary_binding.dart';
 import '../modules/DealWorkflowDefinition/bindings/workflow_definition_binding.dart';
+import '../modules/DealvsRODataReport/bindings/dealvs_r_o_data_report_binding.dart';
+import '../modules/DealvsRODataReport/views/dealvs_r_o_data_report_view.dart';
 import '../modules/Design/bindings/design_binding.dart';
 import '../modules/Design/views/design_view.dart';
 import '../modules/EDI_Mapping/bindings/e_d_i_mapping_binding.dart';
@@ -31,6 +35,8 @@ import '../modules/ProductLevel1/bindings/product_level1_binding.dart';
 import '../modules/ProductLevel2/bindings/product_level2_binding.dart';
 import '../modules/ProductLevel3/bindings/product_level3_binding.dart';
 import '../modules/ProductMaster/bindings/product_master_binding.dart';
+import '../modules/ProgramWiseRevenueReport/bindings/program_wise_revenue_report_binding.dart';
+import '../modules/ProgramWiseRevenueReport/views/program_wise_revenue_report_view.dart';
 import '../modules/RateCardfromDealWorkflow/bindings/rate_cardfrom_deal_workflow_binding.dart';
 import '../modules/RescheduleImport/bindings/reschedule_import_binding.dart';
 import '../modules/RoReceived/bindings/ro_received_binding.dart';
@@ -143,7 +149,8 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.COMMERCIAL_LANGUAGE_SPECIFICATION,
-      page: () => AuthGuard(childName: _Paths.COMMERCIAL_LANGUAGE_SPECIFICATION),
+      page: () =>
+          AuthGuard(childName: _Paths.COMMERCIAL_LANGUAGE_SPECIFICATION),
     ),
     GetPage(
       name: _Paths.ONE_SPOT_BOOKING_SKY_MEDIA,
@@ -153,7 +160,8 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.PERIODIC_DEAL_UTILISATION_FORMAT2,
-      page: () => AuthGuard(childName: _Paths.PERIODIC_DEAL_UTILISATION_FORMAT2),
+      page: () =>
+          AuthGuard(childName: _Paths.PERIODIC_DEAL_UTILISATION_FORMAT2),
       // PeriodicDealUtilisationFormat2View(),
       binding: PeriodicDealUtilisationFormat2Binding(),
     ),
@@ -259,6 +267,21 @@ class AppPages {
       name: _Paths.COMMON_DOCS,
       page: () => const CommonDocsView(documentKey: ''),
       binding: CommonDocsBinding(),
-    )
+    ),
+    GetPage(
+      name: _Paths.DEALVS_R_O_DATA_REPORT,
+      page: () => AuthGuard(childName: _Paths.DEALVS_R_O_DATA_REPORT),
+      // binding: DealvsRODataReportBinding(),
+    ),
+    GetPage(
+      name: _Paths.BOOKING_STATUS_REPORT,
+      page: () => AuthGuard(childName: _Paths.BOOKING_STATUS_REPORT),
+      // binding: BookingStatusReportBinding(),
+    ),
+    GetPage(
+      name: _Paths.PROGRAM_WISE_REVENUE_REPORT,
+      page: () => AuthGuard(childName: _Paths.PROGRAM_WISE_REVENUE_REPORT),
+      // binding: ProgramWiseRevenueReportBinding(),
+    ),
   ];
 }

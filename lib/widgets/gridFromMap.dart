@@ -282,7 +282,9 @@ class DataGridFromMap extends StatelessWidget {
       try {
         for (var element in row.entries) {
           cells[element.key] = PlutoCell(
-            value: element.key == "selected" || element.value == null
+            value: element.key == "selected" ||
+                    element.value == null ||
+                    (element.value is Map)
                 ? ""
                 : element.key.toString().toLowerCase().contains("date") &&
                         formatDate!
@@ -293,7 +295,7 @@ class DataGridFromMap extends StatelessWidget {
         }
         segRows.add(PlutoRow(cells: cells, sortIdx: i));
       } catch (e) {
-        print("problem in adding rows");
+        print("problem in adding rows ${e.toString()}");
       }
     }
 
