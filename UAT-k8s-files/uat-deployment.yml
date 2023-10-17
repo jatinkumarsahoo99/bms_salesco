@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bmsweb-salesco-deployment-new
+  namespace: bms-ns
+  labels:
+    app: bms-salesco-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bms-salesco-web
+  template:
+    metadata:
+      labels:
+        app: bms-salesco-web
+    spec:
+      containers:
+      - name: bms-scheduling-deployment-new
+        image: zeelakscontainer.azurecr.io/bms-web-scheduling-uat:image_version
+        imagePullPolicy: Always
+        volumeMounts:
+        - name: bms-secrets-store-vol
+          mountPath: "/mnt/secrets-store"
+          readOnly: true
+      volumes:
+      - name: bms-secrets-store-vol
+        csi:
+          driver: secrets-store.csi.k8s.io
+          readOnly: true
+          volumeAttributes:
+            secretProviderClass: "bms-kvbmsuat-web"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bms-scheduling-web-new
+  namespace: bms-ns
+spec:
+  type: ClusterIP
+  ports:
+  - name: http
+    port: 80
+    targetPort: 3000
+  - name: https
+    port: 443
+    targetPort: 3000
+  selector:
+    app: bms-scheduling-web
