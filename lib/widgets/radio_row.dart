@@ -46,8 +46,7 @@ class _RadioRowState extends State<RadioRow> {
                 Radio<String>(
                     value: e,
                     groupValue: widget.groupValue,
-                    visualDensity:
-                    const VisualDensity(horizontal: -4),
+                    visualDensity: const VisualDensity(horizontal: -4),
                     onChanged: widget.disabledRadios?.contains(e) ?? false
                         ? null
                         : (value) {
@@ -56,7 +55,11 @@ class _RadioRowState extends State<RadioRow> {
                 Text(
                   e,
                   style: TextStyle(
-                    color: widget.disabledRadios?.contains(e) ?? false ? Colors.grey : Colors.black,fontSize: SizeDefine.labelSize1, fontWeight: FontWeight.w500,
+                    color: widget.disabledRadios?.contains(e) ?? false
+                        ? Colors.grey
+                        : Colors.black,
+                    fontSize: SizeDefine.labelSize1,
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
               ],

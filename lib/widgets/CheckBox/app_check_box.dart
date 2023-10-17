@@ -1,3 +1,4 @@
+import 'package:bms_salesco/app/providers/SizeDefine.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -36,14 +37,11 @@ class AppCheckBox extends StatelessWidget {
           },
         ),
         SizedBox(width: width),
-        Expanded(
-          child: Text(
-            title,
-            overflow: TextOverflow.ellipsis,
-            style: GoogleFonts.poppins(
-              fontWeight: FontWeight.normal,
-              fontSize: 13,
-            ),
+        Text(
+          title,
+          style: GoogleFonts.poppins(
+            fontWeight: FontWeight.normal,
+            fontSize: SizeDefine2.componentTitle,
           ),
         ),
       ],

@@ -3,12 +3,16 @@ import 'dart:convert';
 import 'dart:html' as html;
 
 // import 'package:bms_programming/app/providers/ApiFactory.dart';
+import 'package:bms_salesco/widgets/FormButton.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 import '../data/DrawerModel.dart';
+import '../data/PermissionModel.dart';
 import '../providers/Aes.dart';
 import '../providers/ApiFactory.dart';
+import '../providers/Utils.dart';
 import '../routes/app_pages.dart';
 import 'ConnectorControl.dart';
 import 'MainController.dart';
@@ -164,7 +168,6 @@ class HomeController extends GetxController {
         }
       } else {
         if ((userGridSettingList?.length ?? 0) > 1) {
-
           for (int i = 0; i < (userGridSettingList?.length ?? 0); i++) {
             if (userGridSettingList?[i] != null) {
               if (((userGridSettingList?[i].keys.toList()) ?? [])
@@ -185,7 +188,7 @@ class HomeController extends GetxController {
           }
           // print(">>>>>>>>>>>>>ifgridWidths" + gridWidths.toString());
           return gridWidths;
-        }else if((userGridSettingList?.length ?? 0) == 1){
+        } else if ((userGridSettingList?.length ?? 0) == 1) {
           if (userGridSettingList?[0] != null) {
             gridWidths = (userGridSettingList?[0].values.first) ?? {};
           }
@@ -223,8 +226,9 @@ class HomeController extends GetxController {
         json: {"lstUserSettings": data},
         fun: (map) {});
   }
+
   Future<List<Map<String, double>>>? fetchUserSetting() {
-    List<Map<String, double>> data=[];
+    List<Map<String, double>> data = [];
     Get.find<ConnectorControl>().GETMETHODCALL(
         api: ApiFactory.FETCH_USER_SETTING +
             "?formName=${Get.find<MainController>().formName}",
@@ -233,8 +237,7 @@ class HomeController extends GetxController {
           if (map is Map &&
               map.containsKey("userSetting") &&
               map["userSetting"] != null) {
-
-            map["userSetting"].forEach((e){
+            map["userSetting"].forEach((e) {
               Map<String, double> userGridSetting = {};
               jsonDecode(e["userSettings"]).forEach((key, value) {
                 print("Data key is>>" +
@@ -246,9 +249,79 @@ class HomeController extends GetxController {
               data.add(userGridSetting);
             });
             return data;
-          }else{
+          } else {
             return null;
           }
         });
+  }
+
+  Widget getCommonButton<T>(
+      String frmName, void Function(String formName) formhandler,
+      {bool handleAutoClear = true}) {
+    return GetBuilder<HomeController>(
+      init: Get.find<HomeController>(),
+      id: "buttons",
+      builder: (controller) {
+        if (frmName.contains("/")) {
+          frmName = frmName.replaceAll("/", "");
+        }
+        PermissionModel? formPermissions =
+            Get.find<MainController>().permissionList?.lastWhere(
+          (element) {
+            return element.appFormName == frmName;
+          },
+          orElse: () => PermissionModel(),
+        );
+
+        if ((controller.buttons?.length ?? 0) == 0 ||
+            formPermissions?.delete == null) {
+          if (controller.buttons?.isNotEmpty ?? false) {
+            return const Align(
+              alignment: Alignment.bottomLeft,
+              child: Text(
+                "Form Permission not found in permission list Please contact to ADMIN.",
+                style: TextStyle(color: Colors.red),
+              ),
+            );
+          }
+          return SizedBox();
+        }
+
+        return Padding(
+          padding: const EdgeInsets.only(top: 5),
+          child: Wrap(
+            spacing: 5,
+            runSpacing: 15,
+            crossAxisAlignment: WrapCrossAlignment.start,
+            // runAlignment: WrapAlignment.start,
+            // alignment: WrapAlignment.start,
+            children: [
+              for (int index = 0;
+                  index < (controller.buttons?.length ?? 0);
+                  index++) ...{
+                FormButtonWrapper(
+                  btnText: controller.buttons?[index]["name"],
+                  callback: Utils.btnAccessHandler2(
+                              controller.buttons?[index]['name'],
+                              controller,
+                              formPermissions!) ==
+                          null
+                      ? null
+                      : () {
+                          formhandler(controller.buttons?[index]['name']);
+                          if (handleAutoClear &&
+                              controller.buttons?[index]['name'] == "Clear") {
+                            Get.delete<T>().then((value) {
+                              clearPage1();
+                            });
+                          }
+                        },
+                )
+              }
+            ],
+          ),
+        );
+      },
+    );
   }
 }

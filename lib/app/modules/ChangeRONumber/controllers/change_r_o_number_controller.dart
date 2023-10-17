@@ -10,7 +10,8 @@ class ChangeRONumberController extends GetxController {
   var locationList = <DropDownValue>[].obs, channelList = <DropDownValue>[].obs;
   DropDownValue? selectedLocation, selectedChannel;
   var locationFN = FocusNode();
-  var bookingNoCtr = TextEditingController(), bookingRefNumber = TextEditingController();
+  var bookingNoCtr = TextEditingController(),
+      bookingRefNumber = TextEditingController();
 
   @override
   void onReady() {
@@ -52,7 +53,9 @@ class ChangeRONumberController extends GetxController {
         fun: (resp) {
           closeDialogIfOpen();
           Get.back();
-          if (resp != null && resp is Map<String, dynamic> && resp['result'] != null) {
+          if (resp != null &&
+              resp is Map<String, dynamic> &&
+              resp['result'] != null) {
             if (!(resp['result']['isError'] as bool)) {
               LoadingDialog.callDataSaved(
                 msg: resp['result']['errorMessage'].toString(),
@@ -91,7 +94,10 @@ class ChangeRONumberController extends GetxController {
         api: ApiFactory.CHANGE_RO_NUMBER_ON_LEAVE_LOCATION(val.key.toString()),
         fun: (resp) {
           closeDialogIfOpen();
-          if (resp != null && resp is Map<String, dynamic> && resp['channel'] != null && resp['channel'] is List<dynamic>) {
+          if (resp != null &&
+              resp is Map<String, dynamic> &&
+              resp['channel'] != null &&
+              resp['channel'] is List<dynamic>) {
             channelList.clear();
             selectedChannel = null;
             channelList.addAll((resp['channel'] as List<dynamic>)
@@ -122,17 +128,20 @@ class ChangeRONumberController extends GetxController {
         api: ApiFactory.CHANGE_RO_NUMBER_ON_LOAD,
         fun: (resp) {
           closeDialogIfOpen();
-          if (resp != null && resp is Map<String, dynamic> && resp['location'] != null && resp['location'] is List<dynamic>) {
+          if (resp != null &&
+              resp is Map<String, dynamic> &&
+              resp['location'] != null &&
+              resp['location'] is List<dynamic>) {
             locationList.value.addAll((resp['location'] as List<dynamic>)
                 .map((e) => DropDownValue(
                       key: e['locationCode'].toString(),
                       value: e['locationName'].toString(),
                     ))
                 .toList());
-            if (locationList.isNotEmpty) {
-              selectedLocation = locationList.first;
-              locationList.refresh();
-            }
+            // if (locationList.isNotEmpty) {
+            //   selectedLocation = locationList.first;
+            //   locationList.refresh();
+            // }
           } else {
             if (resp is Map<String, dynamic> && resp['status'] == "failure") {
               LoadingDialog.showErrorDialog(resp['message'].toString());

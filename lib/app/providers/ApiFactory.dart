@@ -1066,6 +1066,52 @@ class ApiFactory {
   ///
   ///
   ///
+  ///
+  ///
+  ///
+  ///
+  ///
+  ///
+  ///
+  //////////////////////////////// RO_RESCHEDULE_TAPE_ID START /////////////////////////////////////
+  static String get RO_RESCHEDULE_TAPE_ID_ON_LOAD =>
+      "$BASE_URL/api/RORescheduleTapeID/GetLoad";
+  static String get RO_RESCHEDULE_TAPE_ID_SAVE_DATA =>
+      "$BASE_URL/api/RORescheduleTapeID/PostSave";
+  static String RO_RESCHEDULE_TAPE_ID_GET_CHANNELS(String locationCode) =>
+      "$BASE_URL/api/RORescheduleTapeID/GetlocationLeave?LocationCode=$locationCode";
+  static String RO_RESCHEDULE_TAPE_ID_GET_CLIENT(
+          String locationCode, String channelCode) =>
+      "$BASE_URL/api/RORescheduleTapeID/GetChannelLeave?LocationCode=$locationCode&ChannelCode=$channelCode";
+  static String RO_RESCHEDULE_TAPE_ID_GET_AGENCY(
+          String locationCode, String channelCode, String clientCode) =>
+      "$BASE_URL/api/RORescheduleTapeID/GetClientLeave?LocationCode=$locationCode&ChannelCode=$channelCode&Clientcode=$clientCode";
+  static String RO_RESCHEDULE_TAPE_ID_GET_BRAND(String locationCode,
+          String channelCode, String clientCode, String agencyCode) =>
+      "$BASE_URL/api/RORescheduleTapeID/GetAgencyLeave?LocationCode=$locationCode&ChannelCode=$channelCode&Clientcode=$clientCode&Agencycode=$agencyCode";
+  static String RO_RESCHEDULE_TAPE_ID_GET_TAPE_DETAILS(
+    String locationCode,
+    String channelCode,
+    String clientCode,
+    String agencyCode,
+    String brandCode,
+    String fromDate,
+    String toDate,
+  ) =>
+      "$BASE_URL/api/RORescheduleTapeID/GetBrandLeave?LocationCode=$locationCode&ChannelCode=$channelCode&Clientcode=$clientCode&Agencycode=$agencyCode&BrandCode=$brandCode&EffectiveFromDT=$fromDate&EffectiveToDT=$toDate";
+
+  static String RO_RESCHEDULE_TAPE_ID_GET_TAPE_BOOKING_DETAILS(
+    String locationCode,
+    String channelCode,
+    String clientCode,
+    String agencyCode,
+    String brandCode,
+    String fromDate,
+    String toDate,
+    String tapeCode,
+  ) =>
+      "$BASE_URL/api/RORescheduleTapeID/GetSearch?LocationCode=$locationCode&ChannelCode=$channelCode&Clientcode=$clientCode&Agencycode=$agencyCode&BrandCode=$brandCode&EffectiveFromDT=$fromDate&EffectiveToDT=$toDate&ExportTapeCode=$tapeCode";
+  //////////////////////////////// RO_RESCHEDULE_TAPE_ID END /////////////////////////////////////
   ///////////////////////// Deals Vs RO Date Report Start//////////////////////
   static String get DEAL_VS_RO_DATA_REPORT_DATAINITIAL =>
       "$BASE_URL/api/DealvsRODataReport/DealVSRoReportDataInitial";
