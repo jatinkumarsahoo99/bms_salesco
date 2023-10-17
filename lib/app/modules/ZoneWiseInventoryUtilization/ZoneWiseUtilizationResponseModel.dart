@@ -1,3 +1,5 @@
+import '../../providers/Utils.dart';
+
 class ZoneWiseUtilizationResponseModel {
   List<Generate>? generate;
 
@@ -58,7 +60,7 @@ class Generate {
     balind = json['balind'];
   }
 
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toJson1() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['programname'] = this.programname;
     data['scheduledate'] = this.scheduledate;
@@ -72,4 +74,20 @@ class Generate {
     data['balind'] = this.balind;
     return data;
   }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['programname'] = this.programname;
+    data['scheduledate'] = (Utils.toDateFormat4(this.scheduledate));
+    data['scheduletime'] = (Utils.toDateFormat4(this.scheduletime));
+    data['zonename'] = this.zonename;
+    data['bookedduration'] = this.bookedduration;
+    data['commduration'] = this.commduration;
+    data['usacap'] = this.usacap;
+    data['indiacap'] = this.indiacap;
+    data['balusa'] = this.balusa;
+    data['balind'] = this.balind;
+    return data;
+  }
+  
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 import '../../../../widgets/LoadingDialog.dart';
@@ -152,7 +153,21 @@ class ProductMasterController extends GetxController {
   @override
   void onInit() {
     fetchAllLoaderData();
-    productNode.addListener(() {
+
+    productNode = FocusNode(
+      onKeyEvent: (node, event) {
+        if (event.logicalKey == LogicalKeyboardKey.tab) {
+
+          if((productNameController.text??"").trim() != ""){
+            retrieveRecord();
+          }
+          return KeyEventResult.ignored;
+        }
+        return KeyEventResult.ignored;
+      },
+    );
+
+   /* productNode.addListener(() {
       if(productNode.hasFocus){
         isListnerActive = true;
       }
@@ -161,7 +176,7 @@ class ProductMasterController extends GetxController {
         retrieveRecord();
       }
 
-    });
+    });*/
     super.onInit();
   }
   void search() {

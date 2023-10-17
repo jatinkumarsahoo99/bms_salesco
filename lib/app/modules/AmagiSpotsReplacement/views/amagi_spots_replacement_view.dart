@@ -258,12 +258,13 @@ class AmagiSpotsReplacementView
   }
 
   dragAbleDialogGet() {
-    controller.initialOffset.value = 1;
+    controller.initialOffset.value = 2;
     TextEditingController txCaptionController = TextEditingController();
     TextEditingController txIdController = TextEditingController(text:
     controller.amagiSpotReplacementModel?.lstSpots?.fastInsertText ?? "");
     DropDownValue? selectEventType = DropDownValue(
         value: "Promo", key: "Promo");
+    List<DropDownValue> selectEventTypeList = [DropDownValue(value: "Promo", key: "Promo")];
     Rx<bool> mySta = Rx<bool>(false);
 
     controller.dialogWidget = Material(
@@ -310,22 +311,30 @@ class AmagiSpotsReplacementView
                   ],
                 ),
               ),
+
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                // crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  DropDownField.formDropDown1WidthMap(
-                    [DropDownValue(value: "Promo", key: "Promo")],
-                        (value) {
-                      // selectedObjective = value;
-                      selectEventType = value;
-                    },
-                    "Objective",
-                    .2,
-                    // isEnable: isEnable,
-                    selected: selectEventType,
-                    dialogHeight: Get.height * .7,
-                    // inkWellFocusNode: objectiveNode,
-                    autoFocus: false,
+                  Container(
+                    width: Get.width*0.22,
+                    height: Get.height*0.07,
+                    child: DropDownField.formDropDown1WidthMap(
+                      selectEventTypeList,
+                          (value) {
+                        // selectedObjective = value;
+                        selectEventType = value;
+                      },
+                      "Objective",
+                      .2,
+                      // isEnable: isEnable,
+                      selected: selectEventType,
+                      dialogHeight: Get.height * .7,
+                      onFocusChange: (val){},
+                      height: Get.height * 0.067,
+                      // inkWellFocusNode: objectiveNode,
+                      autoFocus: true,
+                    ),
                   ),
                   InputFields.formField1(
                     hintTxt: "Tx Caption",
@@ -342,6 +351,7 @@ class AmagiSpotsReplacementView
               const SizedBox(
                 height: 6,
               ),
+
               Row(
                 children: [
                   InputFields.formField1(
@@ -357,6 +367,7 @@ class AmagiSpotsReplacementView
                   ),
                 ],
               ),
+
               const SizedBox(
                 height: 6,
               ),
