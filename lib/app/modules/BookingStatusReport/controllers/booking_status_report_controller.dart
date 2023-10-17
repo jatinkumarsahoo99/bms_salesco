@@ -5,12 +5,14 @@ import 'package:intl/intl.dart';
 import '../../../../widgets/CheckBox/multi_check_box.dart';
 import '../../../../widgets/LoadingDialog.dart';
 import '../../../controller/ConnectorControl.dart';
+import '../../../controller/HomeController.dart';
 import '../../../data/DropDownValue.dart';
 import '../../../data/PermissionModel.dart';
 import '../../../providers/ApiFactory.dart';
 import '../../../providers/Utils.dart';
 import '../../../routes/app_pages.dart';
 import '../../CommonSearch/views/common_search_view.dart';
+import '../bindings/booking_status_report_data.dart';
 
 class BookingStatusReportController extends GetxController {
   TextEditingController fromDate = TextEditingController();
@@ -35,6 +37,9 @@ class BookingStatusReportController extends GetxController {
   List<DropDownValue> selectRevenue = [];
 
   RxnString bookingType = RxnString();
+
+  var dataTableList = [].obs;
+  List<BookingStatusReportData>? bookigData;
 
   var isRType = "".obs;
 
@@ -206,41 +211,37 @@ class BookingStatusReportController extends GetxController {
         fun: (map) {
           Get.back();
           print(map);
+          if (map != null &&
+              map['loadData'] != null &&
+              map.containsKey('loadData') &&
+              (map['loadData'] as List<dynamic>).isNotEmpty) {
+            dataTableList.clear();
+            dataTableList.value.addAll((map['loadData']));
+            // bookigData = <BookingStatusReportData>[];
+            // bookigData!.add(map['loadData']);
+          } else {
+            LoadingDialog.showErrorDialog('No data found.');
+          }
         });
   }
 
   clearPage() {
-    locations.clear();
-    channels.clear();
-    zone.clear();
-    clients.clear();
-    agency.clear();
-    revenue.clear();
-    selectLocation.clear();
-    selectChannel.clear();
-    selectZone.clear();
-    selectClient.clear();
-    selectAgency.clear();
-    selectRevenue.clear();
-    fromDate.clear();
-    toDate.clear();
-  }
-
-  formHandler(String btnName) {
-    if (btnName == "Clear") {
-      clearPage();
-    } else if (btnName == "Save") {
-      // saveValidate();
-    } else if (btnName == "Search") {
-      // Get.to(
-      //   const SearchPage(
-      //     key: Key("Booking Status Report"),
-      //     screenName: "Booking Status Report",
-      //     appBarName: "Booking Status Report",
-      //     strViewName: "bms_view_fillermaster",
-      //     isAppBarReq: true,
-      //   ),
-      // );
-    }
+    // locations.clear();
+    // channels.clear();
+    // zone.clear();
+    // clients.clear();
+    // agency.clear();
+    // revenue.clear();
+    // selectLocation.clear();
+    // selectChannel.clear();
+    // selectZone.clear();
+    // selectClient.clear();
+    // selectAgency.clear();
+    // selectRevenue.clear();
+    // fromDate.clear();
+    // toDate.clear();
+    // dataTableList.clear();
+    Get.delete<BookingStatusReportController>();
+    Get.find<HomeController>().clearPage1();
   }
 }
