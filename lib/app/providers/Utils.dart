@@ -44,6 +44,17 @@ class Utils {
     return formatter;
   }
 
+  static toDateFormat4(String? date) {
+    String ?formatter;
+    if(date != null && date != ""){
+       formatter = DateFormat("dd/MM/yyyy").format( DateFormat("yyyy-MM-ddTHH:mm:ss").parse((date ?? DateTime.now()).toString()));
+    }
+
+    // log(">>>>>>"+formatter.toString());
+    return formatter;
+  }
+
+
   static bool isNumeric(String s) {
     if (s == null) {
       return false;

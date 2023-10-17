@@ -55,8 +55,7 @@ class ZoneWiseInventoryUtilizationController extends GetxController {
     locationFN.requestFocus();
     lastSelctedIdx = 0;
     manager = null;
-    zoneWiseUtilizationResponseModel = Rx<ZoneWiseUtilizationResponseModel>(
-        ZoneWiseUtilizationResponseModel(generate: []));
+    zoneWiseUtilizationResponseModel = ZoneWiseUtilizationResponseModel(generate: []);
   }
 
   clearAll() {
@@ -135,9 +134,8 @@ class ZoneWiseInventoryUtilizationController extends GetxController {
         .format(DateFormat('dd-MM-yyyy').parse(date));
   }
 
-  Rx<ZoneWiseUtilizationResponseModel>? zoneWiseUtilizationResponseModel =
-      Rx<ZoneWiseUtilizationResponseModel>(
-          ZoneWiseUtilizationResponseModel(generate: []));
+  ZoneWiseUtilizationResponseModel? zoneWiseUtilizationResponseModel =
+  ZoneWiseUtilizationResponseModel(generate: []);
 
   callGenerate() {
     print("function call");
@@ -160,14 +158,15 @@ class ZoneWiseInventoryUtilizationController extends GetxController {
             map.containsKey('generate') &&
             map['generate'] != null &&
             map['generate'].length > 0) {
-          zoneWiseUtilizationResponseModel?.value =
+          zoneWiseUtilizationResponseModel =
               ZoneWiseUtilizationResponseModel.fromJson(
                   map as Map<String, dynamic>);
           // zoneWiseUtilizationResponseModel?.refresh();
           update(['grid']);
         } else {
-          zoneWiseUtilizationResponseModel?.value =
+          zoneWiseUtilizationResponseModel =
               ZoneWiseUtilizationResponseModel(generate: []);
+          update(['grid']);
         }
       },
     );
