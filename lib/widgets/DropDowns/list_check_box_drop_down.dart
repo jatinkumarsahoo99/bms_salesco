@@ -12,7 +12,7 @@ import '../../app/providers/SizeDefine.dart';
 
 class ListDropDownCheckBox extends StatelessWidget {
   final List<MultiCheckBoxModel> items;
-  final void Function(int, bool)? onChanged;
+  final void Function(int index, bool selectValue)? onChanged;
   final String title;
   final void Function(DropDownValue? val) onSelect;
   final double? widthRatio, dialogWidth, dialogHeight;
@@ -68,7 +68,10 @@ class ListDropDownCheckBox extends StatelessWidget {
                     selectedVal!,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: GoogleFonts.poppins(fontWeight: FontWeight.normal, fontSize: 12, color: Colors.black),
+                    style: GoogleFonts.poppins(
+                        fontWeight: FontWeight.normal,
+                        fontSize: 12,
+                        color: Colors.black),
                   ),
                 ),
               },
@@ -105,7 +108,10 @@ class ListDropDownCheckBox extends StatelessWidget {
                         title,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: GoogleFonts.poppins(fontWeight: FontWeight.normal, fontSize: 10, color: const Color(0xFFABABAB)),
+                        style: GoogleFonts.poppins(
+                            fontWeight: FontWeight.normal,
+                            fontSize: 10,
+                            color: const Color(0xFFABABAB)),
                       ),
               ),
 
@@ -125,7 +131,9 @@ class ListDropDownCheckBox extends StatelessWidget {
                       turns: menuOpen ? 1 : 2,
                       duration: Duration(milliseconds: 500),
                       child: Icon(
-                        menuOpen ? Icons.arrow_drop_up_rounded : Icons.arrow_drop_down_rounded,
+                        menuOpen
+                            ? Icons.arrow_drop_up_rounded
+                            : Icons.arrow_drop_down_rounded,
                         color: Colors.white,
                         size: 20,
                       ),
@@ -160,7 +168,8 @@ class ListDropDownCheckBox extends StatelessWidget {
                       menuOpen = true;
                     });
 
-                    final RenderBox renderBox = context.findRenderObject() as RenderBox;
+                    final RenderBox renderBox =
+                        context.findRenderObject() as RenderBox;
                     final offset = renderBox.localToGlobal(Offset.zero);
                     final left = offset.dx;
                     final top = offset.dy + renderBox.size.height + 5;
@@ -181,7 +190,9 @@ class ListDropDownCheckBox extends StatelessWidget {
                       ),
                       items: [
                         CustomPopupMenuItem(
-                          textStyle: TextStyle(color: Colors.black, fontSize: SizeDefine.fontSizeInputField),
+                          textStyle: TextStyle(
+                              color: Colors.black,
+                              fontSize: SizeDefine.fontSizeInputField),
                           child: SizedBox(
                             height: (dialogHeight ?? 200) - 20,
                             child: StatefulBuilder(builder: (context, re) {
@@ -190,11 +201,13 @@ class ListDropDownCheckBox extends StatelessWidget {
                                 children: [
                                   /// search
                                   Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 8),
                                     child: TextFormField(
                                       cursorHeight: 10,
                                       decoration: InputDecoration(
-                                        contentPadding: EdgeInsets.only(top: 17, right: 10),
+                                        contentPadding:
+                                            EdgeInsets.only(top: 17, right: 10),
                                         isDense: true,
                                         isCollapsed: true,
                                         hintText: "Search $title",
@@ -207,16 +220,22 @@ class ListDropDownCheckBox extends StatelessWidget {
                                         filled: true,
                                         prefixIcon: Icon(Icons.search_rounded),
                                         border: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(12),
-                                          borderSide: BorderSide(color: Colors.transparent),
+                                          borderRadius:
+                                              BorderRadius.circular(12),
+                                          borderSide: BorderSide(
+                                              color: Colors.transparent),
                                         ),
                                         focusedBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(12),
-                                          borderSide: BorderSide(color: Colors.transparent),
+                                          borderRadius:
+                                              BorderRadius.circular(12),
+                                          borderSide: BorderSide(
+                                              color: Colors.transparent),
                                         ),
                                         enabledBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(12),
-                                          borderSide: BorderSide(color: Colors.transparent),
+                                          borderRadius:
+                                              BorderRadius.circular(12),
+                                          borderSide: BorderSide(
+                                              color: Colors.transparent),
                                         ),
                                       ),
                                       autofocus: true,
@@ -228,8 +247,15 @@ class ListDropDownCheckBox extends StatelessWidget {
                                       onChanged: ((value) {
                                         tempList.clear();
                                         if (value.isNotEmpty) {
-                                          for (var i = 0; i < items.length; i++) {
-                                            if (items[i].val!.value!.toLowerCase().contains(value.toLowerCase())) {
+                                          for (var i = 0;
+                                              i < items.length;
+                                              i++) {
+                                            if (items[i]
+                                                .val!
+                                                .value!
+                                                .toLowerCase()
+                                                .contains(
+                                                    value.toLowerCase())) {
                                               tempList.add(items[i]);
                                             }
                                           }
@@ -287,7 +313,9 @@ class ListDropDownCheckBox extends StatelessWidget {
                     height: 40,
                     decoration: BoxDecoration(
                       border: Border.all(
-                        color: hasFocus ? Colors.deepPurpleAccent : Colors.transparent,
+                        color: hasFocus
+                            ? Colors.deepPurpleAccent
+                            : Colors.transparent,
                         width: hasFocus ? 1 : 0,
                       ),
                       borderRadius: BorderRadius.circular(10),
@@ -306,7 +334,11 @@ class ListDropDownCheckBox extends StatelessWidget {
   String? getSelectedName() {
     String? selectedItem;
 
-    var tempLis = items.where((element) => (element.isSelected ?? false)).toList().map((e) => (e.val?.value ?? "")).toList();
+    var tempLis = items
+        .where((element) => (element.isSelected ?? false))
+        .toList()
+        .map((e) => (e.val?.value ?? ""))
+        .toList();
     if (tempLis.isNotEmpty) {
       if (tempLis.length <= 2) {
         selectedItem = tempLis.join(', ');
