@@ -16,8 +16,8 @@ spec:
         app: bms-salesco-web
     spec:
       containers:
-      - name: bms-scheduling-deployment-new
-        image: zeelakscontainer.azurecr.io/bms-web-scheduling-uat:image_version
+      - name: bms-salesco-deployment-new
+        image: zeelakscontainer.azurecr.io/bms-web-salesco-uat:image_version
         imagePullPolicy: Always
         volumeMounts:
         - name: bms-secrets-store-vol
@@ -35,7 +35,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: bms-scheduling-web-new
+  name: bms-salesco-web-new
   namespace: bms-ns
 spec:
   type: ClusterIP
@@ -47,4 +47,4 @@ spec:
     port: 443
     targetPort: 3000
   selector:
-    app: bms-scheduling-web
+    app: bms-salesco-web
