@@ -1112,4 +1112,65 @@ class ApiFactory {
   ) =>
       "$BASE_URL/api/RORescheduleTapeID/GetSearch?LocationCode=$locationCode&ChannelCode=$channelCode&Clientcode=$clientCode&Agencycode=$agencyCode&BrandCode=$brandCode&EffectiveFromDT=$fromDate&EffectiveToDT=$toDate&ExportTapeCode=$tapeCode";
   //////////////////////////////// RO_RESCHEDULE_TAPE_ID END /////////////////////////////////////
+  ///////////////////////// Deals Vs RO Date Report Start//////////////////////
+  static String get DEAL_VS_RO_DATA_REPORT_DATAINITIAL =>
+      "$BASE_URL/api/DealvsRODataReport/DealVSRoReportDataInitial";
+  static String DEAL_VS_RO_DATA_REPORT_GET_CHANNEL(String locationCode) =>
+      "$BASE_URL/api/DealvsRODataReport/GetChannelList?LocationCode=$locationCode";
+  static String DEAL_VS_RO_DATA_REPORT_GET_CLIENT(
+          String locationCode, String channelCode, String fromDate) =>
+      "$BASE_URL/api/DealvsRODataReport/GetClientList?LocationCode=$locationCode&ChannelCode=$channelCode&FromDate=$fromDate";
+  static String DEAL_VS_RO_DATA_REPORT_GET_DEAL(
+          String locationCode,
+          String channelCode,
+          String clientCode,
+          String fromDate,
+          String toDate) =>
+      "$BASE_URL/api/DealvsRODataReport/GetDealDetails?LocationCode=$locationCode&ChannelCode=$channelCode&ClientCode=$clientCode&FromDate=$fromDate&ToDate=$toDate";
+  static String DEAL_VS_RO_DATA_REPORT_GENERATE_REPORT(
+          String locationCode,
+          String channelCode,
+          String optDealWise,
+          String optROWise,
+          String fromDate,
+          String toDate,
+          String dealNO) =>
+      "$BASE_URL/api/DealvsRODataReport/GenerateReportData?LocationCode=$locationCode&ChannelCode=$channelCode&optDealWise=$optDealWise&optROWise=$optROWise&FromDate=$fromDate&ToDate=$toDate&DealNo=$dealNO";
+  ///////////////////////// Deals Vs RO Date Report End//////////////////////
+  ///
+  ///
+  ///
+  ///
+  ///
+  //////////////////////////// Booking Status Report Start//////////////////////
+  static String get BOOKING_STATUS_REPORT_GET_LOAD_DATA =>
+      "$BASE_URL/api/BookingStatusReport/GetloadData";
+  static String get BOOKING_STATUS_REPORT_GET_REPORT =>
+      "$BASE_URL/api/BookingStatusReport/GetReport";
+
+////////////////////////// Amagi Spots Replacement ////////////////////////////////////
+  static String AMAGI_SPOT_REPLACEMENT_GET_LOCATION() =>
+      "$BASE_URL/api/AmagiSpotsReplacement/GetLocation";
+  static String AMAGI_SPOT_REPLACEMENT_GET_CHANNEL() =>
+      "$BASE_URL/api/AmagiSpotsReplacement/GetChannel";
+  static String AMAGI_SPOT_REPLACEMENT_GET_SPOTS() =>
+      "$BASE_URL/api/AmagiSpotsReplacement/GetSpots";
+  static String AMAGI_SPOT_REPLACEMENT_GET_FAST_INSERT() =>
+      "$BASE_URL/api/AmagiSpotsReplacement/GetFastInsert";
+  static String AMAGI_SPOT_REPLACEMENT_GET_EXCEL() =>
+      "$BASE_URL/api/AmagiSpotsReplacement/GetExcel";
+  static String AMAGI_SPOT_REPLACEMENT_GET_CLIENT() =>
+      "$BASE_URL/api/AmagiSpotsReplacement/GetClient";
+  static String AMAGI_SPOT_REPLACEMENT_GET_SUMMARY() =>
+      "$BASE_URL/api/AmagiSpotsReplacement/GetSummary";
+  static String AMAGI_SPOT_REPLACEMENT_GET_TOTAL() =>
+      "$BASE_URL/api/AmagiSpotsReplacement/GetTotal";
+  static String AMAGI_SPOT_REPLACEMENT_GET_UNALLOCATED() =>
+      "$BASE_URL/api/AmagiSpotsReplacement/GetUnAllocated";
+  static String AMAGI_SPOT_REPLACEMENT_GET_MERGESPOT() =>
+      "$BASE_URL/api/AmagiSpotsReplacement/DontMergeSpots";
+  static String AMAGI_SPOT_REPLACEMENT_GET_DEALALLOCATED() =>
+      "$BASE_URL/api/AmagiSpotsReplacement/GetDeallocateHold";
+  static String AMAGI_SPOT_REPLACEMENT_GET_PivotOnLoadLocalTable() =>
+      "$BASE_URL/api/AmagiSpotsReplacement/GetPivotOnLocalTable";
 }

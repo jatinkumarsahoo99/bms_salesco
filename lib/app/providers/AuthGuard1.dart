@@ -1,9 +1,12 @@
 import 'package:bms_salesco/app/controller/MainController.dart';
 import 'package:bms_salesco/app/modules/AmagiSpotPlanning/views/amagi_spot_planning_view.dart';
 import 'package:bms_salesco/app/modules/AmagiSpotsReplacement/views/amagi_spots_replacement_view.dart';
+import 'package:bms_salesco/app/modules/BookingStatusReport/views/booking_status_report_view.dart';
+import 'package:bms_salesco/app/modules/DealvsRODataReport/views/dealvs_r_o_data_report_view.dart';
 import 'package:bms_salesco/app/modules/EdiRoBooking/views/edi_ro_booking_view.dart';
 import 'package:bms_salesco/app/modules/MakeGoodReport/views/make_good_report_view.dart';
 import 'package:bms_salesco/app/modules/NewShortContentForm/views/new_short_content_form_view.dart';
+import 'package:bms_salesco/app/modules/ProgramWiseRevenueReport/views/program_wise_revenue_report_view.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -178,6 +181,15 @@ class AuthGuard extends StatelessWidget {
               break;
             case Routes.RELESE_ORDER_RESCHEDULE_TAPE_I_D:
               currentWidget = const ReleseOrderRescheduleTapeIDView();
+              break;
+            case Routes.DEALVS_R_O_DATA_REPORT:
+              currentWidget = DealvsRODataReportView();
+              break;
+            case Routes.BOOKING_STATUS_REPORT:
+              currentWidget = BookingStatusReportView();
+              break;
+            case Routes.PROGRAM_WISE_REVENUE_REPORT:
+              currentWidget = ProgramWiseRevenueReportView();
               break;
             default:
               currentWidget = const NoDataFoundPage();

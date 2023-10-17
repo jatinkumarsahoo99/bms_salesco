@@ -1,3 +1,4 @@
+import 'package:bms_salesco/widgets/CheckBoxWidget.dart';
 import 'package:bms_salesco/widgets/text_drop_down.dart';
 import 'package:dropdown_plus/dropdown_plus.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +9,7 @@ import '../app/controller/ConnectorControl.dart';
 import '../app/data/DropDownValue.dart';
 import '../app/data/system_envirtoment.dart';
 import '../app/providers/SizeDefine.dart';
+import 'CheckBox/multi_check_box.dart';
 import 'CustomSearchDropDown/dropdown_search.dart';
 import 'CustomSearchDropDown/src/popupMenu.dart';
 import 'LabelTextStyle.dart';
@@ -3067,6 +3069,318 @@ class DropDownField {
             ),
           ],
         ));
+  }
+
+  Widget formDropDownCheckBoxMap(
+    List<MultiCheckBoxModel>? items,
+    Function(DropDownValue) callback,
+    String hint,
+    double widthRatio, {
+    Function(int index, bool selectValue)? onChanged,
+    double? height,
+    double? paddingBottom,
+    MultiCheckBoxModel? selected,
+    bool? isEnable,
+    String? Function(DropDownValue? value)? validator,
+    bool? searchReq,
+    bool autoFocus = false,
+    double dialogHeight = 240,
+    void Function(bool)? onFocusChange,
+    double? dialogWidth,
+    FocusNode? inkWellFocusNode,
+    GlobalKey? widgetKey,
+    bool showtitle = true,
+    bool titleInLeft = false,
+  }) {
+    isEnable ??= true;
+    widgetKey ??= GlobalKey();
+    final textColor = (isEnable) ? Colors.black : Colors.grey;
+    final iconLineColor = (isEnable) ? Colors.deepPurpleAccent : Colors.grey;
+    inkWellFocusNode ??= FocusNode();
+    var selectedVal = "".obs;
+
+    return Column(
+      // key: titleInLeft ? null : widgetKey,
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (showtitle && !titleInLeft) ...{
+          Text(
+            hint,
+            style: TextStyle(
+              fontSize: SizeDefine.labelSize1,
+              color: textColor,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          const SizedBox(height: 5),
+        },
+        StatefulBuilder(builder: (context, ree) {
+          return Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (titleInLeft) ...{
+                Text(
+                  hint,
+                  style: TextStyle(
+                      fontSize: SizeDefine.labelSize1,
+                      color: textColor,
+                      fontWeight: FontWeight.w500,
+                      overflow: TextOverflow.ellipsis),
+                ),
+                const SizedBox(width: 10),
+              },
+              InkWell(
+                  autofocus: autoFocus,
+                  focusNode: inkWellFocusNode,
+                  canRequestFocus: (isEnable ?? true),
+                  onFocusChange: onFocusChange,
+                  onTap: (!isEnable!)
+                      ? null
+                      : () {
+                          final RenderBox renderBox = widgetKey!.currentContext
+                              ?.findRenderObject() as RenderBox;
+                          final offset = renderBox.localToGlobal(Offset.zero);
+                          final left = offset.dx;
+                          final top = offset.dy + renderBox.size.height;
+                          final right = left + renderBox.size.width;
+                          final width = renderBox.size.width;
+                          bool isAllSelected = false;
+                          int val = 0;
+
+                          for (var i = 0; i < (items?.length ?? 0); i++) {
+                            if (items?[i].isSelected ?? false) {
+                              val = 1;
+                            } else {
+                              val = 0;
+                              break;
+                            }
+                          }
+
+                          if (val == 1) {
+                            isAllSelected = true;
+                          }
+
+                          if ((items == null || items.isEmpty)) {
+                            showMenu(
+                                context: context,
+                                useRootNavigator: true,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                position: RelativeRect.fromLTRB(
+                                    left, top, right, 0.0),
+                                constraints: BoxConstraints.expand(
+                                  width: dialogWidth ?? width,
+                                  height: 120,
+                                ),
+                                items: [
+                                  PopupMenuItem(
+                                      child: Text(
+                                    "No Record Found",
+                                    style: TextStyle(
+                                        fontSize:
+                                            SizeDefine.dropDownFontSize - 1,
+                                        overflow: TextOverflow.ellipsis),
+                                  ))
+                                ]);
+                          } else {
+                            var tempList = RxList<MultiCheckBoxModel>([]);
+                            tempList.addAll(items);
+                            showMenu(
+                              context: context,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(0),
+                              ),
+                              useRootNavigator: true,
+                              position:
+                                  RelativeRect.fromLTRB(left, top, right, 0.0),
+                              constraints: BoxConstraints.expand(
+                                width: dialogWidth ?? width,
+                                height: dialogHeight,
+                              ),
+                              items: [
+                                CustomPopupMenuItem(
+                                  textStyle: TextStyle(
+                                      overflow: TextOverflow.ellipsis,
+                                      color: Colors.black,
+                                      fontSize: SizeDefine.fontSizeInputField),
+                                  child: Container(
+                                    padding: const EdgeInsets.all(8),
+                                    height: dialogHeight - 20,
+                                    child: Column(
+                                      children: [
+                                        /// search
+                                        Row(
+                                          children: [
+                                            StatefulBuilder(
+                                                builder: (context, re) {
+                                              return Checkbox(
+                                                autofocus: true,
+                                                value: isAllSelected,
+                                                onChanged: (newVal) {
+                                                  isAllSelected =
+                                                      !isAllSelected;
+                                                  for (var i = 0;
+                                                      i < items.length;
+                                                      i++) {
+                                                    items[i].isSelected =
+                                                        isAllSelected;
+                                                    selectedVal.value =
+                                                        isAllSelected
+                                                            ? "All Selected"
+                                                            : "";
+                                                    // getSelectedName(items);
+                                                  }
+                                                  tempList.refresh();
+                                                  re(() {});
+                                                },
+                                                materialTapTargetSize:
+                                                    MaterialTapTargetSize
+                                                        .shrinkWrap,
+                                              );
+                                            }),
+                                            const SizedBox(width: 12),
+                                            Expanded(
+                                              child: TextFormField(
+                                                decoration:
+                                                    const InputDecoration(
+                                                  contentPadding:
+                                                      EdgeInsets.all(12),
+                                                  isDense: true,
+                                                  isCollapsed: true,
+                                                  hintText: "Search",
+                                                ),
+                                                style: TextStyle(
+                                                  fontSize: SizeDefine
+                                                      .fontSizeInputField,
+                                                ),
+                                                onChanged: ((value) {
+                                                  if (value.isNotEmpty) {
+                                                    tempList.clear();
+                                                    for (var i = 0;
+                                                        i < items.length;
+                                                        i++) {
+                                                      if (items[i]
+                                                          .val!
+                                                          .value!
+                                                          .toLowerCase()
+                                                          .contains(value
+                                                              .toLowerCase())) {
+                                                        tempList.add(items[i]);
+                                                      }
+                                                    }
+                                                  } else {
+                                                    tempList.clear();
+                                                    tempList.addAll(items);
+                                                  }
+                                                }),
+                                                inputFormatters: [
+                                                  FilteringTextInputFormatter
+                                                      .deny("  "),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+
+                                        /// list
+                                        Obx(
+                                          () => Expanded(
+                                            child: MultiCheckBox(
+                                              list: tempList.value,
+                                              canScroll: true,
+                                              isHorizontal: false,
+                                              width: 12,
+                                              onChanged: (index, val) async {
+                                                // items[index].isSelected =
+                                                //     val;
+                                                tempList[index].isSelected =
+                                                    val;
+                                                if (onChanged != null) {
+                                                  onChanged(index, val);
+                                                }
+                                                selectedVal.value =
+                                                    getSelectedName(items);
+                                                // print(selectedVal.value);
+                                              },
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            );
+                          }
+                        },
+                  child: Container(
+                    key: widgetKey,
+                    width: Get.width * widthRatio,
+                    height: SizeDefine.heightInputField,
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: iconLineColor,
+                      ),
+                      // borderRadius: BorderRadius.circular(5),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Expanded(
+                            child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 8, right: 4),
+                            child: Obx(
+                              () => Text(
+                                // (selected?.val!.value ??
+                                //     (items!.isEmpty && showNoRecord
+                                //         ? "NO Record Found"
+                                //         : "")),
+                                selectedVal.value ?? "",
+                                style: TextStyle(
+                                  fontSize: SizeDefine.fontSizeInputField,
+                                  color: textColor,
+                                ),
+                                maxLines: 1,
+                                textAlign: TextAlign.start,
+                              ),
+                            ),
+                          ),
+                        )),
+                        Icon(
+                          Icons.arrow_drop_down,
+                          color: iconLineColor,
+                        )
+                      ],
+                    ),
+                  )),
+            ],
+          );
+        }),
+      ],
+    );
+  }
+
+  getSelectedName(List<MultiCheckBoxModel> items) {
+    String? selectedItem;
+    var tempLis = items
+        .where((element) => (element.isSelected ?? false))
+        .toList()
+        .map((e) => (e.val?.value ?? ""))
+        .toList();
+    if (tempLis.isNotEmpty) {
+      if (tempLis.length <= 2) {
+        selectedItem = tempLis.join(', ');
+      } else {
+        int cout = tempLis.length;
+        tempLis.removeRange(2, tempLis.length);
+        selectedItem = selectedItem = "${tempLis.join(', ')} +${cout - 2}";
+      }
+    }
+    return selectedItem ?? "";
   }
 }
 

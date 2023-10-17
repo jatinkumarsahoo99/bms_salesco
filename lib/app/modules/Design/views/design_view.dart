@@ -53,8 +53,7 @@ class DesignView extends GetView<DesignController> {
                         const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                     child: ExpansionTile(
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20)
-                      ),
+                          borderRadius: BorderRadius.circular(20)),
                       title: Text(
                         'Scheduling',
                         style: GoogleFonts.poppins(
@@ -134,6 +133,11 @@ class DesignView extends GetView<DesignController> {
                   onSelect: (DropDownValue? val) {},
                 ),
                 ListDropDownCheckBox(
+                  onChanged: (index, selectValue) {
+                    print("index=> $index");
+                    controller.listCheckBox[index].isSelected = selectValue;
+                    controller.saveData();
+                  },
                   focusNode: FocusNode(),
                   items: [
                     MultiCheckBoxModel(
@@ -148,7 +152,9 @@ class DesignView extends GetView<DesignController> {
                         DropDownValue(key: "1", value: "Zee Bojpuri"), true),
                   ],
                   title: "Multi Channel",
-                  onSelect: (DropDownValue? val) {},
+                  onSelect: (DropDownValue? val) {
+                    print(val!.value);
+                  },
                   iconData: Icons.tv_rounded,
                   widthRatio: .15,
                 ),

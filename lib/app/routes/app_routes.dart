@@ -52,6 +52,9 @@ abstract class Routes {
   static const COMMON_DOCS = _Paths.COMMON_DOCS;
   static const RELESE_ORDER_RESCHEDULE_TAPE_I_D =
       _Paths.RELESE_ORDER_RESCHEDULE_TAPE_I_D;
+  static const DEALVS_R_O_DATA_REPORT = _Paths.DEALVS_R_O_DATA_REPORT;
+  static const BOOKING_STATUS_REPORT = _Paths.BOOKING_STATUS_REPORT;
+  static const PROGRAM_WISE_REVENUE_REPORT = _Paths.PROGRAM_WISE_REVENUE_REPORT;
 }
 
 abstract class RoutesList {
@@ -140,4 +143,7 @@ abstract class _Paths {
   static const DESIGN = '/design';
   static const COMMON_DOCS = '/common-docs';
   static const RELESE_ORDER_RESCHEDULE_TAPE_I_D = '/frmRoReschedule_TapeID';
+  static const DEALVS_R_O_DATA_REPORT = '/frmDealvsRODataReport';
+  static const BOOKING_STATUS_REPORT = '/frmnewbookingstatus';
+  static const PROGRAM_WISE_REVENUE_REPORT = '/frmnewprogramwisereport';
 }
