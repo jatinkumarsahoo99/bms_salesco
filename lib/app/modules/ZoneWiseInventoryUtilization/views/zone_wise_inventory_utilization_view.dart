@@ -14,7 +14,7 @@ import '../controllers/zone_wise_inventory_utilization_controller.dart';
 
 class ZoneWiseInventoryUtilizationView
     extends GetView<ZoneWiseInventoryUtilizationController> {
-   ZoneWiseInventoryUtilizationView({Key? key}) : super(key: key);
+  ZoneWiseInventoryUtilizationView({Key? key}) : super(key: key);
 
   @override
   ZoneWiseInventoryUtilizationController controller =
@@ -40,7 +40,7 @@ class ZoneWiseInventoryUtilizationView
                   Obx(() {
                     return DropDownField.formDropDown1WidthMap(
                       controller.locationList.value,
-                      (val) {
+                          (val) {
                         controller.selectedLocation = val;
                         controller.getChannel(val.key ?? "");
                       },
@@ -54,7 +54,7 @@ class ZoneWiseInventoryUtilizationView
                   Obx(() {
                     return DropDownField.formDropDown1WidthMap(
                       controller.channelList.value,
-                      (val) => controller.selectedChannel = val,
+                          (val) => controller.selectedChannel = val,
                       "Channel",
                       .15,
                       selected: controller.selectedChannel,
@@ -99,56 +99,49 @@ class ZoneWiseInventoryUtilizationView
               ),
             ),
             Expanded(
-              child: Obx(
-                () {
+              child:GetBuilder<ZoneWiseInventoryUtilizationController>(
+                assignId: true,
+                id: "grid",
+                builder: (controller) {
                   return Container(
-                    margin: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                    decoration:( controller.zoneWiseUtilizationResponseModel?.value.generate == null ||
-                        (controller.zoneWiseUtilizationResponseModel?.value.generate?.length??0) <= 0
+                    margin: const EdgeInsets.symmetric(
+                        horizontal: 16, vertical: 10),
+                    child: (controller.zoneWiseUtilizationResponseModel
+                        ?.generate != null &&
+                        (controller.zoneWiseUtilizationResponseModel?.generate?.length ?? 0) > 0
+                    ) ?DataGridFromMap3(
+                      mode: PlutoGridMode.selectWithOneTap,
+                      checkBoxColumnKey: ["cancel"],
+                      actionIconKey: ['cancel'],
+                      specificWidth: {
+                        "clientname": 200,
+                      },
+                      onColumnHeaderDoubleTap: (String val) {
+                        print(">>>>>" + val);
+                      },
+                      onRowDoubleTap: (val) {},
+                      showSrNo: true,
+                      hideCode: false,
+                      formatDate: false,
+                      mapData: controller
+                          .zoneWiseUtilizationResponseModel?.generate
+                          ?.map((e) => e.toJson()).toList() as List<
+                          dynamic>,
+                      widthSpecificColumn: Get.find<HomeController>()
+                          .getGridWidthByKey(
+                          userGridSettingList:
+                          controller.userGridSetting1),
+                    ): Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Colors.grey,
+                        ),
+                      ),
                     )
-                        ? BoxDecoration(
-                            border: Border.all(
-                              color: Colors.grey,
-                            ),
-                          )
-                        : null,
-                    child: ( controller.zoneWiseUtilizationResponseModel?.value.generate != null ||
-                        (controller.zoneWiseUtilizationResponseModel?.value.generate?.length??0) > 0
-                    )
-                        ? Container()
-                        : GetBuilder<ZoneWiseInventoryUtilizationController>(
-                            assignId: true,
-                            tag: "grid",
-                            builder: (controller) {
-                              return DataGridFromMap3(
-                                mode: PlutoGridMode.selectWithOneTap,
-                                checkBoxColumnKey: ["cancel"],
-                                actionIconKey: ['cancel'],
-                                specificWidth: {
-                                  "clientname": 200,
-                                },
-                                onColumnHeaderDoubleTap: (String val) {
-                                  print(">>>>>" + val);
-                                },
-                                onRowDoubleTap: (val) {},
-                                showSrNo: true,
-                                hideCode: false,
-                                formatDate: false,
-                                mapData: controller
-                                    .zoneWiseUtilizationResponseModel?.value.generate?.map((e) => e.toJson()).toList() as List<dynamic>,
-                                widthSpecificColumn: Get.find<HomeController>()
-                                    .getGridWidthByKey(
-                                        userGridSettingList:
-                                            controller.userGridSetting1),
-                              );
-                            },
-                          ),
                   );
                 },
               ),
             ),
-
-            /// bottom common buttons
             Align(
               alignment: Alignment.topLeft,
               child: GetBuilder<HomeController>(
@@ -169,12 +162,12 @@ class ZoneWiseInventoryUtilizationView
                                 FormButtonWrapper(
                                   btnText: btn["name"],
                                   callback: ((Utils.btnAccessHandler(
-                                              btn['name'],
-                                              controller.formPermissions!) ==
-                                          null))
+                                      btn['name'],
+                                      controller.formPermissions!) ==
+                                      null))
                                       ? null
                                       : () =>
-                                          controller.formHandler(btn['name']),
+                                      controller.formHandler(btn['name']),
                                 )
                               },
                             ],
