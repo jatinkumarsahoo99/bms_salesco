@@ -10,6 +10,7 @@ import '../../../controller/HomeController.dart';
 import '../../../data/PermissionModel.dart';
 import '../../../providers/Utils.dart';
 import '../../../routes/app_pages.dart';
+import '../../CommonSearch/views/common_search_view.dart';
 import '../model/tape_id_campaign_model.dart';
 
 class TapeIDCampaignController extends GetxController {
@@ -215,6 +216,13 @@ class TapeIDCampaignController extends GetxController {
       Get.find<HomeController>().postUserGridSetting1(
           listStateManager: [historyManager, locationChannelManager],
           tableNamesList: ['tbl1', 'tbl2']);
+    } else if (btn == "Search") {
+      Get.to(SearchPage(
+          key: Key("Tape ID Campaign"),
+          screenName: "Tape ID Campaign",
+          appBarName: "Tape ID Campaign",
+          strViewName: "BMS_vListTapeIDCampaign",
+          isAppBarReq: true));
     }
   }
 }

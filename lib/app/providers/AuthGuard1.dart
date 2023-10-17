@@ -34,6 +34,7 @@ import '../modules/EDI_Mapping/views/e_d_i_mapping_view.dart';
 import '../modules/OneSpotBookingSkyMedia/views/one_spot_booking_sky_media_view.dart';
 import '../modules/PeriodicDealUtilisationFormat2/views/periodic_deal_utilisation_format2_view.dart';
 import '../modules/RateCardfromDealWorkflow/views/rate_cardfrom_deal_workflow_view.dart';
+import '../modules/ReleseOrderRescheduleTapeID/views/relese_order_reschedule_tape_i_d_view.dart';
 import '../modules/RescheduleImport/views/reschedule_import_view.dart';
 import '../modules/ProductLevel1/views/product_level1_view.dart';
 import '../modules/ProductLevel2/views/product_level2_view.dart';
@@ -177,6 +178,9 @@ class AuthGuard extends StatelessWidget {
               break;
             case Routes.VIEW_OLD_DEAL:
               currentWidget = ViewOldDealView();
+              break;
+            case Routes.RELESE_ORDER_RESCHEDULE_TAPE_I_D:
+              currentWidget = const ReleseOrderRescheduleTapeIDView();
               break;
             case Routes.DEALVS_R_O_DATA_REPORT:
               currentWidget = DealvsRODataReportView();

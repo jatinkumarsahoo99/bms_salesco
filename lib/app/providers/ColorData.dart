@@ -21,6 +21,10 @@ class ColorData {
     }
   }*/
 
+  static const primary = Colors.deepPurpleAccent;
+  static const bgComponent = Color(0xFFF5F5F5);
+  static const hintText = Color(0xFFABABAB);
+
   static cellColor(String value, String key) {
     // print("All keys>>"+map.keys.toString());
     switch (key) {

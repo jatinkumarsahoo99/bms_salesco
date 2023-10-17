@@ -38,6 +38,7 @@ class SameDayCollectionView extends GetView<SameDayCollectionController> {
                       autoFocus: true,
                       selected: controller.selectedLocation,
                       inkWellFocusNode: controller.locationFN,
+                      isEnable: controller.isControllsEnable.value,
                     );
                   }),
                   Obx(() {
@@ -47,16 +48,23 @@ class SameDayCollectionView extends GetView<SameDayCollectionController> {
                       "Channel",
                       .15,
                       selected: controller.selectedChannel,
+                      isEnable: controller.isControllsEnable.value,
                     );
                   }),
-                  DateWithThreeTextField(
-                    title: "From",
-                    mainTextController: controller.fromTC,
-                  ),
-                  FormButton(
-                    btnText: "Show",
-                    callback: controller.showData,
-                  ),
+                  Obx(() {
+                    return DateWithThreeTextField(
+                      title: "From",
+                      mainTextController: controller.fromTC,
+                      isEnable: controller.isControllsEnable.value,
+                    );
+                  }),
+                  Obx(() {
+                    return FormButton(
+                      btnText: "Show",
+                      isEnabled: controller.isControllsEnable.value,
+                      callback: controller.showData,
+                    );
+                  }),
                   Obx(() {
                     return FormButton(
                       btnText: !controller.checkedAll.value

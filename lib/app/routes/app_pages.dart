@@ -38,6 +38,8 @@ import '../modules/ProductMaster/bindings/product_master_binding.dart';
 import '../modules/ProgramWiseRevenueReport/bindings/program_wise_revenue_report_binding.dart';
 import '../modules/ProgramWiseRevenueReport/views/program_wise_revenue_report_view.dart';
 import '../modules/RateCardfromDealWorkflow/bindings/rate_cardfrom_deal_workflow_binding.dart';
+import '../modules/ReleseOrderRescheduleTapeID/bindings/relese_order_reschedule_tape_i_d_binding.dart';
+import '../modules/ReleseOrderRescheduleTapeID/views/relese_order_reschedule_tape_i_d_view.dart';
 import '../modules/RescheduleImport/bindings/reschedule_import_binding.dart';
 import '../modules/RoReceived/bindings/ro_received_binding.dart';
 import '../modules/SameDayCollection/bindings/same_day_collection_binding.dart';
@@ -269,19 +271,16 @@ class AppPages {
       binding: CommonDocsBinding(),
     ),
     GetPage(
-      name: _Paths.DEALVS_R_O_DATA_REPORT,
-      page: () => AuthGuard(childName: _Paths.DEALVS_R_O_DATA_REPORT),
-      // binding: DealvsRODataReportBinding(),
+      name: _Paths.RELESE_ORDER_RESCHEDULE_TAPE_I_D,
+      page: () => AuthGuard(childName: _Paths.RELESE_ORDER_RESCHEDULE_TAPE_I_D),
     ),
     GetPage(
       name: _Paths.BOOKING_STATUS_REPORT,
       page: () => AuthGuard(childName: _Paths.BOOKING_STATUS_REPORT),
-      // binding: BookingStatusReportBinding(),
     ),
     GetPage(
       name: _Paths.PROGRAM_WISE_REVENUE_REPORT,
       page: () => AuthGuard(childName: _Paths.PROGRAM_WISE_REVENUE_REPORT),
-      // binding: ProgramWiseRevenueReportBinding(),
     ),
   ];
 }
