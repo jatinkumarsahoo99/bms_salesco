@@ -1076,6 +1076,8 @@ class ApiFactory {
   //////////////////////////////// RO_RESCHEDULE_TAPE_ID START /////////////////////////////////////
   static String get RO_RESCHEDULE_TAPE_ID_ON_LOAD =>
       "$BASE_URL/api/RORescheduleTapeID/GetLoad";
+  static String get RO_RESCHEDULE_TAPE_ID_SAVE_DATA =>
+      "$BASE_URL/api/RORescheduleTapeID/PostSave";
   static String RO_RESCHEDULE_TAPE_ID_GET_CHANNELS(String locationCode) =>
       "$BASE_URL/api/RORescheduleTapeID/GetlocationLeave?LocationCode=$locationCode";
   static String RO_RESCHEDULE_TAPE_ID_GET_CLIENT(

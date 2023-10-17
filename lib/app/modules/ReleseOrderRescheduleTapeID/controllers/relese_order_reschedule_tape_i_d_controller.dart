@@ -21,6 +21,9 @@ class ReleseOrderRescheduleTapeIDController extends GetxController {
       brandList = <DropDownValue>[].obs,
       tapeList = <DropDownValue>[].obs,
       tapeListRight = <DropDownValue>[].obs;
+  bool isAllCheck = false;
+  int? lastSelectedRow;
+
   DropDownValue? selectedLocation,
       selectedChannel,
       selectedClient,
@@ -28,7 +31,9 @@ class ReleseOrderRescheduleTapeIDController extends GetxController {
       selectedBrand,
       selectedTape,
       selectedTapeRight;
-  var tapeCodeDura = "".obs;
+  var tapeCodeDura = "".obs,
+      tapeCodeDuraRight = "".obs,
+      tapeCodeCaptionRight = "".obs;
 
   var fromDateTC = TextEditingController(), toDateTC = TextEditingController();
 
@@ -320,16 +325,14 @@ class ReleseOrderRescheduleTapeIDController extends GetxController {
               tapeCodeDura.value = "0";
             }
 
+            isAllCheck = false;
+            lastSelectedRow = null;
+
             for (var i = 0; i < tapeList.length; i++) {
               if (tapeList[i].value != selectedTape!.value &&
                   tapeList[i].key == tapeCodeDura.value) {
                 tapeListRight.add(tapeList[i]);
               }
-              // if (lstBookingDetails.any((element) =>
-              //     element.exportTapeCode != selectedTape!.value &&
-              //     (element.tapeDuration).toString() == tapeCodeDura.value)) {
-              //   tapeListRight.add(tapeList[i]);
-              // }
             }
             if (tapeListRight.isEmpty) {
               LoadingDialog.callInfoMessage(
@@ -348,16 +351,63 @@ class ReleseOrderRescheduleTapeIDController extends GetxController {
   }
 
   saveData(
-    String? modifiedBy,
+    String modifiedBy,
     DropDownValue? location,
     DropDownValue? channel,
     DropDownValue? client,
     DropDownValue? agency,
     DropDownValue? brand,
-    String? formDate,
-    String? toDate,
-    LsttapeDetails? exportTapeCode,
-  ) {}
+    String fromDate,
+    String toDate,
+    DropDownValue? tapeCode,
+  ) {
+    if (location?.key == null) {
+      LoadingDialog.callInfoMessage("Please select Location.");
+    } else if (channel?.key == null) {
+      LoadingDialog.callInfoMessage("Please select Channel.");
+    } else if (client?.key == null) {
+      LoadingDialog.callInfoMessage("Please select Client.");
+    } else if (agency?.key == null) {
+      LoadingDialog.callInfoMessage("Please select Agency.");
+    } else if (brand?.key == null) {
+      LoadingDialog.callInfoMessage("Please select Brand.");
+    } else if (tapeCode?.value == null) {
+      LoadingDialog.callInfoMessage("Please select Tape Code.");
+    } else if (lstBookingDetails.isEmpty) {
+      LoadingDialog.callInfoMessage("No data to save.");
+    } else {
+      LoadingDialog.call();
+      var payload = {
+        "modifiedBy": modifiedBy,
+        "locationCode": location?.key,
+        "channelCode": channel?.key,
+        "clientcode": client?.key,
+        "agencycode": agency?.key,
+        "brandCode": brand?.key,
+        "exportTapeCode": tapeCode?.value,
+        "effectiveFromDT": fromDate,
+        "effectiveToDT": toDate,
+        "lstRoDetails": lstBookingDetails
+            .map((element) => element.toJson(fromSave: true))
+            .toList(),
+      };
+      Get.find<ConnectorControl>().POSTMETHOD(
+        api: ApiFactory.RO_RESCHEDULE_TAPE_ID_SAVE_DATA,
+        json: payload,
+        fun: (resp) {
+          Get.back();
+          if (resp != null &&
+              resp is Map<String, dynamic> &&
+              resp['message'] != null &&
+              resp['message'].toString().contains("successfully")) {
+            LoadingDialog.callDataSaved(msg: resp['message']);
+          } else {
+            LoadingDialog.showErrorDialog(resp.toString());
+          }
+        },
+      );
+    }
+  }
 
   changeExportTapeCode() {
     if (selectedTapeRight == null) {
@@ -365,7 +415,7 @@ class ReleseOrderRescheduleTapeIDController extends GetxController {
     } else {
       for (var i = 0; i < lstBookingDetails.length; i++) {
         if (lstBookingDetails[i].action ?? false) {
-          lstBookingDetails[i].exportTapeCode = selectedTapeRight!.value!;
+          lstBookingDetails[i].newTapeID = selectedTapeRight!.value!;
         }
       }
       lstBookingDetails.refresh();

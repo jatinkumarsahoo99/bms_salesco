@@ -1,4 +1,5 @@
 import 'package:bms_salesco/app/data/DropDownValue.dart';
+import 'package:intl/intl.dart';
 
 ///////////////////// on load data model/////////////////
 
@@ -232,7 +233,7 @@ class LstBookingDetails {
     midPre = json['midPre'];
     positionCode = json['positionCode'];
     programName = json['programName'];
-    scheduleDate = json['scheduleDate'];
+    scheduleDate = json['ScheduleDate'];
     scheduleTime = json['scheduleTime'];
     exportTapeCode = json['exportTapeCode'];
     commercialCaption = json['commercialCaption'];
@@ -254,11 +255,18 @@ class LstBookingDetails {
     campaignEndDate = json['campaignEndDate'];
   }
 
+  parsedDate(String? dateTime) {
+    (dateTime ?? '').contains("T")
+        ? DateFormat("dd-MM-yyyy")
+            .format(DateFormat("yyyy-MM-ddThh:mm:ss").parse(dateTime!))
+        : (dateTime ?? '');
+  }
+
   Map<String, dynamic> toJson({bool fromSave = false}) {
     final Map<String, dynamic> data = <String, dynamic>{};
     if (fromSave) {
       data['action'] = action;
-      data['newTapeID'] = newTapeID;
+      data['newTapeID'] = newTapeID ?? "";
       data['bookingNumber'] = bookingNumber;
       data['programCode'] = programCode;
       data['revType'] = revType;
@@ -296,7 +304,7 @@ class LstBookingDetails {
       data['midPre'] = midPre;
       data['positionCode'] = positionCode;
       data['programName'] = programName;
-      data['scheduleDate'] = scheduleDate;
+      data['scheduleDate'] = (scheduleDate ?? "");
       data['scheduleTime'] = scheduleTime;
       data['exportTapeCode'] = exportTapeCode;
       data['commercialCaption'] = commercialCaption;
@@ -313,9 +321,9 @@ class LstBookingDetails {
       data['dealno'] = dealno;
       data['executiveCode'] = executiveCode;
       data['audited'] = audited;
-      data['killDate'] = killDate;
-      data['campaignStartDate'] = campaignStartDate;
-      data['campaignEndDate'] = campaignEndDate;
+      data['killDate'] = parsedDate(killDate);
+      data['campaignStartDate'] = parsedDate(campaignStartDate);
+      data['campaignEndDate'] = parsedDate(campaignEndDate);
     }
     return data;
   }

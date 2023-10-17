@@ -503,6 +503,18 @@ class DataGridFromMap3 extends StatelessWidget {
                         callOnChangedEvent: true,
                         notify: true,
                       );
+                      rendererContext.stateManager.setCurrentCell(
+                          rendererContext.cell, rendererContext.rowIdx);
+                      if (rendererContext.stateManager.onSelected != null) {
+                        rendererContext
+                            .stateManager.onSelected!(PlutoGridOnSelectedEvent(
+                          cell: rendererContext.cell,
+                          row: rendererContext.row,
+                          rowIdx: rendererContext.rowIdx,
+                          selectedRows:
+                              rendererContext.stateManager.currentSelectingRows,
+                        ));
+                      }
                     } else {
                       rendererContext.stateManager.changeCellValue(
                         rendererContext.cell,
@@ -513,6 +525,18 @@ class DataGridFromMap3 extends StatelessWidget {
                         callOnChangedEvent: true,
                         notify: true,
                       );
+                      rendererContext.stateManager.setCurrentCell(
+                          rendererContext.cell, rendererContext.rowIdx);
+                      if (rendererContext.stateManager.onSelected != null) {
+                        rendererContext
+                            .stateManager.onSelected!(PlutoGridOnSelectedEvent(
+                          cell: rendererContext.cell,
+                          row: rendererContext.row,
+                          rowIdx: rendererContext.rowIdx,
+                          selectedRows:
+                              rendererContext.stateManager.currentSelectingRows,
+                        ));
+                      }
                     }
                   },
                   child: Row(

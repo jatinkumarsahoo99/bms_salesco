@@ -85,6 +85,7 @@ abstract class RoutesList {
     _Paths.ZONE_WISE_INVENTORY_UTILIZATION,
     _Paths.RATE_CARDFROM_DEAL_WORKFLOW,
     _Paths.RESCHEDULE_IMPORT,
+    _Paths.RELESE_ORDER_RESCHEDULE_TAPE_I_D,
   ];
 
   /* static final RoutesList _instance = RoutesList._();

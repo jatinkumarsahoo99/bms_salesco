@@ -1,4 +1,5 @@
 import 'package:bms_salesco/app/controller/HomeController.dart';
+import 'package:bms_salesco/app/controller/MainController.dart';
 import 'package:bms_salesco/app/providers/extensions/screen_size.dart';
 import 'package:bms_salesco/app/routes/app_pages.dart';
 import 'package:bms_salesco/widgets/DateTime/DateWithThreeTextField.dart';
@@ -8,7 +9,9 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:pluto_grid/pluto_grid.dart';
 
+import '../../../../widgets/LoadingDialog.dart';
 import '../../../../widgets/dropdown.dart';
 import '../../../../widgets/input_fields.dart';
 import '../controllers/relese_order_reschedule_tape_i_d_controller.dart';
@@ -17,9 +20,10 @@ class ReleseOrderRescheduleTapeIDView extends StatelessWidget {
   const ReleseOrderRescheduleTapeIDView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(ReleseOrderRescheduleTapeIDController());
     return Scaffold(
       body: GetBuilder<ReleseOrderRescheduleTapeIDController>(
-        init: Get.put(ReleseOrderRescheduleTapeIDController()),
+        init: controller,
         builder: (controller) {
           return SizedBox(
             width: context.devicewidth,
@@ -166,6 +170,18 @@ class ReleseOrderRescheduleTapeIDView extends StatelessWidget {
                         btnText: "Clear",
                         callback: () {},
                       ),
+                      Obx(
+                        () => Visibility(
+                          visible: controller.lstBookingDetails.isNotEmpty,
+                          child: const Text(
+                            "Double Click on Action Column to check and uncheck.",
+                            style: TextStyle(
+                              color: Colors.green,
+                              fontStyle: FontStyle.italic,
+                            ),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                   const SizedBox(height: 5),
@@ -183,6 +199,29 @@ class ReleseOrderRescheduleTapeIDView extends StatelessWidget {
                                   .toList(),
                               formatDate: false,
                               hideCode: false,
+                              onColumnHeaderDoubleTap: (columnName) {
+                                if (columnName == "action") {
+                                  if (controller.selectedTapeRight == null) {
+                                    LoadingDialog.callInfoMessage(
+                                        "Please replaceble Tapecode.");
+                                  } else {
+                                    controller.isAllCheck =
+                                        !controller.isAllCheck;
+                                    for (var i = 0;
+                                        i < controller.lstBookingDetails.length;
+                                        i++) {
+                                      controller.lstBookingDetails[i].action =
+                                          controller.isAllCheck;
+                                    }
+                                    controller.lstBookingDetails.refresh();
+                                    WidgetsBinding.instance
+                                        .addPostFrameCallback((timeStamp) {
+                                      controller.changeExportTapeCode();
+                                    });
+                                  }
+                                }
+                              },
+                              enableColumnDoubleTap: ['action'],
                               colorCallback: (event) {
                                 if (event.row.cells['edit']?.value == "1") {
                                   return const Color.fromARGB(
@@ -202,7 +241,30 @@ class ReleseOrderRescheduleTapeIDView extends StatelessWidget {
                               onload: (loadEvent) {
                                 controller.stateManager =
                                     loadEvent.stateManager;
+                                if (controller.lastSelectedRow != null) {
+                                  loadEvent.stateManager.setCurrentCell(
+                                      loadEvent.stateManager
+                                          .getRowByIdx(
+                                              controller.lastSelectedRow)
+                                          ?.cells['action'],
+                                      controller.lastSelectedRow);
+                                  loadEvent.stateManager.moveScrollByRow(
+                                      PlutoMoveDirection.down,
+                                      controller.lastSelectedRow);
+                                } else {
+                                  controller.lastSelectedRow = 0;
+                                }
                               },
+                              onSelected: (event) {
+                                controller.lastSelectedRow = event.rowIdx;
+                                controller.tapeCodeCaptionRight.value = event
+                                    .row!.cells['commercialCaption']!.value
+                                    .toString();
+                                controller.tapeCodeDuraRight.value = event
+                                    .row!.cells['tapeDuration']!.value
+                                    .toString();
+                              },
+                              mode: PlutoGridMode.selectWithOneTap,
                               actionOnPress: (position, isSpaceCalled) {
                                 if (isSpaceCalled) {
                                   var newVal = !(controller
@@ -227,26 +289,51 @@ class ReleseOrderRescheduleTapeIDView extends StatelessWidget {
                           }),
                         ),
                         SizedBox(
-                          width: context.devicewidth * .3,
-                          child: Column(
-                            children: [
-                              Obx(() {
-                                return DropDownField.formDropDown1WidthMap(
-                                  controller.tapeListRight.value,
-                                  (val) {
-                                    controller.selectedTapeRight = val;
-                                  },
-                                  "Tape Code",
-                                  .12,
-                                  selected: controller.selectedTapeRight,
-                                );
-                              }),
-                              FormButton(
-                                btnText: "Modify",
-                                callback: controller.changeExportTapeCode,
-                              ),
-                            ],
-                          ),
+                          width: context.devicewidth * .23,
+                          child: Obx(() {
+                            if (controller.lstBookingDetails.isEmpty) {
+                              return SizedBox();
+                            }
+                            return Column(
+                              children: [
+                                Obx(() {
+                                  return DropDownField.formDropDown1WidthMap(
+                                    controller.tapeListRight.value,
+                                    (val) {
+                                      controller.selectedTapeRight = val;
+                                    },
+                                    "Tape Code",
+                                    .2,
+                                    selected: controller.selectedTapeRight,
+                                  );
+                                }),
+                                const SizedBox(height: 5),
+                                Obx(
+                                  () => InputFields.formFieldDisable1(
+                                    hintTxt: "Dur",
+                                    value: controller.tapeCodeDuraRight.value,
+                                    widthRatio: .2,
+                                    leftPad: 0,
+                                  ),
+                                ),
+                                const SizedBox(height: 5),
+                                Obx(
+                                  () => InputFields.formFieldDisable1(
+                                    hintTxt: "Caption",
+                                    value:
+                                        controller.tapeCodeCaptionRight.value,
+                                    widthRatio: .2,
+                                    leftPad: 0,
+                                  ),
+                                ),
+                                const SizedBox(height: 10),
+                                FormButton(
+                                  btnText: "Modify",
+                                  callback: controller.changeExportTapeCode,
+                                ),
+                              ],
+                            );
+                          }),
                         ),
                       ],
                     ),
@@ -256,7 +343,21 @@ class ReleseOrderRescheduleTapeIDView extends StatelessWidget {
                   /// Common Buttons
                   Get.find<HomeController>()
                       .getCommonButton<ReleseOrderRescheduleTapeIDController>(
-                          Routes.COMMERCIAL_CREATION_AUTO, (formName) {}),
+                          Routes.COMMERCIAL_CREATION_AUTO, (formName) {
+                    if (formName == "Save") {
+                      controller.saveData(
+                        Get.find<MainController>().user!.logincode!,
+                        controller.selectedLocation,
+                        controller.selectedChannel,
+                        controller.selectedClient,
+                        controller.selectedAgency,
+                        controller.selectedBrand,
+                        controller.fromDateTC.text,
+                        controller.toDateTC.text,
+                        controller.selectedTape,
+                      );
+                    }
+                  }),
                 ],
               ),
             ),
@@ -264,12 +365,5 @@ class ReleseOrderRescheduleTapeIDView extends StatelessWidget {
         },
       ),
     );
-  }
-
-  formhandler(String btnName) {
-    switch (btnName) {
-      case "Clear":
-        break;
-    }
   }
 }
