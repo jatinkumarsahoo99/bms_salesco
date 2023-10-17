@@ -163,6 +163,8 @@ class ZoneWiseInventoryUtilizationController extends GetxController {
           zoneWiseUtilizationResponseModel?.value =
               ZoneWiseUtilizationResponseModel.fromJson(
                   map as Map<String, dynamic>);
+          // zoneWiseUtilizationResponseModel?.refresh();
+          update(['grid']);
         } else {
           zoneWiseUtilizationResponseModel?.value =
               ZoneWiseUtilizationResponseModel(generate: []);

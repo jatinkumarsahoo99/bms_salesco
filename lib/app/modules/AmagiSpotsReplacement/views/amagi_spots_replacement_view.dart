@@ -258,7 +258,7 @@ class AmagiSpotsReplacementView
   }
 
   dragAbleDialogGet() {
-    controller.initialOffset.value = 1;
+    controller.initialOffset.value = 2;
     TextEditingController txCaptionController = TextEditingController();
     TextEditingController txIdController = TextEditingController(text:
     controller.amagiSpotReplacementModel?.lstSpots?.fastInsertText ?? "");
