@@ -55,7 +55,7 @@ class DealRecoSummaryController extends GetxController {
   fetchAllLoaderData() {
     // LoadingDialog.call();
     Get.find<ConnectorControl>().GETMETHODCALL(
-        api: ApiFactory.ASRUN_DETAILS_REPORT_LOAD,
+        api: ApiFactory.DEAL_RECO_SUMMARY_LOAD,
         // "https://jsonkeeper.com/b/D537"
         fun: ( map) {
           // Get.back();
@@ -103,9 +103,6 @@ class DealRecoSummaryController extends GetxController {
         });
 
   }
-
-
-
 
   fetchAgency(){
     LoadingDialog.call();
@@ -194,9 +191,10 @@ class DealRecoSummaryController extends GetxController {
         json: postData,
         fun: ( map) {
           Get.back();
-          print(">>>>>>"+map.toString());
+
           if(map is Map && map.containsKey('genrate') && map['genrate'] != null && map['genrate'].length > 0){
             dealRecoSummaryModel = DealRecoSummaryModel.fromJson(map as Map<String,dynamic>) ;
+            print(">>>>>>"+(dealRecoSummaryModel?.toJson()).toString());
             update(['grid']);
           }else{
             dealRecoSummaryModel = null;

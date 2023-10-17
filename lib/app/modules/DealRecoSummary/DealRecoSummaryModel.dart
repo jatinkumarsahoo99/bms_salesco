@@ -4,9 +4,9 @@ class DealRecoSummaryModel {
   DealRecoSummaryModel({this.gentare});
 
   DealRecoSummaryModel.fromJson(Map<String, dynamic> json) {
-    if (json['gentare'] != null) {
+    if (json['genrate'] != null) {
       gentare = <Gentare>[];
-      json['gentare'].forEach((v) {
+      json['genrate'].forEach((v) {
         gentare!.add(new Gentare.fromJson(v));
       });
     }
@@ -15,7 +15,7 @@ class DealRecoSummaryModel {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     if (this.gentare != null) {
-      data['gentare'] = this.gentare!.map((v) => v.toJson()).toList();
+      data['genrate'] = this.gentare!.map((v) => v.toJson()).toList();
     }
     return data;
   }
