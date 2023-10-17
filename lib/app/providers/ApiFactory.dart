@@ -1101,4 +1101,30 @@ class ApiFactory {
       "$BASE_URL/api/BookingStatusReport/GetloadData";
   static String get BOOKING_STATUS_REPORT_GET_REPORT =>
       "$BASE_URL/api/BookingStatusReport/GetReport";
+
+////////////////////////// Amagi Spots Replacement ////////////////////////////////////
+  static String AMAGI_SPOT_REPLACEMENT_GET_LOCATION() =>
+      "$BASE_URL/api/AmagiSpotsReplacement/GetLocation";
+  static String AMAGI_SPOT_REPLACEMENT_GET_CHANNEL() =>
+      "$BASE_URL/api/AmagiSpotsReplacement/GetChannel";
+  static String AMAGI_SPOT_REPLACEMENT_GET_SPOTS() =>
+      "$BASE_URL/api/AmagiSpotsReplacement/GetSpots";
+  static String AMAGI_SPOT_REPLACEMENT_GET_FAST_INSERT() =>
+      "$BASE_URL/api/AmagiSpotsReplacement/GetFastInsert";
+  static String AMAGI_SPOT_REPLACEMENT_GET_EXCEL() =>
+      "$BASE_URL/api/AmagiSpotsReplacement/GetExcel";
+  static String AMAGI_SPOT_REPLACEMENT_GET_CLIENT() =>
+      "$BASE_URL/api/AmagiSpotsReplacement/GetClient";
+  static String AMAGI_SPOT_REPLACEMENT_GET_SUMMARY() =>
+      "$BASE_URL/api/AmagiSpotsReplacement/GetSummary";
+  static String AMAGI_SPOT_REPLACEMENT_GET_TOTAL() =>
+      "$BASE_URL/api/AmagiSpotsReplacement/GetTotal";
+  static String AMAGI_SPOT_REPLACEMENT_GET_UNALLOCATED() =>
+      "$BASE_URL/api/AmagiSpotsReplacement/GetUnAllocated";
+  static String AMAGI_SPOT_REPLACEMENT_GET_MERGESPOT() =>
+      "$BASE_URL/api/AmagiSpotsReplacement/DontMergeSpots";
+  static String AMAGI_SPOT_REPLACEMENT_GET_DEALALLOCATED() =>
+      "$BASE_URL/api/AmagiSpotsReplacement/GetDeallocateHold";
+  static String AMAGI_SPOT_REPLACEMENT_GET_PivotOnLoadLocalTable() =>
+      "$BASE_URL/api/AmagiSpotsReplacement/GetPivotOnLocalTable";
 }

@@ -40,7 +40,7 @@ class ZoneWiseInventoryUtilizationController extends GetxController {
   @override
   void onInit() {
     formPermissions = Utils.fetchPermissions1(
-        Routes.RATE_CARDFROM_DEAL_WORKFLOW.replaceAll("/", ""));
+        Routes.ZONE_WISE_INVENTORY_UTILIZATION.replaceAll("/", ""));
     fetchUserSetting1();
     super.onInit();
   }
