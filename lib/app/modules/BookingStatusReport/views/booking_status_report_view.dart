@@ -2,6 +2,7 @@ import 'package:bms_salesco/app/data/DropDownValue.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:pluto_grid/pluto_grid.dart';
 
 import '../../../../widgets/CheckBox/multi_check_box.dart';
 import '../../../../widgets/DataGridShowOnly.dart';
@@ -166,17 +167,29 @@ class BookingStatusReportView extends StatelessWidget {
             ),
           ),
         ),
+        const SizedBox(
+          height: 5,
+        ),
         Expanded(
           child: Obx(
             () => Container(
               child: controller.dataTableList.value.isEmpty
                   ? null
-                  : DataGridFromMap(
+                  : DataGridShowOnlyKeys(
                       mapData: controller.dataTableList.value,
                       hideCode: false,
+                      exportFileName: "BookingStatus Report",
+                      onload: (loadevent) {
+                        loadevent.stateManager.setSelecting(true);
+                        loadevent.stateManager
+                            .setSelectingMode(PlutoGridSelectingMode.row);
+                      },
                     ),
             ),
           ),
+        ),
+        const SizedBox(
+          height: 5,
         ),
         Align(
           alignment: Alignment.topLeft,
@@ -212,7 +225,10 @@ class BookingStatusReportView extends StatelessWidget {
                   child: Text("No"),
                 );
               }),
-        )
+        ),
+        const SizedBox(
+          height: 5,
+        ),
       ],
     ));
   }
@@ -221,9 +237,8 @@ class BookingStatusReportView extends StatelessWidget {
     print(btnName);
     if (btnName == "Clear") {
       // controller.clearPage();
-      Get.delete<BookingStatusReportController>().then((value) {
-        Get.find<HomeController>().clearPage1();
-      });
+      Get.delete<BookingStatusReportController>();
+      Get.find<HomeController>().clearPage1();
     } else if (btnName == "Save") {
       // saveValidate();
     } else if (btnName == "Search") {

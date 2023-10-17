@@ -2,14 +2,22 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 
+import '../../../../widgets/DataGridShowOnly.dart';
 import '../../../../widgets/DateTime/DateWithThreeTextField.dart';
 import '../../../../widgets/FormButton.dart';
 import '../../../../widgets/dropdown.dart';
+import '../../../controller/HomeController.dart';
+import '../../../controller/MainController.dart';
+import '../../../data/PermissionModel.dart';
+import '../../../providers/Utils.dart';
 import '../controllers/program_wise_revenue_report_controller.dart';
 
-class ProgramWiseRevenueReportView
-    extends GetView<ProgramWiseRevenueReportController> {
-  const ProgramWiseRevenueReportView({Key? key}) : super(key: key);
+class ProgramWiseRevenueReportView extends StatelessWidget {
+  ProgramWiseRevenueReportView({Key? key}) : super(key: key);
+
+  ProgramWiseRevenueReportController controller =
+      Get.put<ProgramWiseRevenueReportController>(
+          ProgramWiseRevenueReportController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,58 +33,81 @@ class ProgramWiseRevenueReportView
               spacing: 5,
               children: [
                 DropDownField().formDropDownCheckBoxMap(
-                  controller.listCheckBox,
+                  controller.locations,
                   (value) {
                     print(value);
                   },
                   "Location",
                   0.16,
-                  onChanged: (index, selectValue) {},
+                  onChanged: (index, selectValue) {
+                    controller.locations[index].isSelected = selectValue;
+                  },
                 ),
                 DropDownField().formDropDownCheckBoxMap(
-                  controller.listCheckBox,
+                  controller.channels,
                   (value) {
                     print(value);
                   },
                   "Channel",
                   0.16,
-                  onChanged: (index, selectValue) {},
+                  onChanged: (index, selectValue) {
+                    controller.channels[index].isSelected = selectValue;
+                  },
                 ),
                 DropDownField().formDropDownCheckBoxMap(
-                  controller.listCheckBox,
+                  controller.programType,
+                  (value) {
+                    print(value);
+                  },
+                  "Program Type",
+                  0.16,
+                  onChanged: (index, selectValue) {
+                    controller.programType[index].isSelected = selectValue;
+                  },
+                ),
+                DropDownField().formDropDownCheckBoxMap(
+                  controller.program,
                   (value) {
                     print(value);
                   },
                   "Program",
                   0.16,
-                  onChanged: (index, selectValue) {},
+                  onChanged: (index, selectValue) {
+                    controller.program[index].isSelected = selectValue;
+                  },
                 ),
                 DropDownField().formDropDownCheckBoxMap(
-                  controller.listCheckBox,
+                  controller.zone,
                   (value) {
                     print(value);
                   },
-                  "Clients",
+                  "Zone",
                   0.16,
-                  onChanged: (index, selectValue) {},
+                  onChanged: (index, selectValue) {
+                    controller.zone[index].isSelected = selectValue;
+                  },
                 ),
                 DropDownField().formDropDownCheckBoxMap(
-                  controller.listCheckBox,
+                  controller.revnue,
                   (value) {
                     print(value);
                   },
-                  "Agency",
+                  "Revune",
                   0.16,
-                  onChanged: (index, selectValue) {},
+                  onChanged: (index, selectValue) {
+                    controller.revnue[index].isSelected = selectValue;
+                  },
                 ),
                 DropDownField().formDropDownCheckBoxMap(
-                  controller.listCheckBox,
+                  controller.attribute,
                   (value) {
                     print(value);
                   },
-                  "Revenue",
+                  "Attribute",
                   0.16,
-                  onChanged: (index, selectValue) {},
+                  onChanged: (index, selectValue) {
+                    controller.attribute[index].isSelected = selectValue;
+                  },
                 ),
                 const SizedBox(
                   width: 5,
@@ -94,7 +125,7 @@ class ProgramWiseRevenueReportView
                       // await controller.loadviewFPCData();
                       // Get.back();
                     },
-                    mainTextController: controller.fromdDate,
+                    mainTextController: controller.fromDate,
                   ),
                 ),
                 const SizedBox(
@@ -131,6 +162,7 @@ class ProgramWiseRevenueReportView
                                       groupValue: controller.bookingType.value,
                                       onChanged: (value) {
                                         controller.bookingType.value = e;
+                                        controller.getRadioStatus(e);
                                       }),
                                   Text(e),
                                   const SizedBox(
@@ -146,7 +178,7 @@ class ProgramWiseRevenueReportView
                 FormButton(
                   btnText: "Genrate",
                   callback: () {
-                    // controller.showBtnData();
+                    controller.genrate();
                   },
                   showIcon: false,
                 ),
@@ -156,7 +188,7 @@ class ProgramWiseRevenueReportView
                 FormButton(
                   btnText: "Program Summary",
                   callback: () {
-                    // controller.showBtnData();
+                    controller.showDilogBox();
                   },
                   showIcon: false,
                 ),
@@ -164,53 +196,85 @@ class ProgramWiseRevenueReportView
             ),
           ),
         ),
-        Expanded(child: Container()),
-        // GetBuilder<HomeController>(
-        //     id: "buttons",
-        //     init: Get.find<HomeController>(),
-        //     builder: (btncontroller) {
-        //       PermissionModel formPermissions = Get.find<MainController>()
-        //           .permissionList!
-        //           .lastWhere((element) {
-        //         return element.appFormName == "frmNewBookingActivityReport";
-        //       });
-        //       if (btncontroller.buttons == null) {
-        //         return Container();
-        //       }
-        //       return Card(
-        //         margin: EdgeInsets.fromLTRB(4, 4, 4, 0),
-        //         shape: RoundedRectangleBorder(
-        //           borderRadius: BorderRadius.only(
-        //               topLeft: Radius.circular(10),
-        //               topRight: Radius.circular(10)),
-        //         ),
-        //         child: Container(
-        //           width: Get.width,
-        //           padding: const EdgeInsets.all(8.0),
-        //           child: Wrap(
-        //             spacing: 10,
-        //             // buttonHeight: 20,
-        //             alignment: WrapAlignment.start,
-        //             // mainAxisSize: MainAxisSize.max,
-        //             // pa
-        //             children: [
-        //               for (var btn in btncontroller.buttons!)
-        //                 FormButtonWrapper(
-        //                     btnText: btn["name"],
-        //                     // isEnabled: btn['isDisabled'],
-        //                     callback: Utils.btnAccessHandler2(btn['name'],
-        //                                 btncontroller, formPermissions) ==
-        //                             null
-        //                         ? null
-        //                         : () => Container()
-        //                     // btnHnadler(btn['name']),
-        //                     ),
-        //             ],
-        //           ),
-        //         ),
-        //       );
-        //     }),
+        const SizedBox(
+          height: 5,
+        ),
+        Expanded(
+          child: Obx(
+            () => Container(
+              child: controller.dataTableList.value.isEmpty
+                  ? null
+                  : DataGridShowOnlyKeys(
+                      mapData: controller.dataTableList.value,
+                      hideCode: false,
+                      exportFileName: "ProgramWise Revenue Report",
+                    ),
+            ),
+          ),
+        ),
+        const SizedBox(
+          height: 5,
+        ),
+        Align(
+          alignment: Alignment.topLeft,
+          child: GetBuilder<HomeController>(
+              id: "buttons",
+              init: Get.find<HomeController>(),
+              builder: (controllerX) {
+                PermissionModel formPermissions = Get.find<MainController>()
+                    .permissionList!
+                    .lastWhere((element) =>
+                        element.appFormName == "frmnewprogramwisereport");
+                if (controllerX.buttons != null) {
+                  return Wrap(
+                    spacing: 5,
+                    runSpacing: 15,
+                    alignment: WrapAlignment.center,
+                    children: [
+                      for (var btn in controllerX.buttons!)
+                        FormButtonWrapper(
+                          btnText: btn["name"],
+                          callback: Utils.btnAccessHandler2(btn['name'],
+                                      controllerX, formPermissions) ==
+                                  null
+                              ? null
+                              : () => formHandler(
+                                    btn['name'],
+                                  ),
+                        )
+                    ],
+                  );
+                }
+                return Container(
+                  child: Text("No"),
+                );
+              }),
+        ),
+        const SizedBox(
+          height: 5,
+        ),
       ],
     ));
+  }
+
+  formHandler(String btnName) {
+    print(btnName);
+    if (btnName == "Clear") {
+      // controller.clearPage();
+      Get.delete<ProgramWiseRevenueReportController>();
+      Get.find<HomeController>().clearPage1();
+    } else if (btnName == "Save") {
+      // saveValidate();
+    } else if (btnName == "Search") {
+      // Get.to(
+      //   const SearchPage(
+      //     key: Key("Booking Status Report"),
+      //     screenName: "Booking Status Report",
+      //     appBarName: "Booking Status Report",
+      //     strViewName: "bms_view_fillermaster",
+      //     isAppBarReq: true,
+      //   ),
+      // );
+    }
   }
 }
