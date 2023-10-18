@@ -194,6 +194,9 @@ class ApiFactory {
 
   static String RO_RECEIVED_SAVE = "$BASE_URL/api/ROReceived/SaveRecords";
 
+  static String RO_RECEIVED_GET_CLIENTS =
+      "$BASE_URL/api/ROReceived/GetClientList?ContainSearch=";
+
 ///////////////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////// EDI RO BOOKING ///////////////////////////////////////////

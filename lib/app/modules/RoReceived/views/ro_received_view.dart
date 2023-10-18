@@ -1,4 +1,5 @@
 import 'package:bms_salesco/app/controller/HomeController.dart';
+import 'package:bms_salesco/app/providers/ApiFactory.dart';
 import 'package:bms_salesco/app/providers/SizeDefine.dart';
 import 'package:bms_salesco/widgets/DateTime/DateWithThreeTextField.dart';
 import 'package:bms_salesco/widgets/FormButton.dart';
@@ -7,6 +8,7 @@ import 'package:bms_salesco/widgets/dropdown.dart';
 import 'package:bms_salesco/widgets/input_fields.dart';
 import 'package:excel/excel.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:get/get.dart';
 
@@ -70,21 +72,36 @@ class RoReceivedView extends StatelessWidget {
                                     autoFocus: true,
                                   ),
                                 ),
-                                Obx(
-                                  () => DropDownField.formDropDown1WidthMap(controller.clients.value, (value) {
+                                DropDownField.formDropDownSearchAPI2(
+                                  GlobalKey(),
+                                  Get.context!,
+                                  title: "Client",
+                                  url: ApiFactory.RO_RECEIVED_GET_CLIENTS,
+                                  parseKeyForKey: "clientCode",
+                                  parseKeyForValue: 'clientName',
+                                  onchanged: (value) {
                                     controller.selectedClient = value;
                                     controller.clientLeave();
-                                  }, "Client", .24, autoFocus: true, selected: controller.selectedChannel),
+                                  },
+                                  customInData: "clientList",
+                                  selectedValue: controller.selectedClient,
+                                  width: Get.width * .24,
                                 ),
                                 Obx(
-                                  () => DropDownField.formDropDown1WidthMap(controller.agencies.value, (valeu) {
+                                  () => DropDownField.formDropDown1WidthMap(
+                                      controller.agencies.value, (valeu) {
                                     controller.selectedAgency = valeu;
-                                  }, "Agency", .24, autoFocus: true, selected: controller.selectedAgency),
+                                  }, "Agency", .24,
+                                      autoFocus: true,
+                                      selected: controller.selectedAgency),
                                 ),
                                 Obx(
-                                  () => DropDownField.formDropDown1WidthMap(controller.brands.value, (valeu) {
+                                  () => DropDownField.formDropDown1WidthMap(
+                                      controller.brands.value, (valeu) {
                                     controller.selectedBrand = valeu;
-                                  }, "Brand", .24, autoFocus: true, selected: controller.selectedBrand),
+                                  }, "Brand", .24,
+                                      autoFocus: true,
+                                      selected: controller.selectedBrand),
                                 ),
                                 InputFields.formField1(
                                   hintTxt: "RO Number",
@@ -101,94 +118,162 @@ class RoReceivedView extends StatelessWidget {
                                   mainTextController: controller.effDate,
                                   onFocusChange: (date) {
                                     print(date);
-                                    controller.activityMonth.text = date.split("-")[2] + date.split("-")[1];
+                                    controller.activityMonth.text =
+                                        date.split("-")[2] + date.split("-")[1];
                                     // controller.dateLeave(date);
                                   },
                                   widthRation: .115,
                                 ),
-                                InputFields.formField1(hintTxt: "Activity Month", controller: controller.activityMonth, width: 0.24, isEnable: false),
-                                InputFields.numbers(
+                                InputFields.formField1(
+                                    hintTxt: "Activity Month",
+                                    controller: controller.activityMonth,
+                                    width: 0.24,
+                                    isEnable: false),
+                                InputFields.numbers4(
                                   hintTxt: "RO Amount",
                                   padLeft: 0,
                                   controller: controller.roAmount,
                                   width: 0.115,
+                                  isNegativeReq: false,
+                                  inputformatters: [
+                                    FilteringTextInputFormatter.allow(
+                                        RegExp(r'[0-9]')),
+                                  ],
                                 ),
-                                InputFields.numbers(
+                                InputFields.numbers4(
                                   padLeft: 0,
                                   hintTxt: "Valuation RO Amount",
                                   controller: controller.roValAmount,
                                   width: 0.115,
+                                  isNegativeReq: false,
+                                  inputformatters: [
+                                    FilteringTextInputFormatter.allow(
+                                        RegExp(r'[0-9]')),
+                                  ],
                                 ),
                                 InputFields.formField1(
-                                  hintTxt: "FCT",
-                                  controller: controller.fct,
-                                  width: 0.24,
-                                ),
+                                    hintTxt: "FCT",
+                                    controller: controller.fct,
+                                    width: 0.24,
+                                    inputformatters: [
+                                      FilteringTextInputFormatter.digitsOnly,
+                                    ]),
                                 InputFields.formField1(
-                                  hintTxt: "Remarks",
-                                  controller: controller.remark,
-                                  width: 0.24,
-                                ),
+                                    hintTxt: "Remarks",
+                                    controller: controller.remark,
+                                    width: 0.24,
+                                    inputformatters: [
+                                      UpperCaseTextFormatter(),
+                                    ]),
+
+                                Obx(() => Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: controller.dataTypes
+                                          .map((e) => Row(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  Radio(
+                                                      value: e,
+                                                      groupValue: controller
+                                                          .currentType.value,
+                                                      onChanged: (value) {
+                                                        controller.currentType
+                                                            .value = e;
+                                                        controller
+                                                            .getRadioStatus(e);
+                                                      }),
+                                                  Text(e),
+                                                  const SizedBox(
+                                                    width: 20,
+                                                  ),
+                                                ],
+                                              ))
+                                          .toList(),
+                                    )),
+                                // Obx(
+                                //   () => SizedBox(
+                                //     width: Get.width * 0.24,
+                                //     child: Row(
+                                //       crossAxisAlignment:
+                                //           CrossAxisAlignment.end,
+                                //       mainAxisSize: MainAxisSize.max,
+                                //       mainAxisAlignment:
+                                //           MainAxisAlignment.spaceEvenly,
+                                //       children: [
+                                //         Row(
+                                //           mainAxisAlignment:
+                                //               MainAxisAlignment.spaceBetween,
+                                //           children: [
+                                //             InkWell(
+                                //               child: Icon(controller
+                                //                       .additional.value
+                                //                   ? Icons
+                                //                       .radio_button_checked_outlined
+                                //                   : Icons
+                                //                       .radio_button_off_outlined),
+                                //               onTap: () {
+                                //                 controller.additional.value =
+                                //                     true;
+                                //               },
+                                //             ),
+                                //             const SizedBox(
+                                //               width: 10,
+                                //             ),
+                                //             Text(
+                                //               "Additional",
+                                //               style: TextStyle(
+                                //                   fontSize:
+                                //                       SizeDefine.labelSize1),
+                                //             ),
+                                //           ],
+                                //         ),
+                                //         Row(
+                                //           mainAxisAlignment:
+                                //               MainAxisAlignment.spaceBetween,
+                                //           children: [
+                                //             InkWell(
+                                //               child: Icon(!controller
+                                //                       .additional.value
+                                //                   ? Icons
+                                //                       .radio_button_checked_outlined
+                                //                   : Icons
+                                //                       .radio_button_off_outlined),
+                                //               onTap: () {
+                                //                 controller.additional.value =
+                                //                     false;
+                                //               },
+                                //             ),
+                                //             const SizedBox(
+                                //               width: 10,
+                                //             ),
+                                //             Text(
+                                //               "Cancellation",
+                                //               style: TextStyle(
+                                //                   fontSize:
+                                //                       SizeDefine.labelSize1),
+                                //             )
+                                //           ],
+                                //         )
+                                //       ],
+                                //     ),
+                                //   ),
+                                // ),
                                 Obx(
-                                  () => SizedBox(
-                                    width: Get.width * 0.24,
-                                    child: Row(
-                                      crossAxisAlignment: CrossAxisAlignment.end,
-                                      mainAxisSize: MainAxisSize.max,
-                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            InkWell(
-                                              child: Icon(controller.additional.value
-                                                  ? Icons.radio_button_checked_outlined
-                                                  : Icons.radio_button_off_outlined),
-                                              onTap: () {
-                                                controller.additional.value = true;
-                                              },
-                                            ),
-                                            const SizedBox(
-                                              width: 10,
-                                            ),
-                                            Text(
-                                              "Additional",
-                                              style: TextStyle(fontSize: SizeDefine.labelSize1),
-                                            ),
-                                          ],
-                                        ),
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            InkWell(
-                                              child: Icon(!controller.additional.value
-                                                  ? Icons.radio_button_checked_outlined
-                                                  : Icons.radio_button_off_outlined),
-                                              onTap: () {
-                                                controller.additional.value = false;
-                                              },
-                                            ),
-                                            const SizedBox(
-                                              width: 10,
-                                            ),
-                                            Text(
-                                              "Cancellation",
-                                              style: TextStyle(fontSize: SizeDefine.labelSize1),
-                                            )
-                                          ],
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                Obx(
-                                  () => DropDownField.formDropDown1WidthMap(controller.revenueType.value, (valeu) {
+                                  () => DropDownField.formDropDown1WidthMap(
+                                      controller.revenueType.value, (valeu) {
                                     controller.selectedRevenue = valeu;
-                                  }, "Revenue Type", .24, autoFocus: true, selected: controller.selectedRevenue),
+                                  }, "Revenue Type", .24,
+                                      autoFocus: true,
+                                      selected: controller.selectedRevenue),
                                 ),
                               ],
                             )
-                          : LoadingScreen1(),
+                          : SizedBox(
+                              height: Get.height / 1.9,
+                              // child: LoadingScreen1()
+                            ),
                       const SizedBox(
                         height: 10,
                       ),
@@ -210,7 +295,8 @@ class RoReceivedView extends StatelessWidget {
                                           // alignment: MainAxisAlignment.start,
                                           // mainAxisSize: MainAxisSize.min,
                                           children: [
-                                            for (var btn in btncontroller.buttons!)
+                                            for (var btn
+                                                in btncontroller.buttons!)
                                               FormButtonWrapper(
                                                   btnText: btn["name"],
                                                   callback: () {
@@ -245,7 +331,11 @@ class RoReceivedView extends StatelessWidget {
   btnHandler(save) {
     switch (save) {
       case "Save":
-        maincontroller.save();
+        maincontroller.validation();
+        break;
+      case "Clear":
+        Get.delete<RoReceivedController>();
+        Get.find<HomeController>().clearPage1();
         break;
       case "Search":
         Get.to(SearchPage(
