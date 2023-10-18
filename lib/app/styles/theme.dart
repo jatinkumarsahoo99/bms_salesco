@@ -44,10 +44,11 @@ ThemeData primaryThemeData = ThemeData(
 PlutoGridConfiguration plutoGridConfiguration({
   Function? actionOnPress,
   String? actionKey,
-  bool autoScale = true,
+  bool autoScale = false,
   Color? checkColor = const Color(0xFFD1C4E9),
   required FocusNode focusNode,
   FocusNode? previousWidgetFN,
+  double rowHeight = 25,
 }) =>
     PlutoGridConfiguration.dark(
         shortcut: PlutoGridShortcut(
@@ -65,12 +66,13 @@ PlutoGridConfiguration plutoGridConfiguration({
                 actionOnPress: actionOnPress, actionKey: actionKey),
           },
         ),
-        /* columnSize: PlutoGridColumnSizeConfig(
+        columnSize: PlutoGridColumnSizeConfig(
           resizeMode: PlutoResizeMode.normal,
-          autoSizeMode: autoScale ? PlutoAutoSizeMode.scale : PlutoAutoSizeMode.none,
-        ),*/
+          autoSizeMode:
+              autoScale ? PlutoAutoSizeMode.scale : PlutoAutoSizeMode.none,
+        ),
         style: PlutoGridStyleConfig(
-            rowHeight: 35,
+            rowHeight: rowHeight,
             columnHeight: 30,
             defaultCellPadding: const EdgeInsets.all(2),
             enableCellBorderHorizontal: true,
@@ -168,8 +170,10 @@ PlutoGridConfiguration plutoGridConfiguration3({
           actions: {
             // This is a Map with basic shortcut keys and actions set.
             ...PlutoGridShortcut.defaultActions,
-            LogicalKeySet(LogicalKeyboardKey.shift, LogicalKeyboardKey.tab): CustomTabKeyAction(focusNode, previousWidgetFN),
-            LogicalKeySet(LogicalKeyboardKey.tab): CustomTabKeyAction(focusNode, previousWidgetFN),
+            LogicalKeySet(LogicalKeyboardKey.shift, LogicalKeyboardKey.tab):
+                CustomTabKeyAction(focusNode, previousWidgetFN),
+            LogicalKeySet(LogicalKeyboardKey.tab):
+                CustomTabKeyAction(focusNode, previousWidgetFN),
 
             LogicalKeySet(LogicalKeyboardKey.space): CustomKeyAction2(
               actionOnPress: actionOnPress,
@@ -205,10 +209,13 @@ PlutoGridConfiguration plutoGridConfiguration3({
             cellTextStyle: TextStyle(
               fontSize: SizeDefine.columnTitleFontSize,
             ),
-            columnTextStyle: TextStyle(fontSize: SizeDefine.columnTitleFontSize, fontWeight: FontWeight.bold)),
+            columnTextStyle: TextStyle(
+                fontSize: SizeDefine.columnTitleFontSize,
+                fontWeight: FontWeight.bold)),
         enterKeyAction: PlutoGridEnterKeyAction.none,
         tabKeyAction: PlutoGridTabKeyAction.moveToNextOnEdge,
-        scrollbar: const PlutoGridScrollbarConfig(draggableScrollbar: true, isAlwaysShown: true, hoverWidth: 15));
+        scrollbar: const PlutoGridScrollbarConfig(
+            draggableScrollbar: true, isAlwaysShown: true, hoverWidth: 15));
 
 // Create a new class that inherits from PlutoGridShortcutAction
 // If the execute method is implemented,
