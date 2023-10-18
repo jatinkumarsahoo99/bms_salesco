@@ -47,9 +47,11 @@ class DataGridFromMap extends StatelessWidget {
     this.focusNode,
     this.previousWidgetFN,
     this.specificWidth,
+    this.rowHeight = 25,
     this.widthSpecificColumn,
   }) : super(key: key);
   final List mapData;
+  final double rowHeight;
   bool enableSort;
   final Map<String, double>? specificWidth;
   final bool? showSrNo;
@@ -162,6 +164,7 @@ class DataGridFromMap extends StatelessWidget {
                         style: TextStyle(
                           fontSize: SizeDefine.columnTitleFontSize,
                         ),
+                        maxLines: 1,
                       ),
                     );
                   }
@@ -229,6 +232,7 @@ class DataGridFromMap extends StatelessWidget {
                       style: TextStyle(
                         fontSize: SizeDefine.columnTitleFontSize,
                       ),
+                      maxLines: 1,
                     ),
                   );
                 }
@@ -244,6 +248,7 @@ class DataGridFromMap extends StatelessWidget {
                     style: TextStyle(
                       fontSize: SizeDefine.columnTitleFontSize,
                     ),
+                    maxLines: 1,
                   ),
                 );
               }
@@ -314,6 +319,7 @@ class DataGridFromMap extends StatelessWidget {
               actionOnPress: actionOnPress,
               actionKey: actionIconKey,
               previousWidgetFN: previousWidgetFN,
+              rowHeight: rowHeight,
             ),
             rowColorCallback: colorCallback,
             onLoaded: (load) {

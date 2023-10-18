@@ -20,16 +20,18 @@ class MonthlyReportController extends GetxController {
   int lastSelectedIdx = 0;
   var dataTableList = [].obs;
   var selectedRadio = "".obs;
-  Rxn<List<Map<String,Map<String, double>>>>? userGridSetting1;
+  Rxn<List<Map<String, Map<String, double>>>>? userGridSetting1;
   PlutoGridStateManager? stateManager;
   fetchUserSetting1() async {
-    userGridSetting1?.value = await Get.find<HomeController>().fetchUserSetting1();
+    userGridSetting1?.value =
+        await Get.find<HomeController>().fetchUserSetting1();
     update(["grid"]);
   }
 
   @override
   void onInit() {
-    formPermissions = Utils.fetchPermissions1(Routes.MONTHLY_REPORT.replaceAll("/", ""));
+    formPermissions =
+        Utils.fetchPermissions1(Routes.MONTHLY_REPORT.replaceAll("/", ""));
     fetchUserSetting1();
     super.onInit();
   }
@@ -56,7 +58,10 @@ class MonthlyReportController extends GetxController {
     Get.find<ConnectorControl>().GETMETHODCALL(
         api: ApiFactory.MONTHLY_REPORT_GET_LOCATION,
         fun: (resp) {
-          if (resp != null && resp is Map<String, dynamic> && resp['location'] != null && resp['location'] is List<dynamic>) {
+          if (resp != null &&
+              resp is Map<String, dynamic> &&
+              resp['location'] != null &&
+              resp['location'] is List<dynamic>) {
             locationList.clear();
             locationList.value.addAll((resp['location'] as List<dynamic>)
                 .map((e) => DropDownValue(
@@ -64,15 +69,18 @@ class MonthlyReportController extends GetxController {
                       value: e['locationName'].toString(),
                     ))
                 .toList());
-            if (locationList.isNotEmpty) {
-              selectedLocation = locationList.first;
-              locationList.refresh();
-            }
+            // if (locationList.isNotEmpty) {
+            //   selectedLocation = locationList.first;
+            //   locationList.refresh();
+            // }
             Get.find<ConnectorControl>().GETMETHODCALL(
               api: ApiFactory.MONTHLY_REPORT_GET_CHANNEL,
               fun: (resp2) {
                 Get.back();
-                if (resp2 != null && resp2 is Map<String, dynamic> && resp2['channel'] != null && resp2['channel'] is List<dynamic>) {
+                if (resp2 != null &&
+                    resp2 is Map<String, dynamic> &&
+                    resp2['channel'] != null &&
+                    resp2['channel'] is List<dynamic>) {
                   channelList.clear();
                   channelList.value.addAll((resp2['channel'] as List<dynamic>)
                       .map((e) => DropDownValue(
@@ -108,7 +116,9 @@ class MonthlyReportController extends GetxController {
         api: ApiFactory.MONTHLY_REPORT_GET_DATA,
         fun: (resp) {
           closeDialogIfOpen();
-          if (resp != null && resp['report'] != null && resp['report']['bookingLst'] is List<dynamic>) {
+          if (resp != null &&
+              resp['report'] != null &&
+              resp['report']['bookingLst'] is List<dynamic>) {
             dataTableList.clear();
             dataTableList.value = resp['report']['bookingLst'];
           } else {
@@ -118,8 +128,10 @@ class MonthlyReportController extends GetxController {
         json: {
           "locationCode": selectedLocation?.key ?? "",
           "channelCode": selectedChannel?.key ?? "",
-          "fromDate": Utils.getRequiredFormatDateInString(fromDateTC.text, "yyyy-MM-dd"),
-          "toDate": Utils.getRequiredFormatDateInString(toDateTC.text, "yyyy-MM-dd"),
+          "fromDate": Utils.getRequiredFormatDateInString(
+              fromDateTC.text, "yyyy-MM-dd"),
+          "toDate":
+              Utils.getRequiredFormatDateInString(toDateTC.text, "yyyy-MM-dd"),
           "isBooking": selectedRadio.value == "Booking",
           "isCancellation": selectedRadio.value == "Cancelation",
           "isRescheduled": selectedRadio.value == "Reschedule",
