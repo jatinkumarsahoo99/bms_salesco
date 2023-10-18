@@ -120,7 +120,13 @@ class MonthlyReportController extends GetxController {
               resp['report'] != null &&
               resp['report']['bookingLst'] is List<dynamic>) {
             dataTableList.clear();
-            dataTableList.value = resp['report']['bookingLst'];
+            if (selectedRadio.value == "Booking") {
+              dataTableList.value = resp['report']['bookingLst'];
+            } else if (selectedRadio.value == "Cancelation") {
+              dataTableList.value = resp['report']['cancellationLsts'];
+            } else if (selectedRadio.value == "Reschedule") {
+              dataTableList.value = resp['report']['rescheduledLst'];
+            }
           } else {
             LoadingDialog.showErrorDialog(resp.toString());
           }
