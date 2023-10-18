@@ -33,7 +33,7 @@ class DataGridFromMap extends StatelessWidget {
     this.actionIcon,
     this.keyMapping,
     this.actionIconKey,
-    this.columnAutoResize = true,
+    this.columnAutoResize = false,
     this.actionOnPress,
     this.onSelected,
     this.checkRowKey = "selected",
