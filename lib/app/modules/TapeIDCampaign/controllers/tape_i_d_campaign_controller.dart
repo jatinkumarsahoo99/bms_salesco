@@ -186,7 +186,7 @@ class TapeIDCampaignController extends GetxController {
         json: {
           "exportTapeCode": tapeIDTC.text,
           "brandCode": loadModel?.tapeIdDetails.brandCode,
-          "activityMonth": activityMonth,
+          "activityMonth": activityMonth.value,
           "tapeSaveLst": loadModel?.tapeIdDetails.locationLst
                   ?.where((element) => element.selectRow ?? false)
                   .toList()

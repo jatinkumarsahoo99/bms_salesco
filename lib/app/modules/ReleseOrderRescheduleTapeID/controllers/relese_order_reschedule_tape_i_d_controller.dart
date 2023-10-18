@@ -1,4 +1,5 @@
 import 'package:bms_salesco/app/controller/ConnectorControl.dart';
+import 'package:bms_salesco/app/controller/HomeController.dart';
 import 'package:bms_salesco/app/data/DropDownValue.dart';
 import 'package:bms_salesco/app/providers/ApiFactory.dart';
 import 'package:bms_salesco/widgets/LoadingDialog.dart';
@@ -400,7 +401,11 @@ class ReleseOrderRescheduleTapeIDController extends GetxController {
               resp is Map<String, dynamic> &&
               resp['message'] != null &&
               resp['message'].toString().contains("successfully")) {
-            LoadingDialog.callDataSaved(msg: resp['message']);
+            LoadingDialog.callDataSaved(
+                msg: resp['message'],
+                callback: () {
+                  Get.find<HomeController>().clearPage1();
+                });
           } else {
             LoadingDialog.showErrorDialog(resp.toString());
           }
