@@ -49,11 +49,13 @@ class TapeIDCampaignView extends GetView<TapeIDCampaignController> {
                           inputformatters: [
                             UpperCaseTextFormatter(),
                           ]),
-                      InputFields.formFieldDisable1(
-                          hintTxt: "Activity Month",
-                          value: controller.activityMonth,
-                          widthRatio: .15,
-                          leftPad: 0),
+                      Obx(() {
+                        return InputFields.formFieldDisable1(
+                            hintTxt: "Activity Month",
+                            value: controller.activityMonth.value,
+                            widthRatio: .15,
+                            leftPad: 0);
+                      }),
                       InputFields.formFieldDisable1(
                           hintTxt: "Client",
                           value:
@@ -118,6 +120,7 @@ class TapeIDCampaignView extends GetView<TapeIDCampaignController> {
                           WidgetsBinding.instance
                               .addPostFrameCallback((timeStamp) {
                             controller.endDateTC.text = h;
+                            controller.generateActivityMonth();
                           });
                         },
                         startDate: DateTime.now()

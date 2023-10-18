@@ -21,14 +21,16 @@ class AutoTimeLockController extends GetxController {
   int lastSelectedIdx = 0;
   var dataTableList = <AutoTimeLockModel>[].obs;
 
-  List<Map<String,Map<String, double>>>? userGridSetting1;
+  List<Map<String, Map<String, double>>>? userGridSetting1;
   fetchUserSetting1() async {
     userGridSetting1 = await Get.find<HomeController>().fetchUserSetting1();
-    update(["grid"]);
+    dataTableList.refresh();
   }
+
   @override
   void onInit() {
-    formPermissions = Utils.fetchPermissions1(Routes.AUTO_TIME_LOCK.replaceAll("/", ""));
+    formPermissions =
+        Utils.fetchPermissions1(Routes.AUTO_TIME_LOCK.replaceAll("/", ""));
     fetchUserSetting1();
     super.onInit();
   }
@@ -41,14 +43,19 @@ class AutoTimeLockController extends GetxController {
 
   void saveData() {
     if (selectedLocation == null) {
-      LoadingDialog.showErrorDialog("Please select Location");
+      LoadingDialog.callInfoMessage("Please select Location.");
+    } else if (dataTableList.isEmpty) {
+      LoadingDialog.callInfoMessage("No records to save.");
     } else {
       LoadingDialog.call();
       Get.find<ConnectorControl>().POSTMETHOD(
         api: ApiFactory.MANAGE_CHANNEL_LOCKS_SAVE,
         fun: (resp) {
           Get.back();
-          if (resp != null && resp is Map<String, dynamic> && resp['show'] != null && !(resp['show']['isError'] as bool)) {
+          if (resp != null &&
+              resp is Map<String, dynamic> &&
+              resp['show'] != null &&
+              !(resp['show']['isError'] as bool)) {
             LoadingDialog.callDataSaved(
               msg: resp['show']['genericMessage'].toString(),
               callback: () {
@@ -62,7 +69,8 @@ class AutoTimeLockController extends GetxController {
         },
         json: {
           "locationCode": selectedLocation?.key ?? "",
-          "saveLists": dataTableList.value.map((e) => e.toJson(fromSave: true)).toList(),
+          "saveLists":
+              dataTableList.value.map((e) => e.toJson(fromSave: true)).toList(),
         },
       );
     }
@@ -85,9 +93,13 @@ class AutoTimeLockController extends GetxController {
         api: ApiFactory.MANAGE_CHANNEL_LOCKS_GET_DATA(val.key.toString()),
         fun: (resp) {
           Get.back();
-          if (resp != null && resp is Map<String, dynamic> && resp['show'] != null) {
+          if (resp != null &&
+              resp is Map<String, dynamic> &&
+              resp['show'] != null) {
             dataTableList.clear();
-            dataTableList.value = (resp['show'] as List<dynamic>).map((e) => AutoTimeLockModel.fromJson(e)).toList();
+            dataTableList.value = (resp['show'] as List<dynamic>)
+                .map((e) => AutoTimeLockModel.fromJson(e))
+                .toList();
           } else {
             LoadingDialog.showErrorDialog(resp.toString());
           }
@@ -105,7 +117,9 @@ class AutoTimeLockController extends GetxController {
         api: ApiFactory.MANAGE_CHANNEL_LOCKS_GET_LOCATION,
         fun: (resp) {
           Get.back();
-          if (resp != null && resp is Map<String, dynamic> && resp['location'] != null) {
+          if (resp != null &&
+              resp is Map<String, dynamic> &&
+              resp['location'] != null) {
             locationList.clear();
             locationList.value.addAll((resp['location'] as List<dynamic>)
                 .map((e) => DropDownValue(
@@ -128,12 +142,9 @@ class AutoTimeLockController extends GetxController {
       clearPage();
     } else if (btn == "Save") {
       saveData();
-    }
-    else if(btn == "Exit"){
-      Get.find<HomeController>().postUserGridSetting1(
-          listStateManager: [
-            stateManager
-          ]);
+    } else if (btn == "Exit") {
+      Get.find<HomeController>()
+          .postUserGridSetting1(listStateManager: [stateManager]);
     }
   }
 }
