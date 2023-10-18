@@ -205,9 +205,10 @@ class DealvsRODataReportView extends GetView<DealvsRODataReportController> {
                         return Container(
                           child: controller.dataTableList.value.isEmpty
                               ? null
-                              : DataGridFromMap(
+                              : DataGridShowOnlyKeys(
                                   mapData: controller.dataTableList.value,
                                   formatDate: false,
+                                  exportFileName: "DealvsRO Data Report",
                                 ),
                         );
                       }),

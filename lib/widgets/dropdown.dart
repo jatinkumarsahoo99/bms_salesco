@@ -3301,7 +3301,7 @@ class DropDownField {
                                                   onChanged(index, val);
                                                 }
                                                 selectedVal.value =
-                                                    getSelectedName(items);
+                                                    getSelectedName(tempList);
                                                 // print(selectedVal.value);
                                               },
                                             ),

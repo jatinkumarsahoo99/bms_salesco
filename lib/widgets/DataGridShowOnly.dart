@@ -159,6 +159,7 @@ class DataGridShowOnlyKeys extends StatelessWidget {
                       child: Text(
                         (rendererContext.cell.value ?? "").toString(),
                         style: TextStyle(
+                          overflow: TextOverflow.ellipsis,
                           fontSize: SizeDefine.columnTitleFontSize,
                         ),
                       ),
@@ -230,6 +231,7 @@ class DataGridShowOnlyKeys extends StatelessWidget {
                             ? ""
                             : rendererContext.cell.value.toString(),
                         style: TextStyle(
+                          overflow: TextOverflow.ellipsis,
                           fontSize: SizeDefine.columnTitleFontSize,
                         ),
                       ),
@@ -252,6 +254,7 @@ class DataGridShowOnlyKeys extends StatelessWidget {
                           ? ""
                           : rendererContext.cell.value.toString(),
                       style: TextStyle(
+                        overflow: TextOverflow.ellipsis,
                         fontSize: SizeDefine.columnTitleFontSize,
                       ),
                     ),

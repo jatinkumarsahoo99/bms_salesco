@@ -217,8 +217,6 @@ class BookingStatusReportController extends GetxController {
               (map['loadData'] as List<dynamic>).isNotEmpty) {
             dataTableList.clear();
             dataTableList.value.addAll((map['loadData']));
-            // bookigData = <BookingStatusReportData>[];
-            // bookigData!.add(map['loadData']);
           } else {
             LoadingDialog.showErrorDialog('No data found.');
           }
