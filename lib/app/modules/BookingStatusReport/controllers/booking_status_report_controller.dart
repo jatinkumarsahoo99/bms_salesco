@@ -48,7 +48,7 @@ class BookingStatusReportController extends GetxController {
       case "Detail":
         isRType.value = "D";
         break;
-      case "Summery":
+      case "Summary":
         isRType.value = "S";
         break;
     }
