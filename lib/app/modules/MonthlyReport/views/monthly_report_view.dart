@@ -90,6 +90,7 @@ class MonthlyReportView extends GetView<MonthlyReportController> {
                           ? null
                           : DataGridFromMap(
                               hideCode: false,
+                              exportFileName: "Monthly Report",
                               mapData: controller.dataTableList.value,
                               widthSpecificColumn: Get.find<HomeController>()
                                   .getGridWidthByKey(
