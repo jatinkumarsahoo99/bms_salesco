@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 
 import '../../../../widgets/CheckBox/multi_check_box.dart';
 import '../../../../widgets/DataGridShowOnly.dart';
+import '../../../../widgets/FormButton.dart';
 import '../../../../widgets/LoadingDialog.dart';
 import '../../../controller/ConnectorControl.dart';
 import '../../../data/PermissionModel.dart';
@@ -262,22 +263,6 @@ class ProgramWiseRevenueReportController extends GetxController {
               padding: const EdgeInsets.all(8.0),
               child: Column(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8),
-                    child: Align(
-                      alignment: Alignment.topRight,
-                      child: IconButton(
-                        onPressed: () {
-                          Get.back();
-                        },
-                        icon: const Icon(
-                          Icons.close,
-                          color: Colors.black,
-                        ),
-                        splashRadius: 23,
-                      ),
-                    ),
-                  ),
                   Expanded(
                     child: Obx(
                       () => Container(
@@ -293,6 +278,19 @@ class ProgramWiseRevenueReportController extends GetxController {
                                 hideCode: false,
                                 exportFileName: "ProgramWise Revenue Report",
                               ),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    child: Align(
+                      alignment: Alignment.topRight,
+                      child: FormButton(
+                        btnText: "Return",
+                        callback: () {
+                          Get.back();
+                        },
+                        showIcon: false,
                       ),
                     ),
                   ),
