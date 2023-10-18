@@ -48,7 +48,7 @@ class ProgramWiseRevenueReportController extends GetxController {
       case "Detail":
         isDetails.value = true;
         break;
-      case "Summery":
+      case "Summary":
         isDetails.value = false;
         break;
     }
@@ -216,11 +216,10 @@ class ProgramWiseRevenueReportController extends GetxController {
         json: payload,
         fun: (map) {
           Get.back();
-          print(map);
           if (map != null &&
-              map['loadData'] != null &&
-              map.containsKey('loadData') &&
-              (map['loadData'] as List<dynamic>).isNotEmpty) {
+              map['generateReport']['result'] != null &&
+              map.containsKey('generateReport') &&
+              (map['generateReport']['result'] as List<dynamic>).isNotEmpty) {
             dataTableList.clear();
             dataTableList.value.addAll((map['generateReport']['result']));
           } else {
