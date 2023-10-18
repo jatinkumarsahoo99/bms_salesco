@@ -66,17 +66,18 @@ class MarkROsFlagController extends GetxController {
               resp is Map<String, dynamic> &&
               resp['save']['isError'] != null &&
               !(resp['save']['isError'] as bool)) {
-            if (fromSaveToday) {
-              handleGenerateButton();
-            } else {
-              LoadingDialog.callDataSaved(
-                msg: resp['save']['genericMessage'].toString(),
-                callback: () {
-                  Get.back();
-                  handleGenerateButton();
-                },
-              );
-            }
+            handleGenerateButton();
+            // if (fromSaveToday) {
+            //   handleGenerateButton();
+            // } else {
+            //   LoadingDialog.callDataSaved(
+            //     msg: resp['save']['genericMessage'].toString(),
+            //     callback: () {
+            //       Get.back();
+            //       handleGenerateButton();
+            //     },
+            //   );
+            // }
           } else {
             LoadingDialog.showErrorDialog(resp.toString());
           }
