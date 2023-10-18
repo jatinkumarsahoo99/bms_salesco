@@ -1873,6 +1873,179 @@ class InputFields {
     );
   }
 
+  static Widget numbers4({
+    String? Function(String?)? validator,
+    required String hintTxt,
+    required TextEditingController controller,
+    Function(String)? onchanged,
+    double? padLeft,
+    bool? showbtn = true,
+    List<TextInputFormatter> inputformatters = const [],
+    num? width = 0.12,
+    bool capital = false,
+    bool isNegativeReq = true,
+    int? maxchar,
+    bool? isEnabled,
+  }) {
+    // var data = 0.obs;
+    var fN = FocusNode(skipTraversal: true);
+    final iconColor =
+        (isEnabled ?? true) ? Colors.deepPurpleAccent : Colors.grey;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: EdgeInsets.only(left: padLeft ?? 10),
+          child: LabelText.style(
+            hint: hintTxt,
+          ),
+        ),
+        Container(
+          // padding: const EdgeInsets.only(
+          //     top: 6.0,
+          //     bottom: 6.0),
+          margin: EdgeInsets.only(left: padLeft ?? 10),
+          height: SizeDefine.heightInputField,
+          width: Get.width * width!,
+          child: RawKeyboardListener(
+            focusNode: fN,
+            onKey: (RawKeyEvent keyEvent) {
+              if (showbtn) {
+                if (keyEvent.isKeyPressed(LogicalKeyboardKey.arrowDown)) {
+                  /* controller.text =
+                      "${(int.tryParse(controller.text) ?? 1) - 1}";*/
+                  if (!isNegativeReq) {
+                    if (double.tryParse(controller.text) != 1.00 &&
+                        double.tryParse(controller.text) != 0.00) {
+                      double result =
+                          (double.tryParse(controller.text) ?? 1.00) - 1.00;
+                      controller.text = result.toStringAsFixed(2);
+                    }
+                  } else {
+                    double result =
+                        (double.tryParse(controller.text) ?? 1.00) - 1.00;
+                    controller.text = result.toStringAsFixed(2);
+                  }
+                }
+                if (keyEvent.isKeyPressed(LogicalKeyboardKey.arrowUp)) {
+                  double result =
+                      (double.tryParse(controller.text) ?? 0.00) + 1.00;
+                  controller.text = result.toStringAsFixed(2);
+                }
+              }
+            },
+            child: AbsorbPointer(
+              absorbing: isEnabled ?? false,
+              child: TextFormField(
+                textCapitalization: capital
+                    ? TextCapitalization.characters
+                    : TextCapitalization.none,
+                validator: validator,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                onChanged: (onchanged != null) ? onchanged : null,
+                textAlignVertical: TextAlignVertical.center,
+                keyboardType: TextInputType.datetime,
+                textAlign: TextAlign.left,
+                inputFormatters: [
+                  LengthLimitingTextInputFormatter(
+                      maxchar ?? SizeDefine.maxcharlimit),
+                  // FilteringTextInputFormatter.digitsOnly,
+                  FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}'))
+                ],
+                enabled: isEnabled ?? true,
+                decoration: InputDecoration(
+                  errorBorder: InputBorder.none,
+                  contentPadding: const EdgeInsets.only(left: 10),
+                  labelStyle: TextStyle(
+                      fontSize: SizeDefine.labelSize, color: Colors.black),
+                  border: InputBorder.none,
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.deepPurpleAccent),
+                    borderRadius: BorderRadius.circular(0),
+                  ),
+                  disabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey),
+                    borderRadius: BorderRadius.circular(0),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.deepPurpleAccent),
+                    borderRadius: BorderRadius.circular(0),
+                  ),
+                  suffixIcon: showbtn!
+                      ? Row(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            InkWell(
+                              canRequestFocus: isEnabled ?? true,
+                              child: Icon(
+                                Icons.arrow_drop_up_sharp,
+                                size: 25,
+                                color: iconColor,
+                              ),
+                              onTap: () {
+                                if (isEnabled ?? true) {
+                                  double result =
+                                      (double.tryParse(controller.text) ??
+                                              0.00) +
+                                          1.00;
+                                  controller.text = result.toStringAsFixed(2);
+                                  if (onchanged != null) {
+                                    onchanged(controller.text);
+                                  }
+                                } else {
+                                  print("Print tap");
+                                }
+                              },
+                            ),
+                            InkWell(
+                              canRequestFocus: (isEnabled ?? true),
+                              child: Icon(
+                                Icons.arrow_drop_down_sharp,
+                                size: 25,
+                                color: iconColor,
+                              ),
+                              onTap: () {
+                                if (isEnabled ?? true) {
+                                  if (!isNegativeReq) {
+                                    print("Click on negative>>>" +
+                                        controller.text);
+                                    if (controller.text != "0") {
+                                      double result =
+                                          (double.tryParse(controller.text) ??
+                                                  1.00) -
+                                              1.00;
+                                      controller.text =
+                                          result.toStringAsFixed(2);
+                                      onchanged!(controller.text);
+                                    }
+                                  } else {
+                                    double result =
+                                        (double.tryParse(controller.text) ??
+                                                1.00) -
+                                            1.00;
+                                    controller.text = result.toStringAsFixed(2);
+                                    onchanged!(controller.text);
+                                  }
+                                } else {
+                                  print("Print tap");
+                                }
+                              },
+                            ),
+                          ],
+                        )
+                      : SizedBox(),
+                ),
+                controller: controller,
+                style: TextStyle(fontSize: 12),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
   static Widget timeField3(
       {required String hintTxt,
       required TextEditingController controller,
