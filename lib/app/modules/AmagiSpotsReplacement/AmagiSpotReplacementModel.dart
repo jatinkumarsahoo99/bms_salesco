@@ -81,6 +81,7 @@ class MasterSpots {
   String? channelCode;
 
   String? bookingNumber;
+  bool? bookingNumberIsBold;
   int? bookingDetailCode;
   String? tapeCode;
   int? tapeDuration;
@@ -128,12 +129,13 @@ class MasterSpots {
         this.combineSpots,
         this.neWID,
         this.tapeDuration1,
-        this.tapeid});
+        this.tapeid,this.bookingNumberIsBold});
 
   MasterSpots.fromJson(Map<String, dynamic> json) {
     locationCode = json['locationCode'];
     channelCode = json['channelCode'];
     bookingNumber = json['bookingNumber'];
+    bookingNumberIsBold = false;
     bookingDetailCode = json['bookingDetailCode'];
     tapeCode = json['tapeCode'];
     tapeDuration = json['tapeDuration'];
@@ -161,6 +163,7 @@ class MasterSpots {
     data['locationCode'] = this.locationCode;
     data['channelCode'] = this.channelCode;
     data['bookingNumber'] = this.bookingNumber;
+
     data['bookingDetailCode'] = this.bookingDetailCode;
     data['tapeCode'] = this.tapeCode;
     data['tapeDuration'] = this.tapeDuration;
@@ -181,6 +184,7 @@ class MasterSpots {
     data['neW_ID'] = this.neWID;
     data['tapeDuration1'] = this.tapeDuration1;
     data['tapeid'] = this.tapeid;
+    data['bookingNumberIsBold'] = this.bookingNumberIsBold;
     return data;
   }
 }
@@ -194,6 +198,7 @@ class LocalSpots {
   String? channelCode;
 
   String? bookingNumber;
+  String? bookingNumberIsBold;
   int? bookingDetailCode;
   String? clientName;
   String? tapeCode;
@@ -246,7 +251,7 @@ class LocalSpots {
         this.dealRownumber,
         this.commercialCaption,
         this.channel,
-        this.zoneName});
+        this.zoneName,this.bookingNumberIsBold});
 
   LocalSpots.fromJson(Map<String, dynamic> json) {
     colNo = json['colNo'];
@@ -254,6 +259,7 @@ class LocalSpots {
     locationCode = json['locationCode'];
     channelCode = json['channelCode'];
     bookingNumber = json['bookingNumber'];
+
     bookingDetailCode = json['bookingDetailCode'];
     clientName = json['clientName'];
     tapeCode = json['tapeCode'];
@@ -276,6 +282,7 @@ class LocalSpots {
     commercialCaption = json['commercialCaption'];
     channel = json['channel'];
     zoneName = json['zoneName'];
+    bookingNumberIsBold = json['bookingNumberIsBold'];
   }
 
   Map<String, dynamic> toJson() {
@@ -285,6 +292,7 @@ class LocalSpots {
     data['locationCode'] = this.locationCode;
     data['channelCode'] = this.channelCode;
     data['bookingNumber'] = this.bookingNumber;
+    data['bookingNumberIsBold'] = this.bookingNumberIsBold;
     data['bookingDetailCode'] = this.bookingDetailCode;
     data['clientName'] = this.clientName;
     data['tapeCode'] = this.tapeCode;

@@ -1,10 +1,12 @@
 import 'package:bms_salesco/app/data/DropDownValue.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:get/get.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
 import '../../../../widgets/FormButton.dart';
+import '../../../../widgets/LoadingDialog.dart';
 import '../../../../widgets/dropdown.dart';
 import '../../../../widgets/gridFromMap.dart';
 import '../../../../widgets/input_fields.dart';
@@ -284,7 +286,7 @@ class WorkflowDefinitionView extends GetView<WorkflowDefinitionController> {
                                       Obx(() => Padding(
                                         padding: const EdgeInsets.only(top: 8.0,left: 0),
                                         child: RadioRow(
-                                              items: ["Before", "After"],
+                                              items: const ["Before", "After"],
                                               groupValue: controllerX
                                                       .selectRadio2.value ??
                                                   "",
@@ -303,7 +305,6 @@ class WorkflowDefinitionView extends GetView<WorkflowDefinitionController> {
                                         child: FormButtonWrapper(
                                           btnText: "Add",
                                           callback: () {
-
                                             controllerX.btnAddClick();
                                           },
                                           showIcon: true,
@@ -315,7 +316,7 @@ class WorkflowDefinitionView extends GetView<WorkflowDefinitionController> {
                                         child: FormButtonWrapper(
                                           btnText: "Clear",
                                           callback: () {
-                                            controllerX.clearAll();
+                                            controllerX.clearNew();
                                           },
                                           showIcon: true,
                                         ),
@@ -360,59 +361,93 @@ class WorkflowDefinitionView extends GetView<WorkflowDefinitionController> {
                                                 ?.display?.length ??
                                             0) >
                                         0)
-                                ? DataGridFromMap(
-                                    showSrNo: false,
-                                    hideCode: false,
-                                    formatDate: false,
-                                    mode: PlutoGridMode.selectWithOneTap,
-                                    onload: (PlutoGridOnLoadedEvent load) {
-                                      controllerX.gridStateManager =
-                                          load.stateManager;
-                                      controllerX.gridStateManager!
-                                          .setCurrentCell(
-                                              controllerX.gridStateManager!
-                                                  .getRowByIdx(controllerX
-                                                      .selectedIndex)!
-                                                  .cells['sequenceName'],
-                                              controllerX.selectedIndex);
-                                      controllerX.gridStateManager!
-                                          .moveCurrentCellByRowIdx(
-                                              controllerX.selectedIndex ?? 0,
-                                              PlutoMoveDirection.down);
-                                    },
-                                    onSelected:
-                                        (PlutoGridOnSelectedEvent? val) {
-                                          controllerX.isDoubleClick = false;
+                                ? RawKeyboardListener(
+                                  focusNode: FocusNode(),
+                              onKey: (RawKeyEvent event) {
+                                if (event.logicalKey ==
+                                    LogicalKeyboardKey
+                                        .delete &&
+                                    event
+                                    is! RawKeyUpEvent) {
+                                  if (controllerX
+                                      .gridStateManager !=
+                                      null &&
+                                      (controllerX
+                                          .gridStateManager
+                                          ?.rows
+                                          .length ??
+                                          0) >
+                                          0) {
+                                    print(
+                                        "delete button pressed");
+                                    controllerX
+                                        .gridStateManager
+                                        ?.removeCurrentRow();
+                                    controllerX
+                                        .gridStateManager
+                                        ?.notifyListeners();
+                                  } else {
+                                    LoadingDialog
+                                        .showErrorDialog(
+                                        "Data not found");
+                                  }
+                                }
+                              },
+                                  child: DataGridFromMap(
+                                      showSrNo: false,
+                                      hideCode: false,
+                                      formatDate: false,
+                                      mode: PlutoGridMode.selectWithOneTap,
+                                      onload: (PlutoGridOnLoadedEvent load) {
+                                        controllerX.gridStateManager =
+                                            load.stateManager;
+                                       /* controllerX.gridStateManager!
+                                            .setCurrentCell(
+                                                controllerX.gridStateManager!
+                                                    .getRowByIdx(controllerX
+                                                        .selectedIndex)!
+                                                    .cells['sequenceName'],
+                                                controllerX.selectedIndex);
+                                        controllerX.gridStateManager!
+                                            .moveCurrentCellByRowIdx(
+                                                controllerX.selectedIndex ?? 0,
+                                                PlutoMoveDirection.down);*/
+                                      },
+                                      onSelected:
+                                          (PlutoGridOnSelectedEvent? val) {
+                                            controllerX.isDoubleClick = false;
 
-                                      controllerX.selectedIndex =
-                                          val?.rowIdx ?? 0;
-                                    },
-                                    onRowDoubleTap:
-                                        (PlutoGridOnRowDoubleTapEvent? val) {
-                                          controllerX.selectedIndex =
-                                              val?.rowIdx ?? 0;
-                                          controllerX.gridStateManager!
-                                              .setCurrentCell(
-                                              controllerX.gridStateManager!
-                                                  .getRowByIdx(controllerX
-                                                  .selectedIndex)!
-                                                  .cells['sequenceName'],
-                                              controllerX.selectedIndex);
-                                          controllerX.gridStateManager!
-                                              .moveCurrentCellByRowIdx(
-                                              controllerX.selectedIndex ?? 0,
-                                              PlutoMoveDirection.down);
-                                      controllerX.onDoubleTap(val?.rowIdx ?? 0);
-                                    },
+                                        controllerX.selectedIndex =
+                                            val?.rowIdx ?? 0;
+                                      },
+                                      onRowDoubleTap:
+                                          (PlutoGridOnRowDoubleTapEvent? val) {
+                                            controllerX.selectedIndex =
+                                                val?.rowIdx ?? 0;
+                                            /*controllerX.gridStateManager!
+                                                .setCurrentCell(
+                                                controllerX.gridStateManager!
+                                                    .getRowByIdx(controllerX
+                                                    .selectedIndex)!
+                                                    .cells['sequenceName'],
+                                                controllerX.selectedIndex);
+                                            controllerX.gridStateManager!
+                                                .moveCurrentCellByRowIdx(
+                                                controllerX.selectedIndex ?? 0,
+                                                PlutoMoveDirection.down);*/
+                                        controllerX.onDoubleTap(val?.rowIdx ?? 0);
+                                            // controllerX.isDoubleClick = true;
+                                      },
                               widthSpecificColumn: Get.find<HomeController>().getGridWidthByKey(
-                                  userGridSettingList: controllerX.userGridSetting1),
-                                    mapData: (controllerX
-                                        .dealWorkDefinitionGridModel!.display
-                                        ?.map((e) => e.toJson2())
-                                        .toList())!,
-                                    // mapData: (controllerX.dataList)!,
-                                    widthRatio: Get.width / 9 - 1,
-                                  )
+                                    userGridSettingList: controllerX.userGridSetting1),
+                                      mapData: (controllerX
+                                          .dealWorkDefinitionGridModel!.display
+                                          ?.map((e) => e.toJson2())
+                                          .toList())!,
+                                      // mapData: (controllerX.dataList)!,
+                                      widthRatio: Get.width / 9 - 1,
+                                    ),
+                                )
                                 : Container();
                           }),
                     ),
