@@ -19,7 +19,8 @@ class TapeIDCampaignController extends GetxController {
       startDateTC = TextEditingController(),
       endDateTC = TextEditingController();
   // var activityMonth = "", client = "", agency = "", brand = "", caption = "", duration = "", agencyTapeID = "", createdBy = "";
-  String selectedValuUI = "selectedValuUI", activityMonth = "";
+  String selectedValuUI = "selectedValuUI";
+  var activityMonth = "".obs;
   DateTime now = DateTime.now();
   PlutoGridStateManager? locationChannelManager, historyManager;
   int lastLocationChannelEditIdx = 0, historyEditIdx = 0;
@@ -28,6 +29,10 @@ class TapeIDCampaignController extends GetxController {
   TapeIDCampaignLoadModel? loadModel;
   TapeIdCampaignHistoryModel? history;
   var tapeIdFN = FocusNode();
+
+  var startDate =
+      DateTime.now().subtract(Duration(days: DateTime.now().day - 1));
+  var endDate = DateTime.now();
 
   List<Map<String, Map<String, double>>>? userGridSetting1;
   fetchUserSetting1() async {
@@ -43,10 +48,13 @@ class TapeIDCampaignController extends GetxController {
         tapeIdLeave();
       }
     });
+    startDateTC.addListener(() {});
   }
 
   @override
   void onInit() {
+    endDate = DateTime(startDate.year, startDate.month + 1, 0);
+    print(endDate.toString());
     formPermissions =
         Utils.fetchPermissions1(Routes.TAPE_I_D_CAMPAIGN.replaceAll("/", ""));
     fetchUserSetting1();
@@ -62,7 +70,7 @@ class TapeIDCampaignController extends GetxController {
     lastLocationChannelEditIdx = 0;
     historyEditIdx = 0;
     endDateTC.clear();
-    activityMonth = "";
+    // activityMonth.obs = "";
     loadModel = null;
     tapeIdFN.requestFocus();
     updateUI();
@@ -71,6 +79,13 @@ class TapeIDCampaignController extends GetxController {
   updateUI() {
     selectedTab.refresh();
     update([selectedValuUI]);
+  }
+
+  generateActivityMonth() {
+    if (startDateTC.text.contains("-")) {
+      var tempSplit = startDateTC.text.split("-");
+      activityMonth.value = "${tempSplit[2]}${tempSplit[1]}";
+    }
   }
 
   tapeIdLeave() {
@@ -82,7 +97,8 @@ class TapeIDCampaignController extends GetxController {
           Get.back();
           if (resp is Map<String, dynamic> && resp['tapeIdDetails'] != null) {
             loadModel = TapeIDCampaignLoadModel.fromJson(resp);
-            activityMonth = DateFormat("yyyyMM").format(DateTime.now());
+            // activityMonth = DateFormat("yyyyMM").format(DateTime.now());
+            generateActivityMonth();
             if (loadModel?.tapeIdDetails.agencyName == null) {
               loadModel = null;
               LoadingDialog.showErrorDialog("Tape id not found.");
@@ -170,7 +186,7 @@ class TapeIDCampaignController extends GetxController {
         json: {
           "exportTapeCode": tapeIDTC.text,
           "brandCode": loadModel?.tapeIdDetails.brandCode,
-          "activityMonth": activityMonth,
+          "activityMonth": activityMonth.value,
           "tapeSaveLst": loadModel?.tapeIdDetails.locationLst
                   ?.where((element) => element.selectRow ?? false)
                   .toList()

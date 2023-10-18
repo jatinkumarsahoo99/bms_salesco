@@ -48,7 +48,7 @@ class BookingStatusReportController extends GetxController {
       case "Detail":
         isRType.value = "D";
         break;
-      case "Summery":
+      case "Summary":
         isRType.value = "S";
         break;
     }
@@ -217,8 +217,6 @@ class BookingStatusReportController extends GetxController {
               (map['loadData'] as List<dynamic>).isNotEmpty) {
             dataTableList.clear();
             dataTableList.value.addAll((map['loadData']));
-            // bookigData = <BookingStatusReportData>[];
-            // bookigData!.add(map['loadData']);
           } else {
             LoadingDialog.showErrorDialog('No data found.');
           }

@@ -49,11 +49,13 @@ class TapeIDCampaignView extends GetView<TapeIDCampaignController> {
                           inputformatters: [
                             UpperCaseTextFormatter(),
                           ]),
-                      InputFields.formFieldDisable1(
-                          hintTxt: "Activity Month",
-                          value: controller.activityMonth,
-                          widthRatio: .15,
-                          leftPad: 0),
+                      Obx(() {
+                        return InputFields.formFieldDisable1(
+                            hintTxt: "Activity Month",
+                            value: controller.activityMonth.value,
+                            widthRatio: .15,
+                            leftPad: 0);
+                      }),
                       InputFields.formFieldDisable1(
                           hintTxt: "Client",
                           value:
@@ -101,25 +103,43 @@ class TapeIDCampaignView extends GetView<TapeIDCampaignController> {
                         title: "Start Date",
                         mainTextController: controller.startDateTC,
                         widthRation: .15,
-                        startDate: DateTime.now(),
-                        endDate: DateTime(
-                            controller.now.year,
-                            controller.now.month,
-                            (DateTime(controller.now.year,
-                                    controller.now.month + 1, 0)
-                                .day)),
+                        onFocusChange: (h) {
+                          var tempDate = DateFormat("dd-MM-yyyy").parse(h);
+                          controller.startDate = tempDate
+                              .subtract(Duration(days: (tempDate.day) - 1));
+
+                          controller.endDate = DateTime(
+                            controller.startDate.year,
+                            controller.startDate.month + 1,
+                            0,
+                          );
+                          print(controller.startDate.toString());
+                          print(controller.endDate.toString());
+                          // controller.endDateTC.text = h;
+                          controller.update(['toDate']);
+                          WidgetsBinding.instance
+                              .addPostFrameCallback((timeStamp) {
+                            controller.endDateTC.text = h;
+                            controller.generateActivityMonth();
+                          });
+                        },
+                        startDate: DateTime.now()
+                            .subtract(Duration(days: (DateTime.now().day) - 1)),
                       ),
-                      DateWithThreeTextField(
-                        title: "End Date",
-                        mainTextController: controller.endDateTC,
-                        widthRation: .15,
-                        startDate: DateTime.now(),
-                        endDate: DateTime(
-                            controller.now.year,
-                            controller.now.month,
-                            (DateTime(controller.now.year,
-                                    controller.now.month + 1, 0)
-                                .day)),
+                      GetBuilder(
+                        init: controller,
+                        id: "toDate",
+                        builder: (_) {
+                          controller.endDateTC.text =
+                              controller.startDateTC.text;
+                          return DateWithThreeTextField(
+                            title: "End Date",
+                            mainTextController: controller.endDateTC,
+                            widthRation: .15,
+                            startDate: controller.startDate,
+                            endDate: controller.endDate,
+                          );
+                        },
                       ),
                       InputFields.formFieldDisable1(
                           hintTxt: "Created By",
@@ -184,6 +204,7 @@ class TapeIDCampaignView extends GetView<TapeIDCampaignController> {
                                       id: "grid",
                                       builder: (controller) {
                                         return DataGridFromMap3(
+                                          exportFileName: "Tape ID Campaign",
                                           checkBoxColumnKey: ["isActive"],
                                           actionIconKey: ["isActive"],
                                           checkBoxStrComparison: "true",
@@ -269,6 +290,7 @@ class TapeIDCampaignView extends GetView<TapeIDCampaignController> {
                                       id: "grid",
                                       builder: (logic) {
                                         return DataGridFromMap3(
+                                          exportFileName: "Tape ID Campaign",
                                           colorCallback: (row) => (row.row.cells
                                                   .containsValue(controller
                                                       .locationChannelManager

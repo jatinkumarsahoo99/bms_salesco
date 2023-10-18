@@ -1,3 +1,4 @@
+import 'package:bms_salesco/app/controller/HomeController.dart';
 import 'package:bms_salesco/widgets/DataGridShowOnly.dart';
 import 'package:bms_salesco/widgets/gridFromMap.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +11,7 @@ import '../../../../widgets/dropdown.dart';
 import '../../../providers/SizeDefine.dart';
 import '../controllers/dealvs_r_o_data_report_controller.dart';
 
-class DealvsRODataReportView extends GetView<DealvsRODataReportController> {
+class DealvsRODataReportView extends StatelessWidget {
   DealvsRODataReportController controller =
       Get.put<DealvsRODataReportController>(DealvsRODataReportController());
   @override
@@ -163,7 +164,9 @@ class DealvsRODataReportView extends GetView<DealvsRODataReportController> {
                               FormButtonWrapper(
                                 btnText: "Clear",
                                 callback: () {
-                                  controller.clear();
+                                  // controller.clear();
+                                  Get.delete<DealvsRODataReportController>();
+                                  Get.find<HomeController>().clearPage1();
                                 },
                                 showIcon: false,
                               ),
@@ -205,9 +208,10 @@ class DealvsRODataReportView extends GetView<DealvsRODataReportController> {
                         return Container(
                           child: controller.dataTableList.value.isEmpty
                               ? null
-                              : DataGridFromMap(
+                              : DataGridShowOnlyKeys(
                                   mapData: controller.dataTableList.value,
                                   formatDate: false,
+                                  exportFileName: "DealvsRO Data Report",
                                 ),
                         );
                       }),

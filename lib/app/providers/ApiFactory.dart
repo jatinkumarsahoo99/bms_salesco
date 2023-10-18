@@ -194,6 +194,9 @@ class ApiFactory {
 
   static String RO_RECEIVED_SAVE = "$BASE_URL/api/ROReceived/SaveRecords";
 
+  static String RO_RECEIVED_GET_CLIENTS =
+      "$BASE_URL/api/ROReceived/GetClientList?ContainSearch=";
+
 ///////////////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////// EDI RO BOOKING ///////////////////////////////////////////
@@ -1148,6 +1151,25 @@ class ApiFactory {
   static String get BOOKING_STATUS_REPORT_GET_REPORT =>
       "$BASE_URL/api/BookingStatusReport/GetReport";
 
+  //////////////////////////// Booking Status Report End//////////////////////
+  ///
+  ///
+  ///
+  ///
+  /////////////////////////////// Program Wise Revenue Report Start//////////////////////
+  static String get PROGRAM_WISE_REPORT_INITIAL =>
+      "$BASE_URL/api/NewProgramWiseReport/NewProgramWiseReportInitial";
+  static String get PROGRAM_WISE_REPORT_GENERATE_REPORT =>
+      "$BASE_URL/api/NewProgramWiseReport/GenerateReport";
+  static String PROGRAM_WISE_REPORT_CLIENTLIST(
+          String fromDate, String toDate) =>
+      "$BASE_URL/api/NewProgramWiseReport/GenerateReport?FromDate=$fromDate&ToDate=$toDate";
+  /////////////////////////////// Program Wise Revenue Report End//////////////////////
+  ///
+  ///
+  ///
+  ///
+  ///
 ////////////////////////// Amagi Spots Replacement ////////////////////////////////////
   static String AMAGI_SPOT_REPLACEMENT_GET_LOCATION() =>
       "$BASE_URL/api/AmagiSpotsReplacement/GetLocation";

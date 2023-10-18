@@ -271,19 +271,20 @@ class AppPages {
       binding: CommonDocsBinding(),
     ),
     GetPage(
-      name: _Paths.DEALVS_R_O_DATA_REPORT,
-      page: () => AuthGuard(childName: _Paths.DEALVS_R_O_DATA_REPORT),
-      // binding: DealvsRODataReportBinding(),
+      name: _Paths.RELESE_ORDER_RESCHEDULE_TAPE_I_D,
+      page: () => AuthGuard(childName: _Paths.RELESE_ORDER_RESCHEDULE_TAPE_I_D),
     ),
     GetPage(
       name: _Paths.BOOKING_STATUS_REPORT,
       page: () => AuthGuard(childName: _Paths.BOOKING_STATUS_REPORT),
-      // binding: BookingStatusReportBinding(),
     ),
     GetPage(
       name: _Paths.PROGRAM_WISE_REVENUE_REPORT,
       page: () => AuthGuard(childName: _Paths.PROGRAM_WISE_REVENUE_REPORT),
-      // binding: ProgramWiseRevenueReportBinding(),
+    ),
+    GetPage(
+      name: _Paths.DEALVS_R_O_DATA_REPORT,
+      page: () => AuthGuard(childName: _Paths.DEALVS_R_O_DATA_REPORT),
     ),
   ];
 }

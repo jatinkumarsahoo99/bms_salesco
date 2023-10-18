@@ -89,6 +89,10 @@ abstract class RoutesList {
     _Paths.RATE_CARDFROM_DEAL_WORKFLOW,
     _Paths.RESCHEDULE_IMPORT,
     _Paths.RELESE_ORDER_RESCHEDULE_TAPE_I_D,
+    _Paths.BOOKING_STATUS_REPORT,
+    _Paths.PROGRAM_WISE_REVENUE_REPORT,
+    _Paths.DEALVS_R_O_DATA_REPORT,
+    _Paths.RO_RECEIVED,
   ];
 
   /* static final RoutesList _instance = RoutesList._();
