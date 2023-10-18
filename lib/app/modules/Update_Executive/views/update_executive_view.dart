@@ -128,7 +128,7 @@ class UpdateExecutiveView extends GetView<UpdateExecutiveController> {
                           selected: controllerX.selectedZone?.value,
                           dialogHeight: Get.height * .35,
                           autoFocus: false,),),
-                        Obx(()=>DropDownField.formDropDown1WidthMap(
+                       /* Obx(()=>DropDownField.formDropDown1WidthMap(
                           controllerX.agencyList.value??[],
                               (value) {
                             controllerX.selectedAgency?.value = value;
@@ -152,7 +152,7 @@ class UpdateExecutiveView extends GetView<UpdateExecutiveController> {
                           inkWellFocusNode: controllerX.agencyNode,
                           selected: controllerX.selectedAgency?.value,
                           dialogHeight: Get.height * .35,
-                          autoFocus: false,),),
+                          autoFocus: false,),),*/
                         SizedBox(
                           width: size.width*0.46,
                           child: Align(

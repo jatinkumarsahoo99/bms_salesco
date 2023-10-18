@@ -50,7 +50,7 @@ class ProductLevel3Controller extends GetxController {
         });
   }
 
-  fetchProductLevel1(String ptcode) {
+  fetchProductLevel1(String ptcode,{String ? pl1}) {
     LoadingDialog.call();
     Get.find<ConnectorControl>().GETMETHODCALL(
         api: ApiFactory.PRODUCT_LEVEL3_GET_PRODUCT_LEVEL1 + "?ptcode=" + ptcode,
@@ -69,13 +69,25 @@ class ProductLevel3Controller extends GetxController {
                   .add(DropDownValue.fromJsonDynamic(e, "pl1", "level1Name"));
             });
             level1List = dataList;
+            if(level1List.isNotEmpty && pl1 != null && pl1 != ""){
+              for (var element in level1List) {
+                if (element.key.toString().trim() == pl1.toString().trim()) {
+                  selectedLevel1?.value =
+                      DropDownValue(key: element.key, value: element.value);
+                  selectedLevel1?.refresh();
+                  break;
+                }
+              }
+            }
+
+
           } else {
             level1List.clear();
           }
         });
   }
 
-  fetchProductLevel2(int pl1) {
+  fetchProductLevel2(int pl1,{String ? pl2}) {
     LoadingDialog.call();
     Get.find<ConnectorControl>().GETMETHODCALL(
         api: ApiFactory.PRODUCT_LEVEL3_GET_PRODUCT_LEVEL2 + "?pl1=${pl1}",
@@ -94,6 +106,17 @@ class ProductLevel3Controller extends GetxController {
                   .add(DropDownValue.fromJsonDynamic(e, "pl2", "level2name"));
             });
             level2List = dataList;
+
+            if(level2List.isNotEmpty && pl2 != null && pl2 != ""){
+              for (var element in level2List) {
+                if (element.key.toString().trim() == pl2.toString().trim()) {
+                  selectedLevel2?.value =
+                   DropDownValue(key: element.key, value: element.value);
+                  selectedLevel2?.refresh();
+                  break;
+                }
+              }
+            }
           } else {
             level2List.clear();
           }
@@ -118,18 +141,29 @@ class ProductLevel3Controller extends GetxController {
         // "https://jsonkeeper.com/b/D537"
         fun: (map) {
           Get.back();
-          print(">>>>>>" + map.toString());
+
           // strProductevel2
           if (map is Map &&
               map.containsKey("retrieveRecord") &&
               map['retrieveRecord'] != null &&
               map['retrieveRecord'].length > 0) {
+            print(">>>>>>mapJKS" + map.toString());
             strProductevel3 =
                 (map['retrieveRecord'][0]['pl3'] ?? "0").toString();
             level3Controller.text =
                 map['retrieveRecord'][0]['level3Name'] ?? "";
+            for(int i=0;i<typeList.length;i++){
+              if(typeList[i].key.toString().trim() == map['retrieveRecord'][0]['ptcode'].toString().trim() ){
+                selectedType?.value =  DropDownValue(key: typeList[i].key, value: typeList[i].value);
+                selectedType?.refresh();
+                break;
+              }
+            }
 
-            for (var element in level1List) {
+            fetchProductLevel1((map['retrieveRecord'][0]['ptcode']??0).toString(),pl1: (map['retrieveRecord'][0]['pl1']??"").toString() );
+            fetchProductLevel2( (map['retrieveRecord'][0]['pl1']??0),pl2:(map['retrieveRecord'][0]['pl2'] ??"").toString());
+
+           /* for (var element in level1List) {
               if (element.key == map['retrieveRecord'][0]['pl1'].toString()) {
                 selectedLevel1?.value =
                     new DropDownValue(key: element.key, value: element.value);
@@ -144,9 +178,10 @@ class ProductLevel3Controller extends GetxController {
                 selectedLevel2?.refresh();
                 break;
               }
-            }
+            }*/
+
           } else {
-            strProductevel3 = "0";
+            // strProductevel3 = "0";
             // LoadingDialog.showErrorDialog((map??"").toString());
           }
         });

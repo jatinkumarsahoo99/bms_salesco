@@ -53,6 +53,7 @@ class ProductMasterView extends GetView<ProductMasterController> {
                               focusNode: controllerX.productNode,
                               width:  0.5,
                               autoFocus: true,
+                              maxLen: 40,
                               // focusNode: controllerX.brandName,
                               // isEnable: controllerX.isEnable,
                               onchanged: (value) {

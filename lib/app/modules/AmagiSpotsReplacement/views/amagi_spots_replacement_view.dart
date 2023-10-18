@@ -331,7 +331,7 @@ class AmagiSpotsReplacementView
                       selected: selectEventType,
                       dialogHeight: Get.height * .7,
                       onFocusChange: (val){},
-                      height: Get.height * 0.067,
+                      height: Get.height * 0.067,widgetKey: GlobalKey(),
                       // inkWellFocusNode: objectiveNode,
                       autoFocus: true,
                     ),
@@ -339,7 +339,8 @@ class AmagiSpotsReplacementView
                   InputFields.formField1(
                     hintTxt: "Tx Caption",
                     controller: txCaptionController,
-                    width: 0.2,
+                    width: 0.2,maxLen: 40,
+
                     // autoFocus: true,
                     // focusNode: controllerX.brandName,
                     // isEnable: controllerX.isEnable,
@@ -363,6 +364,7 @@ class AmagiSpotsReplacementView
                     // focusNode: controllerX.brandName,
                     // isEnable: controllerX.isEnable,
                     onchanged: (value) {},
+                    maxLen: 500,
                     autoFocus: false,
                   ),
                 ],

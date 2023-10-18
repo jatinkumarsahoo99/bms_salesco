@@ -45,7 +45,7 @@ class ProductLevel2Controller extends GetxController {
           }
         });
   }
-  fetchProductLevel1(String ptcode){
+  fetchProductLevel1(String ptcode,{String? pl1}){
     LoadingDialog.call();
     Get.find<ConnectorControl>().GETMETHODCALL(
         api: ApiFactory.PRODUCT_LEVEL2_GET_PRODUCT_LEVEL1+"?ptcode="+ptcode,
@@ -62,6 +62,16 @@ class ProductLevel2Controller extends GetxController {
                   e, "pl1", "level1Name"));
             });
             level1List = dataList;
+            if(pl1 != null && pl1 != "" && level1List.isNotEmpty){
+              for (var element in level1List) {
+                if(element.key.toString().trim() == pl1.toString().trim()){
+                  selectedLevel1?.value =  DropDownValue(key:element.key ,value:element.value) ;
+                  selectedLevel1?.refresh();
+                  break;
+                }
+              }
+            }
+
           }else{
             level1List.clear();
           }
@@ -74,7 +84,8 @@ class ProductLevel2Controller extends GetxController {
     isListenerActive = false;
     level2Controller.text = (level2Controller.text??"").toString().toUpperCase();
     Map<String,dynamic> sendData = {
-      "Pl2":int.parse(strProductevel2),
+      // "Pl2":int.parse(strProductevel2),
+      "Pl2":0,
       "Level1Name":level2Controller.text,
       "Pl1":int.parse((selectedLevel1?.value?.key??"0")),
     };
@@ -99,16 +110,10 @@ class ProductLevel2Controller extends GetxController {
                 break;
               }
             }
-            for (var element in level1List) {
-              if(element.key == map['retrieveRecord'][0]['pl1'].toString()){
-                selectedLevel1?.value = new DropDownValue(key:element.key ,value:element.value) ;
-                selectedLevel1?.refresh();
-                break;
-              }
-            }
-
+            // map['retrieveRecord'][0]['pl1'].toString()
+            fetchProductLevel1((map['retrieveRecord'][0]['pTcode'].toString()),pl1: map['retrieveRecord'][0]['pl1'].toString());
           }else{
-            strProductevel2 = "0";
+            // strProductevel2 = "0";
             // LoadingDialog.showErrorDialog((map??"").toString());
           }
         });
@@ -129,14 +134,13 @@ class ProductLevel2Controller extends GetxController {
   }
   bool contin = true;
   productLevel2Save(){
-    if (strProductevel2 != "0" && contin) {
+    if (strProductevel2 != "0") {
       LoadingDialog.recordExists(
           "Record Already exist!\nDo you want to modify it?", () {
         isListenerActive = false;
-        contin = false;
+        // contin = false;
         saveCall();
       }, cancel: () {
-        contin = false;
         // Get.back();
       });
     }else{

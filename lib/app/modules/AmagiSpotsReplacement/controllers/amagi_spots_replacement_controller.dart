@@ -661,14 +661,16 @@ class AmagiSpotsReplacementController extends GetxController {
           //           For I = 0 To tblLocal.ColumnCount - 1
           // Dr.cells["BookingNumber"].style.font = new Font(Control.DefaultFont, FontStyle.bold);
           //Next
-          Unalloc +=
+          Dr.cells['bookingNumberIsBold']?.value = true;
+          Unalloc = Unalloc +
               double.parse((Dr.cells["tapeDuration"]?.value ?? "0").toString());
         } else {
           //Dr.DefaultCellStyle.BackColor = Color.White
           //For I = 0 To tblLocal.ColumnCount - 1
           // Dr.cells["BookingNumber"].style.font = new Font(Control.DefaultFont, FontStyle.Regular);
           //Next
-          Alloc +=
+          Dr.cells['bookingNumberIsBold']?.value = false;
+          Alloc = Alloc +
               double.parse((Dr.cells["tapeDuration"]?.value ?? "0").toString());
         }
       }
@@ -698,13 +700,15 @@ class AmagiSpotsReplacementController extends GetxController {
       // initialise font for master and channels to regular
 
       for (PlutoRow dd in (masterSpotsStateManager?.rows) ?? []) {
+        dd.cells['bookingNumberIsBold']?.value = false;
         // dd.cells["Bookingnumber"].style.font = new Font(Control.DefaultFont, FontStyle.Regular);
       }
 
       for (PlutoRow dd in (childChannelStateManager?.rows) ?? []) {
-        for (I = 0; I < (childChannelStateManager?.columns.length ?? 0); I++) {
-          // dd.Cells[I].style.font = new Font(Control.DefaultFont, FontStyle.Regular);
-        }
+        dd.cells['channelnameIsBold']?.value = true;
+        dd.cells['locationnameIsBold']?.value = true;
+        dd.cells['totalSpotsIsBold']?.value = true;
+        dd.cells['unallocatedSpotsIsBold']?.value = true;
       }
       // High light Spots allocated and channels where they are allocated
       try {
@@ -720,6 +724,7 @@ class AmagiSpotsReplacementController extends GetxController {
           for (PlutoRow dd in (masterSpotsStateManager?.rows) ?? []) {
             if (element.parentID.toString().trim() ==
                 dd.cells['id']?.value.toString().trim()) {
+              dd.cells['bookingNumberIsBold']?.value = true;
               // dd.Cells["Bookingnumber"].style.font = new Font(Control.DefaultFont, FontStyle.bold);
             }
           }
@@ -756,7 +761,9 @@ class AmagiSpotsReplacementController extends GetxController {
             }
           }
         }*/
-      } catch (ex) {}
+      } catch (ex) {
+
+      }
 
       try {
         // var _dt = DtLocalSpots.Copy();

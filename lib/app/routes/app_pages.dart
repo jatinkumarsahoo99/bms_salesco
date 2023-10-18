@@ -58,7 +58,7 @@ class AppPages {
 
   static const INITIAL = kReleaseMode
       ? Routes.HOME
-      : Routes.AMAGI_SPOTS_REPLACEMENT +
+      : Routes.WORKFLOW_DEFINITION +
           "?personalNo=R9vVPL7er1Os/usemWG/Iw==&loginCode=0iGe3vK5h2KGjfSKZTpmsQ==&formName=OI8ukDpPPVN0I2BEXu2h4nuFu%2BZm1ZRpvP8NL4XCXzQ%3D";
 
   static final routes = [
@@ -271,16 +271,19 @@ class AppPages {
       binding: CommonDocsBinding(),
     ),
     GetPage(
-      name: _Paths.RELESE_ORDER_RESCHEDULE_TAPE_I_D,
-      page: () => AuthGuard(childName: _Paths.RELESE_ORDER_RESCHEDULE_TAPE_I_D),
+      name: _Paths.DEALVS_R_O_DATA_REPORT,
+      page: () => AuthGuard(childName: _Paths.DEALVS_R_O_DATA_REPORT),
+      // binding: DealvsRODataReportBinding(),
     ),
     GetPage(
       name: _Paths.BOOKING_STATUS_REPORT,
       page: () => AuthGuard(childName: _Paths.BOOKING_STATUS_REPORT),
+      // binding: BookingStatusReportBinding(),
     ),
     GetPage(
       name: _Paths.PROGRAM_WISE_REVENUE_REPORT,
       page: () => AuthGuard(childName: _Paths.PROGRAM_WISE_REVENUE_REPORT),
+      // binding: ProgramWiseRevenueReportBinding(),
     ),
   ];
 }
