@@ -186,6 +186,7 @@ class AutoTimeLockView extends GetView<AutoTimeLockController> {
                                         ?.cells['channelName'],
                                     controller.lastSelectedIdx);
                               },
+                              exportFileName: "Manage Channel Lock",
                               widthSpecificColumn:
                                   Get.find<HomeController>().getGridWidthByKey(
                                 userGridSettingList:
