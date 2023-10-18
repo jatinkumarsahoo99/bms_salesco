@@ -19,7 +19,8 @@ class TapeIDCampaignController extends GetxController {
       startDateTC = TextEditingController(),
       endDateTC = TextEditingController();
   // var activityMonth = "", client = "", agency = "", brand = "", caption = "", duration = "", agencyTapeID = "", createdBy = "";
-  String selectedValuUI = "selectedValuUI", activityMonth = "";
+  String selectedValuUI = "selectedValuUI";
+  var activityMonth = "".obs;
   DateTime now = DateTime.now();
   PlutoGridStateManager? locationChannelManager, historyManager;
   int lastLocationChannelEditIdx = 0, historyEditIdx = 0;
@@ -69,7 +70,7 @@ class TapeIDCampaignController extends GetxController {
     lastLocationChannelEditIdx = 0;
     historyEditIdx = 0;
     endDateTC.clear();
-    activityMonth = "";
+    // activityMonth.obs = "";
     loadModel = null;
     tapeIdFN.requestFocus();
     updateUI();
@@ -78,6 +79,13 @@ class TapeIDCampaignController extends GetxController {
   updateUI() {
     selectedTab.refresh();
     update([selectedValuUI]);
+  }
+
+  generateActivityMonth() {
+    if (startDateTC.text.contains("-")) {
+      var tempSplit = startDateTC.text.split("-");
+      activityMonth.value = "${tempSplit[2]}${tempSplit[1]}";
+    }
   }
 
   tapeIdLeave() {
@@ -89,7 +97,8 @@ class TapeIDCampaignController extends GetxController {
           Get.back();
           if (resp is Map<String, dynamic> && resp['tapeIdDetails'] != null) {
             loadModel = TapeIDCampaignLoadModel.fromJson(resp);
-            activityMonth = DateFormat("yyyyMM").format(DateTime.now());
+            // activityMonth = DateFormat("yyyyMM").format(DateTime.now());
+            generateActivityMonth();
             if (loadModel?.tapeIdDetails.agencyName == null) {
               loadModel = null;
               LoadingDialog.showErrorDialog("Tape id not found.");
