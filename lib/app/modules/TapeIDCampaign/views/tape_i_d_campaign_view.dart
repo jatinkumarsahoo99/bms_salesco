@@ -204,6 +204,7 @@ class TapeIDCampaignView extends GetView<TapeIDCampaignController> {
                                       id: "grid",
                                       builder: (controller) {
                                         return DataGridFromMap3(
+                                          exportFileName: "Tape ID Campaign",
                                           checkBoxColumnKey: ["isActive"],
                                           actionIconKey: ["isActive"],
                                           checkBoxStrComparison: "true",
@@ -289,6 +290,7 @@ class TapeIDCampaignView extends GetView<TapeIDCampaignController> {
                                       id: "grid",
                                       builder: (logic) {
                                         return DataGridFromMap3(
+                                          exportFileName: "Tape ID Campaign",
                                           colorCallback: (row) => (row.row.cells
                                                   .containsValue(controller
                                                       .locationChannelManager

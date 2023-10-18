@@ -168,7 +168,9 @@ class ReleseOrderRescheduleTapeIDView extends StatelessWidget {
                       ),
                       FormButton(
                         btnText: "Clear",
-                        callback: () {},
+                        callback: () {
+                          Get.find<HomeController>().clearPage1();
+                        },
                       ),
                       Obx(
                         () => Visibility(
@@ -199,6 +201,15 @@ class ReleseOrderRescheduleTapeIDView extends StatelessWidget {
                                   .toList(),
                               formatDate: false,
                               hideCode: false,
+                              exportFileName: "RO Reschedule By Tapecode",
+                              hideKeys: const [
+                                'programCode',
+                                'revType',
+                                'tapeLanguage',
+                                'edit',
+                                'midPre',
+                                'positionCode'
+                              ],
                               onColumnHeaderDoubleTap: (columnName) {
                                 if (columnName == "action") {
                                   if (controller.selectedTapeRight == null) {
