@@ -235,52 +235,56 @@ class UpdateExecutiveView extends GetView<UpdateExecutiveController> {
                                       controllerX.verifyDataModel?.verifiy != null &&
                                       (controllerX.verifyDataModel?.verifiy?.length??0) >0
                                   )?Container(
-                                    child:ListView.builder(
-                                      itemCount:controllerX.verifyDataModel?.verifiy?.length??0,
-                                        itemBuilder:
-                                        (BuildContext context, int index){
-                                        return InkWell(
-                                          onTap: (){
-                                            controllerX.selectedIndex =index;
-                                            controllerX.update(['grid']);
-                                          },
-                                          child: Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Checkbox(
-                                                  value: controllerX.verifyDataModel?.
-                                                  verifiy?[index].isChecked,
-                                                  onChanged: (val){
-                                                    controllerX.verifyDataModel?.
-                                                    verifiy?[index].isChecked = val;
-                                                    controllerX.update(['grid']);
-                                                  }),
-                                              Expanded(
-                                                child: Container(
-                                                    color: (controllerX
-                                                        .selectedIndex ==
-                                                        index)
-                                                        ? Colors.deepPurpleAccent
-                                                        : Colors.white,
-                                                    child: Text(
-                                                      controllerX
-                                                          .verifyDataModel
-                                                          ?.verifiy?[index]
-                                                          .bookingnumber ??
-                                                          "",
-                                                      style: TextStyle(
-                                                          color: Colors.black,
-                                                          fontSize: 12),
-                                                    )),
-                                              ),
-                                              SizedBox(
-                                                width: 7,
-                                              )
-                                            ],
-                                          ),
-                                        );
+                                    child:Focus(
+                                      skipTraversal: true,
+                                      child: ListView.builder(
+                                        itemCount:controllerX.verifyDataModel?.verifiy?.length??0,
+                                          itemBuilder:
+                                          (BuildContext context, int index){
+                                          return InkWell(
+                                            onTap: (){
+                                              controllerX.selectedIndex =index;
+                                              controllerX.update(['grid']);
+                                            },
+                                            child: Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              children: [
+                                                Checkbox(
+                                                    value: controllerX.verifyDataModel?.
+                                                    verifiy?[index].isChecked,
+                                                    focusNode: FocusNode(skipTraversal: true),
+                                                    onChanged: (val){
+                                                      controllerX.verifyDataModel?.
+                                                      verifiy?[index].isChecked = val;
+                                                      controllerX.update(['grid']);
+                                                    }),
+                                                Expanded(
+                                                  child: Container(
+                                                      color: (controllerX
+                                                          .selectedIndex ==
+                                                          index)
+                                                          ? Colors.deepPurpleAccent
+                                                          : Colors.white,
+                                                      child: Text(
+                                                        controllerX
+                                                            .verifyDataModel
+                                                            ?.verifiy?[index]
+                                                            .bookingnumber ??
+                                                            "",
+                                                        style: TextStyle(
+                                                            color: Colors.black,
+                                                            fontSize: 12),
+                                                      )),
+                                                ),
+                                                SizedBox(
+                                                  width: 7,
+                                                )
+                                              ],
+                                            ),
+                                          );
 
-                                    }),
+                                      }),
+                                    ),
                                   ): Container();
                                 }
                             ),

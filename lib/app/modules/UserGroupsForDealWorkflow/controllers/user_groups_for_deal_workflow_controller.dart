@@ -135,7 +135,9 @@ class UserGroupsForDealWorkflowController extends GetxController {
           print(">>>>>" + map.toString());
           if (map is Map && map.containsKey('save') && map['save'] != null) {
             LoadingDialog.callDataSavedMessage(
-                map['save']['errorMessage'] ?? "");
+                map['save']['errorMessage'] ?? "",callback: (){
+                  clearAll();
+            });
           } else {
             LoadingDialog.showErrorDialog(
                 (map ?? "Something went wrong").toString());
