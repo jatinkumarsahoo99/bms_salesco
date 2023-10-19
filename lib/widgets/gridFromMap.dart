@@ -1482,11 +1482,8 @@ Color getColors(PlutoColumnRendererContext plutoCon) {
 FontWeight getChannelFont(PlutoColumnRendererContext plutoCon) {
   FontWeight font = FontWeight.normal;
   plutoCon.stateManager.resetShowFrozenColumn();
-  // print(">>>>>>>>>>>keys"+("${(plutoCon.column.field??"").toString().trim()} Is Bold"));
-  // print(">>>>>>>>>>>keysValues"+("${(plutoCon.cell.value??"").toString().trim()}"));
-  // print(">>>>>>>>>>>>>>>>>>>keyGetJKsVal${plutoCon.stateManager.rows[plutoCon.rowIdx].cells["channelnameIsBold"]?.value}");
   List<PlutoColumn> listOfHideColumn = [];
-/*  for (var element in plutoCon.stateManager.columns) {
+  for (var element in plutoCon.stateManager.columns) {
     // print(">>>>>>>>>>>>>>>>>>>keyGetJKs${element.title} ${element.key}");
     if (element.title.toString().trim() == "Unallocated Spots Is Bold" ||
         element.title.toString().trim() == "Total Spots Is Bold" ||
@@ -1494,7 +1491,7 @@ FontWeight getChannelFont(PlutoColumnRendererContext plutoCon) {
         element.title.toString().trim() == "Channelname Is Bold") {
       listOfHideColumn.add(element);
     }
-  }*/
+  }
 
   if (plutoCon
           .stateManager
@@ -1507,30 +1504,20 @@ FontWeight getChannelFont(PlutoColumnRendererContext plutoCon) {
     font = FontWeight.bold;
   }
   if (listOfHideColumn.isNotEmpty) {
-    // plutoCon.stateManager.hideColumns(listOfHideColumn, true);
+    plutoCon.stateManager.hideColumns(listOfHideColumn, true);
   }
-  /*for (var element in plutoCon.stateManager.columns) {
-    print(">>>>>>>>>>>>>>>>>>>keyGetJKsAfterHide${element.title} ${element.key}");
-  }*/
   return font;
 }
 
 FontWeight getMasterFont(PlutoColumnRendererContext plutoCon) {
   FontWeight font = FontWeight.normal;
   plutoCon.stateManager.resetShowFrozenColumn();
-  // print(">>>>>>>>>>>keys"+("${(plutoCon.column.field??"").toString().trim()} Is Bold"));
-  // print(">>>>>>>>>>>keysValues"+("${(plutoCon.cell.value??"").toString().trim()}"));
-  // print(">>>>>>>>>>>>>>>>>>>keyGetJKsVal${plutoCon.stateManager.rows[plutoCon.rowIdx].cells["channelnameIsBold"]?.value}");
   List<PlutoColumn> listOfHideColumn = [];
-/*  for (var element in plutoCon.stateManager.columns) {
-    // print(">>>>>>>>>>>>>>>>>>>keyGetJKs${element.title} ${element.key}");
-    if (element.title.toString().trim() == "Unallocated Spots Is Bold" ||
-        element.title.toString().trim() == "Total Spots Is Bold" ||
-        element.title.toString().trim() == "Locationname Is Bold" ||
-        element.title.toString().trim() == "Channelname Is Bold") {
+  for (var element in plutoCon.stateManager.columns) {
+    if (element.title.toString().trim() == "Booking Number Is Bold" ) {
       listOfHideColumn.add(element);
     }
-  }*/
+  }
 
   if (plutoCon
       .stateManager
@@ -1542,31 +1529,21 @@ FontWeight getMasterFont(PlutoColumnRendererContext plutoCon) {
       "true") {
     font = FontWeight.bold;
   }
-  // if (listOfHideColumn.isNotEmpty) {
-  //   plutoCon.stateManager.hideColumns(listOfHideColumn, true);
-  // }
-  /*for (var element in plutoCon.stateManager.columns) {
-    print(">>>>>>>>>>>>>>>>>>>keyGetJKsAfterHide${element.title} ${element.key}");
-  }*/
+  if (listOfHideColumn.isNotEmpty) {
+    plutoCon.stateManager.hideColumns(listOfHideColumn, true);
+  }
   return font;
 }
 
 FontWeight getLocalFont(PlutoColumnRendererContext plutoCon) {
   FontWeight font = FontWeight.normal;
   plutoCon.stateManager.resetShowFrozenColumn();
-  // print(">>>>>>>>>>>keys"+("${(plutoCon.column.field??"").toString().trim()} Is Bold"));
-  // print(">>>>>>>>>>>keysValues"+("${(plutoCon.cell.value??"").toString().trim()}"));
-  // print(">>>>>>>>>>>>>>>>>>>keyGetJKsVal${plutoCon.stateManager.rows[plutoCon.rowIdx].cells["channelnameIsBold"]?.value}");
   List<PlutoColumn> listOfHideColumn = [];
-  /*for (var element in plutoCon.stateManager.columns) {
-    // print(">>>>>>>>>>>>>>>>>>>keyGetJKs${element.title} ${element.key}");
-    if (element.title.toString().trim() == "Unallocated Spots Is Bold" ||
-        element.title.toString().trim() == "Total Spots Is Bold" ||
-        element.title.toString().trim() == "Locationname Is Bold" ||
-        element.title.toString().trim() == "Channelname Is Bold") {
+  for (var element in plutoCon.stateManager.columns) {
+    if (element.title.toString().trim() == "Booking Number Is Bold" ) {
       listOfHideColumn.add(element);
     }
-  }*/
+  }
 
   if (plutoCon
       .stateManager
@@ -1578,12 +1555,9 @@ FontWeight getLocalFont(PlutoColumnRendererContext plutoCon) {
       "true") {
     font = FontWeight.bold;
   }
-  // if (listOfHideColumn.isNotEmpty) {
-  //   plutoCon.stateManager.hideColumns(listOfHideColumn, true);
-  // }
-  /*for (var element in plutoCon.stateManager.columns) {
-    print(">>>>>>>>>>>>>>>>>>>keyGetJKsAfterHide${element.title} ${element.key}");
-  }*/
+  if (listOfHideColumn.isNotEmpty) {
+    plutoCon.stateManager.hideColumns(listOfHideColumn, true);
+  }
   return font;
 }
 
