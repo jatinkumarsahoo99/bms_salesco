@@ -314,9 +314,9 @@ class WorkflowDefinitionController extends GetxController {
         "workflowid": selectedType?.key ?? "",
         "stationCode": selectedStation?.key ?? "",
         "teamid": selectedTeam?.key ?? "",
-        "lstSavedt": dealWorkDefinitionGridModel?.display
+       /* "lstSavedt": dealWorkDefinitionGridModel?.display
             ?.map((e) => e.toJson1())
-            .toList(),
+            .toList(),*/
         "lstSavedt":getDataFromGrid(gridStateManager),
         "station": {
           "locationcode": selectedCopyToLocation?.key ?? "",
@@ -376,9 +376,9 @@ class WorkflowDefinitionController extends GetxController {
               rowMap[key] = row.cells[key]?.value;
             }
           }else if(key.toString().trim() == "personnelNo"){
-            rowMap["employeeCode"] = row.cells["personnelNo"]?.value ;
+            rowMap["employeeCode"] = row.cells["personnelNo"]?.value ??"";
           }else if(key.toString().trim() == "employees"){
-            rowMap["employeename"] = row.cells["employees"]?.value ;
+            rowMap["employeename"] = row.cells["employees"]?.value??"" ;
           }else{
             rowMap[key] = row.cells[key]?.value;
           }
