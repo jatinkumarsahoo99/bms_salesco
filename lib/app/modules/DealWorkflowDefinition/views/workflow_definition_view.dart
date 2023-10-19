@@ -393,10 +393,11 @@ class WorkflowDefinitionView extends GetView<WorkflowDefinitionController> {
                                   }
                                 }
                               },
-                                  child: DataGridFromMap(
+                                  child: DataGridFromMap3(
                                       showSrNo: false,
                                       hideCode: false,
                                       formatDate: false,
+                                      exportFileName: "WorkFlow Definition",
                                       mode: PlutoGridMode.selectWithOneTap,
                                       onload: (PlutoGridOnLoadedEvent load) {
                                         controllerX.gridStateManager =

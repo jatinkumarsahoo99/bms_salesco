@@ -23,6 +23,9 @@ class UserGroupsForDealWorkflowController extends GetxController {
   DropDownValue? selectedChannel;
   DisPlayGroupModel? disPlayGroupModel =
       DisPlayGroupModel(displayGroup: DisplayGroup(employees: []));
+
+
+
   TextEditingController groupTextController = new TextEditingController();
   FocusNode groupNode = FocusNode();
   bool isListenerActive = false;
@@ -31,9 +34,20 @@ class UserGroupsForDealWorkflowController extends GetxController {
     if (selectedEmployee == null) {
       LoadingDialog.showErrorDialog("Please select employee");
     } else {
-      disPlayGroupModel?.displayGroup?.employees?.add(Employees(
-          employees: selectedEmployee?.value,
-          personnelno: selectedEmployee?.key));
+      print(">>>>>>>>>>>>>>add click");
+      if(disPlayGroupModel?.displayGroup?.employees != null &&
+          (disPlayGroupModel?.displayGroup?.employees?.length??0) >0 ){
+        disPlayGroupModel?.displayGroup?.employees?.add( Employees(
+            employees: selectedEmployee?.value,
+            personnelno: selectedEmployee?.key));
+      }else{
+        disPlayGroupModel =   DisPlayGroupModel(displayGroup: DisplayGroup(employees: [Employees(
+            employees: selectedEmployee?.value,
+            personnelno: selectedEmployee?.key)]));
+      }
+
+
+      print(">>>>>>>>>>>>data"+(disPlayGroupModel?.toJson()).toString());
       update(['grid']);
     }
   }
