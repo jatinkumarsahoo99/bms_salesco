@@ -73,7 +73,7 @@ class Display {
     data['sequenceName'] = this.sequenceName;
     data['formName'] = this.formName;
     data['groupID'] = this.groupID;
-    data['groupName'] = this.groupName;
+    data['groupName'] = this.groupName??"";
     data['personnelNo'] = this.personnelNo;
     data['employees'] = this.employees;
     // data['employeeCode'] = this.personnelNo;

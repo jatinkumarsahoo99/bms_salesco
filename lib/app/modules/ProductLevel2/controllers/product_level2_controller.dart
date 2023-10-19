@@ -206,6 +206,8 @@ class ProductLevel2Controller extends GetxController {
       productLevel2Save();
     }else if(str == "Clear"){
       clearAll();
+    }else if(str == "Search"){
+      search();
     }
 
   }
