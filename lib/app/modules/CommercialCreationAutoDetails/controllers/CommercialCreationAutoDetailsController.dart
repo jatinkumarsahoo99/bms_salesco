@@ -39,15 +39,21 @@ class CommercialCreationAutoDetailsController extends GetxController {
   Rxn<DropDownValue>? selectClient = Rxn<DropDownValue>();
   Rxn<DropDownValue>? selectBrand = Rxn<DropDownValue>();
   Rxn<DropDownValue>? selectLanguage = Rxn<DropDownValue>();
-  DropDownValue? selectCensorship;
-  DropDownValue? selectRevenue;
-  DropDownValue? selectSectype;
+
+  // DropDownValue? selectCensorship;
+  // DropDownValue? selectRevenue;
+  // DropDownValue? selectSectype;
+  Rxn<DropDownValue>? selectCensorship = Rxn<DropDownValue>();
+  Rxn<DropDownValue>? selectRevenue = Rxn<DropDownValue>();
+  Rxn<DropDownValue>? selectSectype = Rxn<DropDownValue>();
+
   Rxn<ComercialAutoLoadModel>? loadModel = Rxn<ComercialAutoLoadModel>(null);
   CommercialDetailsModel? commercialDetails;
 
   @override
   void onInit() {
-    if ((!Get.isRegistered<MainController>()) || Get.find<MainController>().user == null) {
+    if ((!Get.isRegistered<MainController>()) ||
+        Get.find<MainController>().user == null) {
       Get.to(NoDataFoundPage());
     }
     getLoad();
@@ -183,24 +189,28 @@ class CommercialCreationAutoDetailsController extends GetxController {
       LoadingDialog.call();
       var postMap = {
         "commercialCaption": caption_.text,
-        "commercialDuration": Utils.oldBMSConvertToSecondsValue(value:duration.value).toString()??"",
+        "commercialDuration":
+            Utils.oldBMSConvertToSecondsValue(value: duration.value)
+                    .toString() ??
+                "",
         "exportTapeCode": tapeId_.text,
         "brandCode": selectBrand?.value?.key ?? "",
         "som": som_.text,
         "modifiedBy": "",
-        "killDate": DateFormat("dd-MM-yyyy").format((DateFormat("d-M-yyyy").parse(endDate_.text))),
+        "killDate": DateFormat("dd-MM-yyyy")
+            .format((DateFormat("d-M-yyyy").parse(endDate_.text))),
         "houseID": tapeId_.text,
         "segmentNumber": 1,
         "despatchDate": DateFormat("dd-MM-yyyy").format(DateTime.now()),
         "RecievedOn": DateFormat("dd-MM-yyyy").format(DateTime.now()),
-        "eventtypecode": selectRevenue?.key ?? "",
-        "eventsubtype": selectSectype?.key ?? "",
+        "eventtypecode": selectRevenue?.value?.key ?? "",
+        "eventsubtype": selectSectype?.value?.key ?? "",
         "agencytapeid": commercialDetails?.lstShowACID![0].agencyId,
         "languagecode": selectLanguage?.value?.key ?? "",
         "clockid": commercialDetails?.lstShowACID![0].agencyId,
         "eom": eom_.text,
         "ExportTapeCaption": caption_.text,
-        "censorshipCode": selectCensorship?.key ?? "",
+        "censorshipCode": selectCensorship?.value?.key ?? "",
         "acid": commercialDetails?.lstShowACID![0].acid.toString()
       };
       Get.find<ConnectorControl>().POSTMETHOD(
@@ -210,7 +220,7 @@ class CommercialCreationAutoDetailsController extends GetxController {
             Get.back();
             if (map is Map &&
                 map.containsKey("lstsectype") &&
-                map["lstsectype"]!=null) {
+                map["lstsectype"] != null) {
               LoadingDialog.callDataSavedMessage("Data successfully");
             } else {
               LoadingDialog.callInfoMessage(map.toString());
