@@ -101,7 +101,7 @@ class CommercialLanguageSpecificationController extends GetxController {
           }).toList()
         };
         Get.find<ConnectorControl>().POSTMETHOD(
-            api: ApiFactory.COMMERCIAL_CREATION_SAVE(),
+            api: ApiFactory.COMMERCIAL_LANG_SPEC_SAVE,
             json: postMap,
             fun: (map) {
               Get.back();
