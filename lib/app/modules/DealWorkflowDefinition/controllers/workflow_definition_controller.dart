@@ -316,6 +316,7 @@ class WorkflowDefinitionController extends GetxController {
         "lstSavedt": dealWorkDefinitionGridModel?.display
             ?.map((e) => e.toJson1())
             .toList(),
+        "lstSavedt":getDataFromGrid(gridStateManager),
         "station": {
           "locationcode": selectedCopyToLocation?.key ?? "",
           "channelcode": selectedCopyToChannel?.key ?? "",
@@ -358,7 +359,25 @@ class WorkflowDefinitionController extends GetxController {
           });
     }
   }
-
+  List<Map<String, dynamic>> getDataFromGrid(
+      PlutoGridStateManager? statemanager) {
+    // statemanager.setFilter((element) => true);
+    // statemanager.notifyListeners();
+    List<Map<String, dynamic>> mapList = [];
+    if (statemanager != null) {
+      for (var row in statemanager.rows) {
+        Map<String, dynamic> rowMap = {};
+        for (var key in row.cells.keys) {
+          // if(key.toString().trim())
+          rowMap[key] = row.cells[key]?.value;
+        }
+        mapList.add(rowMap);
+      }
+      return mapList;
+    } else {
+      return mapList;
+    }
+  }
   onDoubleTap(int index) {
     isDoubleClick = true;
     // print(">>>>>>>>>>" + ((gridStateManager?.rows[index].cells['groupID'])?.value).toString());
