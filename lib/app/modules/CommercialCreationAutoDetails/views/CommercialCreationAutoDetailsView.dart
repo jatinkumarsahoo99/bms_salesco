@@ -27,9 +27,9 @@ class CommercialCreationAutoDetailsView
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-            "Details",
-            style: const TextStyle(color: Colors.deepPurple,fontWeight: FontWeight.w800)),
+        title: Text("Details",
+            style: const TextStyle(
+                color: Colors.deepPurple, fontWeight: FontWeight.w800)),
         backgroundColor: Colors.white,
         elevation: 2,
         leading: IconButton(
@@ -76,25 +76,29 @@ class CommercialCreationAutoDetailsView
                             ),
                           ),
                           Obx(() => Padding(
-                            padding: const EdgeInsets.only(left: 5),
-                            child: DropDownField.formDropDownSearchAPI2(
-                                GlobalKey(), context,
-                                title: "Brand",
-                                autoFocus: true,
-                                customInData: "lstbrandmaster",
-                                url: ApiFactory
-                                    .COMMERCIAL_CREATION_BRAND_LIST(controllerX.selectClient?.value?.key??"",),
-                                parseKeyForKey: "Brandcode",
-                                parseKeyForValue: "Brandname",
-                                onchanged: (data) {
-                                  controllerX.selectBrand?.value=data;
+                                padding: const EdgeInsets.only(left: 5),
+                                child: DropDownField.formDropDownSearchAPI2(
+                                    GlobalKey(), context,
+                                    title: "Brand",
+                                    autoFocus: true,
+                                    customInData: "lstbrandmaster",
+                                    url: ApiFactory
+                                        .COMMERCIAL_CREATION_BRAND_LIST(
+                                      controllerX.selectClient?.value?.key ??
+                                          "",
+                                    ),
+                                    parseKeyForKey: "Brandcode",
+                                    parseKeyForValue: "Brandname",
+                                    onchanged: (data) {
+                                  controllerX.selectBrand?.value = data;
                                 },
-                                selectedValue: controllerX.selectBrand?.value,
-                                width: (Get.width * 0.60) + 20
-                              // padding: const EdgeInsets.only(
+                                    selectedValue:
+                                        controllerX.selectBrand?.value,
+                                    width: (Get.width * 0.60) + 20
+                                    // padding: const EdgeInsets.only(
 
-                            ),
-                          )),
+                                    ),
+                              )),
                           Padding(
                             padding: const EdgeInsets.only(left: 5),
                             child: InputFields.formField1Width(
@@ -144,6 +148,7 @@ class CommercialCreationAutoDetailsView
                                 controllerX.selectCensorship = data;
                               }, "Censorship", 0.12,
                                   searchReq: true,
+                                  labelBold: true,
                                   selected: controllerX.selectCensorship),
                             ),
                           ),
@@ -158,6 +163,7 @@ class CommercialCreationAutoDetailsView
                                 controllerX.getRevenueLeave(data.key ?? "");
                               }, "Revenue", 0.12,
                                   searchReq: true,
+                                  labelBold: true,
                                   selected: controllerX.selectRevenue),
                             ),
                           ),
@@ -165,11 +171,11 @@ class CommercialCreationAutoDetailsView
                             () => Padding(
                               padding: const EdgeInsets.only(left: 5),
                               child: DropDownField.formDropDown1WidthMap(
-                                  controllerX.secTypeList.value ??
-                                      [], (data) {
+                                  controllerX.secTypeList.value ?? [], (data) {
                                 controllerX.selectSectype = data;
                               }, "Sec Type", 0.12,
                                   searchReq: true,
+                                  labelBold: true,
                                   selected: controllerX.selectSectype),
                             ),
                           ),
@@ -210,8 +216,8 @@ class CommercialCreationAutoDetailsView
                               title: "End Date",
                               splitType: "-",
                               // year: DateTime.now().year+1,
-                              intailDate: DateTime(DateTime.now().year+1,DateTime.now().month,DateTime.now().day),
-                              startDate: DateTime(DateTime.now().year+1,DateTime.now().month,DateTime.now().day),
+                              // intailDate: DateTime(DateTime.now().year+1,DateTime.now().month,DateTime.now().day),
+                              // startDate: DateTime(DateTime.now().year+1,DateTime.now().month,DateTime.now().day),
                               widthRation: 0.12,
                               formatting: "dd-MM-yyyy",
                               onFocusChange: (data) {
@@ -242,14 +248,15 @@ class CommercialCreationAutoDetailsView
                     ),
                     VerticalDivider(),
                     Expanded(
-                      child: Obx(() => controllerX.htmlBody.value!=""?HtmlWidget(
-                            controllerX.htmlBody.value,
-                        renderMode: RenderMode.column,
+                      child: Obx(() => controllerX.htmlBody.value != ""
+                          ? HtmlWidget(
+                              controllerX.htmlBody.value,
+                              renderMode: RenderMode.column,
 
-                        // set the default styling for text
-                        textStyle: TextStyle(fontSize: 14),
-
-                      ):Container()),
+                              // set the default styling for text
+                              textStyle: TextStyle(fontSize: 14),
+                            )
+                          : Container()),
                     )
                   ],
                 ),
@@ -344,8 +351,22 @@ class CommercialCreationAutoDetailsView
         controllerX.save();
         break;
       case "Clear":
-        Get.find<HomeController>().clearPage1();
-        Get.delete<CommercialCreationAutoDetailsController>();
+        controllerX.selectClient?.value = null;
+        controllerX.selectBrand?.value = null;
+        controllerX.selectLanguage?.value = null;
+        controllerX.selectCensorship?.value = null;
+        controllerX.selectRevenue?.value = null;
+        controllerX.agencyId_.text = "";
+        controllerX.tapeId_.text = "";
+        controllerX.som_.text = "00:00:00:00";
+        controllerX.eom_.text = "00:00:00:00";
+        controllerX.duration.value = "00:00:00:00";
+        controllerX.endDate_.text = "";
+        controllerX.caption_.text = "";
+        controllerX.update(["update"]);
+
+        // Get.find<HomeController>().clearPage1();
+        // Get.delete<CommercialCreationAutoDetailsController>();
         break;
     }
   }
