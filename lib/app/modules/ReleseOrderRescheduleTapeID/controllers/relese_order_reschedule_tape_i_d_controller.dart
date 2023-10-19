@@ -22,7 +22,7 @@ class ReleseOrderRescheduleTapeIDController extends GetxController {
       brandList = <DropDownValue>[].obs,
       tapeList = <DropDownValue>[].obs,
       tapeListRight = <DropDownValue>[].obs;
-  bool isAllCheck = false;
+  var isAllCheck = false.obs;
   int? lastSelectedRow;
 
   DropDownValue? selectedLocation,
@@ -326,7 +326,7 @@ class ReleseOrderRescheduleTapeIDController extends GetxController {
               tapeCodeDura.value = "0";
             }
 
-            isAllCheck = false;
+            isAllCheck.value = false;
             lastSelectedRow = null;
 
             for (var i = 0; i < tapeList.length; i++) {
@@ -407,7 +407,13 @@ class ReleseOrderRescheduleTapeIDController extends GetxController {
                   Get.find<HomeController>().clearPage1();
                 });
           } else {
-            LoadingDialog.showErrorDialog(resp.toString());
+            if (resp != null &&
+                resp is Map<String, dynamic> &&
+                resp['message'] != null) {
+              LoadingDialog.showErrorDialog(resp['message'].toString());
+            } else {
+              LoadingDialog.showErrorDialog(resp.toString());
+            }
           }
         },
       );
