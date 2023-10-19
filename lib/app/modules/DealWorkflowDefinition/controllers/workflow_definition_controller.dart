@@ -284,6 +284,7 @@ class WorkflowDefinitionController extends GetxController {
           } else {
             dealWorkDefinitionGridModel = DealWorkDefinitionGridModel(display: []);
             approvalSequenceId="";
+            gridStateManager = null;
             clearNew();
             update(['grid']);
           }
@@ -368,8 +369,20 @@ class WorkflowDefinitionController extends GetxController {
       for (var row in statemanager.rows) {
         Map<String, dynamic> rowMap = {};
         for (var key in row.cells.keys) {
-          // if(key.toString().trim())
-          rowMap[key] = row.cells[key]?.value;
+          if(key.toString().trim() == "groupID"){
+            if(row.cells[key]?.value == 0){
+              rowMap[key] = null;
+            }else{
+              rowMap[key] = row.cells[key]?.value;
+            }
+          }else if(key.toString().trim() == "personnelNo"){
+            rowMap["employeeCode"] = row.cells["personnelNo"]?.value ;
+          }else if(key.toString().trim() == "employees"){
+            rowMap["employeename"] = row.cells["employees"]?.value ;
+          }else{
+            rowMap[key] = row.cells[key]?.value;
+          }
+
         }
         mapList.add(rowMap);
       }
@@ -433,7 +446,7 @@ class WorkflowDefinitionController extends GetxController {
         gridStateManager?.rows[selIndex].cells['formName']?.value = formNameController.text ?? "";
         gridStateManager?.rows[selIndex].cells['personnelNo']?.value = selectedUser?.key ?? "";
         gridStateManager?.rows[selIndex].cells['groupID']?.value = (selectedGroup?.key != null &&
-            selectedGroup?.key != "" )? int.parse(selectedGroup?.key??"0"):"";
+            selectedGroup?.key != "" )? int.parse(selectedGroup?.key??"0"):0;
         gridStateManager?.rows[selIndex].cells['groupName']?.value = selectedGroup?.value ?? "";
         gridStateManager?.rows[selIndex].cells['employees']?.value = selectedUser?.value ?? "";
 
@@ -472,12 +485,13 @@ class WorkflowDefinitionController extends GetxController {
                 employees: selectedUser?.value ?? "",
                 formName: formNameController.text ?? "",
                 groupID: (selectedGroup?.key != null &&
-                    selectedGroup?.key != "" )? int.parse(selectedGroup!.key!):null,
+                    selectedGroup?.key != "" )? int.parse(selectedGroup?.key??"0"):0,
                 groupName: selectedGroup?.value ?? "",
                 personnelNo: selectedUser?.key ?? "",
                 sequenceName: stepNameController.text ?? ""));
           update(['grid']);
-        }else{
+        }
+        else{
           gridStateManager?.insertRows(selIndex,
               [PlutoRow(cells: {
                 "approvalSequenceID":PlutoCell(value: int.parse(approvalSequenceId ?? "0")),
@@ -485,17 +499,13 @@ class WorkflowDefinitionController extends GetxController {
                 "formName": PlutoCell(value:formNameController.text ?? ""),
                 "personnelNo": PlutoCell(value:selectedUser?.key ?? ""),
                 "groupID":PlutoCell(value: (selectedGroup?.key != null &&
-                    selectedGroup?.key != "" )? int.parse(selectedGroup?.key??"0"):""),
+                    selectedGroup?.key != "" )? int.parse(selectedGroup?.key??"0"):0),
                 "groupName": PlutoCell(value: selectedGroup?.value ?? ""),
                 "employees":PlutoCell(value: selectedUser?.value ?? "")
 
               })]);
           gridStateManager?.notifyListeners();
         }
-
-
-
-
         // Get.back();
       }
       clearNew();
@@ -511,7 +521,7 @@ class WorkflowDefinitionController extends GetxController {
         gridStateManager?.rows[(selectedIndex??0)].cells['formName']?.value = formNameController.text ?? "";
         gridStateManager?.rows[selectedIndex??0].cells['personnelNo']?.value = selectedUser?.key ?? "";
         gridStateManager?.rows[(selectedIndex??0)].cells['groupID']?.value = (selectedGroup?.key != null &&
-            selectedGroup?.key != "" )? int.parse(selectedGroup?.key??"0"):"";
+            selectedGroup?.key != "" )? int.parse(selectedGroup?.key??"0"):0;
         gridStateManager?.rows[(selectedIndex??0)].cells['groupName']?.value = selectedGroup?.value ?? "";
         gridStateManager?.rows[(selectedIndex??0)].cells['employees']?.value = selectedUser?.value ?? "";
 
@@ -549,7 +559,7 @@ class WorkflowDefinitionController extends GetxController {
                 employees: selectedUser?.value ?? "",
                 formName: formNameController.text ?? "",
                 groupID:(selectedGroup?.key != null &&
-                    selectedGroup?.key != "" )? int.parse(selectedGroup!.key!):null,
+                    selectedGroup?.key != "" )? int.parse(selectedGroup?.key??"0"):0,
                 groupName: selectedGroup?.value ?? "",
                 personnelNo: selectedUser?.key ?? "",
                 sequenceName: stepNameController.text ?? ""));
@@ -563,7 +573,7 @@ class WorkflowDefinitionController extends GetxController {
                 "formName": PlutoCell(value:formNameController.text ?? ""),
                 "personnelNo": PlutoCell(value:selectedUser?.key ?? ""),
                 "groupID":PlutoCell(value: (selectedGroup?.key != null &&
-                    selectedGroup?.key != "" )? int.parse(selectedGroup?.key??"0"):""),
+                    selectedGroup?.key != "" )? int.parse(selectedGroup?.key??"0"):0),
                 "groupName": PlutoCell(value: selectedGroup?.value ?? ""),
                 "employees":PlutoCell(value: selectedUser?.value ?? "")
               })]);
