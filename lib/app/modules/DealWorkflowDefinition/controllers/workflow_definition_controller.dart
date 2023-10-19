@@ -370,11 +370,12 @@ class WorkflowDefinitionController extends GetxController {
       selectedGroup = DropDownValue(
           value:
               (gridStateManager?.rows[index].cells['groupName'])?.value ?? "",
-          key: (gridStateManager?.rows[index].cells['groupID'])?.value ?? "");
+          key:( (gridStateManager?.rows[index].cells['groupID'])?.value ?? "").toString());
       selectedUser = null;
       userEnable.value = false;
       groupEnable.value = true;
-    } else {
+    }
+    else {
       selectRadio1.value = "Employee";
       selectedUser = DropDownValue(
           value:
@@ -391,21 +392,35 @@ class WorkflowDefinitionController extends GetxController {
     formNameController.text =
         (gridStateManager?.rows[index].cells['formName'])?.value ?? "";
     approvalSequenceId =
-        (gridStateManager?.rows[index].cells['approvalSequenceID'])?.value ??
-            "0";
+        ((gridStateManager?.rows[index].cells['approvalSequenceID'])?.value ??
+            "0").toString();
     update(['top']);
     // stepNameController.text =  gridStateManager?.rows[index].cells['sequenceName'] as String ;
     // gridStateManager.ce
   }
 
   btnAddClick() {
+    print(">>>>>>>>>>>>>selectedIndex$selectedIndex");
+    print(">>>>>>>>>>>>>approvalSequenceId$approvalSequenceId");
     if (selectRadio2.value == "After") {
       if ((approvalSequenceId != null &&
           approvalSequenceId != "" &&
           approvalSequenceId != "0") || isDoubleClick) {
-        LoadingDialog.call();
+        // LoadingDialog.call();
         int selIndex = (selectedIndex ?? 0);
-        dealWorkDefinitionGridModel?.display?[selIndex].approvalSequenceID =
+
+        gridStateManager?.rows[selIndex].cells['approvalSequenceID']?.value = int.parse(approvalSequenceId ?? "0");
+        gridStateManager?.rows[selIndex].cells['sequenceName']?.value = stepNameController.text ?? "";
+        gridStateManager?.rows[selIndex].cells['formName']?.value = formNameController.text ?? "";
+        gridStateManager?.rows[selIndex].cells['personnelNo']?.value = selectedUser?.key ?? "";
+        gridStateManager?.rows[selIndex].cells['groupID']?.value = (selectedGroup?.key != null &&
+            selectedGroup?.key != "" )? int.parse(selectedGroup?.key??"0"):"";
+        gridStateManager?.rows[selIndex].cells['groupName']?.value = selectedGroup?.value ?? "";
+        gridStateManager?.rows[selIndex].cells['employees']?.value = selectedUser?.value ?? "";
+
+        gridStateManager?.notifyListeners();
+        
+       /* dealWorkDefinitionGridModel?.display?[selIndex].approvalSequenceID =
             int.parse(approvalSequenceId ?? "0");
         dealWorkDefinitionGridModel?.display?[selIndex].employees =
             selectedUser?.value ?? "";
@@ -424,15 +439,30 @@ class WorkflowDefinitionController extends GetxController {
             stepNameController.text ?? "";
 
         dealWorkDefinitionGridModel?.display?[selIndex].groupName =
-            selectedGroup?.value ?? "";
-        Get.back();
+            selectedGroup?.value ?? "";*/
+        // Get.back();
       } else {
-        LoadingDialog.call();
+        // LoadingDialog.call();
         int selIndex = (selectedIndex ?? 0) + 1;
         if(dealWorkDefinitionGridModel?.display?.length == 0){
           selIndex = 0;
         }
-        dealWorkDefinitionGridModel?.display?.insert(
+        gridStateManager?.insertRows(selIndex,
+            [PlutoRow(cells: {
+              "approvalSequenceID":PlutoCell(value: int.parse(approvalSequenceId ?? "0")),
+              "sequenceName": PlutoCell(value:stepNameController.text ?? "" ) ,
+              "formName": PlutoCell(value:formNameController.text ?? ""),
+              "personnelNo": PlutoCell(value:selectedUser?.key ?? ""),
+              "groupID":PlutoCell(value: (selectedGroup?.key != null &&
+                  selectedGroup?.key != "" )? int.parse(selectedGroup?.key??"0"):""),
+              "groupName": PlutoCell(value: selectedGroup?.value ?? ""),
+              "employees":PlutoCell(value: selectedUser?.value ?? "")
+
+            })]);
+        gridStateManager?.notifyListeners();
+
+
+       /* dealWorkDefinitionGridModel?.display?.insert(
             selIndex,
             Display(
                 approvalSequenceID: int.parse(approvalSequenceId ?? "0"),
@@ -442,17 +472,29 @@ class WorkflowDefinitionController extends GetxController {
                     selectedGroup?.key != "" )? int.parse(selectedGroup!.key!):null,
                 groupName: selectedGroup?.value ?? "",
                 personnelNo: selectedUser?.key ?? "",
-                sequenceName: stepNameController.text ?? ""));
-        Get.back();
+                sequenceName: stepNameController.text ?? ""));*/
+        // Get.back();
       }
       clearNew();
       update(['grid']);
-    } else {
+    }
+    else {
       if ((approvalSequenceId != null &&
           approvalSequenceId != "" &&
           approvalSequenceId != "0") || isDoubleClick) {
-        LoadingDialog.call();
-        dealWorkDefinitionGridModel?.display?[selectedIndex ?? 0]
+        // LoadingDialog.call();
+        gridStateManager?.rows[selectedIndex??0].cells['approvalSequenceID']?.value = int.parse(approvalSequenceId ?? "0");
+        gridStateManager?.rows[selectedIndex??0].cells['sequenceName']?.value = stepNameController.text ?? "";
+        gridStateManager?.rows[selectedIndex??0].cells['formName']?.value = formNameController.text ?? "";
+        gridStateManager?.rows[selectedIndex??0].cells['personnelNo']?.value = selectedUser?.key ?? "";
+        gridStateManager?.rows[selectedIndex??0].cells['groupID']?.value = (selectedGroup?.key != null &&
+            selectedGroup?.key != "" )? int.parse(selectedGroup?.key??"0"):"";
+        gridStateManager?.rows[selectedIndex??0].cells['groupName']?.value = selectedGroup?.value ?? "";
+        gridStateManager?.rows[selectedIndex??0].cells['employees']?.value = selectedUser?.value ?? "";
+
+        gridStateManager?.notifyListeners();
+
+        /*dealWorkDefinitionGridModel?.display?[selectedIndex ?? 0]
             .approvalSequenceID = int.parse(approvalSequenceId ?? "0");
         dealWorkDefinitionGridModel?.display?[selectedIndex ?? 0].employees =
             selectedUser?.value ?? "";
@@ -471,11 +513,26 @@ class WorkflowDefinitionController extends GetxController {
             stepNameController.text ?? "";
 
         dealWorkDefinitionGridModel?.display?[selectedIndex ?? 0].groupName =
-            selectedGroup?.value ?? "";
-        Get.back();
+            selectedGroup?.value ?? "";*/
+
+        // Get.back();
       } else {
-        LoadingDialog.call();
-        dealWorkDefinitionGridModel?.display?.insert(
+        // LoadingDialog.call();
+
+        gridStateManager?.insertRows((selectedIndex??0),
+            [PlutoRow(cells: {
+              "approvalSequenceID":PlutoCell(value: int.parse(approvalSequenceId ?? "0")),
+              "sequenceName": PlutoCell(value:stepNameController.text ?? "" ) ,
+              "formName": PlutoCell(value:formNameController.text ?? ""),
+              "personnelNo": PlutoCell(value:selectedUser?.key ?? ""),
+              "groupID":PlutoCell(value: (selectedGroup?.key != null &&
+                  selectedGroup?.key != "" )? int.parse(selectedGroup?.key??"0"):""),
+              "groupName": PlutoCell(value: selectedGroup?.value ?? ""),
+              "employees":PlutoCell(value: selectedUser?.value ?? "")
+            })]);
+        gridStateManager?.notifyListeners();
+
+        /*dealWorkDefinitionGridModel?.display?.insert(
             selectedIndex ?? 0,
             Display(
                 approvalSequenceID: int.parse(approvalSequenceId ?? "0"),
@@ -485,11 +542,12 @@ class WorkflowDefinitionController extends GetxController {
                     selectedGroup?.key != "" )? int.parse(selectedGroup!.key!):null,
                 groupName: selectedGroup?.value ?? "",
                 personnelNo: selectedUser?.key ?? "",
-                sequenceName: stepNameController.text ?? ""));
-        Get.back();
+                sequenceName: stepNameController.text ?? ""));*/
+
+        // Get.back();
       }
       clearNew();
-      update(['grid']);
+      // update(['grid']);
     }
     // controllerX.callGetRetrieve();
   }
