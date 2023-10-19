@@ -2482,6 +2482,7 @@ class DropDownField {
     GlobalKey? widgetKey,
     bool showtitle = true,
     bool titleInLeft = false,
+    bool labelBold = false,
   }) {
     isEnable ??= true;
     widgetKey ??= GlobalKey();
@@ -2499,7 +2500,7 @@ class DropDownField {
             style: TextStyle(
               fontSize: SizeDefine.labelSize1,
               color: textColor,
-              fontWeight: FontWeight.w500,
+              fontWeight: labelBold?FontWeight.w900:FontWeight.w500,
             ),
           ),
           const SizedBox(height: 5),

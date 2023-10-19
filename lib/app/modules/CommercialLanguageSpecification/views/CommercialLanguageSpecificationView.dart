@@ -16,8 +16,10 @@ import '../controllers/CommercialLanguageSpecificationController.dart';
 
 class CommercialLanguageSpecificationView
     extends GetView<CommercialLanguageSpecificationController> {
+  CommercialLanguageSpecificationController controllerX =
+      Get.put<CommercialLanguageSpecificationController>(
+          CommercialLanguageSpecificationController());
 
-  CommercialLanguageSpecificationController controllerX=Get.put<CommercialLanguageSpecificationController>(CommercialLanguageSpecificationController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,7 +33,8 @@ class CommercialLanguageSpecificationView
               init: controllerX,
               id: "updateView",
               builder: (control) {
-                if (controllerX.locationList.value == null || ((controllerX.locationList.value.length??0)==0)) {
+                if (controllerX.locationList.value == null ||
+                    ((controllerX.locationList.value.length ?? 0) == 0)) {
                   return SizedBox(
                       width: Get.width,
                       height: Get.height * 0.2,
@@ -39,37 +42,35 @@ class CommercialLanguageSpecificationView
                 }
                 return Padding(
                   padding:
-                  const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+                      const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
                   child: Wrap(
                     crossAxisAlignment: WrapCrossAlignment.center,
                     runSpacing: 5,
                     spacing: 5,
                     children: [
                       Obx(() => DropDownField.formDropDown1WidthMap(
-                        controllerX.locationList.value,
+                            controllerX.locationList.value,
                             (data) {
-                          controllerX.selectLocation = data;
-                          controllerX.getChannels(data.key??"");
-                        },
-                        "Location",
-                        controllerX.widthSize,
-                        // isEnable: controllerX.isEnable.value,
-                        searchReq: true,
-                        // selected: controllerX.selectLocation,
-                      )),
-
+                              controllerX.selectLocation = data;
+                              controllerX.getChannels(data.key ?? "");
+                            },
+                            "Location",
+                            controllerX.widthSize,
+                            // isEnable: controllerX.isEnable.value,
+                            searchReq: true,
+                            // selected: controllerX.selectLocation,
+                          )),
                       Obx(() => DropDownField.formDropDown1WidthMap(
-                        controllerX.channelList.value,
+                            controllerX.channelList.value,
                             (data) {
-                          controllerX.selectChannel = data;
-                        },
-                        "Channel",
-                        controllerX.widthSize,
-                        // isEnable: controllerX.isEnable.value,
-                        searchReq: true,
-                        // selected: controllerX.selectChannel,
-                      )),
-
+                              controllerX.selectChannel = data;
+                            },
+                            "Channel",
+                            controllerX.widthSize,
+                            // isEnable: controllerX.isEnable.value,
+                            searchReq: true,
+                            // selected: controllerX.selectChannel,
+                          )),
                       Padding(
                         padding: const EdgeInsets.only(left: 10, top: 15),
                         child: FormButton(
@@ -94,7 +95,8 @@ class CommercialLanguageSpecificationView
                 builder: (controller) {
                   print("Called this Update >>>listUpdate");
                   if (controller.commercialLangModel != null &&
-                      ((controller.commercialLangModel?.display?.length ?? 0) > 0)) {
+                      ((controller.commercialLangModel?.display?.length ?? 0) >
+                          0)) {
                     return Expanded(
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -125,7 +127,7 @@ class CommercialLanguageSpecificationView
                         clipBehavior: Clip.hardEdge,
                         shape: RoundedRectangleBorder(
                           borderRadius:
-                          BorderRadius.circular(0), // if you need this
+                              BorderRadius.circular(0), // if you need this
                           side: BorderSide(
                             color: Colors.grey.shade300,
                             width: 1,
@@ -147,7 +149,7 @@ class CommercialLanguageSpecificationView
                   PermissionModel formPermissions = Get.find<MainController>()
                       .permissionList!
                       .lastWhere((element) {
-                    return element.appFormName == "frmDSeriesSpecs";
+                    return element.appFormName == "frmCommercialLanguageSpec";
                   });
                   if (controller.buttons != null) {
                     return ButtonBar(
@@ -159,8 +161,8 @@ class CommercialLanguageSpecificationView
                             btnText: btn["name"],
                             // isEnabled: btn['isDisabled'],
                             callback: Utils.btnAccessHandler2(btn['name'],
-                                controller, formPermissions) ==
-                                null
+                                        controller, formPermissions) ==
+                                    null
                                 ? null
                                 : () => formHandler(btn['name']),
                           )
@@ -178,13 +180,14 @@ class CommercialLanguageSpecificationView
   }
 
   formHandler(btn) {
-    switch(btn){
+    print("Click is >>>" + btn);
+    switch (btn) {
       case "Save":
         controllerX.save();
         break;
       case "Clear":
-        Get.find<HomeController>().clearPage1();
         Get.delete<CommercialLanguageSpecificationController>();
+        Get.find<HomeController>().clearPage1();
         break;
     }
   }
