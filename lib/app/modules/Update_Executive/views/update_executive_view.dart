@@ -46,6 +46,7 @@ class UpdateExecutiveView extends GetView<UpdateExecutiveController> {
                                 controllerX.locationList.value??[],
                                     (value) {
                                   controllerX.selectedLocation?.value = value;
+                                  controllerX.channelNode.requestFocus();
                                 }, "Location",
                                 0.1,
                                 isEnable: controllerX.isEnable,

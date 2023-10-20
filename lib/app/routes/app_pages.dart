@@ -58,7 +58,7 @@ class AppPages {
 
   static const INITIAL = kReleaseMode
       ? Routes.HOME
-      : Routes.WORKFLOW_DEFINITION +
+      : Routes.DEAL_UTIL_PERIODIC +
           "?personalNo=R9vVPL7er1Os/usemWG/Iw==&loginCode=0iGe3vK5h2KGjfSKZTpmsQ==&formName=OI8ukDpPPVN0I2BEXu2h4nuFu%2BZm1ZRpvP8NL4XCXzQ%3D";
 
   static final routes = [
@@ -285,6 +285,10 @@ class AppPages {
     GetPage(
       name: _Paths.DEALVS_R_O_DATA_REPORT,
       page: () => AuthGuard(childName: _Paths.DEALVS_R_O_DATA_REPORT),
+    ),
+    GetPage(
+      name: _Paths.DEAL_UTIL_PERIODIC,
+      page: () => AuthGuard(childName: _Paths.DEAL_UTIL_PERIODIC),
     ),
   ];
 }
