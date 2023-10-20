@@ -30,6 +30,29 @@ class AmagiStatusReportController extends GetxController {
   bool isYield = false;
   bool isData = false;
 
+  String getTableNo(String ? key){
+    switch(key){
+      case "Day Wise":
+        return "tbl1";
+        break;
+      case "Time Band":
+        return "tbl2";
+        break;
+      case "Serviced":
+        return "tbl3";
+        break;
+      case "Yield":
+        return "tbl4";
+        break;
+      case "Data":
+        return "tbl5";
+        break;
+      default:
+        return "tbl1";
+        break;
+    }
+  }
+
   Future<void> getRadioStatus(String name)async {
     switch(name){
       case "Day Wise":
@@ -202,7 +225,7 @@ class AmagiStatusReportController extends GetxController {
       Get.find<HomeController>().postUserGridSetting1(
           listStateManager: [
             stateManager
-          ]);
+          ],tableNamesList: [getTableNo(selectValue.value)??"tbl1"]);
     }
 
   }
