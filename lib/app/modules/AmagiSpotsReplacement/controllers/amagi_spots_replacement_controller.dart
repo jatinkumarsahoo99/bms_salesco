@@ -54,8 +54,8 @@ class AmagiSpotsReplacementController extends GetxController {
   FocusNode locationNode = FocusNode();
   FocusNode channelNode = FocusNode();
   FocusNode objectiveNode = FocusNode();
-  Rx<bool> allowMergeSta = Rx<bool>(true);
-  Rx<bool> chkChecktimeBand = Rx<bool>(false);
+  Rx<bool> allowMergeSta = Rx<bool>(false);
+  Rx<bool> chkChecktimeBand = Rx<bool>(true);
 
   var canDialogShow = false.obs;
   Widget? dialogWidget;
@@ -717,10 +717,10 @@ class AmagiSpotsReplacementController extends GetxController {
       }
 
       for (PlutoRow dd in (childChannelStateManager?.rows) ?? []) {
-        dd.cells['channelnameIsBold']?.value = true;
-        dd.cells['locationnameIsBold']?.value = true;
-        dd.cells['totalSpotsIsBold']?.value = true;
-        dd.cells['unallocatedSpotsIsBold']?.value = true;
+        dd.cells['channelnameIsBold']?.value = false;
+        dd.cells['locationnameIsBold']?.value = false;
+        dd.cells['totalSpotsIsBold']?.value = false;
+        dd.cells['unallocatedSpotsIsBold']?.value = false;
       }
       // High light Spots allocated and channels where they are allocated
       try {
@@ -731,7 +731,9 @@ class AmagiSpotsReplacementController extends GetxController {
         //     ["ClientName", "ParentID", "ColNo"]).toList();
 
         bool sta = await getPivotList(
-            postData: getDataFromGrid(localSpotsStateManager));
+            postData: (amagiSpotReplacementModel
+                ?.lstSpots
+                ?.localSpots?.map((e) => e.toJson()).toList()));
         pivotLocalSpotModel?.localSpot?.localBookingData?.forEach((element) {
           for (PlutoRow dd in (masterSpotsStateManager?.rows) ?? []) {
             if (element.parentID.toString().trim() ==
@@ -753,6 +755,7 @@ class AmagiSpotsReplacementController extends GetxController {
           }
         });
         childChannelStateManager?.notifyListeners();
+        masterSpotsStateManager?.notifyListeners();
 
         // var ddss = _ddsss.CopyToDataTable();
 
@@ -828,7 +831,7 @@ class AmagiSpotsReplacementController extends GetxController {
         element.cells['channelnameIsBold']?.value = false;
         // element.Cells("Channelname").Style.Font = New Font(Control.DefaultFont, FontStyle.Regular)
       }
-      if ((element.cells['channelid']?.value ?? 0).toString().trim() ==
+      if ((element.cells['channelid']?.value).toString().trim() ==
               channelId.toString().trim() &&
           channelId != 0) {
         element.cells['channelnameIsBold']?.value = true;
@@ -850,7 +853,7 @@ class AmagiSpotsReplacementController extends GetxController {
         .toList();
 
     listOfRow?.forEach((element) {
-      allocatedChannel(element.cells['channelid']?.value ?? 0);
+      allocatedChannel(element.cells['channelid']?.value);
     });
   }
 
