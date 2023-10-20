@@ -219,7 +219,7 @@ class AmagiSpotPlanningController extends GetxController {
       Get.find<HomeController>().postUserGridSetting1(
           listStateManager: [
             stateManager
-          ],tableNamesList: ['tbl1']);
+          ],tableNamesList: [getTableNo(selectValue.value)??'tbl1']);
     }
   }
 
