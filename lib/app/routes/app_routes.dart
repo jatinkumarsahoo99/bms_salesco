@@ -94,6 +94,7 @@ abstract class RoutesList {
     _Paths.PROGRAM_WISE_REVENUE_REPORT,
     _Paths.DEALVS_R_O_DATA_REPORT,
     _Paths.RO_RECEIVED,
+    _Paths.COMMERCIAL_LANGUAGE_SPECIFICATION,
     _Paths.DEAL_UTIL_PERIODIC,
   ];
 

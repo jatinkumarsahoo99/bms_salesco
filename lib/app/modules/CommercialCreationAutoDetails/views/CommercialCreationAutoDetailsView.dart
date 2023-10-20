@@ -145,11 +145,11 @@ class CommercialCreationAutoDetailsView
                                   controllerX.loadModel?.value?.loadData
                                           ?.lstCensorship ??
                                       [], (data) {
-                                controllerX.selectCensorship = data;
+                                controllerX.selectCensorship?.value = data;
                               }, "Censorship", 0.12,
                                   searchReq: true,
                                   labelBold: true,
-                                  selected: controllerX.selectCensorship),
+                                  selected: controllerX.selectCensorship?.value),
                             ),
                           ),
                           Obx(
@@ -159,12 +159,12 @@ class CommercialCreationAutoDetailsView
                                   controllerX.loadModel?.value?.loadData
                                           ?.lstRevenuetype ??
                                       [], (data) {
-                                controllerX.selectRevenue = data;
+                                controllerX.selectRevenue?.value = data;
                                 controllerX.getRevenueLeave(data.key ?? "");
                               }, "Revenue", 0.12,
                                   searchReq: true,
                                   labelBold: true,
-                                  selected: controllerX.selectRevenue),
+                                  selected: controllerX.selectRevenue?.value),
                             ),
                           ),
                           Obx(
@@ -172,11 +172,11 @@ class CommercialCreationAutoDetailsView
                               padding: const EdgeInsets.only(left: 5),
                               child: DropDownField.formDropDown1WidthMap(
                                   controllerX.secTypeList.value ?? [], (data) {
-                                controllerX.selectSectype = data;
+                                controllerX.selectSectype?.value = data;
                               }, "Sec Type", 0.12,
                                   searchReq: true,
                                   labelBold: true,
-                                  selected: controllerX.selectSectype),
+                                  selected: controllerX.selectSectype?.value),
                             ),
                           ),
                           InputFields.formFieldNumberMask(
