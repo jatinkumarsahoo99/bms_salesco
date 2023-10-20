@@ -1488,7 +1488,7 @@ FontWeight getChannelFont(PlutoColumnRendererContext plutoCon) {
     // print(">>>>>>>>>>>>>>>>>>>keyGetJKs${element.title} ${element.key}");
     if (
     element.title.toString().trim() == "Unallocated Spots Is Bold" ||
-        element.title.toString().trim() == "${element.title.toString().trim()} Is Bold" ||
+        // element.title.toString().trim() == "${element.title.toString().trim()} Is Bold" ||
         element.title.toString().trim() == "Total Spots Is Bold" ||
         element.title.toString().trim() == "Locationname Is Bold" ||
         element.title.toString().trim() == "Channelname Is Bold") {
@@ -1511,7 +1511,7 @@ FontWeight getChannelFont(PlutoColumnRendererContext plutoCon) {
     font = FontWeight.bold;
   }
   if (listOfHideColumn.isNotEmpty) {
-    plutoCon.stateManager.hideColumns(listOfHideColumn, true);
+    // plutoCon.stateManager.hideColumns(listOfHideColumn, true);
   }
   return font;
 }
@@ -1543,7 +1543,7 @@ FontWeight getMasterFont(PlutoColumnRendererContext plutoCon) {
     font = FontWeight.bold;
   }
   if (listOfHideColumn.isNotEmpty) {
-    plutoCon.stateManager.hideColumns(listOfHideColumn, true);
+    // plutoCon.stateManager.hideColumns(listOfHideColumn, true);
   }
   return font;
 }
@@ -1569,7 +1569,7 @@ FontWeight getLocalFont(PlutoColumnRendererContext plutoCon) {
     font = FontWeight.bold;
   }
   if (listOfHideColumn.isNotEmpty) {
-    plutoCon.stateManager.hideColumns(listOfHideColumn, true);
+    // plutoCon.stateManager.hideColumns(listOfHideColumn, true);
   }
   return font;
 }
