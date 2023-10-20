@@ -16,6 +16,7 @@ import '../../widgets/NoDataFoundPage.dart';
 import '../modules/AmagiStatusReport/views/amagi_status_report_view.dart';
 import '../modules/AutoTimeLock/views/auto_time_lock_view.dart';
 import '../modules/ChangeRONumber/views/change_r_o_number_view.dart';
+import '../modules/CommonSearch/views/common_search_view.dart';
 import '../modules/DealWorkflowDefinition/views/workflow_definition_view.dart';
 import '../modules/CommercialCreationAutoDetails/views/CommercialCreationAutoDetailsView.dart';
 import '../modules/GeoProgramUpdate/views/geo_program_update_view.dart';
@@ -187,6 +188,12 @@ class AuthGuard extends StatelessWidget {
               break;
             case Routes.BOOKING_STATUS_REPORT:
               currentWidget = BookingStatusReportView();
+              break;
+            case Routes.DEAL_UTIL_PERIODIC:
+              currentWidget = SearchPage(
+                  key: const Key("Periodic_Deal_Utilisation"),
+                  screenName: "Periodic Deal Utilisation",
+                  strViewName: "BMS_DealUtilPeriodic");
               break;
             case Routes.PROGRAM_WISE_REVENUE_REPORT:
               currentWidget = ProgramWiseRevenueReportView();

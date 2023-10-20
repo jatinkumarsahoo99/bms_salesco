@@ -29,6 +29,7 @@ class AmagiSpotsReplacementController extends GetxController {
   //TODO: Implement AmagiSpotsReplacementController
 
   bool isEnable = true;
+  bool isEnable1 = false;
   final count = 0.obs;
 
   DropDownValue? selectedLocation;

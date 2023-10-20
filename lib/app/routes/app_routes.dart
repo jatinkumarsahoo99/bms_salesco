@@ -55,6 +55,7 @@ abstract class Routes {
   static const DEALVS_R_O_DATA_REPORT = _Paths.DEALVS_R_O_DATA_REPORT;
   static const BOOKING_STATUS_REPORT = _Paths.BOOKING_STATUS_REPORT;
   static const PROGRAM_WISE_REVENUE_REPORT = _Paths.PROGRAM_WISE_REVENUE_REPORT;
+  static const DEAL_UTIL_PERIODIC = _Paths.DEAL_UTIL_PERIODIC;
 }
 
 abstract class RoutesList {
@@ -93,6 +94,7 @@ abstract class RoutesList {
     _Paths.PROGRAM_WISE_REVENUE_REPORT,
     _Paths.DEALVS_R_O_DATA_REPORT,
     _Paths.RO_RECEIVED,
+    _Paths.DEAL_UTIL_PERIODIC,
   ];
 
   /* static final RoutesList _instance = RoutesList._();
@@ -150,4 +152,5 @@ abstract class _Paths {
   static const DEALVS_R_O_DATA_REPORT = '/frmDealvsRODataReport';
   static const BOOKING_STATUS_REPORT = '/frmnewbookingstatus';
   static const PROGRAM_WISE_REVENUE_REPORT = '/frmnewprogramwisereport';
+  static const DEAL_UTIL_PERIODIC = '/frmsearching##BMS_DealUtilPeriodic';
 }

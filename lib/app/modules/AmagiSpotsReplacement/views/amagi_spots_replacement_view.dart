@@ -1089,7 +1089,7 @@ class AmagiSpotsReplacementView
                                                         .availableController,
                                                     width: 0.1,
                                                     // autoFocus: true,
-                                                    // isEnable: controllerX.isEnable,
+                                                    isEnable: controller.isEnable1,
                                                     onchanged: (value) {},
                                                     // autoFocus: true,
                                                   ),
@@ -1098,6 +1098,7 @@ class AmagiSpotsReplacementView
                                                     controller: controller
                                                         .allocatedController,
                                                     width: 0.1,
+                                                    isEnable: controller.isEnable1,
                                                     // autoFocus: true,
                                                     // isEnable: controllerX.isEnable,
                                                     onchanged: (value) {
@@ -1119,6 +1120,7 @@ class AmagiSpotsReplacementView
                                                     controller: controller
                                                         .unAllocatedController,
                                                     width: 0.1,
+                                                    isEnable: controller.isEnable1,
                                                     // autoFocus: true,
                                                     // isEnable: controllerX.isEnable,
                                                     onchanged: (value) {},
@@ -1129,6 +1131,7 @@ class AmagiSpotsReplacementView
                                                     controller: controller
                                                         .balanceController,
                                                     width: 0.1,
+                                                    isEnable: controller.isEnable1,
                                                     // autoFocus: true,
                                                     // isEnable: controllerX.isEnable,
                                                     onchanged: (value) {},
@@ -1148,6 +1151,7 @@ class AmagiSpotsReplacementView
                                                     controller: controller
                                                         .msTimeController,
                                                     width: 0.1,
+                                                    isEnable: controller.isEnable1,
                                                     // autoFocus: true,
                                                     // isEnable: controllerX.isEnable,
                                                     onchanged: (value) {},
@@ -1158,6 +1162,7 @@ class AmagiSpotsReplacementView
                                                     controller: controller
                                                         .lsAllocController,
                                                     width: 0.1,
+                                                    isEnable: controller.isEnable1,
                                                     // autoFocus: true,
                                                     // isEnable: controllerX.isEnable,
                                                     onchanged: (value) {},
@@ -1177,6 +1182,7 @@ class AmagiSpotsReplacementView
                                                     controller: controller
                                                         .lsRevController,
                                                     width: 0.2,
+                                                    isEnable: controller.isEnable1,
                                                     // autoFocus: true,
                                                     // isEnable: controllerX.isEnable,
                                                     onchanged: (value) {},
@@ -1635,6 +1641,7 @@ class AmagiSpotsReplacementView
                                                     controller: controller
                                                         .loDurController,
                                                     width: 0.1,
+                                                    isEnable: controller.isEnable1,
                                                     // autoFocus: true,
                                                     // isEnable: controller.isEnable,
                                                     onchanged: (value) {},
@@ -1645,6 +1652,7 @@ class AmagiSpotsReplacementView
                                                     controller: controller
                                                         .loDurMisController,
                                                     width: 0.1,
+                                                    isEnable: controller.isEnable1,
                                                     // autoFocus: true,
                                                     // isEnable: controller.isEnable,
                                                     onchanged: (value) {},
@@ -1664,6 +1672,7 @@ class AmagiSpotsReplacementView
                                                     controller: controller
                                                         .loTotalController,
                                                     width: 0.1,
+                                                    isEnable: controller.isEnable1,
                                                     // autoFocus: true,
                                                     // isEnable: controller.isEnable,
                                                     onchanged: (value) {},
@@ -1674,6 +1683,7 @@ class AmagiSpotsReplacementView
                                                     controller: controller
                                                         .loMissController,
                                                     width: 0.1,
+                                                    isEnable: controller.isEnable1,
                                                     // autoFocus: true,
                                                     // isEnable: controller.isEnable,
                                                     onchanged: (value) {},
