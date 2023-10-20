@@ -11,6 +11,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
+import '../../../../widgets/CheckBox/app_check_box.dart';
 import '../../../../widgets/LoadingDialog.dart';
 import '../../../../widgets/dropdown.dart';
 import '../../../../widgets/input_fields.dart';
@@ -169,24 +170,48 @@ class ReleseOrderRescheduleTapeIDView extends StatelessWidget {
                       FormButton(
                         btnText: "Clear",
                         callback: () {
+                          Get.delete<ReleseOrderRescheduleTapeIDController>();
                           Get.find<HomeController>().clearPage1();
                         },
-                      ),
-                      Obx(
-                        () => Visibility(
-                          visible: controller.lstBookingDetails.isNotEmpty,
-                          child: const Text(
-                            "Double Click on Action Column to check and uncheck.",
-                            style: TextStyle(
-                              color: Colors.green,
-                              fontStyle: FontStyle.italic,
-                            ),
-                          ),
-                        ),
                       ),
                     ],
                   ),
                   const SizedBox(height: 5),
+
+                  Obx(() {
+                    return AppCheckBox(
+                      title: "Select All",
+                      value: controller.isAllCheck.value,
+                      onChanged: (val) {
+                        if (controller.lstBookingDetails.isEmpty) {
+                          controller.isAllCheck.value = false;
+                          controller.isAllCheck.refresh();
+                          LoadingDialog.callInfoMessage(
+                            "No optional TapeID found for replacing existing TapeID.",
+                          );
+                        } else if (controller.selectedTapeRight == null) {
+                          controller.isAllCheck.value = false;
+                          controller.isAllCheck.refresh();
+                          LoadingDialog.callInfoMessage(
+                              "Please replaceble Tapecode.");
+                        } else {
+                          controller.isAllCheck.value =
+                              !controller.isAllCheck.value;
+                          for (var i = 0;
+                              i < controller.lstBookingDetails.length;
+                              i++) {
+                            controller.lstBookingDetails[i].action =
+                                controller.isAllCheck.value;
+                          }
+                          controller.lstBookingDetails.refresh();
+                          WidgetsBinding.instance
+                              .addPostFrameCallback((timeStamp) {
+                            controller.changeExportTapeCode();
+                          });
+                        }
+                      },
+                    );
+                  }),
 
                   /// Data table
                   Expanded(
@@ -210,29 +235,6 @@ class ReleseOrderRescheduleTapeIDView extends StatelessWidget {
                                 'midPre',
                                 'positionCode'
                               ],
-                              onColumnHeaderDoubleTap: (columnName) {
-                                if (columnName == "action") {
-                                  if (controller.selectedTapeRight == null) {
-                                    LoadingDialog.callInfoMessage(
-                                        "Please replaceble Tapecode.");
-                                  } else {
-                                    controller.isAllCheck =
-                                        !controller.isAllCheck;
-                                    for (var i = 0;
-                                        i < controller.lstBookingDetails.length;
-                                        i++) {
-                                      controller.lstBookingDetails[i].action =
-                                          controller.isAllCheck;
-                                    }
-                                    controller.lstBookingDetails.refresh();
-                                    WidgetsBinding.instance
-                                        .addPostFrameCallback((timeStamp) {
-                                      controller.changeExportTapeCode();
-                                    });
-                                  }
-                                }
-                              },
-                              enableColumnDoubleTap: ['action'],
                               colorCallback: (event) {
                                 if (event.row.cells['edit']?.value == "1") {
                                   return const Color.fromARGB(

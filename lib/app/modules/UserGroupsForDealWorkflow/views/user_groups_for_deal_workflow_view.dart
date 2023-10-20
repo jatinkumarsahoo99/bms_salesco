@@ -57,6 +57,7 @@ class UserGroupsForDealWorkflowView
                                   controller: controllerX.groupTextController,
                                   width: 0.45,
                                   autoFocus: false,
+                                  maxLen: 200,
                                   // focusNode: controllerX.brandName,
                                   // isEnable: controllerX.isEnable,
                                   onchanged: (value) {
