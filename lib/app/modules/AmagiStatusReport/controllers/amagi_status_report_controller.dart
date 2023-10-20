@@ -147,16 +147,27 @@ class AmagiStatusReportController extends GetxController {
           if (map is Map &&
               map.containsKey('response') &&
               map['response'] != null &&  map['response'].length >0) {
-            responseData = map as Map<String, dynamic>;
+            responseData = {};
+            // responseData = map as Map<String, dynamic>;
+            List<Map<String, dynamic>> mapData = [];
+            for (Map<String, dynamic> element in map['response']) {
+              Map<String, dynamic> mapDa = {};
+              element.forEach((key, value) {
+                String k = key.toString().trim().replaceAll("\n", " ");
+                mapDa[k] = value;
+              });
+              mapData.add(mapDa);
+            }
+            responseData={'response': mapData??[]};
 
             for(int j=0;j<responseData['response'].length ;j++){
               List<String> keys = responseData['response'][j].keys.toList();
-              print(">>>keys"+keys.toString());
+              // print(">>>keys"+keys.toString());
               for(int i=0;i<keys.length;i++){
                 if(
-                    responseData['response'][j][keys[i]].toString().trim() == "{}"){
-                  print(">>>>>>>>map"+responseData['response'][j][keys[i]].toString());
-                  responseData['response'][j][keys[i]] = "";
+                    responseData['response'][j][(keys[i]??"")].toString().trim() == "{}"){
+                  // print(">>>>>>>>map${responseData['response'][j][keys[i]]}");
+                  responseData['response'][j][(keys[i]??"")] = "";
                 }
               }
             }

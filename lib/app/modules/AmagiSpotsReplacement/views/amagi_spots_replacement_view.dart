@@ -560,7 +560,7 @@ class AmagiSpotsReplacementView
                                       dragAbleDialogGet();
                                     }
                                   }
-                                  Future.delayed(Duration(seconds: 3), () {
+                                  Future.delayed(Duration(seconds: 2), () {
                                     controller.bindData();
                                   },);
                                 });
@@ -647,7 +647,7 @@ class AmagiSpotsReplacementView
                                           }
                                         }
                                         Future.delayed(
-                                          Duration(seconds: 3), () {
+                                          Duration(seconds: 2), () {
                                           controller.bindData();
                                         },);
                                       });
@@ -1321,7 +1321,7 @@ class AmagiSpotsReplacementView
                                                               ['id']);
                                                           Future.delayed(
                                                             const Duration(
-                                                                seconds: 2),
+                                                                seconds: 1),
                                                                 () {
                                                               controller
                                                                   .getSummaryAPICall()
@@ -1420,7 +1420,7 @@ class AmagiSpotsReplacementView
 
                                                           Future.delayed(
                                                             const Duration(
-                                                                seconds: 2), () {
+                                                                seconds: 1), () {
                                                             controller
                                                                 .getUnallocatedHoldCall()
                                                                 .then((value) {
@@ -1504,7 +1504,7 @@ class AmagiSpotsReplacementView
 
                                                           Future.delayed(
                                                             const Duration(
-                                                                seconds: 2), () {
+                                                                seconds: 1), () {
                                                             controller
                                                                 .getClientAPICall()
                                                                 .then((value) {
@@ -1583,7 +1583,7 @@ class AmagiSpotsReplacementView
 
                                                     Future.delayed(
                                                       const Duration(
-                                                          seconds: 2), () {
+                                                          seconds: 1), () {
                                                       controller
                                                           .getTotalAPICall()
                                                           .then((value) {
@@ -1735,6 +1735,7 @@ class AmagiSpotsReplacementView
                                                         formatDate: false,
                                                         isLocalSpotGrid: true,
                                                         columnAutoResize: false,
+                                                        numTypeKeyList: ["bookingDetailCode"],
                                                         widthSpecificColumn: {
                                                           "colNo": 150,
                                                           "bookingNumber": 150,
@@ -1801,7 +1802,6 @@ class AmagiSpotsReplacementView
                                                           controller
                                                               .localSpotsStateManager =
                                                               load.stateManager;
-
                                                           controller
                                                               .localSpotsStateManager
                                                               ?.setCurrentCell(
