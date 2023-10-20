@@ -13,11 +13,15 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 
+import '../../../../widgets/DataGridShowOnly.dart';
+import '../../../../widgets/floating_dialog.dart';
+import '../../../providers/Utils.dart';
 import '../controllers/edi_ro_booking_controller.dart';
 
 class EdiRoBookingView extends StatelessWidget {
   EdiRoBookingView({Key? key}) : super(key: key);
-  var maincontroller = Get.put<EdiRoBookingController>(EdiRoBookingController());
+  var maincontroller =
+      Get.put<EdiRoBookingController>(EdiRoBookingController());
   @override
   Widget build(BuildContext context) {
     return GetBuilder<EdiRoBookingController>(
@@ -25,10 +29,17 @@ class EdiRoBookingView extends StatelessWidget {
         id: "initData",
         builder: (controller) {
           print("init builder reload -${controller.initData == null}");
-          if (controller.initData == null) {
-            return PleaseWaitCard();
-          }
+          // if (controller.initData == null) {
+          //   return PleaseWaitCard();
+          // }
           return Scaffold(
+            floatingActionButton:
+                Obx(() => controller.drgabbleDialog.value != null
+                    ? DraggableFab(
+                        child: controller.drgabbleDialog.value!,
+                      )
+                    : const SizedBox()),
+            backgroundColor: Colors.grey[50],
             body: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -48,32 +59,42 @@ class EdiRoBookingView extends StatelessWidget {
                             alignment: WrapAlignment.spaceBetween,
                             children: [
                               DropDownField.formDropDown1WidthMap(
-                                controller.initData?.softListMyFiles
-                                    ?.map((e) => DropDownValue(key: e.convertedFileName, value: e.convertedFileName))
-                                    .toList(),
-                                (valeu) {
-                                  controller.selectedFile = valeu;
+                                controller.fileNames.value,
+                                (data) {
+                                  controller.selectedFile = data;
                                   controller.effectiveDateLeave();
                                 },
                                 "Filename",
                                 .445,
                                 selected: controller.selectedFile,
+                                isEnable: controller.isEnable.value,
                                 autoFocus: true,
                               ),
                               DropDownField.formDropDown1WidthMap(
-                                [],
-                                (valeu) {},
+                                controller.strRoRefNo.value,
+                                (data) {
+                                  controller.selectedRoRefNo = data;
+                                },
                                 "RO Ref No",
                                 .35,
+                                selected: controller.selectedRoRefNo,
                                 autoFocus: true,
+                                isEnable: controller.isEnable.value,
                               ),
-                              SizedBox(width: Get.width * 0.08, child: FormButtonWrapper(btnText: "Show & Link")),
+                              SizedBox(
+                                  width: Get.width * 0.08,
+                                  child: FormButtonWrapper(
+                                      btnText: "Show & Link")),
                               DropDownField.formDropDown1WidthMap(
-                                controller.initData?.lstLocation?.map((e) => DropDownValue(key: e.locationCode, value: e.locationName)).toList(),
-                                (valeu) {},
+                                controller.loactions.value,
+                                (data) {
+                                  controller.selectedLoactions = data;
+                                },
                                 "Location",
                                 .22,
+                                selected: controller.selectedLoactions,
                                 autoFocus: true,
+                                isEnable: controller.isEnable.value,
                               ),
                               DropDownField.formDropDown1WidthMap(
                                 [],
@@ -81,20 +102,27 @@ class EdiRoBookingView extends StatelessWidget {
                                 "Channel",
                                 .22,
                                 autoFocus: true,
+                                isEnable: controller.isEnable.value,
                               ),
                               DropDownField.formDropDown1WidthMap(
-                                [],
-                                (valeu) {},
+                                controller.client.value,
+                                (data) {
+                                  controller.selectedClient = data;
+                                },
                                 "Client",
                                 .22,
+                                selected: controller.selectedClient,
                                 autoFocus: true,
+                                isEnable: controller.isEnable.value,
                               ),
                               DropDownField.formDropDown1WidthMap(
-                                [],
-                                (valeu) {},
+                                controller.agency.value,
+                                (data) {},
                                 "Agency",
                                 .22,
+                                selected: controller.selectedAgency,
                                 autoFocus: true,
+                                isEnable: controller.isEnable.value,
                               ),
                               DropDownField.formDropDown1WidthMap(
                                 [],
@@ -104,26 +132,27 @@ class EdiRoBookingView extends StatelessWidget {
                                 autoFocus: true,
                               ),
                               InputFields.formField1(
-                                hintTxt: "",
-                                controller: TextEditingController(),
-                                width: 0.105,
-                              ),
+                                  hintTxt: "",
+                                  controller: TextEditingController(),
+                                  width: 0.105,
+                                  isEnable: false),
                               DropDownField.formDropDown1WidthMap(
-                                [],
-                                (valeu) {},
-                                "Brand",
-                                .22,
-                                autoFocus: true,
-                              ),
+                                  controller.brand.value, (data) {
+                                controller.selectedBrand = data;
+                              }, "Brand", .22,
+                                  autoFocus: true,
+                                  selected: controller.selectedBrand),
                               DateWithThreeTextField(
                                 title: "Start Date",
                                 mainTextController: TextEditingController(),
                                 widthRation: .105,
+                                isEnable: false,
                               ),
                               DateWithThreeTextField(
                                 title: "End Date",
                                 mainTextController: TextEditingController(),
                                 widthRation: .105,
+                                isEnable: false,
                               ),
                               InputFields.formField1(
                                 hintTxt: "Zone",
@@ -176,35 +205,38 @@ class EdiRoBookingView extends StatelessWidget {
                               SizedBox(
                                 width: Get.width * 0.18,
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     InputFields.formField1(
                                       hintTxt: "Booking NO",
-                                      isEnable: false,
                                       controller: TextEditingController(),
                                       width: 0.075,
                                     ),
                                     InputFields.formField1(
                                       hintTxt: "",
-                                      isEnable: false,
                                       controller: TextEditingController(),
                                       width: 0.02,
                                     ),
                                     InputFields.formField1(
                                       hintTxt: "",
-                                      isEnable: false,
                                       controller: TextEditingController(),
                                       width: 0.075,
                                     ),
                                   ],
                                 ),
                               ),
-                              DropDownField.formDropDown1WidthMap(
-                                controller.initData?.executives?.map((e) => DropDownValue(key: e.personnelCode, value: e.personnelName)).toList(),
-                                (valeu) {},
-                                "Executive",
-                                .18,
-                                autoFocus: true,
+                              Obx(
+                                () => DropDownField.formDropDown1WidthMap(
+                                  controller.executives.value,
+                                  (data) {
+                                    controller.selectedExecutives = data;
+                                  },
+                                  "Executive",
+                                  .18,
+                                  selected: controller.selectedExecutives,
+                                  autoFocus: true,
+                                ),
                               ),
                             ],
                           ),
@@ -216,148 +248,161 @@ class EdiRoBookingView extends StatelessWidget {
                             padding: EdgeInsets.all(4),
                             child: SizedBox(
                                 width: Get.width * 0.22,
-                                child: Wrap(crossAxisAlignment: WrapCrossAlignment.end, spacing: Get.width * 0.005, runSpacing: 5, children: [
-                                  Container(
-                                    alignment: Alignment.center,
-                                    width: Get.width * 0.05,
-                                    child: Text(
-                                      "All",
-                                      style: TextStyle(fontSize: SizeDefine.labelSize1),
-                                    ),
-                                  ),
-                                  Container(
-                                    alignment: Alignment.center,
-                                    width: Get.width * 0.05,
-                                    child: Text(
-                                      "Booked",
-                                      style: TextStyle(fontSize: SizeDefine.labelSize1),
-                                    ),
-                                  ),
-                                  Container(
-                                    alignment: Alignment.center,
-                                    width: Get.width * 0.05,
-                                    child: Text(
-                                      "Balance",
-                                      style: TextStyle(fontSize: SizeDefine.labelSize1),
-                                    ),
-                                  ),
-                                  Container(
-                                    alignment: Alignment.center,
-                                    width: Get.width * 0.05,
-                                    child: Text(
-                                      "Val Amount",
-                                      style: TextStyle(fontSize: SizeDefine.labelSize1),
-                                    ),
-                                  ),
-                                  InputFields.formField1(
-                                    hintTxt: "Sport",
-                                    isEnable: false,
-                                    controller: TextEditingController(),
-                                    width: 0.05,
-                                  ),
-                                  InputFields.formField1(
-                                    hintTxt: "",
-                                    isEnable: false,
-                                    controller: TextEditingController(),
-                                    width: 0.05,
-                                  ),
-                                  InputFields.formField1(
-                                    hintTxt: "",
-                                    isEnable: false,
-                                    controller: TextEditingController(),
-                                    width: 0.05,
-                                  ),
-                                  Container(
-                                    alignment: Alignment.center,
-                                    width: Get.width * 0.05,
-                                  ),
-                                  InputFields.formField1(
-                                    hintTxt: "Dur",
-                                    isEnable: false,
-                                    controller: TextEditingController(),
-                                    width: 0.05,
-                                  ),
-                                  InputFields.formField1(
-                                    hintTxt: "",
-                                    isEnable: false,
-                                    controller: TextEditingController(),
-                                    width: 0.05,
-                                  ),
-                                  InputFields.formField1(
-                                    hintTxt: "",
-                                    isEnable: false,
-                                    controller: TextEditingController(),
-                                    width: 0.05,
-                                  ),
-                                  Container(
-                                    alignment: Alignment.center,
-                                    width: Get.width * 0.05,
-                                  ),
-                                  InputFields.formField1(
-                                    hintTxt: "Amt",
-                                    isEnable: false,
-                                    controller: TextEditingController(),
-                                    width: 0.05,
-                                  ),
-                                  InputFields.formField1(
-                                    hintTxt: "",
-                                    isEnable: false,
-                                    controller: TextEditingController(),
-                                    width: 0.05,
-                                  ),
-                                  InputFields.formField1(
-                                    hintTxt: "",
-                                    isEnable: false,
-                                    controller: TextEditingController(),
-                                    width: 0.05,
-                                  ),
-                                  InputFields.formField1(
-                                    hintTxt: "",
-                                    isEnable: false,
-                                    controller: TextEditingController(),
-                                    width: 0.05,
-                                  ),
-                                  DropDownField.formDropDown1WidthMap(
-                                    controller.initData?.lstSpotPosType
-                                        ?.map((e) => DropDownValue(key: e.spotPositionTypeCode, value: e.spotPositionTypeName))
-                                        .toList(),
-                                    (valeu) {},
-                                    "Position",
-                                    .105,
-                                    selected: controller.selectedPromo,
-                                    autoFocus: true,
-                                  ),
-                                  InputFields.formField1(
-                                    hintTxt: "Pre. V Amt",
-                                    isEnable: false,
-                                    controller: TextEditingController(),
-                                    width: 0.05,
-                                  ),
-                                  InputFields.formField1(
-                                    hintTxt: "Pre. B Amt",
-                                    isEnable: false,
-                                    controller: TextEditingController(),
-                                    width: 0.05,
-                                  ),
-                                  Container(
-                                    width: Get.width * 0.105,
-                                    child: FormButtonWrapper(
-                                      showIcon: true,
-                                      iconDataM: Icons.video_collection_rounded,
-                                      btnText: "Show Programs",
-                                      callback: () {},
-                                    ),
-                                  ),
-                                  Container(
-                                    width: Get.width * 0.105,
-                                    child: FormButtonWrapper(
-                                      showIcon: true,
-                                      iconDataM: Icons.done_outline_rounded,
-                                      btnText: "Mark Done",
-                                      callback: () {},
-                                    ),
-                                  ),
-                                ])))),
+                                child: Wrap(
+                                    crossAxisAlignment: WrapCrossAlignment.end,
+                                    spacing: Get.width * 0.005,
+                                    runSpacing: 5,
+                                    children: [
+                                      Container(
+                                        alignment: Alignment.center,
+                                        width: Get.width * 0.05,
+                                        child: Text(
+                                          "All",
+                                          style: TextStyle(
+                                              fontSize: SizeDefine.labelSize1),
+                                        ),
+                                      ),
+                                      Container(
+                                        alignment: Alignment.center,
+                                        width: Get.width * 0.05,
+                                        child: Text(
+                                          "Booked",
+                                          style: TextStyle(
+                                              fontSize: SizeDefine.labelSize1),
+                                        ),
+                                      ),
+                                      Container(
+                                        alignment: Alignment.center,
+                                        width: Get.width * 0.05,
+                                        child: Text(
+                                          "Balance",
+                                          style: TextStyle(
+                                              fontSize: SizeDefine.labelSize1),
+                                        ),
+                                      ),
+                                      Container(
+                                        alignment: Alignment.center,
+                                        width: Get.width * 0.05,
+                                        child: Text(
+                                          "Val Amount",
+                                          style: TextStyle(
+                                              fontSize: SizeDefine.labelSize1),
+                                        ),
+                                      ),
+                                      InputFields.formField1(
+                                        hintTxt: "Sport",
+                                        isEnable: false,
+                                        controller: TextEditingController(),
+                                        width: 0.05,
+                                      ),
+                                      InputFields.formField1(
+                                        hintTxt: "",
+                                        isEnable: false,
+                                        controller: TextEditingController(),
+                                        width: 0.05,
+                                      ),
+                                      InputFields.formField1(
+                                        hintTxt: "",
+                                        isEnable: false,
+                                        controller: TextEditingController(),
+                                        width: 0.05,
+                                      ),
+                                      Container(
+                                        alignment: Alignment.center,
+                                        width: Get.width * 0.05,
+                                      ),
+                                      InputFields.formField1(
+                                        hintTxt: "Dur",
+                                        isEnable: false,
+                                        controller: TextEditingController(),
+                                        width: 0.05,
+                                      ),
+                                      InputFields.formField1(
+                                        hintTxt: "",
+                                        isEnable: false,
+                                        controller: TextEditingController(),
+                                        width: 0.05,
+                                      ),
+                                      InputFields.formField1(
+                                        hintTxt: "",
+                                        isEnable: false,
+                                        controller: TextEditingController(),
+                                        width: 0.05,
+                                      ),
+                                      Container(
+                                        alignment: Alignment.center,
+                                        width: Get.width * 0.05,
+                                      ),
+                                      InputFields.formField1(
+                                        hintTxt: "Amt",
+                                        isEnable: false,
+                                        controller: TextEditingController(),
+                                        width: 0.05,
+                                      ),
+                                      InputFields.formField1(
+                                        hintTxt: "",
+                                        isEnable: false,
+                                        controller: TextEditingController(),
+                                        width: 0.05,
+                                      ),
+                                      InputFields.formField1(
+                                        hintTxt: "",
+                                        isEnable: false,
+                                        controller: TextEditingController(),
+                                        width: 0.05,
+                                      ),
+                                      InputFields.formField1(
+                                        hintTxt: "",
+                                        isEnable: false,
+                                        controller: TextEditingController(),
+                                        width: 0.05,
+                                      ),
+                                      Obx(
+                                        () =>
+                                            DropDownField.formDropDown1WidthMap(
+                                          controller.positions.value,
+                                          (data) {
+                                            controller.selectedPositions = data;
+                                          },
+                                          "Position",
+                                          .105,
+                                          selected:
+                                              controller.selectedPositions,
+                                          autoFocus: true,
+                                        ),
+                                      ),
+                                      InputFields.formField1(
+                                        hintTxt: "Pre. V Amt",
+                                        isEnable: false,
+                                        controller: TextEditingController(),
+                                        width: 0.05,
+                                      ),
+                                      InputFields.formField1(
+                                        hintTxt: "Pre. B Amt",
+                                        isEnable: false,
+                                        controller: TextEditingController(),
+                                        width: 0.05,
+                                      ),
+                                      Container(
+                                        width: Get.width * 0.105,
+                                        child: FormButtonWrapper(
+                                          showIcon: true,
+                                          iconDataM:
+                                              Icons.video_collection_rounded,
+                                          btnText: "Show Programs",
+                                          callback: () {},
+                                        ),
+                                      ),
+                                      Container(
+                                        width: Get.width * 0.105,
+                                        child: FormButtonWrapper(
+                                          showIcon: true,
+                                          iconDataM: Icons.done_outline_rounded,
+                                          btnText: "Mark Done",
+                                          callback: () {},
+                                        ),
+                                      ),
+                                    ])))),
                     Card(
                         child: Padding(
                             padding: EdgeInsets.all(4),
@@ -401,7 +446,7 @@ class EdiRoBookingView extends StatelessWidget {
                 Expanded(
                     child: Container(
                   child: DataGridFromMap(
-                    mapData: [
+                    mapData: const [
                       {
                         "dsad": "dsadsa",
                         "Dsadsa": "dsadsa",
@@ -409,42 +454,246 @@ class EdiRoBookingView extends StatelessWidget {
                     ],
                   ),
                 )),
-                GetBuilder<HomeController>(
-                    id: "buttons",
-                    init: Get.find<HomeController>(),
-                    builder: (btncontroller) {
-                      if (btncontroller.buttons != null) {
-                        return Container(
-                          padding: EdgeInsets.only(top: 5),
-                          height: 40,
-                          child: Wrap(
+                // GetBuilder<HomeController>(
+                //     id: "buttons",
+                //     init: Get.find<HomeController>(),
+                //     builder: (btncontroller) {
+                //       if (btncontroller.buttons != null) {
+                //         return Container(
+                //           padding: EdgeInsets.only(top: 5),
+                //           height: 40,
+                //           child: Wrap(
+                //             spacing: 5,
+                //             runSpacing: 15,
+                //             crossAxisAlignment: WrapCrossAlignment.end,
+                //             alignment: WrapAlignment.start,
+                //             // mainAxisSize: MainAxisSize.min,
+                //             children: [
+                //               for (var btn in btncontroller.buttons!) ...{
+                //                 FormButtonWrapper(
+                //                     btnText: btn["name"], callback: () {}
+                //                     //  ((Utils.btnAccessHandler(btn['name'], controller.formPermissions!) == null))
+                //                     //     ? null
+                //                     //     : () => controller.formHandler(btn['name']),
+                //                     )
+                //               },
+                //               // for (var btn in btncontroller.buttons!)
+                //               //   FormButtonWrapper(
+                //               //     btnText: btn["name"],
+                //               //     callback: () => controller.formHandler(btn['name'].toString()),
+                //               //   ),
+                //             ],
+                //           ),
+                //         );
+                //       }
+                //       return Container();
+                //     }),
+                const SizedBox(
+                  height: 5,
+                ),
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: GetBuilder<HomeController>(
+                      id: "buttons",
+                      init: Get.find<HomeController>(),
+                      builder: (controllerX) {
+                        PermissionModel formPermissions =
+                            Get.find<MainController>()
+                                .permissionList!
+                                .lastWhere((element) =>
+                                    element.appFormName ==
+                                    "frmnewbookingstatus");
+                        if (controllerX.buttons != null) {
+                          return Wrap(
                             spacing: 5,
                             runSpacing: 15,
-                            crossAxisAlignment: WrapCrossAlignment.end,
-                            alignment: WrapAlignment.start,
-                            // mainAxisSize: MainAxisSize.min,
+                            alignment: WrapAlignment.center,
                             children: [
-                              for (var btn in btncontroller.buttons!) ...{
-                                FormButtonWrapper(btnText: btn["name"], callback: () {}
-                                    //  ((Utils.btnAccessHandler(btn['name'], controller.formPermissions!) == null))
-                                    //     ? null
-                                    //     : () => controller.formHandler(btn['name']),
-                                    )
-                              },
-                              // for (var btn in btncontroller.buttons!)
-                              //   FormButtonWrapper(
-                              //     btnText: btn["name"],
-                              //     callback: () => controller.formHandler(btn['name'].toString()),
-                              //   ),
+                              for (var btn in controllerX.buttons!)
+                                FormButtonWrapper(
+                                    btnText: btn["name"],
+                                    callback: Utils.btnAccessHandler2(
+                                                btn['name'],
+                                                controllerX,
+                                                formPermissions) ==
+                                            null
+                                        ? null
+                                        : () {}),
+                              FormButtonWrapper(
+                                btnText: "Info",
+                                callback: () {
+                                  infoDilogBox();
+                                },
+                                showIcon: false,
+                              ),
+                              FormButtonWrapper(
+                                btnText: "Check All",
+                                callback: () {},
+                                showIcon: false,
+                              ),
+                              FormButtonWrapper(
+                                btnText: "MG Spots",
+                                callback: () {
+                                  mgSpotsDilogBox();
+                                },
+                                showIcon: false,
+                              ),
+                              FormButtonWrapper(
+                                btnText: "Tape Id",
+                                callback: () {},
+                                showIcon: false,
+                              ),
                             ],
-                          ),
+                          );
+                        }
+                        return Container(
+                          child: Text("No"),
                         );
-                      }
-                      return Container();
-                    }),
+                      }),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
               ],
             ),
           );
         });
+  }
+
+  infoDilogBox() {
+    maincontroller.drgabbleDialog.value = Card(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+      borderOnForeground: false,
+      margin: const EdgeInsets.all(0),
+      child: Container(
+        height: Get.height * .50,
+        width: Get.width * .45,
+        child: Column(
+          children: [
+            Expanded(
+              child: Obx(
+                () => Container(
+                  margin: const EdgeInsets.only(bottom: 8),
+                  decoration: maincontroller.infoTableList.isEmpty
+                      ? BoxDecoration(border: Border.all(color: Colors.grey))
+                      : null,
+                  child: maincontroller.infoTableList.value.isEmpty
+                      ? null
+                      : DataGridShowOnlyKeys(
+                          mapData: maincontroller.infoTableList.value,
+                          hideCode: false,
+                          exportFileName: "EDI R.O. Booking",
+                        ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8),
+              child: Align(
+                alignment: Alignment.topCenter,
+                child: FormButton(
+                  btnText: "Done",
+                  callback: () {
+                    maincontroller.drgabbleDialog.value = null;
+                  },
+                  showIcon: false,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  mgSpotsDilogBox() {
+    maincontroller.drgabbleDialog.value = Card(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(2)),
+      borderOnForeground: false,
+      margin: const EdgeInsets.all(0),
+      child: Container(
+        height: Get.height * .65,
+        width: Get.width * .80,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  DateWithThreeTextField(
+                    title: "From Date",
+                    mainTextController: TextEditingController(),
+                    widthRation: .12,
+                  ),
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  DateWithThreeTextField(
+                    title: "To Date",
+                    mainTextController: TextEditingController(),
+                    widthRation: .12,
+                  ),
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  FormButton(
+                    btnText: "Show",
+                    callback: () {
+                      maincontroller.drgabbleDialog.value = null;
+                    },
+                    showIcon: false,
+                  ),
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  FormButton(
+                    btnText: "Back",
+                    callback: () {
+                      maincontroller.drgabbleDialog.value = null;
+                    },
+                    showIcon: false,
+                  ),
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  FormButton(
+                    btnText: "Import & Mark",
+                    callback: () {
+                      maincontroller.drgabbleDialog.value = null;
+                    },
+                    showIcon: false,
+                  ),
+                  const SizedBox(
+                    width: 5,
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              child: Obx(
+                () => Container(
+                  margin: const EdgeInsets.only(bottom: 8),
+                  decoration: maincontroller.infoTableList.isEmpty
+                      ? BoxDecoration(border: Border.all(color: Colors.grey))
+                      : null,
+                  child: maincontroller.infoTableList.value.isEmpty
+                      ? null
+                      : DataGridShowOnlyKeys(
+                          mapData: maincontroller.infoTableList.value,
+                          hideCode: false,
+                          exportFileName: "EDI R.O. Booking",
+                        ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

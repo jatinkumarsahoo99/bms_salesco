@@ -257,7 +257,7 @@ class ProgramWiseRevenueReportController extends GetxController {
           ),
           child: SizedBox(
             width: Get.width * 60,
-            height: Get.width * 6,
+            height: Get.height * 6,
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(
