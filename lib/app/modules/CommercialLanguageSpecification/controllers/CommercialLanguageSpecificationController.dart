@@ -19,7 +19,8 @@ class CommercialLanguageSpecificationController extends GetxController {
   DropDownValue? selectChannel;
   CommercialLanguageModel? commercialLangModel;
   PlutoGridStateManager? stateManager;
-  List<Map<String,Map<String, double>>>? userGridSetting1;
+  List<Map<String, Map<String, double>>>? userGridSetting1;
+
   fetchUserSetting1() async {
     userGridSetting1 = await Get.find<HomeController>().fetchUserSetting1();
     update(["grid"]);
@@ -62,28 +63,28 @@ class CommercialLanguageSpecificationController extends GetxController {
   }
 
   getDisplay() {
-     if (selectLocation == null) {
+    if (selectLocation == null) {
       LoadingDialog.callInfoMessage("Please select location");
     } else if (selectChannel == null) {
       LoadingDialog.callInfoMessage("Please select channel");
-    }  else {
-    LoadingDialog.call();
-    Get.find<ConnectorControl>().GETMETHODCALL(
-        api: ApiFactory.COMMERCIAL_LANG_SPEC_DISPLAY(
-            selectLocation?.key ?? "ZAZEE00001",
-            selectChannel?.key ?? "ZAZEE00001"),
-        fun: (Map map) {
-          Get.back();
-          if (map is Map &&
-              map.containsKey("display") &&
-              map["display"] != null) {
-            commercialLangModel =
-                CommercialLanguageModel.fromJson(map as Map<String, dynamic>);
-            update(["listUpdate"]);
-          } else {
-            LoadingDialog.callInfoMessage(map.toString());
-          }
-        });
+    } else {
+      LoadingDialog.call();
+      Get.find<ConnectorControl>().GETMETHODCALL(
+          api: ApiFactory.COMMERCIAL_LANG_SPEC_DISPLAY(
+              selectLocation?.key ?? "ZAZEE00001",
+              selectChannel?.key ?? "ZAZEE00001"),
+          fun: (Map map) {
+            Get.back();
+            if (map is Map &&
+                map.containsKey("display") &&
+                map["display"] != null) {
+              commercialLangModel =
+                  CommercialLanguageModel.fromJson(map as Map<String, dynamic>);
+              update(["listUpdate"]);
+            } else {
+              LoadingDialog.callInfoMessage(map.toString());
+            }
+          });
     }
   }
 
@@ -113,9 +114,9 @@ class CommercialLanguageSpecificationController extends GetxController {
             fun: (map) {
               Get.back();
               if (map is Map &&
-                  map.containsKey("lstsectype") &&
-                  map["lstsectype"] != null) {
-                LoadingDialog.callDataSavedMessage("Data successfully");
+                  map.containsKey("success") &&
+                  map["success"] != null) {
+                LoadingDialog.callDataSavedMessage(map["success"]);
               } else {
                 LoadingDialog.callInfoMessage(map.toString());
               }
