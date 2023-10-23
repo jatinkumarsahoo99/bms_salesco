@@ -23,8 +23,8 @@ class AmagiSpotsReplacementView
 
   @override
   AmagiSpotsReplacementController controller =
-  Get.put<AmagiSpotsReplacementController>(
-      AmagiSpotsReplacementController());
+      Get.put<AmagiSpotsReplacementController>(
+          AmagiSpotsReplacementController());
 
   var rebuildKey = GlobalKey<ScaffoldState>();
 
@@ -80,22 +80,28 @@ class AmagiSpotsReplacementView
                 child: Obx(() {
                   return Container(
                       child: DataGridFromMapAmagiDialog(
-                        showSrNo: false,
-                        hideCode: false,
-                        formatDate: false,
-                        widthSpecificColumn: {"0":150,"1":150,"clientname":150,"starttime":150,"endtime":150},
-                        summary: controller.isSummary.value,
-                        exportFileName: "Amagi Spot Replacement",
-                        mode: PlutoGridMode.selectWithOneTap,
-                        mapData: controller.mapList.value,
-                        // mapData: (controller.dataList)!,
-                        widthRatio: Get.width / 9 - 1,
+                    showSrNo: false,
+                    hideCode: false,
+                    formatDate: false,
+                    widthSpecificColumn: {
+                      "0": 150,
+                      "1": 150,
+                      "clientname": 150,
+                      "starttime": 150,
+                      "endtime": 150
+                    },
+                    summary: controller.isSummary.value,
+                    exportFileName: "Amagi Spot Replacement",
+                    mode: PlutoGridMode.selectWithOneTap,
+                    mapData: controller.mapList.value,
+                    // mapData: (controller.dataList)!,
+                    widthRatio: Get.width / 9 - 1,
 
-                        onload: (PlutoGridOnLoadedEvent load) {
-                          controller.dialogStateManager = load.stateManager;
-                          // controller.stateManager = load.stateManager;
-                        },
-                      ));
+                    onload: (PlutoGridOnLoadedEvent load) {
+                      controller.dialogStateManager = load.stateManager;
+                      // controller.stateManager = load.stateManager;
+                    },
+                  ));
                 }),
               ),
             ],
@@ -158,27 +164,46 @@ class AmagiSpotsReplacementView
                 child: Obx(() {
                   return Container(
                       child: DataGridFromMapAmagiDialog(
-                        showSrNo: false,
-                        hideCode: false,
-                        formatDate: false,
-                        columnAutoResize: false,
-                        widthSpecificColumn: const {"BookingDetailCode":150,"BookingNumber":150,"BrandCode":150,
-                          "Channel":150,"ClientName":150,"ColNo":150,"CommercialCaption":150,"DealRownumber":150,
-                          "Dealno":150,"EndTime":150,"ParentID":150,"ProductName":150,"Rate":150,"ScheduleDate":150,
-                          "SpotAmount":150,"Starttime":150,"TapeCode":150,"TapeDuration":150,"ValuationAmount":150,
-                          "Valuationrate":150,"ZoneName":150,"channelid":150},
-                        summary: controller.isSummary.value,
-                        exportFileName: "Amagi Spot Replacement",
-                        mode: PlutoGridMode.selectWithOneTap,
-                        mapData: controller.mapList.value,
-                        // mapData: (controller.dataList)!,
-                        widthRatio: Get.width / 9 - 1,
+                    showSrNo: false,
+                    hideCode: false,
+                    formatDate: false,
+                    columnAutoResize: false,
+                    widthSpecificColumn: const {
+                      "BookingDetailCode": 150,
+                      "BookingNumber": 150,
+                      "BrandCode": 150,
+                      "Channel": 150,
+                      "ClientName": 150,
+                      "ColNo": 150,
+                      "CommercialCaption": 150,
+                      "DealRownumber": 150,
+                      "Dealno": 150,
+                      "EndTime": 150,
+                      "ParentID": 150,
+                      "ProductName": 150,
+                      "Rate": 150,
+                      "ScheduleDate": 150,
+                      "SpotAmount": 150,
+                      "Starttime": 150,
+                      "TapeCode": 150,
+                      "TapeDuration": 150,
+                      "ValuationAmount": 150,
+                      "Valuationrate": 150,
+                      "ZoneName": 150,
+                      "channelid": 150
+                    },
+                    summary: controller.isSummary.value,
+                    exportFileName: "Amagi Spot Replacement",
+                    mode: PlutoGridMode.selectWithOneTap,
+                    mapData: controller.mapList.value,
+                    // mapData: (controller.dataList)!,
+                    widthRatio: Get.width / 9 - 1,
 
-                        onload: (PlutoGridOnLoadedEvent load) {
-                          controller.dialogStateManager = load.stateManager;
-                          // controller.stateManager = load.stateManager;
-                        },
-                      ));
+                    onload: (PlutoGridOnLoadedEvent load) {
+                      controller.dialogStateManager2 = load.stateManager;
+                      // controller.stateManager = load.stateManager;
+                    },
+                  ));
                 }),
               ),
             ],
@@ -241,25 +266,31 @@ class AmagiSpotsReplacementView
                 child: Obx(() {
                   return Container(
                       child: DataGridFromMapAmagiDialog(
-                        showSrNo: false,
-                        hideCode: false,
-                        formatDate: false,
-                        columnAutoResize: false,
-                        widthSpecificColumn: const {"ParentID":150,"ASIA  ZEETV-Rajasthan":150,
-                          "ASIA  ZEETV-RoMaha":150,"ASIA  ZEETV-BIHAR":150,
-                          "ASIA  ZEETV-DelhiNCR":150,"ASIA  ZEETV-Gujarat":150,"ASIA  ZEETV-Mumbai":150},
-                        summary: controller.isSummary.value,
-                        exportFileName: "Amagi Spot Replacement",
-                        mode: PlutoGridMode.selectWithOneTap,
-                        mapData: controller.mapList.value,
-                        // mapData: (controller.dataList)!,
-                        widthRatio: Get.width / 9 - 1,
+                    showSrNo: false,
+                    hideCode: false,
+                    formatDate: false,
+                    columnAutoResize: false,
+                    widthSpecificColumn: const {
+                      "ParentID": 150,
+                      "ASIA  ZEETV-Rajasthan": 150,
+                      "ASIA  ZEETV-RoMaha": 150,
+                      "ASIA  ZEETV-BIHAR": 150,
+                      "ASIA  ZEETV-DelhiNCR": 150,
+                      "ASIA  ZEETV-Gujarat": 150,
+                      "ASIA  ZEETV-Mumbai": 150
+                    },
+                    summary: controller.isSummary.value,
+                    exportFileName: "Amagi Spot Replacement",
+                    mode: PlutoGridMode.selectWithOneTap,
+                    mapData: controller.mapList.value,
+                    // mapData: (controller.dataList)!,
+                    widthRatio: Get.width / 9 - 1,
 
-                        onload: (PlutoGridOnLoadedEvent load) {
-                          controller.dialogStateManager = load.stateManager;
-                          // controller.stateManager = load.stateManager;
-                        },
-                      ));
+                    onload: (PlutoGridOnLoadedEvent load) {
+                      controller.dialogStateManager3 = load.stateManager;
+                      // controller.stateManager = load.stateManager;
+                    },
+                  ));
                 }),
               ),
             ],
@@ -269,7 +300,6 @@ class AmagiSpotsReplacementView
     );
     controller.canDialogShow.value = true;
   }
-
 
   dragAbleDialogGetTotal() {
     controller.initialOffset.value = 2;
@@ -322,27 +352,50 @@ class AmagiSpotsReplacementView
                 child: Obx(() {
                   return Container(
                       child: DataGridFromMapAmagiDialog(
-                        showSrNo: false,
-                        hideCode: false,
-                        formatDate: false,
-                        columnAutoResize: false,
-                        summary: controller.isSummary.value,
-                        exportFileName: "Amagi Spot Replacement",
-                        mode: PlutoGridMode.selectWithOneTap,
-                        mapData: controller.mapList.value,
-                        widthSpecificColumn: const {"BookingDetailCode":150,"BookingNumber":150,"BrandName":150,"ClientName":150,
-                          "CombineSpots":150,"EndTime":150,"Hold":150,"LocalDuration":150,"LocalRevenue":150,
-                          "LocalValue":150,"NEW_ID":150,"Rate":150,"ScheduleDate":150,"ScheduleEndTime":150,"ScheduleTime":150,
-                          "SpotAmount":150,"Starttime":150,"TapeDuration":150,"TapeDuration1":150,"TotalDuration":150,"TotalRevenue":150,
-                          "TotalValue":150,"ValuationAmount":150,"Valuationrate":150,"Yeild":150,"tapeid":150},
-                        // mapData: (controller.dataList)!,
-                        widthRatio: Get.width / 9 - 1,
+                    showSrNo: false,
+                    hideCode: false,
+                    formatDate: false,
+                    columnAutoResize: false,
+                    summary: controller.isSummary.value,
+                    exportFileName: "Amagi Spot Replacement",
+                    mode: PlutoGridMode.selectWithOneTap,
+                    mapData: controller.mapList.value,
+                    widthSpecificColumn: const {
+                      "BookingDetailCode": 150,
+                      "BookingNumber": 150,
+                      "BrandName": 150,
+                      "ClientName": 150,
+                      "CombineSpots": 150,
+                      "EndTime": 150,
+                      "Hold": 150,
+                      "LocalDuration": 150,
+                      "LocalRevenue": 150,
+                      "LocalValue": 150,
+                      "NEW_ID": 150,
+                      "Rate": 150,
+                      "ScheduleDate": 150,
+                      "ScheduleEndTime": 150,
+                      "ScheduleTime": 150,
+                      "SpotAmount": 150,
+                      "Starttime": 150,
+                      "TapeDuration": 150,
+                      "TapeDuration1": 150,
+                      "TotalDuration": 150,
+                      "TotalRevenue": 150,
+                      "TotalValue": 150,
+                      "ValuationAmount": 150,
+                      "Valuationrate": 150,
+                      "Yeild": 150,
+                      "tapeid": 150
+                    },
+                    // mapData: (controller.dataList)!,
+                    widthRatio: Get.width / 9 - 1,
 
-                        onload: (PlutoGridOnLoadedEvent load) {
-                          controller.dialogStateManager = load.stateManager;
-                          // controller.stateManager = load.stateManager;
-                        },
-                      ));
+                    onload: (PlutoGridOnLoadedEvent load) {
+                      controller.dialogStateManager1 = load.stateManager;
+                      // controller.stateManager = load.stateManager;
+                    },
+                  ));
                 }),
               ),
             ],
@@ -356,11 +409,14 @@ class AmagiSpotsReplacementView
   dragAbleDialogGet() {
     controller.initialOffset.value = 2;
     TextEditingController txCaptionController = TextEditingController();
-    TextEditingController txIdController = TextEditingController(text:
-    controller.amagiSpotReplacementModel?.lstSpots?.fastInsertText ?? "");
-    DropDownValue? selectEventType = DropDownValue(
-        value: "Promo", key: "Promo");
-    List<DropDownValue> selectEventTypeList = [DropDownValue(value: "Promo", key: "Promo")];
+    TextEditingController txIdController = TextEditingController(
+        text: controller.amagiSpotReplacementModel?.lstSpots?.fastInsertText ??
+            "");
+    DropDownValue? selectEventType =
+        DropDownValue(value: "Promo", key: "Promo");
+    List<DropDownValue> selectEventTypeList = [
+      DropDownValue(value: "Promo", key: "Promo")
+    ];
     Rx<bool> mySta = Rx<bool>(false);
 
     controller.dialogWidget = Material(
@@ -407,17 +463,16 @@ class AmagiSpotsReplacementView
                   ],
                 ),
               ),
-
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 // crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Container(
-                    width: Get.width*0.22,
-                    height: Get.height*0.07,
+                    width: Get.width * 0.22,
+                    height: Get.height * 0.07,
                     child: DropDownField.formDropDown1WidthMap(
                       selectEventTypeList,
-                          (value) {
+                      (value) {
                         // selectedObjective = value;
                         selectEventType = value;
                       },
@@ -426,8 +481,8 @@ class AmagiSpotsReplacementView
                       // isEnable: isEnable,
                       selected: selectEventType,
                       dialogHeight: Get.height * .7,
-                      onFocusChange: (val){},
-                      height: Get.height * 0.067,widgetKey: GlobalKey(),
+                      onFocusChange: (val) {},
+                      height: Get.height * 0.067, widgetKey: GlobalKey(),
                       // inkWellFocusNode: objectiveNode,
                       autoFocus: true,
                     ),
@@ -435,7 +490,7 @@ class AmagiSpotsReplacementView
                   InputFields.formField1(
                     hintTxt: "Tx Caption",
                     controller: txCaptionController,
-                    width: 0.2,maxLen: 40,
+                    width: 0.2, maxLen: 40,
 
                     // autoFocus: true,
                     // focusNode: controllerX.brandName,
@@ -448,7 +503,6 @@ class AmagiSpotsReplacementView
               const SizedBox(
                 height: 6,
               ),
-
               Row(
                 children: [
                   InputFields.formField1(
@@ -465,14 +519,14 @@ class AmagiSpotsReplacementView
                   ),
                 ],
               ),
-
               const SizedBox(
                 height: 6,
               ),
               Row(
                 children: [
                   Obx(() {
-                    return Checkbox(value: mySta.value,
+                    return Checkbox(
+                        value: mySta.value,
                         onChanged: (val) {
                           mySta.value = val!;
                           mySta.refresh();
@@ -487,16 +541,21 @@ class AmagiSpotsReplacementView
                   ),
                   Padding(
                     padding:
-                    const EdgeInsets.only(top: 0.0, left: 10, right: 10),
+                        const EdgeInsets.only(top: 0.0, left: 10, right: 10),
                     child: FormButtonWrapper(
                       btnText: "Search",
                       callback: () {
-                        controller.callFastInsert(
-                          caption: txCaptionController.text,
-                          eventType: selectEventType?.key,mine: mySta.value,txID:txIdController.text,myProperty: "" ).
-                        then((value) {
+                        controller
+                            .callFastInsert(
+                                caption: txCaptionController.text,
+                                eventType: selectEventType?.key,
+                                mine: mySta.value,
+                                txID: txIdController.text,
+                                myProperty: "")
+                            .then((value) {
                           controller.mapList.value = value;
-                          print(">>>>>>>>>>>"+controller.mapList.value.toString());
+                          print(">>>>>>>>>>>" +
+                              controller.mapList.value.toString());
                           controller.mapList.refresh();
                         });
                         // controller.fetchGetGenerate();
@@ -532,7 +591,7 @@ class AmagiSpotsReplacementView
                     // mapData: (controller.dataList)!,
                     widthRatio: Get.width / 9 - 1,
                     onload: (PlutoGridOnLoadedEvent load) {
-                      controller.dialogStateManager = load.stateManager;
+                      controller.dialogStateManager4 = load.stateManager;
                       // controller.stateManager = load.stateManager;
                     },
                   ),
@@ -548,9 +607,7 @@ class AmagiSpotsReplacementView
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery
-        .of(context)
-        .size;
+    var size = MediaQuery.of(context).size;
     return GetBuilder<AmagiSpotsReplacementController>(
       assignId: true,
       id: "all",
@@ -562,9 +619,9 @@ class AmagiSpotsReplacementView
               floatingActionButton: Obx(() {
                 return controller.canDialogShow.value
                     ? DraggableFab(
-                  initPosition: controller.getOffSetValue(constraints),
-                  child: controller.dialogWidget!,
-                )
+                        initPosition: controller.getOffSetValue(constraints),
+                        child: controller.dialogWidget!,
+                      )
                     : const SizedBox();
               }),
               body: Center(
@@ -587,39 +644,37 @@ class AmagiSpotsReplacementView
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Obx(
-                                  () =>
-                                  DropDownField.formDropDown1WidthMap(
-                                    controller.locationList.value ?? [],
-                                        (value) {
-                                      controller.selectedLocation = value;
-                                    },
-                                    "Location",
-                                    .13,
-                                    isEnable: controller.isEnable,
-                                    selected: controller.selectedLocation,
-                                    dialogHeight: Get.height * .7,
-                                    inkWellFocusNode: controller.locationNode,
-                                    autoFocus: true,
-                                  ),
+                              () => DropDownField.formDropDown1WidthMap(
+                                controller.locationList.value ?? [],
+                                (value) {
+                                  controller.selectedLocation = value;
+                                },
+                                "Location",
+                                .13,
+                                isEnable: controller.isEnable,
+                                selected: controller.selectedLocation,
+                                dialogHeight: Get.height * .7,
+                                inkWellFocusNode: controller.locationNode,
+                                autoFocus: true,
+                              ),
                             ),
                             SizedBox(
                               width: 3,
                             ),
                             Obx(
-                                  () =>
-                                  DropDownField.formDropDown1WidthMap(
-                                    controller.channelList.value ?? [],
-                                        (value) {
-                                      controller.selectedChannel = value;
-                                    },
-                                    "Channel",
-                                    .13,
-                                    isEnable: controller.isEnable,
-                                    selected: controller.selectedChannel,
-                                    dialogHeight: Get.height * .7,
-                                    inkWellFocusNode: controller.channelNode,
-                                    autoFocus: true,
-                                  ),
+                              () => DropDownField.formDropDown1WidthMap(
+                                controller.channelList.value ?? [],
+                                (value) {
+                                  controller.selectedChannel = value;
+                                },
+                                "Channel",
+                                .13,
+                                isEnable: controller.isEnable,
+                                selected: controller.selectedChannel,
+                                dialogHeight: Get.height * .7,
+                                inkWellFocusNode: controller.channelNode,
+                                autoFocus: true,
+                              ),
                             ),
                             SizedBox(
                               width: 3,
@@ -634,12 +689,12 @@ class AmagiSpotsReplacementView
 
                                 controller.getSpots().then((value) {
                                   if ((controller
-                                      .amagiSpotReplacementModel
-                                      ?.lstSpots
-                                      ?.fastInserts
-                                      ?.promoResponse
-                                      ?.length ??
-                                      0) >
+                                              .amagiSpotReplacementModel
+                                              ?.lstSpots
+                                              ?.fastInserts
+                                              ?.promoResponse
+                                              ?.length ??
+                                          0) >
                                       0) {
                                     if (controller.canDialogShow.value ==
                                         true) {
@@ -656,9 +711,12 @@ class AmagiSpotsReplacementView
                                       dragAbleDialogGet();
                                     }
                                   }
-                                  Future.delayed(Duration(seconds: 2), () {
-                                    controller.bindData();
-                                  },);
+                                  Future.delayed(
+                                    Duration(seconds: 2),
+                                    () {
+                                      controller.bindData();
+                                    },
+                                  );
                                 });
                               },
                             ),
@@ -666,20 +724,19 @@ class AmagiSpotsReplacementView
                               width: 3,
                             ),
                             Obx(
-                                  () =>
-                                  DropDownField.formDropDown1WidthMap(
-                                    controller.objectiveList.value ?? [],
-                                        (value) {
-                                      controller.selectedObjective = value;
-                                    },
-                                    "Objective",
-                                    .13,
-                                    isEnable: controller.isEnable,
-                                    selected: controller.selectedObjective,
-                                    dialogHeight: Get.height * .7,
-                                    inkWellFocusNode: controller.objectiveNode,
-                                    autoFocus: true,
-                                  ),
+                              () => DropDownField.formDropDown1WidthMap(
+                                controller.objectiveList.value ?? [],
+                                (value) {
+                                  controller.selectedObjective = value;
+                                },
+                                "Objective",
+                                .13,
+                                isEnable: controller.isEnable,
+                                selected: controller.selectedObjective,
+                                dialogHeight: Get.height * .7,
+                                inkWellFocusNode: controller.objectiveNode,
+                                autoFocus: true,
+                              ),
                             ),
                             const SizedBox(
                               width: 3,
@@ -688,8 +745,8 @@ class AmagiSpotsReplacementView
                               padding: const EdgeInsets.only(
                                   top: 14.0, left: 10, right: 10),
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment
-                                    .spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Obx(() {
                                     return Checkbox(
@@ -713,15 +770,16 @@ class AmagiSpotsReplacementView
                                   child: FormButtonWrapper(
                                     btnText: "Data",
                                     callback: () {
-                                      controller.getSpots(reProcess: true)
+                                      controller
+                                          .getSpots(reProcess: true)
                                           .then((value) {
                                         if ((controller
-                                            .amagiSpotReplacementModel
-                                            ?.lstSpots
-                                            ?.fastInserts
-                                            ?.promoResponse
-                                            ?.length ??
-                                            0) >
+                                                    .amagiSpotReplacementModel
+                                                    ?.lstSpots
+                                                    ?.fastInserts
+                                                    ?.promoResponse
+                                                    ?.length ??
+                                                0) >
                                             0) {
                                           if (controller.canDialogShow.value ==
                                               true) {
@@ -739,13 +797,14 @@ class AmagiSpotsReplacementView
                                             // print(">>>>>>>>>valueMapData" + value.toString());
                                             controller.mapList.value = value;
                                             // dragAbleDialogGet();
-
                                           }
                                         }
                                         Future.delayed(
-                                          Duration(seconds: 2), () {
-                                          controller.bindData();
-                                        },);
+                                          Duration(seconds: 2),
+                                          () {
+                                            controller.bindData();
+                                          },
+                                        );
                                       });
                                     },
                                     showIcon: true,
@@ -757,28 +816,27 @@ class AmagiSpotsReplacementView
                                   child: FormButtonWrapper(
                                     btnText: "Promos",
                                     callback: () {
-                                      controller
-                                          .dialogWidget =
-                                      null;
-                                      controller
-                                          .canDialogShow
-                                          .value = false;
+                                      controller.dialogWidget = null;
+                                      controller.canDialogShow.value = false;
                                       controller.isSummary.value = true;
                                       controller.update(['id']);
 
                                       Future.delayed(
-                                        const Duration(seconds: 1), () {
-                                        controller.title?.value = "";
-                                        controller.isSummary.value = false;
-                                        // print(">>>>>>>>>valueMapData" + value.toString());
-                                        controller.mapList.value =
-                                        controller.amagiSpotReplacementModel
-                                            ?.lstSpots?.fastInserts
-                                            ?.promoResponse
-                                            ?.map((e) => e.toJson())
-                                            .toList() as List<dynamic>;
-                                        dragAbleDialogGet();
-                                      },);
+                                        const Duration(seconds: 1),
+                                        () {
+                                          controller.title?.value = "";
+                                          controller.isSummary.value = false;
+                                          // print(">>>>>>>>>valueMapData" + value.toString());
+                                          controller.mapList.value = controller
+                                              .amagiSpotReplacementModel
+                                              ?.lstSpots
+                                              ?.fastInserts
+                                              ?.promoResponse
+                                              ?.map((e) => e.toJson())
+                                              .toList() as List<dynamic>;
+                                          dragAbleDialogGet();
+                                        },
+                                      );
                                     },
                                     showIcon: true,
                                   ),
@@ -823,146 +881,149 @@ class AmagiSpotsReplacementView
                                                   builder: (controller) {
                                                     return Padding(
                                                       padding:
-                                                      const EdgeInsets.all(3.0),
-                                                      child: (controller
-                                                          .amagiSpotReplacementModel !=
-                                                          null &&
-                                                          controller
-                                                              .amagiSpotReplacementModel
-                                                              ?.lstSpots !=
-                                                              null &&
-                                                          controller
-                                                              .amagiSpotReplacementModel
-                                                              ?.lstSpots
-                                                              ?.childChannel !=
-                                                              null &&
-                                                          (controller
-                                                              .amagiSpotReplacementModel
-                                                              ?.lstSpots
-                                                              ?.childChannel
-                                                              ?.length ??
-                                                              0) >
-                                                              0)
+                                                          const EdgeInsets.all(
+                                                              3.0),
+                                                      child: (controller.amagiSpotReplacementModel != null &&
+                                                              controller
+                                                                      .amagiSpotReplacementModel
+                                                                      ?.lstSpots !=
+                                                                  null &&
+                                                              controller
+                                                                      .amagiSpotReplacementModel
+                                                                      ?.lstSpots
+                                                                      ?.childChannel !=
+                                                                  null &&
+                                                              (controller
+                                                                          .amagiSpotReplacementModel
+                                                                          ?.lstSpots
+                                                                          ?.childChannel
+                                                                          ?.length ??
+                                                                      0) >
+                                                                  0)
                                                           ? DataGridFromMapForAmagiSpotReplacement(
-                                                        showSrNo: true,
-                                                        hideCode: false,
-                                                        formatDate: false,
-                                                        columnAutoResize: false,
-                                                        isChannelGrid: true,
-                                                        hideKeys: const [
-                                                          "locationCode",
-                                                          "channelCode",
-                                                          "channelid",
-                                                          "isParent",
-                                                          "colNo"
-                                                        ],
-                                                        widthSpecificColumn: {
-                                                          "totalSpots": 130,
-                                                          "unallocatedSpots": 130,
-                                                          "locationname": 130,
-                                                          "channelname": 130
-                                                        },
-                                                        exportFileName:
-                                                        "Amagi Spot Replacement",
-                                                        mode: PlutoGridMode
-                                                            .selectWithOneTap,
-                                                        enableSort: true,
-                                                        numTypeKeyList: const [
-                                                          'totalSpots'
-                                                        ],
-                                                        mapData: controller
-                                                            .amagiSpotReplacementModel
-                                                            ?.lstSpots
-                                                            ?.childChannel
-                                                            ?.map((e) =>
-                                                            e
-                                                                .toJson())
-                                                            .toList()
-                                                        as List<dynamic>,
-                                                        // mapData: (controller.dataList)!,
-                                                        widthRatio:
-                                                        Get.width / 9 - 1,
-                                                        colorCallback: (
-                                                            PlutoRowColorContext colorData) {
-                                                          Color color = Colors
-                                                              .white;
-                                                          if (controller
-                                                              .childChannelStateManager
-                                                              ?.currentRowIdx ==
-                                                              colorData
-                                                                  .rowIdx) {
-                                                            color = Color(
-                                                                0xFFD1C4E9);
-                                                          }
-                                                          return color;
-                                                        },
-                                                        onSelected: (
-                                                            PlutoGridOnSelectedEvent? val) {
-                                                          controller
-                                                              .channelSpotIndex =
-                                                              val?.rowIdx ?? 0;
-                                                          print(
-                                                              ">>>>>>>>>>>>>childChannel + Click ");
-                                                          controller.bindData();
-                                                        },
-                                                        onload:
-                                                            (
-                                                            PlutoGridOnLoadedEvent
-                                                            load) {
-                                                          controller
-                                                              .childChannelStateManager =
-                                                              load.stateManager;
+                                                              showSrNo: true,
+                                                              hideCode: false,
+                                                              formatDate: false,
+                                                              columnAutoResize:
+                                                                  false,
+                                                              isChannelGrid:
+                                                                  true,
+                                                              hideKeys: const [
+                                                                "locationCode",
+                                                                "channelCode",
+                                                                "channelid",
+                                                                "isParent",
+                                                                "colNo"
+                                                              ],
+                                                              widthSpecificColumn: {
+                                                                "totalSpots":
+                                                                    130,
+                                                                "unallocatedSpots":
+                                                                    130,
+                                                                "locationname":
+                                                                    130,
+                                                                "channelname":
+                                                                    130
+                                                              },
+                                                              exportFileName:
+                                                                  "Amagi Spot Replacement",
+                                                              mode: PlutoGridMode
+                                                                  .selectWithOneTap,
+                                                              enableSort: true,
+                                                              numTypeKeyList: const [
+                                                                'totalSpots'
+                                                              ],
+                                                              mapData: controller
+                                                                  .amagiSpotReplacementModel
+                                                                  ?.lstSpots
+                                                                  ?.childChannel
+                                                                  ?.map((e) => e
+                                                                      .toJson())
+                                                                  .toList() as List<dynamic>,
+                                                              // mapData: (controller.dataList)!,
+                                                              widthRatio:
+                                                                  Get.width /
+                                                                          9 -
+                                                                      1,
+                                                              colorCallback:
+                                                                  (PlutoRowColorContext
+                                                                      colorData) {
+                                                                Color color =
+                                                                    Colors
+                                                                        .white;
+                                                                if (controller
+                                                                        .childChannelStateManager
+                                                                        ?.currentRowIdx ==
+                                                                    colorData
+                                                                        .rowIdx) {
+                                                                  color = Color(
+                                                                      0xFFD1C4E9);
+                                                                }
+                                                                return color;
+                                                              },
+                                                              onSelected:
+                                                                  (PlutoGridOnSelectedEvent?
+                                                                      val) {
+                                                                controller
+                                                                        .channelSpotIndex =
+                                                                    val?.rowIdx ??
+                                                                        0;
+                                                                print(
+                                                                    ">>>>>>>>>>>>>childChannel + Click ");
+                                                                controller
+                                                                    .bindData();
+                                                              },
+                                                              onload:
+                                                                  (PlutoGridOnLoadedEvent
+                                                                      load) {
+                                                                controller
+                                                                        .childChannelStateManager =
+                                                                    load.stateManager;
 
-                                                          controller
-                                                              .childChannelStateManager
-                                                              ?.sortDescending(
-                                                              controller
-                                                                  .childChannelStateManager
-                                                                  ?.columns
-                                                                  .where((
-                                                                  element) =>
-                                                              element.field ==
-                                                                  "totalSpots")
-                                                                  .first ??
-                                                                  PlutoColumn(
-                                                                      title: "totalSpots",
-                                                                      field: "totalSpots",
-                                                                      type: PlutoColumnType
-                                                                          .number()));
+                                                                controller.childChannelStateManager?.sortDescending(controller
+                                                                        .childChannelStateManager
+                                                                        ?.columns
+                                                                        .where((element) =>
+                                                                            element.field ==
+                                                                            "totalSpots")
+                                                                        .first ??
+                                                                    PlutoColumn(
+                                                                        title:
+                                                                            "totalSpots",
+                                                                        field:
+                                                                            "totalSpots",
+                                                                        type: PlutoColumnType
+                                                                            .number()));
 
-                                                          controller
-                                                              .childChannelStateManager
-                                                              ?.setCurrentCell(
-                                                              controller
-                                                                  .childChannelStateManager
-                                                                  ?.getRowByIdx(
-                                                                  controller
-                                                                      .childChannelStateManager
-                                                                      ?.currentRowIdx ??
-                                                                      0)
-                                                                  ?.cells['locationname'],
-                                                              controller
-                                                                  .childChannelStateManager
-                                                                  ?.currentRowIdx ??
-                                                                  0);
-                                                          // controller.stateManager = load.stateManager;
+                                                                controller.childChannelStateManager?.setCurrentCell(
+                                                                    controller
+                                                                            .childChannelStateManager
+                                                                            ?.getRowByIdx(controller.childChannelStateManager?.currentRowIdx ??
+                                                                                0)
+                                                                            ?.cells[
+                                                                        'locationname'],
+                                                                    controller
+                                                                            .childChannelStateManager
+                                                                            ?.currentRowIdx ??
+                                                                        0);
+                                                                // controller.stateManager = load.stateManager;
 
-                                                          // controller.childChannelStateManager?.addListener(() { });
+                                                                // controller.childChannelStateManager?.addListener(() { });
 
-                                                          load.stateManager
-                                                              .setSelectingMode(
-                                                              PlutoGridSelectingMode
-                                                                  .cell);
-                                                        },
-                                                      )
+                                                                load.stateManager
+                                                                    .setSelectingMode(
+                                                                        PlutoGridSelectingMode
+                                                                            .cell);
+                                                              },
+                                                            )
                                                           : Container(
-                                                        decoration:
-                                                        BoxDecoration(
-                                                          border: Border.all(
-                                                              color: Colors
-                                                                  .grey),
-                                                        ),
-                                                      ),
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                border: Border.all(
+                                                                    color: Colors
+                                                                        .grey),
+                                                              ),
+                                                            ),
                                                     );
                                                   },
                                                 ),
@@ -976,194 +1037,206 @@ class AmagiSpotsReplacementView
                                                   builder: (logic) {
                                                     return Padding(
                                                       padding:
-                                                      const EdgeInsets.all(3.0),
-                                                      child: (controller
-                                                          .amagiSpotReplacementModel !=
-                                                          null &&
-                                                          controller
-                                                              .amagiSpotReplacementModel
-                                                              ?.lstSpots !=
-                                                              null &&
-                                                          controller
-                                                              .amagiSpotReplacementModel
-                                                              ?.lstSpots
-                                                              ?.masterSpots !=
-                                                              null &&
-                                                          (controller
-                                                              .amagiSpotReplacementModel
-                                                              ?.lstSpots
-                                                              ?.masterSpots
-                                                              ?.length ??
-                                                              0) >
-                                                              0)
+                                                          const EdgeInsets.all(
+                                                              3.0),
+                                                      child: (controller.amagiSpotReplacementModel != null &&
+                                                              controller
+                                                                      .amagiSpotReplacementModel
+                                                                      ?.lstSpots !=
+                                                                  null &&
+                                                              controller
+                                                                      .amagiSpotReplacementModel
+                                                                      ?.lstSpots
+                                                                      ?.masterSpots !=
+                                                                  null &&
+                                                              (controller
+                                                                          .amagiSpotReplacementModel
+                                                                          ?.lstSpots
+                                                                          ?.masterSpots
+                                                                          ?.length ??
+                                                                      0) >
+                                                                  0)
                                                           ? DataGridFromMapForAmagiSpotReplacement(
-                                                        showSrNo: true,
-                                                        hideCode: false,
-                                                        formatDate: false,
-                                                        columnAutoResize: false,
-                                                        isMasterGrid: true,
-                                                        hideKeys: const [
-                                                          "id",
-                                                          'locationCode',
-                                                          'channelCode'
-                                                        ],
-                                                        widthSpecificColumn: const {
-                                                          "bookingNumber": 150,
-                                                          "bookingDetailCode": 150,
-                                                          "tapeCode": 150,
-                                                          "tapeDuration": 150,
-                                                          "rate": 150,
-                                                          "spotAmount": 150,
-                                                          "starttime": 150,
-                                                          "endTime": 150,
-                                                          "scheduleTime": 150,
-                                                          "scheduleDate": 150,
-                                                          "clientName": 150,
-                                                          "valuationrate": 150,
-                                                          "valuationAmount": 150,
-                                                          "brandName": 150,
-                                                          "hold": 150,
-                                                          "scheduleEndTime": 150,
-                                                          "combineSpots": 150,
-                                                          "neW_ID": 150,
-                                                          "tapeDuration1": 150,
-                                                          "tapeid": 150
-                                                        },
-                                                        mode: PlutoGridMode
-                                                            .selectWithOneTap,
-                                                        exportFileName:
-                                                        "Amagi Spot Replacement",
-                                                        onContextMenuClick: (
-                                                            DataGridMenuItem itemType,
-                                                            int index,
-                                                            renderContext) {
-                                                          switch (itemType) {
-                                                            case DataGridMenuItem
-                                                                .allowMergeSpots:
-                                                              controller
-                                                                  .mergeOrDoNotMerge(
-                                                                  bookingDetCode: renderContext
-                                                                      .row
-                                                                      .cells['bookingDetailCode']
-                                                                      ?.value ??
-                                                                      0,
-                                                                  bookingNo: renderContext
-                                                                      .row
-                                                                      .cells['bookingNumber']
-                                                                      ?.value ??
-                                                                      "",
-                                                                  date: renderContext
-                                                                      .row
-                                                                      .cells['scheduleDate']
-                                                                      ?.value,
-                                                                  merge: 1);
-                                                              print(
-                                                                  renderContext
-                                                                      .row
-                                                                      .cells['bookingNumber']
-                                                                      ?.value
-                                                                      .toString());
-                                                              break;
-                                                            case DataGridMenuItem
-                                                                .doNotMergeSpots:
-                                                              controller
-                                                                  .mergeOrDoNotMerge(
-                                                                  bookingDetCode: renderContext
-                                                                      .row
-                                                                      .cells['bookingDetailCode']
-                                                                      ?.value ??
-                                                                      0,
-                                                                  bookingNo: renderContext
-                                                                      .row
-                                                                      .cells['bookingNumber']
-                                                                      ?.value ??
-                                                                      "",
-                                                                  date: renderContext
-                                                                      .row
-                                                                      .cells['scheduleDate']
-                                                                      ?.value,
-                                                                  merge: 0);
-                                                              print(
-                                                                  renderContext
-                                                                      .row
-                                                                      .cells['bookingNumber']
-                                                                      ?.value
-                                                                      .toString());
-                                                              break;
-                                                            default:
-                                                              print(
-                                                                  "break call");
-                                                          }
-                                                        },
-                                                        mapData: controller
-                                                            .amagiSpotReplacementModel
-                                                            ?.lstSpots
-                                                            ?.masterSpots
-                                                            ?.map((e) =>
-                                                            e.toJson())
-                                                            .toList()
-                                                        as List<dynamic>,
-                                                        // mapData: (controller.dataList)!,
-                                                        widthRatio:
-                                                        Get.width / 9 - 1,
-                                                        onSelected: (
-                                                            PlutoGridOnSelectedEvent val) {
-                                                          controller
-                                                              .masterSpotIndex =
-                                                              val.rowIdx ?? 0;
-                                                          controller.bindData();
-                                                        },
-                                                        colorCallback: (
-                                                            PlutoRowColorContext colorData) {
-                                                          Color color = Colors
-                                                              .white;
-                                                          if (controller
-                                                              .masterSpotsStateManager
-                                                              ?.currentRowIdx ==
-                                                              colorData
-                                                                  .rowIdx) {
-                                                            color = Color(
-                                                                0xFFD1C4E9);
-                                                          }
-                                                          return color;
-                                                        },
-                                                        onload:
-                                                            (
-                                                            PlutoGridOnLoadedEvent
-                                                            load) {
-                                                          controller
-                                                              .masterSpotsStateManager =
-                                                              load.stateManager;
-                                                          // controllerX.stateManager = load.stateManager;
+                                                              showSrNo: true,
+                                                              hideCode: false,
+                                                              formatDate: false,
+                                                              columnAutoResize:
+                                                                  false,
+                                                              isMasterGrid:
+                                                                  true,
+                                                              hideKeys: const [
+                                                                "id",
+                                                                'locationCode',
+                                                                'channelCode'
+                                                              ],
+                                                              widthSpecificColumn: const {
+                                                                "bookingNumber":
+                                                                    150,
+                                                                "bookingDetailCode":
+                                                                    150,
+                                                                "tapeCode": 150,
+                                                                "tapeDuration":
+                                                                    150,
+                                                                "rate": 150,
+                                                                "spotAmount":
+                                                                    150,
+                                                                "starttime":
+                                                                    150,
+                                                                "endTime": 150,
+                                                                "scheduleTime":
+                                                                    150,
+                                                                "scheduleDate":
+                                                                    150,
+                                                                "clientName":
+                                                                    150,
+                                                                "valuationrate":
+                                                                    150,
+                                                                "valuationAmount":
+                                                                    150,
+                                                                "brandName":
+                                                                    150,
+                                                                "hold": 150,
+                                                                "scheduleEndTime":
+                                                                    150,
+                                                                "combineSpots":
+                                                                    150,
+                                                                "neW_ID": 150,
+                                                                "tapeDuration1":
+                                                                    150,
+                                                                "tapeid": 150
+                                                              },
+                                                              mode: PlutoGridMode
+                                                                  .selectWithOneTap,
+                                                              exportFileName:
+                                                                  "Amagi Spot Replacement",
+                                                              onContextMenuClick:
+                                                                  (DataGridMenuItem
+                                                                          itemType,
+                                                                      int index,
+                                                                      renderContext) {
+                                                                switch (
+                                                                    itemType) {
+                                                                  case DataGridMenuItem
+                                                                      .allowMergeSpots:
+                                                                    controller.mergeOrDoNotMerge(
+                                                                        bookingDetCode:
+                                                                            renderContext.row.cells['bookingDetailCode']?.value ??
+                                                                                0,
+                                                                        bookingNo:
+                                                                            renderContext.row.cells['bookingNumber']?.value ??
+                                                                                "",
+                                                                        date: renderContext
+                                                                            .row
+                                                                            .cells[
+                                                                                'scheduleDate']
+                                                                            ?.value,
+                                                                        merge:
+                                                                            1);
+                                                                    print(renderContext
+                                                                        .row
+                                                                        .cells[
+                                                                            'bookingNumber']
+                                                                        ?.value
+                                                                        .toString());
+                                                                    break;
+                                                                  case DataGridMenuItem
+                                                                      .doNotMergeSpots:
+                                                                    controller.mergeOrDoNotMerge(
+                                                                        bookingDetCode:
+                                                                            renderContext.row.cells['bookingDetailCode']?.value ??
+                                                                                0,
+                                                                        bookingNo:
+                                                                            renderContext.row.cells['bookingNumber']?.value ??
+                                                                                "",
+                                                                        date: renderContext
+                                                                            .row
+                                                                            .cells[
+                                                                                'scheduleDate']
+                                                                            ?.value,
+                                                                        merge:
+                                                                            0);
+                                                                    print(renderContext
+                                                                        .row
+                                                                        .cells[
+                                                                            'bookingNumber']
+                                                                        ?.value
+                                                                        .toString());
+                                                                    break;
+                                                                  default:
+                                                                    print(
+                                                                        "break call");
+                                                                }
+                                                              },
+                                                              mapData: controller
+                                                                  .amagiSpotReplacementModel
+                                                                  ?.lstSpots
+                                                                  ?.masterSpots
+                                                                  ?.map((e) => e
+                                                                      .toJson())
+                                                                  .toList() as List<dynamic>,
+                                                              // mapData: (controller.dataList)!,
+                                                              widthRatio:
+                                                                  Get.width /
+                                                                          9 -
+                                                                      1,
+                                                              onSelected:
+                                                                  (PlutoGridOnSelectedEvent
+                                                                      val) {
+                                                                controller
+                                                                        .masterSpotIndex =
+                                                                    val.rowIdx ??
+                                                                        0;
+                                                                controller
+                                                                    .bindData();
+                                                              },
+                                                              colorCallback:
+                                                                  (PlutoRowColorContext
+                                                                      colorData) {
+                                                                Color color =
+                                                                    Colors
+                                                                        .white;
+                                                                if (controller
+                                                                        .masterSpotsStateManager
+                                                                        ?.currentRowIdx ==
+                                                                    colorData
+                                                                        .rowIdx) {
+                                                                  color = Color(
+                                                                      0xFFD1C4E9);
+                                                                }
+                                                                return color;
+                                                              },
+                                                              onload:
+                                                                  (PlutoGridOnLoadedEvent
+                                                                      load) {
+                                                                controller
+                                                                        .masterSpotsStateManager =
+                                                                    load.stateManager;
+                                                                // controllerX.stateManager = load.stateManager;
 
-                                                          controller
-                                                              .masterSpotsStateManager
-                                                              ?.setCurrentCell(
-                                                              controller
-                                                                  .masterSpotsStateManager
-                                                                  ?.getRowByIdx(
-                                                                  controller
-                                                                      .masterSpotsStateManager
-                                                                      ?.currentRowIdx ??
-                                                                      0)
-                                                                  ?.cells['bookingNumber'],
-                                                              controller
-                                                                  .masterSpotsStateManager
-                                                                  ?.currentRowIdx ??
-                                                                  0);
+                                                                controller.masterSpotsStateManager?.setCurrentCell(
+                                                                    controller
+                                                                            .masterSpotsStateManager
+                                                                            ?.getRowByIdx(controller.masterSpotsStateManager?.currentRowIdx ??
+                                                                                0)
+                                                                            ?.cells[
+                                                                        'bookingNumber'],
+                                                                    controller
+                                                                            .masterSpotsStateManager
+                                                                            ?.currentRowIdx ??
+                                                                        0);
 
-                                                          load.stateManager
-                                                              .setSelectingMode(
-                                                              PlutoGridSelectingMode
-                                                                  .cell);
-                                                        },
-                                                      )
+                                                                load.stateManager
+                                                                    .setSelectingMode(
+                                                                        PlutoGridSelectingMode
+                                                                            .cell);
+                                                              },
+                                                            )
                                                           : Container(
-                                                        decoration: BoxDecoration(
-                                                            border: Border.all(
-                                                                color: Colors
-                                                                    .grey)),
-                                                      ),
+                                                              decoration: BoxDecoration(
+                                                                  border: Border.all(
+                                                                      color: Colors
+                                                                          .grey)),
+                                                            ),
                                                     );
                                                   },
                                                 ),
@@ -1177,7 +1250,8 @@ class AmagiSpotsReplacementView
                                             children: [
                                               Row(
                                                 mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
                                                 children: [
                                                   InputFields.formField1(
                                                     hintTxt: "Available",
@@ -1185,7 +1259,8 @@ class AmagiSpotsReplacementView
                                                         .availableController,
                                                     width: 0.1,
                                                     // autoFocus: true,
-                                                    isEnable: controller.isEnable1,
+                                                    isEnable:
+                                                        controller.isEnable1,
                                                     onchanged: (value) {},
                                                     // autoFocus: true,
                                                   ),
@@ -1194,12 +1269,11 @@ class AmagiSpotsReplacementView
                                                     controller: controller
                                                         .allocatedController,
                                                     width: 0.1,
-                                                    isEnable: controller.isEnable1,
+                                                    isEnable:
+                                                        controller.isEnable1,
                                                     // autoFocus: true,
                                                     // isEnable: controllerX.isEnable,
-                                                    onchanged: (value) {
-
-                                                    },
+                                                    onchanged: (value) {},
                                                     // autoFocus: true,
                                                   ),
                                                 ],
@@ -1209,14 +1283,16 @@ class AmagiSpotsReplacementView
                                               ),
                                               Row(
                                                 mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
                                                 children: [
                                                   InputFields.formField1(
                                                     hintTxt: "Un Allocated",
                                                     controller: controller
                                                         .unAllocatedController,
                                                     width: 0.1,
-                                                    isEnable: controller.isEnable1,
+                                                    isEnable:
+                                                        controller.isEnable1,
                                                     // autoFocus: true,
                                                     // isEnable: controllerX.isEnable,
                                                     onchanged: (value) {},
@@ -1227,7 +1303,8 @@ class AmagiSpotsReplacementView
                                                     controller: controller
                                                         .balanceController,
                                                     width: 0.1,
-                                                    isEnable: controller.isEnable1,
+                                                    isEnable:
+                                                        controller.isEnable1,
                                                     // autoFocus: true,
                                                     // isEnable: controllerX.isEnable,
                                                     onchanged: (value) {},
@@ -1240,14 +1317,16 @@ class AmagiSpotsReplacementView
                                               ),
                                               Row(
                                                 mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
                                                 children: [
                                                   InputFields.formField1(
                                                     hintTxt: "Ms Time",
                                                     controller: controller
                                                         .msTimeController,
                                                     width: 0.1,
-                                                    isEnable: controller.isEnable1,
+                                                    isEnable:
+                                                        controller.isEnable1,
                                                     // autoFocus: true,
                                                     // isEnable: controllerX.isEnable,
                                                     onchanged: (value) {},
@@ -1258,7 +1337,8 @@ class AmagiSpotsReplacementView
                                                     controller: controller
                                                         .lsAllocController,
                                                     width: 0.1,
-                                                    isEnable: controller.isEnable1,
+                                                    isEnable:
+                                                        controller.isEnable1,
                                                     // autoFocus: true,
                                                     // isEnable: controllerX.isEnable,
                                                     onchanged: (value) {},
@@ -1271,14 +1351,15 @@ class AmagiSpotsReplacementView
                                               ),
                                               Row(
                                                 mainAxisAlignment:
-                                                MainAxisAlignment.center,
+                                                    MainAxisAlignment.center,
                                                 children: [
                                                   InputFields.formField1(
                                                     hintTxt: "LS Rev",
                                                     controller: controller
                                                         .lsRevController,
                                                     width: 0.2,
-                                                    isEnable: controller.isEnable1,
+                                                    isEnable:
+                                                        controller.isEnable1,
                                                     // autoFocus: true,
                                                     // isEnable: controllerX.isEnable,
                                                     onchanged: (value) {},
@@ -1291,20 +1372,21 @@ class AmagiSpotsReplacementView
                                               ),
                                               Row(
                                                 mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
                                                 children: [
                                                   Padding(
-                                                    padding: const EdgeInsets
-                                                        .only(
-                                                        top: 4.0,
-                                                        left: 10,
-                                                        right: 10),
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            top: 4.0,
+                                                            left: 10,
+                                                            right: 10),
                                                     child: SizedBox(
-                                                      width: MediaQuery
-                                                          .of(context)
-                                                          .size
-                                                          .width *
-                                                          0.1,
+                                                      width:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .width *
+                                                              0.1,
                                                       child: FormButtonWrapper(
                                                         btnText: "Deallocate",
                                                         callback: () {
@@ -1316,17 +1398,17 @@ class AmagiSpotsReplacementView
                                                     ),
                                                   ),
                                                   Padding(
-                                                    padding: const EdgeInsets
-                                                        .only(
-                                                        top: 4.0,
-                                                        left: 10,
-                                                        right: 10),
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            top: 4.0,
+                                                            left: 10,
+                                                            right: 10),
                                                     child: SizedBox(
-                                                      width: MediaQuery
-                                                          .of(context)
-                                                          .size
-                                                          .width *
-                                                          0.1,
+                                                      width:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .width *
+                                                              0.1,
                                                       child: FormButtonWrapper(
                                                         btnText: "Allocate",
                                                         callback: () {
@@ -1342,7 +1424,7 @@ class AmagiSpotsReplacementView
                                               SizedBox(
                                                 height: 3,
                                               ),
-                                             /* Row(
+                                              /* Row(
                                                 mainAxisAlignment:
                                                 MainAxisAlignment.spaceAround,
                                                 children: [
@@ -1365,20 +1447,21 @@ class AmagiSpotsReplacementView
                                               ),*/
                                               Row(
                                                 mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
                                                 children: [
                                                   Padding(
-                                                    padding: const EdgeInsets
-                                                        .only(
-                                                        top: 4.0,
-                                                        left: 10,
-                                                        right: 10),
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            top: 4.0,
+                                                            left: 10,
+                                                            right: 10),
                                                     child: SizedBox(
-                                                      width: MediaQuery
-                                                          .of(context)
-                                                          .size
-                                                          .width *
-                                                          0.1,
+                                                      width:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .width *
+                                                              0.1,
                                                       child: FormButtonWrapper(
                                                         btnText: "Deal Hold",
                                                         callback: () {
@@ -1391,57 +1474,55 @@ class AmagiSpotsReplacementView
                                                     ),
                                                   ),
                                                   Padding(
-                                                    padding: const EdgeInsets
-                                                        .only(
-                                                        top: 4.0,
-                                                        left: 10,
-                                                        right: 10),
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            top: 4.0,
+                                                            left: 10,
+                                                            right: 10),
                                                     child: SizedBox(
-                                                      width: MediaQuery
-                                                          .of(context)
-                                                          .size
-                                                          .width *
-                                                          0.1,
+                                                      width:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .width *
+                                                              0.1,
                                                       child: FormButtonWrapper(
                                                         btnText: "Summary",
                                                         callback: () {
                                                           controller
-                                                              .dialogWidget =
-                                                          null;
+                                                                  .dialogWidget =
+                                                              null;
                                                           controller
                                                               .canDialogShow
                                                               .value = false;
                                                           controller.isSummary
                                                               .value = true;
-                                                          controller.update(
-                                                              ['id']);
+                                                          controller
+                                                              .update(['id']);
                                                           Future.delayed(
                                                             const Duration(
                                                                 seconds: 1),
-                                                                () {
+                                                            () {
                                                               controller
                                                                   .getSummaryAPICall()
-                                                                  .then((
-                                                                  value) {
-                                                                print(
-                                                                    ">>>>>>>>>>>>>>>>>from view Side" +
-                                                                        value
-                                                                            .toString());
+                                                                  .then(
+                                                                      (value) {
+                                                                print(">>>>>>>>>>>>>>>>>from view Side" +
+                                                                    value
+                                                                        .toString());
                                                                 if (controller
-                                                                    .canDialogShow
-                                                                    .value ==
+                                                                        .canDialogShow
+                                                                        .value ==
                                                                     true) {
                                                                   controller
-                                                                      .title
-                                                                      ?.value =
-                                                                  "Summary";
+                                                                          .title
+                                                                          ?.value =
+                                                                      "Summary";
                                                                   controller
                                                                       .isSummary
-                                                                      .value =
-                                                                  true;
+                                                                      .value = true;
                                                                   controller
-                                                                      .mapList
-                                                                      .value =
+                                                                          .mapList
+                                                                          .value =
                                                                       value;
                                                                   controller
                                                                       .mapList
@@ -1452,28 +1533,27 @@ class AmagiSpotsReplacementView
                                                                       ?.refresh();
                                                                 } else {
                                                                   controller
-                                                                      .title
-                                                                      ?.value =
-                                                                  "Summary";
-                                                                  print(
-                                                                      ">>>>>>>>>valueMapData" +
-                                                                          value
-                                                                              .toString());
+                                                                          .title
+                                                                          ?.value =
+                                                                      "Summary";
+                                                                  print(">>>>>>>>>valueMapData" +
+                                                                      value
+                                                                          .toString());
                                                                   controller
-                                                                      .mapList
-                                                                      .value =
+                                                                          .mapList
+                                                                          .value =
                                                                       value;
                                                                   controller
                                                                       .isSummary
-                                                                      .value =
-                                                                  true;
+                                                                      .value = true;
                                                                   controller
                                                                       .isSummary
                                                                       .refresh();
                                                                   dragableDialogSummary();
                                                                 }
                                                               });
-                                                            },);
+                                                            },
+                                                          );
                                                         },
                                                         showIcon: true,
                                                       ),
@@ -1486,171 +1566,178 @@ class AmagiSpotsReplacementView
                                               ),
                                               Row(
                                                 mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
                                                 children: [
                                                   Padding(
-                                                    padding: const EdgeInsets
-                                                        .only(
-                                                        top: 4.0,
-                                                        left: 10,
-                                                        right: 10),
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            top: 4.0,
+                                                            left: 10,
+                                                            right: 10),
                                                     child: SizedBox(
-                                                      width: MediaQuery
-                                                          .of(context)
-                                                          .size
-                                                          .width *
-                                                          0.1,
+                                                      width:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .width *
+                                                              0.1,
                                                       child: FormButtonWrapper(
                                                         btnText: "Un Alloc",
                                                         callback: () {
                                                           controller
-                                                              .dialogWidget =
-                                                          null;
+                                                                  .dialogWidget =
+                                                              null;
                                                           controller
                                                               .canDialogShow
                                                               .value = false;
-                                                          controller.update(
-                                                              ['id']);
+                                                          controller
+                                                              .update(['id']);
                                                           controller.isSummary
                                                               .value = false;
 
                                                           Future.delayed(
                                                             const Duration(
-                                                                seconds: 1), () {
-                                                            controller
-                                                                .getUnallocatedHoldCall()
-                                                                .then((value) {
-                                                              if (controller
-                                                                  .canDialogShow
-                                                                  .value ==
-                                                                  true) {
-                                                                controller.title
-                                                                    ?.value =
-                                                                "Un Alloc";
-                                                                controller
-                                                                    .mapList
-                                                                    .value =
-                                                                    value;
-                                                                controller
-                                                                    .isSummary
-                                                                    .value =
-                                                                false;
-                                                                controller
-                                                                    .isSummary
-                                                                    .refresh();
-                                                                controller
-                                                                    .mapList
-                                                                    .refresh();
-                                                                // dragableDialog(mapList: value);
-                                                                controller.title
-                                                                    ?.refresh();
-                                                              } else {
-                                                                controller.title
-                                                                    ?.value =
-                                                                "Client";
-                                                                print(
-                                                                    ">>>>>>>>>valueMapData" +
-                                                                        value
-                                                                            .toString());
-                                                                controller
-                                                                    .mapList
-                                                                    .value =
-                                                                    value;
-                                                                controller
-                                                                    .isSummary
-                                                                    .value =
-                                                                false;
-                                                                controller
-                                                                    .isSummary
-                                                                    .refresh();
-                                                                dragableDialogUnAlloc();
-                                                              }
-                                                            });
-                                                          },);
+                                                                seconds: 1),
+                                                            () {
+                                                              controller
+                                                                  .getUnallocatedHoldCall()
+                                                                  .then(
+                                                                      (value) {
+                                                                if (controller
+                                                                        .canDialogShow
+                                                                        .value ==
+                                                                    true) {
+                                                                  controller
+                                                                          .title
+                                                                          ?.value =
+                                                                      "Un Alloc";
+                                                                  controller
+                                                                          .mapList
+                                                                          .value =
+                                                                      value;
+                                                                  controller
+                                                                      .isSummary
+                                                                      .value = false;
+                                                                  controller
+                                                                      .isSummary
+                                                                      .refresh();
+                                                                  controller
+                                                                      .mapList
+                                                                      .refresh();
+                                                                  // dragableDialog(mapList: value);
+                                                                  controller
+                                                                      .title
+                                                                      ?.refresh();
+                                                                } else {
+                                                                  controller
+                                                                          .title
+                                                                          ?.value =
+                                                                      "Client";
+                                                                  print(">>>>>>>>>valueMapData" +
+                                                                      value
+                                                                          .toString());
+                                                                  controller
+                                                                          .mapList
+                                                                          .value =
+                                                                      value;
+                                                                  controller
+                                                                      .isSummary
+                                                                      .value = false;
+                                                                  controller
+                                                                      .isSummary
+                                                                      .refresh();
+                                                                  dragableDialogUnAlloc();
+                                                                }
+                                                              });
+                                                            },
+                                                          );
                                                         },
                                                         showIcon: true,
                                                       ),
                                                     ),
                                                   ),
                                                   Padding(
-                                                    padding: const EdgeInsets
-                                                        .only(
-                                                        top: 4.0,
-                                                        left: 10,
-                                                        right: 10),
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            top: 4.0,
+                                                            left: 10,
+                                                            right: 10),
                                                     child: SizedBox(
-                                                      width: MediaQuery
-                                                          .of(context)
-                                                          .size
-                                                          .width *
-                                                          0.1,
+                                                      width:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .width *
+                                                              0.1,
                                                       child: FormButtonWrapper(
                                                         btnText: "Clients",
                                                         callback: () {
                                                           controller
-                                                              .dialogWidget =
-                                                          null;
+                                                                  .dialogWidget =
+                                                              null;
                                                           controller
                                                               .canDialogShow
                                                               .value = false;
-                                                          controller.update(
-                                                              ['id']);
+                                                          controller
+                                                              .update(['id']);
                                                           controller.isSummary
                                                               .value = false;
 
                                                           Future.delayed(
                                                             const Duration(
-                                                                seconds: 1), () {
-                                                            controller
-                                                                .getClientAPICall()
-                                                                .then((value) {
-                                                              if (controller
-                                                                  .canDialogShow
-                                                                  .value ==
-                                                                  true) {
-                                                                controller.title
-                                                                    ?.value =
-                                                                "Client";
-                                                                controller
-                                                                    .mapList
-                                                                    .value =
-                                                                    value;
-                                                                controller
-                                                                    .isSummary
-                                                                    .value =
-                                                                false;
-                                                                controller
-                                                                    .isSummary
-                                                                    .refresh();
-                                                                controller
-                                                                    .mapList
-                                                                    .refresh();
-                                                                // dragableDialog(mapList: value);
-                                                                controller.title
-                                                                    ?.refresh();
-                                                              } else {
-                                                                controller.title
-                                                                    ?.value =
-                                                                "Client";
-                                                                print(
-                                                                    ">>>>>>>>>valueMapData" +
-                                                                        value
-                                                                            .toString());
-                                                                controller
-                                                                    .mapList
-                                                                    .value =
-                                                                    value;
-                                                                controller
-                                                                    .isSummary
-                                                                    .value =
-                                                                false;
-                                                                controller
-                                                                    .isSummary
-                                                                    .refresh();
-                                                                dragableDialogClient();
-                                                              }
-                                                            });
-                                                          },);
+                                                                seconds: 1),
+                                                            () {
+                                                              controller
+                                                                  .getClientAPICall()
+                                                                  .then(
+                                                                      (value) {
+                                                                if (controller
+                                                                        .canDialogShow
+                                                                        .value ==
+                                                                    true) {
+                                                                  controller
+                                                                          .title
+                                                                          ?.value =
+                                                                      "Client";
+                                                                  controller
+                                                                          .mapList
+                                                                          .value =
+                                                                      value;
+                                                                  controller
+                                                                      .isSummary
+                                                                      .value = false;
+                                                                  controller
+                                                                      .isSummary
+                                                                      .refresh();
+                                                                  controller
+                                                                      .mapList
+                                                                      .refresh();
+                                                                  // dragableDialog(mapList: value);
+                                                                  controller
+                                                                      .title
+                                                                      ?.refresh();
+                                                                } else {
+                                                                  controller
+                                                                          .title
+                                                                          ?.value =
+                                                                      "Client";
+                                                                  print(">>>>>>>>>valueMapData" +
+                                                                      value
+                                                                          .toString());
+                                                                  controller
+                                                                          .mapList
+                                                                          .value =
+                                                                      value;
+                                                                  controller
+                                                                      .isSummary
+                                                                      .value = false;
+                                                                  controller
+                                                                      .isSummary
+                                                                      .refresh();
+                                                                  dragableDialogClient();
+                                                                }
+                                                              });
+                                                            },
+                                                          );
                                                         },
                                                         showIcon: true,
                                                       ),
@@ -1662,100 +1749,121 @@ class AmagiSpotsReplacementView
                                                 height: 3,
                                               ),
                                               Row(
-                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
                                                 children: [
                                                   Padding(
-                                                    padding: const EdgeInsets.only(
-                                                        top: 4.0,
-                                                        left: 10,
-                                                        right: 0),
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            top: 4.0,
+                                                            left: 10,
+                                                            right: 0),
                                                     child: SizedBox(
-                                                      width: MediaQuery
-                                                        .of(context)
-                                                        .size
-                                                        .width *
-                                                        0.1,
+                                                      width:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .width *
+                                                              0.1,
                                                       child: FormButtonWrapper(
                                                         btnText: "Total",
                                                         callback: () {
-                                                          controller.dialogWidget =
-                                                          null;
-                                                          controller.canDialogShow
+                                                          controller
+                                                                  .dialogWidget =
+                                                              null;
+                                                          controller
+                                                              .canDialogShow
                                                               .value = false;
-                                                          controller.isSummary.value =
-                                                          false;
-                                                          controller.update(['id']);
+                                                          controller.isSummary
+                                                              .value = false;
+                                                          controller
+                                                              .update(['id']);
 
                                                           Future.delayed(
                                                             const Duration(
-                                                                seconds: 1), () {
-                                                            controller
-                                                                .getTotalAPICall()
-                                                                .then((value) {
-                                                              if (controller
-                                                                  .canDialogShow
-                                                                  .value ==
-                                                                  true) {
-                                                                controller.title
-                                                                    ?.value =
-                                                                "Total";
-                                                                controller.mapList
-                                                                    .value =
-                                                                    value;
-                                                                controller.isSummary
-                                                                    .value = false;
-                                                                controller.isSummary
-                                                                    .refresh();
-                                                                controller.mapList
-                                                                    .refresh();
-                                                                // dragableDialog(mapList: value);
-                                                                controller.title
-                                                                    ?.refresh();
-                                                              } else {
-                                                                controller.title
-                                                                    ?.value =
-                                                                "Total";
-                                                                print(
-                                                                    ">>>>>>>>>valueMapData" +
-                                                                        value
-                                                                            .toString());
-                                                                controller.mapList
-                                                                    .value =
-                                                                    value;
-                                                                controller.isSummary
-                                                                    .value = false;
-                                                                controller.isSummary
-                                                                    .refresh();
-                                                                dragAbleDialogGetTotal();
-                                                              }
-                                                            });
-                                                          },);
+                                                                seconds: 1),
+                                                            () {
+                                                              controller
+                                                                  .getTotalAPICall()
+                                                                  .then(
+                                                                      (value) {
+                                                                if (controller
+                                                                        .canDialogShow
+                                                                        .value ==
+                                                                    true) {
+                                                                  controller
+                                                                          .title
+                                                                          ?.value =
+                                                                      "Total";
+                                                                  controller
+                                                                          .mapList
+                                                                          .value =
+                                                                      value;
+                                                                  controller
+                                                                      .isSummary
+                                                                      .value = false;
+                                                                  controller
+                                                                      .isSummary
+                                                                      .refresh();
+                                                                  controller
+                                                                      .mapList
+                                                                      .refresh();
+                                                                  // dragableDialog(mapList: value);
+                                                                  controller
+                                                                      .title
+                                                                      ?.refresh();
+                                                                } else {
+                                                                  controller
+                                                                          .title
+                                                                          ?.value =
+                                                                      "Total";
+                                                                  print(">>>>>>>>>valueMapData" +
+                                                                      value
+                                                                          .toString());
+                                                                  controller
+                                                                          .mapList
+                                                                          .value =
+                                                                      value;
+                                                                  controller
+                                                                      .isSummary
+                                                                      .value = false;
+                                                                  controller
+                                                                      .isSummary
+                                                                      .refresh();
+                                                                  dragAbleDialogGetTotal();
+                                                                }
+                                                              });
+                                                            },
+                                                          );
                                                         },
                                                         showIcon: true,
                                                       ),
                                                     ),
                                                   ),
                                                   Padding(
-                                                    padding: const EdgeInsets.only(
-                                                        top: 4.0,
-                                                        left: 0,
-                                                        right: 10),
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            top: 4.0,
+                                                            left: 0,
+                                                            right: 10),
                                                     child: SizedBox(
-                                                      width: MediaQuery
-                                                          .of(context)
-                                                          .size
-                                                          .width *
-                                                          0.1,
+                                                      width:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .width *
+                                                              0.1,
                                                       child: Row(
                                                         mainAxisAlignment:
-                                                        MainAxisAlignment.spaceAround,
+                                                            MainAxisAlignment
+                                                                .spaceAround,
                                                         children: [
                                                           Obx(() {
                                                             return Checkbox(
                                                                 value: controller
                                                                     .chkChecktimeBand
                                                                     .value,
-                                                                onChanged: (val) {
+                                                                onChanged:
+                                                                    (val) {
                                                                   controller
                                                                       .chkChecktimeBand
                                                                       .value = val!;
@@ -1776,14 +1884,16 @@ class AmagiSpotsReplacementView
                                               ),
                                               Row(
                                                 mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
                                                 children: [
                                                   InputFields.formField1(
                                                     hintTxt: "Lo Dur",
                                                     controller: controller
                                                         .loDurController,
                                                     width: 0.1,
-                                                    isEnable: controller.isEnable1,
+                                                    isEnable:
+                                                        controller.isEnable1,
                                                     // autoFocus: true,
                                                     // isEnable: controller.isEnable,
                                                     onchanged: (value) {},
@@ -1794,7 +1904,8 @@ class AmagiSpotsReplacementView
                                                     controller: controller
                                                         .loDurMisController,
                                                     width: 0.1,
-                                                    isEnable: controller.isEnable1,
+                                                    isEnable:
+                                                        controller.isEnable1,
                                                     // autoFocus: true,
                                                     // isEnable: controller.isEnable,
                                                     onchanged: (value) {},
@@ -1807,14 +1918,16 @@ class AmagiSpotsReplacementView
                                               ),
                                               Row(
                                                 mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
                                                 children: [
                                                   InputFields.formField1(
                                                     hintTxt: "Lo Total",
                                                     controller: controller
                                                         .loTotalController,
                                                     width: 0.1,
-                                                    isEnable: controller.isEnable1,
+                                                    isEnable:
+                                                        controller.isEnable1,
                                                     // autoFocus: true,
                                                     // isEnable: controller.isEnable,
                                                     onchanged: (value) {},
@@ -1825,7 +1938,8 @@ class AmagiSpotsReplacementView
                                                     controller: controller
                                                         .loMissController,
                                                     width: 0.1,
-                                                    isEnable: controller.isEnable1,
+                                                    isEnable:
+                                                        controller.isEnable1,
                                                     // autoFocus: true,
                                                     // isEnable: controller.isEnable,
                                                     onchanged: (value) {},
@@ -1851,127 +1965,138 @@ class AmagiSpotsReplacementView
                                                   builder: (controller) {
                                                     return Padding(
                                                       padding:
-                                                      const EdgeInsets.all(3.0),
-                                                      child: (controller
-                                                          .amagiSpotReplacementModel !=
-                                                          null &&
-                                                          controller
-                                                              .amagiSpotReplacementModel
-                                                              ?.lstSpots !=
-                                                              null &&
-                                                          controller
-                                                              .amagiSpotReplacementModel
-                                                              ?.lstSpots
-                                                              ?.localSpots !=
-                                                              null &&
-                                                          (controller
-                                                              .amagiSpotReplacementModel
-                                                              ?.lstSpots
-                                                              ?.localSpots
-                                                              ?.length ??
-                                                              0) >
-                                                              0)
+                                                          const EdgeInsets.all(
+                                                              3.0),
+                                                      child: (controller.amagiSpotReplacementModel != null &&
+                                                              controller
+                                                                      .amagiSpotReplacementModel
+                                                                      ?.lstSpots !=
+                                                                  null &&
+                                                              controller
+                                                                      .amagiSpotReplacementModel
+                                                                      ?.lstSpots
+                                                                      ?.localSpots !=
+                                                                  null &&
+                                                              (controller
+                                                                          .amagiSpotReplacementModel
+                                                                          ?.lstSpots
+                                                                          ?.localSpots
+                                                                          ?.length ??
+                                                                      0) >
+                                                                  0)
                                                           ? DataGridFromMapForAmagiSpotReplacement(
-                                                        showSrNo: true,
-                                                        hideCode: false,
-                                                        formatDate: false,
-                                                        isLocalSpotGrid: true,
-                                                        columnAutoResize: false,
-                                                        numTypeKeyList: ["bookingDetailCode"],
-                                                        widthSpecificColumn: {
-                                                          "colNo": 150,
-                                                          "bookingNumber": 150,
-                                                          "clientName": 150,
-                                                          "tapeCode": 150,
-                                                          "tapeDuration": 150,
-                                                          "rate": 150,
-                                                          "spotAmount": 150,
-                                                          "valuationrate": 150,
-                                                          "valuationAmount": 150,
-                                                          "starttime": 150,
-                                                          "endTime": 150,
-                                                          "parentID": 150,
-                                                          "bookingDetailCode": 150
-                                                        },
-                                                        hideKeys: [
-                                                          "id",
-                                                          "clientPriority",
-                                                          "priority",
-                                                          "locationCode",
-                                                          "channelCode",
-                                                          "channelid"
-                                                        ],
-                                                        mode: PlutoGridMode
-                                                            .normal,
-                                                        exportFileName:
-                                                        "Amagi Spot Replacement",
-                                                        mapData: controller
-                                                            .amagiSpotReplacementModel
-                                                            ?.lstSpots
-                                                            ?.localSpots
-                                                            ?.map((e) =>
-                                                            e
-                                                                .toJson())
-                                                            .toList()
-                                                        as List<dynamic>,
-                                                        // mapData: (controller.dataList)!,
-                                                        widthRatio:
-                                                        Get.width / 9 - 1,
-                                                        colorCallback: (
-                                                            PlutoRowColorContext colorData) {
-                                                          Color color = Colors
-                                                              .white;
-                                                          if (controller
-                                                              .localSpotsStateManager
-                                                              ?.currentRowIdx ==
-                                                              colorData
-                                                                  .rowIdx) {
-                                                            color = Color(
-                                                                0xFFD1C4E9);
-                                                          }
-                                                          return color;
-                                                        },
-                                                        onSelected: (
-                                                            PlutoGridOnSelectedEvent val) {
-                                                          controller
-                                                              .localSpotIndex =
-                                                              val.rowIdx ?? 0;
-                                                        },
-                                                        onload:
-                                                            (
-                                                            PlutoGridOnLoadedEvent
-                                                            load) {
-                                                          controller
-                                                              .localSpotsStateManager =
-                                                              load.stateManager;
-                                                          controller
-                                                              .localSpotsStateManager
-                                                              ?.setCurrentCell(
-                                                              controller
-                                                                  .localSpotsStateManager
-                                                                  ?.getRowByIdx(
-                                                                  controller
-                                                                      .localSpotsStateManager
-                                                                      ?.currentRowIdx ??
-                                                                      0)
-                                                                  ?.cells['tapeDuration'],
-                                                              controller
-                                                                  .localSpotsStateManager
-                                                                  ?.currentRowIdx ??
-                                                                  0);
-                                                          load.stateManager
-                                                              .setSelectingMode(
-                                                              PlutoGridSelectingMode
-                                                                  .cell);
-                                                          // controller.stateManager = load.stateManager;
-                                                        },
-                                                      )
+                                                              showSrNo: true,
+                                                              hideCode: false,
+                                                              formatDate: false,
+                                                              isLocalSpotGrid:
+                                                                  true,
+                                                              columnAutoResize:
+                                                                  false,
+                                                              numTypeKeyList: [
+                                                                "bookingDetailCode"
+                                                              ],
+                                                              widthSpecificColumn: {
+                                                                "colNo": 150,
+                                                                "bookingNumber":
+                                                                    150,
+                                                                "clientName":
+                                                                    150,
+                                                                "tapeCode": 150,
+                                                                "tapeDuration":
+                                                                    150,
+                                                                "rate": 150,
+                                                                "spotAmount":
+                                                                    150,
+                                                                "valuationrate":
+                                                                    150,
+                                                                "valuationAmount":
+                                                                    150,
+                                                                "starttime":
+                                                                    150,
+                                                                "endTime": 150,
+                                                                "parentID": 150,
+                                                                "bookingDetailCode":
+                                                                    150
+                                                              },
+                                                              hideKeys: [
+                                                                "id",
+                                                                "clientPriority",
+                                                                "priority",
+                                                                "locationCode",
+                                                                "channelCode",
+                                                                "channelid"
+                                                              ],
+                                                              mode:
+                                                                  PlutoGridMode
+                                                                      .normal,
+                                                              exportFileName:
+                                                                  "Amagi Spot Replacement",
+                                                              mapData: controller
+                                                                  .amagiSpotReplacementModel
+                                                                  ?.lstSpots
+                                                                  ?.localSpots
+                                                                  ?.map((e) => e
+                                                                      .toJson())
+                                                                  .toList() as List<dynamic>,
+                                                              // mapData: (controller.dataList)!,
+                                                              widthRatio:
+                                                                  Get.width /
+                                                                          9 -
+                                                                      1,
+                                                              colorCallback:
+                                                                  (PlutoRowColorContext
+                                                                      colorData) {
+                                                                Color color =
+                                                                    Colors
+                                                                        .white;
+                                                                if (controller
+                                                                        .localSpotsStateManager
+                                                                        ?.currentRowIdx ==
+                                                                    colorData
+                                                                        .rowIdx) {
+                                                                  color = Color(
+                                                                      0xFFD1C4E9);
+                                                                }
+                                                                return color;
+                                                              },
+                                                              onSelected:
+                                                                  (PlutoGridOnSelectedEvent
+                                                                      val) {
+                                                                controller
+                                                                        .localSpotIndex =
+                                                                    val.rowIdx ??
+                                                                        0;
+                                                              },
+                                                              onload:
+                                                                  (PlutoGridOnLoadedEvent
+                                                                      load) {
+                                                                controller
+                                                                        .localSpotsStateManager =
+                                                                    load.stateManager;
+                                                                controller.localSpotsStateManager?.setCurrentCell(
+                                                                    controller
+                                                                            .localSpotsStateManager
+                                                                            ?.getRowByIdx(controller.localSpotsStateManager?.currentRowIdx ??
+                                                                                0)
+                                                                            ?.cells[
+                                                                        'tapeDuration'],
+                                                                    controller
+                                                                            .localSpotsStateManager
+                                                                            ?.currentRowIdx ??
+                                                                        0);
+                                                                load.stateManager
+                                                                    .setSelectingMode(
+                                                                        PlutoGridSelectingMode
+                                                                            .cell);
+                                                                // controller.stateManager = load.stateManager;
+                                                              },
+                                                            )
                                                           : Container(
-                                                        decoration: BoxDecoration(
-                                                            border: Border.all(
-                                                                color: Colors
-                                                                    .grey)),
-                                                      ),
+                                                              decoration: BoxDecoration(
+                                                                  border: Border.all(
+                                                                      color: Colors
+                                                                          .grey)),
+                                                            ),
                                                     );
                                                   },
                                                 ),
@@ -1995,11 +2120,11 @@ class AmagiSpotsReplacementView
                               init: Get.find<HomeController>(),
                               builder: (controllerX) {
                                 PermissionModel formPermissions =
-                                Get
-                                    .find<MainController>()
-                                    .permissionList!
-                                    .lastWhere((element) =>
-                                element.appFormName == "frmSPReports");
+                                    Get.find<MainController>()
+                                        .permissionList!
+                                        .lastWhere((element) =>
+                                            element.appFormName ==
+                                            "frmSPReports");
                                 if (controllerX.buttons != null) {
                                   return Wrap(
                                     spacing: 5,
@@ -2010,15 +2135,14 @@ class AmagiSpotsReplacementView
                                         FormButtonWrapper(
                                           btnText: btn["name"],
                                           callback: Utils.btnAccessHandler2(
-                                              btn['name'],
-                                              controllerX,
-                                              formPermissions) ==
-                                              null
+                                                      btn['name'],
+                                                      controllerX,
+                                                      formPermissions) ==
+                                                  null
                                               ? null
-                                              : () =>
-                                              controller.formHandler(
-                                                btn['name'],
-                                              ),
+                                              : () => controller.formHandler(
+                                                    btn['name'],
+                                                  ),
                                         )
                                     ],
                                   );

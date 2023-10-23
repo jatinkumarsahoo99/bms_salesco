@@ -66,6 +66,10 @@ class AmagiSpotsReplacementController extends GetxController {
   PlutoGridStateManager? masterSpotsStateManager;
   PlutoGridStateManager? localSpotsStateManager;
   PlutoGridStateManager? dialogStateManager;
+  PlutoGridStateManager? dialogStateManager1;
+  PlutoGridStateManager? dialogStateManager2;
+  PlutoGridStateManager? dialogStateManager3;
+  PlutoGridStateManager? dialogStateManager4;
 
   TextEditingController txCaptionController = TextEditingController();
   TextEditingController txIdController = TextEditingController();

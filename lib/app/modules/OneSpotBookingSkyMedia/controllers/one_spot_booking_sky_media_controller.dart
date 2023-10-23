@@ -104,12 +104,12 @@ class OneSpotBookingSkyMediaController extends GetxController {
             if(map['onLeaveChannel'].containsKey('lstclientmaster') &&
                 map['onLeaveChannel']['lstclientmaster'] != null &&
                 map['onLeaveChannel']['lstclientmaster'].length >0  ){
-              inactiveGroup.value = false;
-              inactiveGroup.refresh();
                 // clientList.add(new DropDownValue.fromJsonDynamic(e,"clientcode","clientname") );
                 selectedClient?.value = DropDownValue(
                     value:map['onLeaveChannel']['lstclientmaster'][0]['clientname'],
                     key:map['onLeaveChannel']['lstclientmaster'][0]['clientcode']  );
+            }else{
+              selectedClient = Rxn<DropDownValue>(null);
             }
             if(map['onLeaveChannel'].containsKey('lstagencymaster') &&
                 map['onLeaveChannel']['lstagencymaster'] != null &&
@@ -117,6 +117,8 @@ class OneSpotBookingSkyMediaController extends GetxController {
                 // agencyList.add(new DropDownValue.fromJsonDynamic(e,"clientcode","clientname") );
                 selectedAgency?.value  = DropDownValue(key:map['onLeaveChannel']['lstagencymaster'][0]['agencycode'] ,
                     value:map['onLeaveChannel']['lstagencymaster'][0]['agencyname']);
+            }else{
+              selectedAgency = Rxn<DropDownValue>(null);
             }
             if(map['onLeaveChannel'].containsKey('lstbrandmaster') &&
                 map['onLeaveChannel']['lstbrandmaster'] != null &&
@@ -125,12 +127,17 @@ class OneSpotBookingSkyMediaController extends GetxController {
                 selectedBrandList?.value  = DropDownValue(key:map['onLeaveChannel']['lstbrandmaster'][0]['brandcode'] ,
                     value:map['onLeaveChannel']['lstbrandmaster'][0]['brandname']);
             }
+            else{
+              selectedBrandList = Rxn<DropDownValue>(null);
+            }
             if(map['onLeaveChannel'].containsKey('lstpayroutemaster') &&
                 map['onLeaveChannel']['lstpayroutemaster'] != null &&
                 map['onLeaveChannel']['lstpayroutemaster'].length >0  ){
               // agencyList.add(new DropDownValue.fromJsonDynamic(e,"clientcode","clientname") );
               selectedPayrouteList?.value  = DropDownValue(key:map['onLeaveChannel']['lstpayroutemaster'][0]['payRouteCode'] ,
                   value:map['onLeaveChannel']['lstpayroutemaster'][0]['payRouteName']);
+            }else{
+              selectedPayrouteList = Rxn<DropDownValue>(null);
             }
             if(map['onLeaveChannel'].containsKey('lstPersonnelMaster') &&
                 map['onLeaveChannel']['lstPersonnelMaster'] != null &&
@@ -138,7 +145,16 @@ class OneSpotBookingSkyMediaController extends GetxController {
               // agencyList.add(new DropDownValue.fromJsonDynamic(e,"clientcode","clientname") );
               selectedExecutiveList?.value  = DropDownValue(key:map['onLeaveChannel']['lstPersonnelMaster'][0]['personnelCode'] ,
                   value:map['onLeaveChannel']['lstPersonnelMaster'][0]['personnelName']);
+            }else{
+              selectedExecutiveList = Rxn<DropDownValue>(null);
             }
+            inactiveGroup.value = false;
+            inactiveGroup.refresh();
+            selectedExecutiveList?.refresh();
+            selectedPayrouteList?.refresh();
+            selectedBrandList?.refresh();
+            selectedAgency?.refresh();
+            selectedClient?.refresh();
           }
         });
   }
