@@ -166,16 +166,16 @@ class OneSpotBookingSkyMediaController extends GetxController {
       "channelcode":selectedChannel?.value?.key?? "",
       "bookingdate": DateFormat('yyyy-MM-ddTHH:mm:ss').format(DateFormat('dd-MM-yyyy').parse(bookingDateController.text)) ?? "2023-07-25T09:07:49.424Z",
       "effectivedate":DateFormat('yyyy-MM-ddTHH:mm:ss').format(DateFormat('dd-MM-yyyy').parse(effectiveDateController.text))?? "2023-07-25T09:07:49.424Z",
-      "bookingnumber":bookingRegController.text?? "23079000U",
-      "clientcode": selectedClient?.value?.key?? "0001431554",
-      "agencycode":selectedAgency?.value?.key?? "0001014752",
-      "brandcode": selectedBrandList?.value?.key?? "ZASKY00026",
+      "bookingnumber":bookingRegController.text?? "",
+      "clientcode": selectedClient?.value?.key?? "",
+      "agencycode":selectedAgency?.value?.key?? "",
+      "brandcode": selectedBrandList?.value?.key?? "",
       "refno": txtController.text??"",
-      "amount": int.parse((amountController.text != null &&
+      "amount": int.tryParse((amountController.text != null &&
           amountController.text != "")?amountController.text:"0"),
-      "payroutecode":selectedPayrouteList?.value?.key?? "ZAZEE00160",
-      "executivecode":selectedExecutiveList?.value?.key?? "FBXX00003",
-      "loggeduser":Get.find<MainController>().user?.logincode ??  "PM9XX00001"
+      "payroutecode":selectedPayrouteList?.value?.key?? "",
+      "executivecode":selectedExecutiveList?.value?.key?? "",
+      "loggeduser":Get.find<MainController>().user?.logincode ??  ""
     };
     // print(">>>>>postData>>>"+(postData).toString());
     Get.find<ConnectorControl>().POSTMETHOD(
@@ -186,11 +186,12 @@ class OneSpotBookingSkyMediaController extends GetxController {
           if(map is Map && map.containsKey("saveOSBooking") && map['saveOSBooking'] != null &&
               map['saveOSBooking'].containsKey('meassage') &&
               map['saveOSBooking']['meassage'] != null){
-            clearAll();
-            LoadingDialog.callDataSavedMessage( map['saveOSBooking']['meassage']??"");
+            LoadingDialog.callDataSavedMessage( map['saveOSBooking']['meassage']??"",callback: (){
+              clearAll();
+            });
 
           }else{
-            LoadingDialog.showErrorDialog(map??"Something went wrong");
+            LoadingDialog.showErrorDialog((map??"Something went wrong").toString());
           }
         });
   }
