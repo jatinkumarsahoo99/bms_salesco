@@ -10,8 +10,13 @@ import '../../../providers/ApiFactory.dart';
 
 class GeoProgramUpdateController extends GetxController {
   //TODO: Implement GeoProgramUpdateController
-  DropDownValue? selectedLocation;
-  DropDownValue? selectedChannel;
+  // DropDownValue? selectedLocation;
+  // DropDownValue? selectedChannel;
+  Rxn<DropDownValue> selectedLocation = Rxn<DropDownValue>();
+  Rxn<DropDownValue> selectedChannel = Rxn<DropDownValue>();
+
+  FocusNode channelFN = FocusNode();
+  FocusNode loactionFN = FocusNode();
 
   RxList<DropDownValue> locationList = RxList([]);
   RxList<DropDownValue> channelList = RxList([]);
@@ -21,12 +26,12 @@ class GeoProgramUpdateController extends GetxController {
   final count = 0.obs;
 
   fetchAllLoaderData() {
-    // LoadingDialog.call();
+    LoadingDialog.call();
     Get.find<ConnectorControl>().GETMETHODCALL(
         api: ApiFactory.GEO_PROGRAM_UPDATE_LOAD,
         // "https://jsonkeeper.com/b/D537"
         fun: (map) {
-          // Get.back();
+          Get.back();
           // print(">>>>>>"+map.toString());
           locationList.clear();
           channelList.clear();
@@ -38,6 +43,8 @@ class GeoProgramUpdateController extends GetxController {
               map['geoProgramUpdateOnload']['lstLocation'].forEach((e) {
                 locationList.add(DropDownValue.fromJsonDynamic(
                     e, "locationCode", "locationName"));
+                selectedLocation.value = DropDownValue(
+                    key: e['locationCode'], value: e['locationName']);
               });
             }
             if (map['geoProgramUpdateOnload']['lstChannel'] != null &&
@@ -54,64 +61,79 @@ class GeoProgramUpdateController extends GetxController {
         });
   }
 
-  updateAPICall(){
-    if(selectedLocation == null){
+  updateAPICall() {
+    if (selectedLocation == null) {
       LoadingDialog.showErrorDialog("Please select location");
-    }else if(selectedChannel == null){
+    } else if (selectedChannel == null) {
       LoadingDialog.showErrorDialog("Please select channel");
-    }else{
+    } else {
       LoadingDialog.call();
       Map<String, dynamic> postData = {
-        "locationcode": selectedLocation?.key??"",
-        "channelcode":selectedChannel?.key?? "",
-        "scheduleFromdate":DateFormat('yyyy-MM-dd').format(DateFormat("dd-MM-yyyy").parse(formDateController.text)) ??"",
-        "scheduleTodate":DateFormat('yyyy-MM-dd').format(DateFormat("dd-MM-yyyy").parse(toDateController.text)) ??""
+        "locationcode": selectedLocation.value?.key ?? "",
+        "channelcode": selectedChannel.value?.key ?? "",
+        "scheduleFromdate": DateFormat('yyyy-MM-dd').format(
+                DateFormat("dd-MM-yyyy").parse(formDateController.text)) ??
+            "",
+        "scheduleTodate": DateFormat('yyyy-MM-dd').format(
+                DateFormat("dd-MM-yyyy").parse(toDateController.text)) ??
+            ""
       };
       Get.find<ConnectorControl>().POSTMETHOD(
           api: ApiFactory.GEO_PROGRAM_UPDATE_UPDATE,
           json: postData,
-          fun: (map){
+          fun: (map) {
             Get.back();
-            print(">>>>"+map.toString());
-            if(map is Map && map.containsKey("update") && map['update'] != null){
-              LoadingDialog.callDataSavedMessage(map['update']??"");
-            }else{
-              LoadingDialog.showErrorDialog((map??"Some thing went wrong").toString());
+            print(">>>>" + map.toString());
+            if (map is Map &&
+                map.containsKey("update") &&
+                map['update'] != null) {
+              // LoadingDialog.callDataSavedMessage(map['update'] ?? "");
+            } else {
+              LoadingDialog.showErrorDialog(
+                  (map ?? "Some thing went wrong").toString());
             }
           });
     }
-
   }
+
   closeDialogIfOpen() {
     if (Get.isDialogOpen ?? false) {
       Get.back();
     }
   }
+
   @override
   void onInit() {
-    fetchAllLoaderData();
     super.onInit();
   }
 
   @override
   void onReady() {
     super.onReady();
+    fetchAllLoaderData();
   }
 
   @override
   void onClose() {
     super.onClose();
   }
-  clearAll(){
-    Get.delete<GeoProgramUpdateController>();
-    Get.find<HomeController>().clearPage1();
+
+  clearAll() {
+    selectedLocation.value = null;
+    selectedChannel.value = null;
+    formDateController.clear();
+    toDateController.clear();
+    // Get.delete<GeoProgramUpdateController>();
+    // Get.find<HomeController>().clearPage1();
   }
+
   void increment() => count.value++;
 
   formHandler(String btn) {
-    if(btn == "Update"){
+    if (btn == "Update") {
       updateAPICall();
-    }if(btn == "Clear"){
+    }
+    if (btn == "Clear") {
       // print("clear call");
       clearAll();
     }

@@ -7,7 +7,13 @@ class MultiCheckBox extends StatelessWidget {
   final double width;
   final bool isHorizontal, canScroll;
   final void Function(int index, bool val)? onChanged;
-  const MultiCheckBox({super.key, required this.list, this.width = 0, this.isHorizontal = true, this.onChanged, this.canScroll = false});
+  const MultiCheckBox(
+      {super.key,
+      required this.list,
+      this.width = 0,
+      this.isHorizontal = true,
+      this.onChanged,
+      this.canScroll = false});
 
   @override
   Widget build(BuildContext context) {
@@ -49,5 +55,6 @@ class MultiCheckBox extends StatelessWidget {
 class MultiCheckBoxModel {
   DropDownValue? val;
   bool? isSelected;
-  MultiCheckBoxModel(this.val, this.isSelected);
+  int? realIndex;
+  MultiCheckBoxModel(this.val, this.isSelected, this.realIndex);
 }

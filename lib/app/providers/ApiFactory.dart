@@ -204,6 +204,16 @@ class ApiFactory {
   static String EDI_RO_INIT = "$BASE_URL/api/EDIRoBooking/OnLoadXmlRoBooking";
   static String EDI_RO_FILE_LEAVE(fileName, effectiveDate) =>
       "$BASE_URL/api/EDIRoBooking/OnLeaveFileName?FileName=$fileName&EffectiveDate=$effectiveDate";
+  static String EDI_RO_LEAVE_LOCATION(locationCode) =>
+      "$BASE_URL/api/EDIRoBooking/OnLeaveLocation?LocationCode=$locationCode";
+  static String EDI_RO_LEAVE_FILE_NAME_CLAGDETAILS(
+          locationName, channelName, clientName, agencyName, effectiveFrom) =>
+      "$BASE_URL/api/EDIRoBooking/OnLeaveFileNameClagdetails?LocationName=$locationName&ChannelName=$channelName&ClientName=$clientName&AgencyName=$agencyName&EffectiveFrom=$effectiveFrom";
+  static String EDI_RO_AGENCY_LEAVE =
+      "$BASE_URL/api/EDIRoBooking/OnAgencyLeave";
+  static String EDI_RO_MARK_AS_DONE(fileName) =>
+      "$BASE_URL/api/EDIRoBooking/OnMarkAsDone?FileName=$fileName";
+  static String EDI_RO_SHOW_LINK = "$BASE_URL/api/EDIRoBooking/ShowLink";
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 

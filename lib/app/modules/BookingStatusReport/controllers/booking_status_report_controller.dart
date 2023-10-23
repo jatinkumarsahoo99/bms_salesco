@@ -72,14 +72,6 @@ class BookingStatusReportController extends GetxController {
     super.onClose();
   }
 
-  var listCheckBox = [
-    MultiCheckBoxModel(DropDownValue(key: "1", value: "Zee-Bihar-HD"), false),
-    MultiCheckBoxModel(DropDownValue(key: "1", value: "Zee TV"), false),
-    MultiCheckBoxModel(DropDownValue(key: "1", value: "Zing"), false),
-    MultiCheckBoxModel(DropDownValue(key: "1", value: "Zee Marathi"), false),
-    MultiCheckBoxModel(DropDownValue(key: "1", value: "Zee Bojpuri"), false),
-  ];
-
   getLoadData() {
     LoadingDialog.call();
     Get.find<ConnectorControl>().GETMETHODCALL(
@@ -92,34 +84,55 @@ class BookingStatusReportController extends GetxController {
           clients.clear();
           agency.clear();
           revenue.clear();
+          var i = 0;
           map["loadData"]["location"].forEach((e) {
             locations
-                .add(MultiCheckBoxModel(DropDownValue.fromJson1(e), false));
+                .add(MultiCheckBoxModel(DropDownValue.fromJson1(e), false, i));
+            i++;
           });
+          i = 0;
           map["loadData"]["channel"].forEach((e) {
             channels.add(MultiCheckBoxModel(
                 DropDownValue(key: e["channelcode"], value: e["channelname"]),
-                false));
+                false,
+                i));
+            i++;
           });
+          i = 0;
+
           map["loadData"]["zoneMaster"].forEach((e) {
             zone.add(MultiCheckBoxModel(
                 DropDownValue(key: e["zonecode"], value: e["zonename"]),
-                false));
+                false,
+                i));
+            i++;
           });
+          i = 0;
+
           map["loadData"]["clientMaster"].forEach((e) {
             clients.add(MultiCheckBoxModel(
                 DropDownValue(key: e["clientcode"], value: e["clientname"]),
-                false));
+                false,
+                i));
+            i++;
           });
+          i = 0;
+
           map["loadData"]["agencymaster"].forEach((e) {
             agency.add(MultiCheckBoxModel(
                 DropDownValue(key: e["agencycode"], value: e["agencyname"]),
-                false));
+                false,
+                i));
+            i++;
           });
+          i = 0;
+
           map["loadData"]["salesbook"].forEach((e) {
             revenue.add(MultiCheckBoxModel(
                 DropDownValue(key: e["accountcode"], value: e["accountname"]),
-                false));
+                false,
+                i));
+            i++;
           });
         });
   }

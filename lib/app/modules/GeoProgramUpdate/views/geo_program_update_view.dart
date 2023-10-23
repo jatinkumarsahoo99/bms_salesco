@@ -13,10 +13,10 @@ import '../../../providers/Utils.dart';
 import '../controllers/geo_program_update_controller.dart';
 
 class GeoProgramUpdateView extends StatelessWidget {
-   GeoProgramUpdateView({Key? key}) : super(key: key);
+  GeoProgramUpdateView({Key? key}) : super(key: key);
 
-   GeoProgramUpdateController controllerX =
-  Get.put<GeoProgramUpdateController>(GeoProgramUpdateController());
+  GeoProgramUpdateController controllerX =
+      Get.put<GeoProgramUpdateController>(GeoProgramUpdateController());
 
   @override
   Widget build(BuildContext context) {
@@ -49,41 +49,39 @@ class GeoProgramUpdateView extends StatelessWidget {
                     ),
                   ),
                 ),
-                DropDownField.formDropDown1WidthMap(
-                  controllerX.locationList,
-                        (value) {
-                      controllerX.selectedLocation = value;
-                    },
-                  "Location",
-                  .2,
-                  autoFocus: true,
-                    dialogHeight: Get.height * .35,
-                  selected: controllerX.selectedLocation
+                Obx(
+                  () => DropDownField.formDropDown1WidthMap(
+                      controllerX.locationList.value, (value) {
+                    controllerX.selectedLocation.value = value;
+                  }, "Location", .2,
+                      autoFocus: true,
+                      inkWellFocusNode: controllerX.loactionFN,
+                      dialogHeight: Get.height * .35,
+                      selected: controllerX.selectedLocation.value),
                 ),
                 SizedBox(height: 20),
-                DropDownField.formDropDown1WidthMap(
-                    controllerX.channelList,
-                        (value) {
-                          controllerX.selectedChannel = value;
-                    },
-                  "Channel",
-                  .2,
-                    dialogHeight: Get.height * .35,
-                    selected: controllerX.selectedChannel
-                ),
+                Obx(() {
+                  return DropDownField.formDropDown1WidthMap(
+                      controllerX.channelList, (value) {
+                    controllerX.selectedChannel.value = value;
+                  }, "Channel", .2,
+                      dialogHeight: Get.height * .35,
+                      inkWellFocusNode: controllerX.channelFN,
+                      selected: controllerX.selectedChannel.value);
+                }),
                 SizedBox(height: 20),
                 DateWithThreeTextField(
                   title: "From Date",
                   mainTextController: controllerX.formDateController,
                   widthRation: 0.2,
-                  startDate: DateTime.now(),
+                  // startDate: DateTime.now(),
                 ),
                 SizedBox(height: 20),
                 DateWithThreeTextField(
                   title: "To Date",
                   mainTextController: controllerX.toDateController,
                   widthRation: 0.2,
-                  startDate: DateTime.now(),
+                  // startDate: DateTime.now(),
                 ),
                 SizedBox(height: 20),
                 Align(
