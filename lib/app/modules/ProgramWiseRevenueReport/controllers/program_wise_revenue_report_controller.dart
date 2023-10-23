@@ -18,7 +18,7 @@ class ProgramWiseRevenueReportController extends GetxController {
   TextEditingController toDate = TextEditingController();
   List<String> bookingTypes = [
     "Detail",
-    "Summery",
+    "Summary",
   ];
   List<PermissionModel>? formPermissions;
   var locations = RxList<MultiCheckBoxModel>();
@@ -44,6 +44,7 @@ class ProgramWiseRevenueReportController extends GetxController {
   var isDetails = true.obs;
 
   Future<void> getRadioStatus(String name) async {
+    print(name);
     switch (name) {
       case "Detail":
         isDetails.value = true;
