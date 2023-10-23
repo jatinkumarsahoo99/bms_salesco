@@ -142,7 +142,7 @@ class ProductLevel1Controller extends GetxController {
         key: Key("Product Level1"),
         screenName: "Product Level1",
         appBarName: "Product Level1",
-        strViewName: "DP_View_ApprovalTrail",
+        strViewName: "vTesting",
         isAppBarReq: true));
   }
   closeDialogIfOpen() {
@@ -150,6 +150,9 @@ class ProductLevel1Controller extends GetxController {
       Get.back();
     }
   }
+
+
+
   @override
   void onReady() {
     super.onReady();
@@ -164,6 +167,8 @@ class ProductLevel1Controller extends GetxController {
       productLevel1Save();
     }else if(str == "Clear"){
       clearAll();
+    }else if(str == "Search"){
+      search();
     }
 
   }

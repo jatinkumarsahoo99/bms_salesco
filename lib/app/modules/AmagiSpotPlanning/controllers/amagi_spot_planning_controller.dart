@@ -96,7 +96,28 @@ class AmagiSpotPlanningController extends GetxController {
         });
   }
 
+  String getTableNo(String ? key){
+    switch(key){
+      case "Master Spots":
+        return "tbl1";
+        break;
+      case "Channel":
+        return "tbl2";
+        break;
+      case "Client":
+        return "tbl3";
+        break;
+      case "Data":
+        return "tbl4";
+        break;
+      default:
+        return "tbl1";
+        break;
+    }
+  }
+
   Future<void> getRadioType(String radioName) async {
+
     switch (radioName) {
       case "Master Spots":
         isMasterSpots = true;
@@ -157,7 +178,20 @@ class AmagiSpotPlanningController extends GetxController {
           if (map is Map &&
               map.containsKey('report') &&
               map['report'] != null) {
-            responseData = map as Map<String, dynamic>;
+
+            List<Map<String, dynamic>> mapData = [];
+            for (Map<String, dynamic> element in map['report']) {
+              Map<String, dynamic> mapDa = {};
+              element.forEach((key, value) {
+                String k = key.toString().trim().replaceAll("\n", " ");
+                mapDa[k] = value;
+              });
+              mapData.add(mapDa);
+            }
+            responseData={'report': mapData??[]};
+
+            // responseData = map as Map<String, dynamic>;
+
             update(['grid']);
           } else {
             responseData = {'report': []};
@@ -165,6 +199,8 @@ class AmagiSpotPlanningController extends GetxController {
           }
         });
   }
+
+
 
   @override
   void onInit() {
@@ -183,7 +219,7 @@ class AmagiSpotPlanningController extends GetxController {
       Get.find<HomeController>().postUserGridSetting1(
           listStateManager: [
             stateManager
-          ],tableNamesList: ['tbl1']);
+          ],tableNamesList: [getTableNo(selectValue.value)??'tbl1']);
     }
   }
 

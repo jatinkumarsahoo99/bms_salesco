@@ -286,5 +286,9 @@ class AppPages {
       name: _Paths.DEALVS_R_O_DATA_REPORT,
       page: () => AuthGuard(childName: _Paths.DEALVS_R_O_DATA_REPORT),
     ),
+    GetPage(
+      name: _Paths.DEAL_UTIL_PERIODIC,
+      page: () => AuthGuard(childName: _Paths.DEAL_UTIL_PERIODIC),
+    ),
   ];
 }

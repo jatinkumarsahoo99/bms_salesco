@@ -30,6 +30,29 @@ class AmagiStatusReportController extends GetxController {
   bool isYield = false;
   bool isData = false;
 
+  String getTableNo(String ? key){
+    switch(key){
+      case "Day Wise":
+        return "tbl1";
+        break;
+      case "Time Band":
+        return "tbl2";
+        break;
+      case "Serviced":
+        return "tbl3";
+        break;
+      case "Yield":
+        return "tbl4";
+        break;
+      case "Data":
+        return "tbl5";
+        break;
+      default:
+        return "tbl1";
+        break;
+    }
+  }
+
   Future<void> getRadioStatus(String name)async {
     switch(name){
       case "Day Wise":
@@ -147,16 +170,27 @@ class AmagiStatusReportController extends GetxController {
           if (map is Map &&
               map.containsKey('response') &&
               map['response'] != null &&  map['response'].length >0) {
-            responseData = map as Map<String, dynamic>;
+            responseData = {};
+            // responseData = map as Map<String, dynamic>;
+            List<Map<String, dynamic>> mapData = [];
+            for (Map<String, dynamic> element in map['response']) {
+              Map<String, dynamic> mapDa = {};
+              element.forEach((key, value) {
+                String k = key.toString().trim().replaceAll("\n", " ");
+                mapDa[k] = value;
+              });
+              mapData.add(mapDa);
+            }
+            responseData={'response': mapData??[]};
 
             for(int j=0;j<responseData['response'].length ;j++){
               List<String> keys = responseData['response'][j].keys.toList();
-              print(">>>keys"+keys.toString());
+              // print(">>>keys"+keys.toString());
               for(int i=0;i<keys.length;i++){
                 if(
-                    responseData['response'][j][keys[i]].toString().trim() == "{}"){
-                  print(">>>>>>>>map"+responseData['response'][j][keys[i]].toString());
-                  responseData['response'][j][keys[i]] = "";
+                    responseData['response'][j][(keys[i]??"")].toString().trim() == "{}"){
+                  // print(">>>>>>>>map${responseData['response'][j][keys[i]]}");
+                  responseData['response'][j][(keys[i]??"")] = "";
                 }
               }
             }
@@ -191,7 +225,7 @@ class AmagiStatusReportController extends GetxController {
       Get.find<HomeController>().postUserGridSetting1(
           listStateManager: [
             stateManager
-          ]);
+          ],tableNamesList: [getTableNo(selectValue.value)??"tbl1"]);
     }
 
   }

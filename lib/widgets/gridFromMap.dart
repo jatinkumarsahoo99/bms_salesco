@@ -1453,14 +1453,14 @@ class DataGridFromMapAmagiDialog extends StatelessWidget {
 
 Color getColors(PlutoColumnRendererContext plutoCon) {
   Color color = Colors.white;
-  print(">>>>>>>>>>>>>>>>>>>keyGet" + plutoCon.cell.column.title.toString());
+  // print(">>>>>>>>>>>>>>>>>>>keyGet" + plutoCon.cell.column.title.toString());
   if (plutoCon.cell.column.title.toString().trim().toLowerCase() !=
       "Parent I D".toLowerCase()) {
     List<String>? data = plutoCon
         .stateManager.rows[plutoCon.rowIdx].cells['ParentID']?.value
         .toString()
         .split("-");
-    print(">>>>>>>>>splitList$data");
+    // print(">>>>>>>>>splitList$data");
     if (data != null && data.isEmpty) {
       color = Colors.white;
     } else if (plutoCon.cell.value == null ||
@@ -1480,18 +1480,22 @@ Color getColors(PlutoColumnRendererContext plutoCon) {
 FontWeight getChannelFont(PlutoColumnRendererContext plutoCon) {
   FontWeight font = FontWeight.normal;
   plutoCon.stateManager.resetShowFrozenColumn();
-  // print(">>>>>>>>>>>keys"+("${(plutoCon.column.field??"").toString().trim()} Is Bold"));
-  // print(">>>>>>>>>>>keysValues"+("${(plutoCon.cell.value??"").toString().trim()}"));
-  // print(">>>>>>>>>>>>>>>>>>>keyGetJKsVal${plutoCon.stateManager.rows[plutoCon.rowIdx].cells["channelnameIsBold"]?.value}");
   List<PlutoColumn> listOfHideColumn = [];
-/*  for (var element in plutoCon.stateManager.columns) {
+  // print(">>>>>>>>>>>>>>>DataValueCell${plutoCon.cell.value}");
+  for (var element in plutoCon.stateManager.columns) {
     // print(">>>>>>>>>>>>>>>>>>>keyGetJKs${element.title} ${element.key}");
-    if (element.title.toString().trim() == "Unallocated Spots Is Bold" ||
+    if (
+    element.title.toString().trim() == "Unallocated Spots Is Bold" ||
+        // element.title.toString().trim() == "${element.title.toString().trim()} Is Bold" ||
         element.title.toString().trim() == "Total Spots Is Bold" ||
         element.title.toString().trim() == "Locationname Is Bold" ||
         element.title.toString().trim() == "Channelname Is Bold") {
       listOfHideColumn.add(element);
     }
+  }
+
+ /* for (var element in plutoCon.stateManager.rows) {
+    print(">>>>>>>>>>>>>elementData"+(element.toJson()).toString());
   }*/
 
   if (plutoCon
@@ -1507,29 +1511,22 @@ FontWeight getChannelFont(PlutoColumnRendererContext plutoCon) {
   if (listOfHideColumn.isNotEmpty) {
     // plutoCon.stateManager.hideColumns(listOfHideColumn, true);
   }
-  /*for (var element in plutoCon.stateManager.columns) {
-    print(">>>>>>>>>>>>>>>>>>>keyGetJKsAfterHide${element.title} ${element.key}");
-  }*/
   return font;
 }
 
 FontWeight getMasterFont(PlutoColumnRendererContext plutoCon) {
   FontWeight font = FontWeight.normal;
   plutoCon.stateManager.resetShowFrozenColumn();
-  // print(">>>>>>>>>>>keys"+("${(plutoCon.column.field??"").toString().trim()} Is Bold"));
-  // print(">>>>>>>>>>>keysValues"+("${(plutoCon.cell.value??"").toString().trim()}"));
-  // print(">>>>>>>>>>>>>>>>>>>keyGetJKsVal${plutoCon.stateManager.rows[plutoCon.rowIdx].cells["channelnameIsBold"]?.value}");
   List<PlutoColumn> listOfHideColumn = [];
-/*  for (var element in plutoCon.stateManager.columns) {
-    // print(">>>>>>>>>>>>>>>>>>>keyGetJKs${element.title} ${element.key}");
-    if (element.title.toString().trim() == "Unallocated Spots Is Bold" ||
-        element.title.toString().trim() == "Total Spots Is Bold" ||
-        element.title.toString().trim() == "Locationname Is Bold" ||
-        element.title.toString().trim() == "Channelname Is Bold") {
+  for (var element in plutoCon.stateManager.columns) {
+    if (element.title.toString().trim() == "Booking Number Is Bold" ) {
+      // print(">>>>>>>>>>>>>>element.title.toString().trim()${element.title.toString().trim()}");
       listOfHideColumn.add(element);
     }
-  }*/
-
+  }
+/*  for (var element in plutoCon.stateManager.rows) {
+    print(">>>>>>>>>>>>>elementData"+(element.cells['bookingNumberIsBold']?.value).toString());
+  }
   if (plutoCon
           .stateManager
           .rows[plutoCon.rowIdx]
@@ -1539,32 +1536,25 @@ FontWeight getMasterFont(PlutoColumnRendererContext plutoCon) {
           .trim() ==
       "true") {
     font = FontWeight.bold;
-  }
-  // if (listOfHideColumn.isNotEmpty) {
-  //   plutoCon.stateManager.hideColumns(listOfHideColumn, true);
-  // }
-  /*for (var element in plutoCon.stateManager.columns) {
-    print(">>>>>>>>>>>>>>>>>>>keyGetJKsAfterHide${element.title} ${element.key}");
   }*/
+  if(plutoCon.column.field.toString().trim() == "bookingNumber"){
+    font = FontWeight.bold;
+  }
+  if (listOfHideColumn.isNotEmpty) {
+    // plutoCon.stateManager.hideColumns(listOfHideColumn, true);
+  }
   return font;
 }
 
 FontWeight getLocalFont(PlutoColumnRendererContext plutoCon) {
   FontWeight font = FontWeight.normal;
   plutoCon.stateManager.resetShowFrozenColumn();
-  // print(">>>>>>>>>>>keys"+("${(plutoCon.column.field??"").toString().trim()} Is Bold"));
-  // print(">>>>>>>>>>>keysValues"+("${(plutoCon.cell.value??"").toString().trim()}"));
-  // print(">>>>>>>>>>>>>>>>>>>keyGetJKsVal${plutoCon.stateManager.rows[plutoCon.rowIdx].cells["channelnameIsBold"]?.value}");
   List<PlutoColumn> listOfHideColumn = [];
-  /*for (var element in plutoCon.stateManager.columns) {
-    // print(">>>>>>>>>>>>>>>>>>>keyGetJKs${element.title} ${element.key}");
-    if (element.title.toString().trim() == "Unallocated Spots Is Bold" ||
-        element.title.toString().trim() == "Total Spots Is Bold" ||
-        element.title.toString().trim() == "Locationname Is Bold" ||
-        element.title.toString().trim() == "Channelname Is Bold") {
+  for (var element in plutoCon.stateManager.columns) {
+    if (element.title.toString().trim() == "Booking Number Is Bold" ) {
       listOfHideColumn.add(element);
     }
-  }*/
+  }
 
   if (plutoCon
           .stateManager
@@ -1576,12 +1566,9 @@ FontWeight getLocalFont(PlutoColumnRendererContext plutoCon) {
       "true") {
     font = FontWeight.bold;
   }
-  // if (listOfHideColumn.isNotEmpty) {
-  //   plutoCon.stateManager.hideColumns(listOfHideColumn, true);
-  // }
-  /*for (var element in plutoCon.stateManager.columns) {
-    print(">>>>>>>>>>>>>>>>>>>keyGetJKsAfterHide${element.title} ${element.key}");
-  }*/
+  if (listOfHideColumn.isNotEmpty) {
+    // plutoCon.stateManager.hideColumns(listOfHideColumn, true);
+  }
   return font;
 }
 

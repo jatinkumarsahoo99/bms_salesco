@@ -560,7 +560,7 @@ class AmagiSpotsReplacementView
                                       dragAbleDialogGet();
                                     }
                                   }
-                                  Future.delayed(Duration(seconds: 3), () {
+                                  Future.delayed(Duration(seconds: 2), () {
                                     controller.bindData();
                                   },);
                                 });
@@ -647,7 +647,7 @@ class AmagiSpotsReplacementView
                                           }
                                         }
                                         Future.delayed(
-                                          Duration(seconds: 3), () {
+                                          Duration(seconds: 2), () {
                                           controller.bindData();
                                         },);
                                       });
@@ -1089,7 +1089,7 @@ class AmagiSpotsReplacementView
                                                         .availableController,
                                                     width: 0.1,
                                                     // autoFocus: true,
-                                                    // isEnable: controllerX.isEnable,
+                                                    isEnable: controller.isEnable1,
                                                     onchanged: (value) {},
                                                     // autoFocus: true,
                                                   ),
@@ -1098,6 +1098,7 @@ class AmagiSpotsReplacementView
                                                     controller: controller
                                                         .allocatedController,
                                                     width: 0.1,
+                                                    isEnable: controller.isEnable1,
                                                     // autoFocus: true,
                                                     // isEnable: controllerX.isEnable,
                                                     onchanged: (value) {
@@ -1119,6 +1120,7 @@ class AmagiSpotsReplacementView
                                                     controller: controller
                                                         .unAllocatedController,
                                                     width: 0.1,
+                                                    isEnable: controller.isEnable1,
                                                     // autoFocus: true,
                                                     // isEnable: controllerX.isEnable,
                                                     onchanged: (value) {},
@@ -1129,6 +1131,7 @@ class AmagiSpotsReplacementView
                                                     controller: controller
                                                         .balanceController,
                                                     width: 0.1,
+                                                    isEnable: controller.isEnable1,
                                                     // autoFocus: true,
                                                     // isEnable: controllerX.isEnable,
                                                     onchanged: (value) {},
@@ -1148,6 +1151,7 @@ class AmagiSpotsReplacementView
                                                     controller: controller
                                                         .msTimeController,
                                                     width: 0.1,
+                                                    isEnable: controller.isEnable1,
                                                     // autoFocus: true,
                                                     // isEnable: controllerX.isEnable,
                                                     onchanged: (value) {},
@@ -1158,6 +1162,7 @@ class AmagiSpotsReplacementView
                                                     controller: controller
                                                         .lsAllocController,
                                                     width: 0.1,
+                                                    isEnable: controller.isEnable1,
                                                     // autoFocus: true,
                                                     // isEnable: controllerX.isEnable,
                                                     onchanged: (value) {},
@@ -1177,6 +1182,7 @@ class AmagiSpotsReplacementView
                                                     controller: controller
                                                         .lsRevController,
                                                     width: 0.2,
+                                                    isEnable: controller.isEnable1,
                                                     // autoFocus: true,
                                                     // isEnable: controllerX.isEnable,
                                                     onchanged: (value) {},
@@ -1315,7 +1321,7 @@ class AmagiSpotsReplacementView
                                                               ['id']);
                                                           Future.delayed(
                                                             const Duration(
-                                                                seconds: 2),
+                                                                seconds: 1),
                                                                 () {
                                                               controller
                                                                   .getSummaryAPICall()
@@ -1414,7 +1420,7 @@ class AmagiSpotsReplacementView
 
                                                           Future.delayed(
                                                             const Duration(
-                                                                seconds: 2), () {
+                                                                seconds: 1), () {
                                                             controller
                                                                 .getUnallocatedHoldCall()
                                                                 .then((value) {
@@ -1498,7 +1504,7 @@ class AmagiSpotsReplacementView
 
                                                           Future.delayed(
                                                             const Duration(
-                                                                seconds: 2), () {
+                                                                seconds: 1), () {
                                                             controller
                                                                 .getClientAPICall()
                                                                 .then((value) {
@@ -1577,7 +1583,7 @@ class AmagiSpotsReplacementView
 
                                                     Future.delayed(
                                                       const Duration(
-                                                          seconds: 2), () {
+                                                          seconds: 1), () {
                                                       controller
                                                           .getTotalAPICall()
                                                           .then((value) {
@@ -1635,6 +1641,7 @@ class AmagiSpotsReplacementView
                                                     controller: controller
                                                         .loDurController,
                                                     width: 0.1,
+                                                    isEnable: controller.isEnable1,
                                                     // autoFocus: true,
                                                     // isEnable: controller.isEnable,
                                                     onchanged: (value) {},
@@ -1645,6 +1652,7 @@ class AmagiSpotsReplacementView
                                                     controller: controller
                                                         .loDurMisController,
                                                     width: 0.1,
+                                                    isEnable: controller.isEnable1,
                                                     // autoFocus: true,
                                                     // isEnable: controller.isEnable,
                                                     onchanged: (value) {},
@@ -1664,6 +1672,7 @@ class AmagiSpotsReplacementView
                                                     controller: controller
                                                         .loTotalController,
                                                     width: 0.1,
+                                                    isEnable: controller.isEnable1,
                                                     // autoFocus: true,
                                                     // isEnable: controller.isEnable,
                                                     onchanged: (value) {},
@@ -1674,6 +1683,7 @@ class AmagiSpotsReplacementView
                                                     controller: controller
                                                         .loMissController,
                                                     width: 0.1,
+                                                    isEnable: controller.isEnable1,
                                                     // autoFocus: true,
                                                     // isEnable: controller.isEnable,
                                                     onchanged: (value) {},
@@ -1725,6 +1735,7 @@ class AmagiSpotsReplacementView
                                                         formatDate: false,
                                                         isLocalSpotGrid: true,
                                                         columnAutoResize: false,
+                                                        numTypeKeyList: ["bookingDetailCode"],
                                                         widthSpecificColumn: {
                                                           "colNo": 150,
                                                           "bookingNumber": 150,
@@ -1791,7 +1802,6 @@ class AmagiSpotsReplacementView
                                                           controller
                                                               .localSpotsStateManager =
                                                               load.stateManager;
-
                                                           controller
                                                               .localSpotsStateManager
                                                               ?.setCurrentCell(

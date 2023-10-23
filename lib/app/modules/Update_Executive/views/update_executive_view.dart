@@ -46,6 +46,7 @@ class UpdateExecutiveView extends GetView<UpdateExecutiveController> {
                                 controllerX.locationList.value??[],
                                     (value) {
                                   controllerX.selectedLocation?.value = value;
+                                  controllerX.channelNode.requestFocus();
                                 }, "Location",
                                 0.1,
                                 isEnable: controllerX.isEnable,
@@ -128,6 +129,46 @@ class UpdateExecutiveView extends GetView<UpdateExecutiveController> {
                           selected: controllerX.selectedZone?.value,
                           dialogHeight: Get.height * .35,
                           autoFocus: false,),),
+                       SizedBox(
+                         width: Get.width*0.46,
+                         child: Row(
+                           // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                           children: [
+                             DateWithThreeTextField(
+                               title: " Date",
+                               mainTextController: controllerX.date1Controller,
+                               widthRation: .1,
+                               isEnable: controllerX.isEnable,
+                               onFocusChange: (String date){},
+                             ),
+                             SizedBox(
+                               width: 7,
+                             ),
+                             DateWithThreeTextField(
+                               title: " Date",
+                               mainTextController:  controllerX.date2Controller,
+                               widthRation: .1,
+                               isEnable: controllerX.isEnable,
+                               onFocusChange: (String date){},
+                             ),
+                             SizedBox(
+                               width: 7,
+                             ),
+                             Padding(
+                               padding: const EdgeInsets.only(
+                                   top: 14.0, left: 10, right: 10),
+                               child: FormButtonWrapper(
+                                 btnText: "Show T.O.",
+                                 callback: () {
+                                   controllerX.getVerify();
+                                 },
+                                 showIcon: true,
+                               ),
+                             ),
+                           ],
+                         ),
+                       ),
+
                        /* Obx(()=>DropDownField.formDropDown1WidthMap(
                           controllerX.agencyList.value??[],
                               (value) {
@@ -210,6 +251,7 @@ class UpdateExecutiveView extends GetView<UpdateExecutiveController> {
                                               Checkbox(
                                                   value: controllerX.verifyDataModel?.
                                                   verifiy?[index].isChecked,
+                                                  focusNode: FocusNode(skipTraversal: true),
                                                   onChanged: (val){
                                                     controllerX.verifyDataModel?.
                                                     verifiy?[index].isChecked = val;
@@ -273,7 +315,7 @@ class UpdateExecutiveView extends GetView<UpdateExecutiveController> {
                       for (var btn in ["Update Executive", "Clear", "Exit"]) ...{
                         FormButtonWrapper(
                           btnText: btn,
-                          callback: () => controller.formHandler(btn),
+                          callback: () => controllerX.formHandler(btn),
                         )
                       },
                     ],
