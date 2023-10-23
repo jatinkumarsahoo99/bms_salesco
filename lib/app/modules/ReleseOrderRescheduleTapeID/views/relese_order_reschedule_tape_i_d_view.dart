@@ -180,20 +180,18 @@ class ReleseOrderRescheduleTapeIDView extends StatelessWidget {
 
                   Obx(() {
                     return AppCheckBox(
-                      title: "Select All",
+                      title: "Apply For All",
                       value: controller.isAllCheck.value,
                       onChanged: (val) {
-                        if (controller.lstBookingDetails.isEmpty) {
+                        if (controller.selectedTapeRight == null ||
+                            controller.lstBookingDetails.isEmpty) {
                           controller.isAllCheck.value = false;
                           controller.isAllCheck.refresh();
                           LoadingDialog.callInfoMessage(
-                            "No optional TapeID found for replacing existing TapeID.",
+                            controller.lstBookingDetails.isEmpty
+                                ? "No optional TapeID found for replacing existing TapeID."
+                                : "Please replaceble Tapecode.",
                           );
-                        } else if (controller.selectedTapeRight == null) {
-                          controller.isAllCheck.value = false;
-                          controller.isAllCheck.refresh();
-                          LoadingDialog.callInfoMessage(
-                              "Please replaceble Tapecode.");
                         } else {
                           controller.isAllCheck.value =
                               !controller.isAllCheck.value;
@@ -356,21 +354,23 @@ class ReleseOrderRescheduleTapeIDView extends StatelessWidget {
                   /// Common Buttons
                   Get.find<HomeController>()
                       .getCommonButton<ReleseOrderRescheduleTapeIDController>(
-                          Routes.COMMERCIAL_CREATION_AUTO, (formName) {
-                    if (formName == "Save") {
-                      controller.saveData(
-                        Get.find<MainController>().user!.logincode!,
-                        controller.selectedLocation,
-                        controller.selectedChannel,
-                        controller.selectedClient,
-                        controller.selectedAgency,
-                        controller.selectedBrand,
-                        controller.fromDateTC.text,
-                        controller.toDateTC.text,
-                        controller.selectedTape,
-                      );
-                    }
-                  }),
+                    Routes.COMMERCIAL_CREATION_AUTO,
+                    (formName) {
+                      if (formName == "Save") {
+                        controller.saveData(
+                          Get.find<MainController>().user!.logincode!,
+                          controller.selectedLocation,
+                          controller.selectedChannel,
+                          controller.selectedClient,
+                          controller.selectedAgency,
+                          controller.selectedBrand,
+                          controller.fromDateTC.text,
+                          controller.toDateTC.text,
+                          controller.selectedTape,
+                        );
+                      }
+                    },
+                  ),
                 ],
               ),
             ),

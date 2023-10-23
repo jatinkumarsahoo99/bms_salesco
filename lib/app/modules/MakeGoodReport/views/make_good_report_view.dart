@@ -25,7 +25,6 @@ class MakeGoodReportView extends GetView<MakeGoodReportController> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-
               ///Controllers
               FocusTraversalGroup(
                 policy: OrderedTraversalPolicy(),
@@ -37,7 +36,7 @@ class MakeGoodReportView extends GetView<MakeGoodReportController> {
                     Obx(() {
                       return DropDownField.formDropDown1WidthMap(
                         controller.locationList.value,
-                            (v) => controller.selectedLocation = v,
+                        (v) => controller.selectedLocation = v,
                         "Location",
                         .15,
                         autoFocus: true,
@@ -48,7 +47,9 @@ class MakeGoodReportView extends GetView<MakeGoodReportController> {
                     Obx(() {
                       return DropDownField.formDropDown1WidthMap(
                         controller.channelList.value,
-                            (v) => controller.selectedChannel = v,
+                        (v) {
+                          controller.selectedChannel = v;
+                        },
                         "Channel",
                         .15,
                         selected: controller.selectedChannel,
@@ -70,7 +71,7 @@ class MakeGoodReportView extends GetView<MakeGoodReportController> {
                     Obx(() {
                       return DropDownField.formDropDown1WidthMap(
                         controller.clientList.value,
-                            (v) {
+                        (v) {
                           controller.selectedClient = v;
                           controller.getAgency();
                         },
@@ -84,7 +85,7 @@ class MakeGoodReportView extends GetView<MakeGoodReportController> {
                     Obx(() {
                       return DropDownField.formDropDown1WidthMap(
                         controller.agencyList.value,
-                            (v) {
+                        (v) {
                           controller.selectedAgency = v;
                           controller.getBrand();
                         },
@@ -97,7 +98,7 @@ class MakeGoodReportView extends GetView<MakeGoodReportController> {
                     Obx(() {
                       return DropDownField.formDropDown1WidthMap(
                         controller.brandList.value,
-                            (v) => controller.selectedBrand = v,
+                        (v) => controller.selectedBrand = v,
                         "Brand",
                         .15,
                         selected: controller.selectedBrand,
@@ -110,7 +111,7 @@ class MakeGoodReportView extends GetView<MakeGoodReportController> {
                         value: !controller.controllsEnable.value,
                         onChanged: (val) {
                           controller.controllsEnable.value =
-                          !(controller.controllsEnable.value);
+                              !(controller.controllsEnable.value);
                         },
                       );
                     }),
@@ -123,48 +124,37 @@ class MakeGoodReportView extends GetView<MakeGoodReportController> {
               ///Data table
               Expanded(
                 child: Obx(
-                      () {
+                  () {
                     return Container(
                       margin: const EdgeInsets.symmetric(vertical: 10),
                       decoration: controller.dataTableList.value.isEmpty
                           ? BoxDecoration(
-                        border: Border.all(
-                          color: Colors.grey,
-                        ),
-                      )
+                              border: Border.all(
+                                color: Colors.grey,
+                              ),
+                            )
                           : null,
                       child: controller.dataTableList.value.isEmpty
                           ? null
-                          : GetBuilder<MakeGoodReportController>(
-                        assignId: true,
-                        id: "grid",
-                        builder: (controller) {
-                          return DataGridFromMap3(
-                          /*  specificWidth: const {
-                              "programname": 150,
-                              "clientname": 200,
-                              "agencyname": 200,
-                              "brandname": 200,
-                              "commercialcaption": 300,
-                              "bookingreferencenumber": 300,
-                              "eBookingNumber": 150,
-                              "eBookingMonth": 150,
-                              "cancelDate": 150,
-                              "scheduleDate": 100,
-                            },*/
-                            onload: (PlutoGridOnLoadedEvent load) {
-                              controller.stateManager = load.stateManager;
-                            },
-                            widthSpecificColumn: Get.find<HomeController>()
-                                .getGridWidthByKey(
-                                userGridSettingList: controller.userGridSetting1
-                                    ?.value),
-                            // mapData: controller.dataTableList.value.map((e) => e.toJson()).toList(),
-                            mapData: controller.dataTableList.value,
-                            formatDate: false,
-                          );
-                        },
-                      ),
+                          : DataGridFromMap3(
+                              onload: (PlutoGridOnLoadedEvent load) {
+                                controller.stateManager = load.stateManager;
+                              },
+                              exportFileName: "Make Good Report",
+                              hideCode: false,
+                              colorCallback: (row) => row.row.cells
+                                      .containsValue(
+                                          controller.stateManager?.currentCell)
+                                  ? Colors.deepPurple.shade100
+                                  : Colors.white,
+                              columnAutoResize: false,
+                              widthSpecificColumn: Get.find<HomeController>()
+                                  .getGridWidthByKey(
+                                      userGridSettingList:
+                                          controller.userGridSetting1?.value),
+                              mapData: controller.dataTableList.value,
+                              formatDate: false,
+                            ),
                     );
                   },
                 ),
@@ -186,9 +176,9 @@ class MakeGoodReportView extends GetView<MakeGoodReportController> {
                             for (var btn in btncontroller.buttons!) ...{
                               FormButtonWrapper(
                                 btnText: btn["name"],
-                                callback: ((Utils.btnAccessHandler(
-                                    btn['name'], controller.formPermissions!) ==
-                                    null))
+                                callback: ((Utils.btnAccessHandler(btn['name'],
+                                            controller.formPermissions!) ==
+                                        null))
                                     ? null
                                     : () => controller.formHandler(btn['name']),
                               )
