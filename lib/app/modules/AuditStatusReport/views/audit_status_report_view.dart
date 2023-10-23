@@ -30,10 +30,10 @@ class AuditStatusReportView  extends StatelessWidget  {
          id: "grid",
          // init: CreateBreakPatternController(),
          builder: (controller) {
-           if(controllerX.auditStatusReportModel != null && controllerX.auditStatusReportModel!.audit != null &&
-               controllerX.auditStatusReportModel!.audit!.length >0
+           if(controllerX.auditStatusReportModel != null && controllerX.auditStatusReportModel?.audit != null &&
+               (controllerX.auditStatusReportModel?.audit?.length??0) >0
            ){
-             print(">>>>>>>>DataList"+( controllerX.auditStatusReportModel!.audit!.length).toString());
+             // print(">>>>>>>>DataList"+( controllerX.auditStatusReportModel!.audit!.length).toString());
              return Expanded(
                flex: 10,
                child: Padding(
@@ -45,7 +45,7 @@ class AuditStatusReportView  extends StatelessWidget  {
                    exportFileName: "Audit Status Report",
                    widthSpecificColumn: Get.find<HomeController>().getGridWidthByKey(
                        userGridSettingList: controllerX.userGridSetting1,key: "tbl1"),
-                   mapData: (controllerX.auditStatusReportModel!.audit
+                   mapData: (controllerX.auditStatusReportModel?.audit
                        ?.map((e) => e.toJson())
                        .toList())!,
                    // mapData: (controllerX.dataList)!,
@@ -58,8 +58,8 @@ class AuditStatusReportView  extends StatelessWidget  {
              );
            }
            else if(controllerX.auditStatusGenerateToList != null && controllerX.auditStatusGenerateToList?.listData != null &&
-               (controllerX.auditStatusGenerateToList!.listData?.length??0) >0){
-             print(">>>>>>ListData"+(controllerX.auditStatusGenerateToList!.listData?.length.toString()??""));
+               (controllerX.auditStatusGenerateToList?.listData?.length??0) >0){
+             // print(">>>>>>ListData"+(controllerX.auditStatusGenerateToList!.listData?.length.toString()??""));
              return Expanded(
                flex: 10,
                child: Padding(
@@ -71,13 +71,39 @@ class AuditStatusReportView  extends StatelessWidget  {
                    exportFileName: "Audit Status Report",
                    widthSpecificColumn: Get.find<HomeController>().getGridWidthByKey(
                        userGridSettingList: controllerX.userGridSetting1,key: "tbl2"),
-                   mapData: (controllerX.auditStatusGenerateToList!.listData
+                   mapData: (controllerX.auditStatusGenerateToList?.listData
                        ?.map((e) => e.toJson())
                        .toList())!,
                    // mapData: (controllerX.dataList)!,
                    widthRatio: Get.width / 9 - 1,
                    onload: (PlutoGridOnLoadedEvent load){
                      controllerX.stateManager2 = load.stateManager;
+                   },
+                 ),
+               ),
+             );
+           }
+           else if(controllerX.auditStatusCancel != null && controllerX.auditStatusCancel?.cancel != null &&
+               (controllerX.auditStatusCancel?.cancel?.length??0) >0){
+             // print(">>>>>>ListData"+(controllerX.auditStatusGenerateToList!.listData?.length.toString()??""));
+             return Expanded(
+               flex: 10,
+               child: Padding(
+                 padding: const EdgeInsets.all(8.0),
+                 child: DataGridFromMap(
+                   showSrNo: false,
+                   hideCode: false,
+                   formatDate: false,
+                   exportFileName: "Audit Status Report",
+                   widthSpecificColumn: Get.find<HomeController>().getGridWidthByKey(
+                       userGridSettingList: controllerX.userGridSetting1,key: "tbl3"),
+                   mapData: (controllerX.auditStatusCancel?.cancel
+                       ?.map((e) => e.toJson())
+                       .toList())!,
+                   // mapData: (controllerX.dataList)!,
+                   widthRatio: Get.width / 9 - 1,
+                   onload: (PlutoGridOnLoadedEvent load){
+                     controllerX.stateManager3 = load.stateManager;
                    },
                  ),
                ),
@@ -206,46 +232,50 @@ class AuditStatusReportView  extends StatelessWidget  {
                                           builder: (control) {
                                             return Stack(
                                               children: [
-                                                Container(
-                                                  decoration: BoxDecoration(
-                                                    border: Border.all(
-                                                        color: Colors
-                                                            .deepPurpleAccent),
-                                                    borderRadius:
-                                                    BorderRadius.circular(
-                                                        0),
-                                                  ),
-                                                  margin:
-                                                  EdgeInsets.only(top: 8),
-                                                  child: ListView.builder(
-                                                    controller:
-                                                    ScrollController(),
-                                                    itemCount: controllerX.channelList.length,
-                                                    itemBuilder:
-                                                        (context, int index) {
-                                                      return Row(
-                                                        children: [
-                                                          Checkbox(
-                                                            value: controllerX.channelList[index].ischecked,
-                                                            side: const BorderSide(color: Colors.deepPurpleAccent),
-                                                            onChanged:
-                                                                (bool? value) {
-                                                                  controllerX.channelList[index].ischecked = value;
-                                                                  controllerX.update(['updateChannel']);
-                                                            },
-                                                          ),
-                                                          Expanded(
-                                                            child: Text(
-                                                              controllerX.channelList[index].channelName?? "ZEE",
-                                                              style:TextStyle(
-                                                                fontSize: SizeDefine.labelSize1,
-                                                                fontWeight: FontWeight.w500,
-                                                              ),
+                                                Focus(
+                                                  skipTraversal: true,
+                                                  child: Container(
+                                                    decoration: BoxDecoration(
+                                                      border: Border.all(
+                                                          color: Colors
+                                                              .deepPurpleAccent),
+                                                      borderRadius:
+                                                      BorderRadius.circular(
+                                                          0),
+                                                    ),
+                                                    margin:
+                                                    EdgeInsets.only(top: 8),
+                                                    child: ListView.builder(
+                                                      controller:
+                                                      ScrollController(),
+                                                      itemCount: controllerX.channelList.length,
+                                                      itemBuilder:
+                                                          (context, int index) {
+                                                        return Row(
+                                                          children: [
+                                                            Checkbox(
+                                                              value: controllerX.channelList[index].ischecked,
+                                                              side: const BorderSide(color: Colors.deepPurpleAccent),
+                                                              focusNode: FocusNode(skipTraversal: true),
+                                                              onChanged:
+                                                                  (bool? value) {
+                                                                    controllerX.channelList[index].ischecked = value;
+                                                                    controllerX.update(['updateChannel']);
+                                                              },
                                                             ),
-                                                          )
-                                                        ],
-                                                      );
-                                                    },
+                                                            Expanded(
+                                                              child: Text(
+                                                                controllerX.channelList[index].channelName?? "ZEE",
+                                                                style:TextStyle(
+                                                                  fontSize: SizeDefine.labelSize1,
+                                                                  fontWeight: FontWeight.w500,
+                                                                ),
+                                                              ),
+                                                            )
+                                                          ],
+                                                        );
+                                                      },
+                                                    ),
                                                   ),
                                                 ),
                                               ],
@@ -256,28 +286,54 @@ class AuditStatusReportView  extends StatelessWidget  {
                                       const SizedBox(
                                         height: 10,
                                       ),
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      Column(
                                         children: [
-                                           DateWithThreeTextField(
-                                              title: "Date",
-                                              splitType: "-",
-                                              widthRation: 0.1,
-                                              isEnable: controllerX.isEnable.value,
-                                              onFocusChange: (data) {},
-                                              mainTextController:controllerX.dateController,
-                                            ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                top: 14.0, left: 0, right: 0),
-                                            child: FormButtonWrapper(
-                                              btnText: "Generate Audit Status",
-                                              callback: () {
-                                                controllerX.fetchGetGenerateAuditStatus();
-                                              },
-                                              showIcon: true,
-                                            ),
+                                          Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+                                               DateWithThreeTextField(
+                                                  title: "Date",
+                                                  splitType: "-",
+                                                  widthRation: 0.09,
+                                                  isEnable: controllerX.isEnable.value,
+                                                  onFocusChange: (data) {},
+                                                  mainTextController:controllerX.dateController,
+                                                ),
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    top: 14.0, left: 0, right: 0),
+                                                child: SizedBox(
+                                                  width: size.width*0.11,
+                                                  child: FormButtonWrapper(
+                                                    btnText: "Genrate Audit Status",
+                                                    callback: () {
+                                                      controllerX.fetchGetGenerateAuditStatus();
+                                                    },
+                                                    showIcon: true,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
                                           ),
+                                          Row(
+                                            mainAxisAlignment: MainAxisAlignment.end,
+                                            children: [
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    top: 14.0, left: 0, right: 0),
+                                                child: SizedBox(
+                                                  width: size.width*0.11,
+                                                  child: FormButtonWrapper(
+                                                    btnText: "Generate Can/Res",
+                                                    callback: () {
+                                                      controllerX.fetchGetGenerateAuditStatusCancel();
+                                                    },
+                                                    showIcon: true,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          )
                                         ],
                                       ),
                                       SizedBox(

@@ -12,6 +12,7 @@ import '../../../data/DropDownValue.dart';
 import '../../../providers/ApiFactory.dart';
 import '../../AsrunDetailsReport/AsrunDetailsReportModel.dart';
 import '../../AsrunDetailsReport/ChannelListModel.dart';
+import '../AuditStatusCancel.dart';
 import '../AuditStatusGenerateToList.dart';
 import '../AuditStatusReportModel.dart';
 
@@ -41,6 +42,7 @@ class AuditStatusReportController extends GetxController {
   AuditStatusGenerateToList ?auditStatusGenerateToList;
   PlutoGridStateManager? stateManager1;
   PlutoGridStateManager? stateManager2;
+  PlutoGridStateManager? stateManager3;
   List<Map<String,Map<String, double>>>? userGridSetting1;
   fetchUserSetting1() async {
     userGridSetting1 = await Get.find<HomeController>().fetchUserSetting1();
@@ -115,10 +117,56 @@ class AuditStatusReportController extends GetxController {
             // print("map>>>"+ jsonEncode(map).toString());
             if(map is Map && map.containsKey('audit') && map['audit'] != null
                 && map['audit'].length >0 ){
+              auditStatusCancel = null;
+              auditStatusGenerateToList = null;
               auditStatusReportModel = AuditStatusReportModel.fromJson(map as Map<String,dynamic>);
               update(['grid']);
             }else{
               auditStatusReportModel = null;
+              update(['grid']);
+            }
+          });
+    }
+
+
+  }
+
+  AuditStatusCancel? auditStatusCancel;
+  fetchGetGenerateAuditStatusCancel(){
+    List<ChannelListModel> channelListFilter=[];
+    channelListFilter = channelList.where((element) =>
+    element.ischecked == true).toList();
+    if(selectedLocation == null){
+      LoadingDialog.showErrorDialog("Please select location");
+    }else if(channelListFilter.isEmpty){
+      LoadingDialog.showErrorDialog("Please select some channel");
+    }else if(dateController.text == null || dateController.text == ""){
+      LoadingDialog.showErrorDialog("Please select from date");
+    }
+    else{
+      LoadingDialog.call();
+      Map<String,dynamic> postData = {
+        "lstChannelList": channelListFilter.map((e) => e.toJson()).toList(),
+        "locationcode": selectedLocation!.key??"",
+        // "channelCode": selectLocation!.key??"",
+        "date":DateFormat('yyyy-MM-ddTHH:mm:ss').format(
+            DateFormat("dd-MM-yyyy").parse(dateController.text))
+      };
+      // print(">>>>>postData>>>"+(postData).toString());
+      Get.find<ConnectorControl>().POSTMETHOD(
+          api: ApiFactory.AUDIT_STATUS_REPORT_GENERATE_AUDIT_CANCEl,
+          json: postData,
+          fun: (map) {
+            Get.back();
+            // print("map>>>"+ jsonEncode(map).toString());
+            if(map is Map && map.containsKey('cancel') && map['cancel'] != null
+                && map['cancel'].length >0 ){
+              auditStatusReportModel = null;
+              auditStatusGenerateToList = null;
+              auditStatusCancel = AuditStatusCancel.fromJson(map as Map<String,dynamic>);
+              update(['grid']);
+            }else{
+              auditStatusCancel = null;
               update(['grid']);
             }
           });
@@ -161,6 +209,7 @@ class AuditStatusReportController extends GetxController {
             if(map is Map && map.containsKey('toList') && map['toList'] != null
                 && map['toList'].length >0 ){
               auditStatusReportModel = null;
+              auditStatusCancel = null;
 
               auditStatusGenerateToList = AuditStatusGenerateToList.fromJson(map as Map<String,dynamic>);
               update(['grid']);
