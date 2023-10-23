@@ -135,6 +135,7 @@ class InternationalSalesReportView
                           showSrNo: false,
                           hideCode: false,
                           formatDate: false,
+                          exportFileName: "International Saleas Report",
                           mapData: (controllerX.internationalSalesReportModel!.report?.internationalSalesSummary
                               ?.map((e) => e.toJson())
                               .toList())!,
@@ -160,6 +161,7 @@ class InternationalSalesReportView
                               .toList())!,
                           // mapData: (controllerX.dataList)!,
                           widthRatio: Get.width / 9 - 1,
+                          exportFileName: "International Saleas Report",
                           widthSpecificColumn: Get.find<HomeController>().getGridWidthByKey(
                               userGridSettingList: controllerX.userGridSetting1,key: "tbl2"),
                           onload: (PlutoGridOnLoadedEvent load){

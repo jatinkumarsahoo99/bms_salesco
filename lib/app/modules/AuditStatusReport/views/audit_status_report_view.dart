@@ -42,6 +42,7 @@ class AuditStatusReportView  extends StatelessWidget  {
                    showSrNo: false,
                    hideCode: false,
                    formatDate: false,
+                   exportFileName: "Audit Status Report",
                    widthSpecificColumn: Get.find<HomeController>().getGridWidthByKey(
                        userGridSettingList: controllerX.userGridSetting1,key: "tbl1"),
                    mapData: (controllerX.auditStatusReportModel!.audit
@@ -67,6 +68,7 @@ class AuditStatusReportView  extends StatelessWidget  {
                    showSrNo: false,
                    hideCode: false,
                    formatDate: false,
+                   exportFileName: "Audit Status Report",
                    widthSpecificColumn: Get.find<HomeController>().getGridWidthByKey(
                        userGridSettingList: controllerX.userGridSetting1,key: "tbl2"),
                    mapData: (controllerX.auditStatusGenerateToList!.listData
