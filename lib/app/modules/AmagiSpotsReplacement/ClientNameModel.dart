@@ -31,20 +31,22 @@ class ClientName {
   ClientName({this.s0, this.s1, this.clientname, this.starttime, this.endtime});
 
   ClientName.fromJson(Map<String, dynamic> json) {
-    s0 = json['0'];
-    s1 = json['1'];
     clientname = json['clientname'];
     starttime = json['starttime'];
     endtime = json['endtime'];
+    s0 = json['0'];
+    s1 = json['1'];
+
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['0'] = this.s0;
-    data['1'] = this.s1;
     data['clientname'] = this.clientname;
     data['starttime'] = this.starttime;
     data['endtime'] = this.endtime;
+    data['0'] = this.s0;
+    data['1'] = this.s1;
+
     return data;
   }
 }
