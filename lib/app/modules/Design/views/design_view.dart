@@ -135,21 +135,21 @@ class DesignView extends GetView<DesignController> {
                 ListDropDownCheckBox(
                   onChanged: (index, selectValue) {
                     print("index=> $index");
-                    controller.listCheckBox[index].isSelected = selectValue;
-                    controller.saveData();
+                    // controller.listCheckBox[index].isSelected = selectValue;
+                    // controller.saveData();
                   },
                   focusNode: FocusNode(),
                   items: [
-                    MultiCheckBoxModel(
-                        DropDownValue(key: "1", value: "Zee-Bihar-HD"), false),
-                    MultiCheckBoxModel(
-                        DropDownValue(key: "1", value: "Zee TV"), true),
-                    MultiCheckBoxModel(
-                        DropDownValue(key: "1", value: "Zing"), true),
-                    MultiCheckBoxModel(
-                        DropDownValue(key: "1", value: "Zee Marathi"), true),
-                    MultiCheckBoxModel(
-                        DropDownValue(key: "1", value: "Zee Bojpuri"), true),
+                    // MultiCheckBoxModel(
+                    //     DropDownValue(key: "1", value: "Zee-Bihar-HD"), false),
+                    // MultiCheckBoxModel(
+                    //     DropDownValue(key: "1", value: "Zee TV"), true),
+                    // MultiCheckBoxModel(
+                    //     DropDownValue(key: "1", value: "Zing"), true),
+                    // MultiCheckBoxModel(
+                    //     DropDownValue(key: "1", value: "Zee Marathi"), true),
+                    // MultiCheckBoxModel(
+                    //     DropDownValue(key: "1", value: "Zee Bojpuri"), true),
                   ],
                   title: "Multi Channel",
                   onSelect: (DropDownValue? val) {
