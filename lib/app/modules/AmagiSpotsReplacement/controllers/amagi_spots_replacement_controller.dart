@@ -150,7 +150,7 @@ class AmagiSpotsReplacementController extends GetxController {
                 map['localSpot'] != null) {
               pivotLocalSpotModel =
                   PivotLocalSpotModel.fromJson(map as Map<String, dynamic>);
-              // print(">>>>>>>>>>>mapData$map");
+              print(">>>>>>>>>>>mapData$map");
               // print(">>>>>>>>>>>>>>>>>>>pivotLocalSpotModel" +
               //     (pivotLocalSpotModel?.toJson()).toString());
               completer.complete(true);

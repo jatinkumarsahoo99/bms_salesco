@@ -220,12 +220,18 @@ class AmagiStatusReportController extends GetxController {
   void onClose() {
     super.onClose();
   }
+  clearAll() {
+    Get.delete<AmagiStatusReportController>();
+    Get.find<HomeController>().clearPage1();
+  }
   formHandler(String str) {
     if(str == "Exit"){
       Get.find<HomeController>().postUserGridSetting1(
           listStateManager: [
             stateManager
           ],tableNamesList: [getTableNo(selectValue.value)??"tbl1"]);
+    }else if (str == "Clear") {
+      clearAll();
     }
 
   }
