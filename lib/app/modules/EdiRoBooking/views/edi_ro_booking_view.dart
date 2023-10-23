@@ -78,7 +78,6 @@ class EdiRoBookingView extends StatelessWidget {
                                 "RO Ref No",
                                 .35,
                                 selected: controller.selectedRoRefNo,
-                                autoFocus: true,
                                 isEnable: controller.isEnable.value,
                               ),
                               SizedBox(
@@ -89,21 +88,19 @@ class EdiRoBookingView extends StatelessWidget {
                                 controller.loactions.value,
                                 (data) {
                                   controller.selectedLoactions = data;
+                                  controller.locationLeave(data.key);
                                 },
                                 "Location",
                                 .22,
                                 selected: controller.selectedLoactions,
-                                autoFocus: true,
                                 isEnable: controller.isEnable.value,
                               ),
                               DropDownField.formDropDown1WidthMap(
-                                [],
-                                (valeu) {},
-                                "Channel",
-                                .22,
-                                autoFocus: true,
-                                isEnable: controller.isEnable.value,
-                              ),
+                                  controller.channel.value, (data) {
+                                controller.selectedChannel = data;
+                              }, "Channel", .22,
+                                  isEnable: controller.isEnable.value,
+                                  selected: controller.selectedChannel),
                               DropDownField.formDropDown1WidthMap(
                                 controller.client.value,
                                 (data) {
@@ -112,16 +109,16 @@ class EdiRoBookingView extends StatelessWidget {
                                 "Client",
                                 .22,
                                 selected: controller.selectedClient,
-                                autoFocus: true,
                                 isEnable: controller.isEnable.value,
                               ),
                               DropDownField.formDropDown1WidthMap(
                                 controller.agency.value,
-                                (data) {},
+                                (data) {
+                                  controller.agencyLeave();
+                                },
                                 "Agency",
                                 .22,
                                 selected: controller.selectedAgency,
-                                autoFocus: true,
                                 isEnable: controller.isEnable.value,
                               ),
                               DropDownField.formDropDown1WidthMap(
@@ -129,7 +126,6 @@ class EdiRoBookingView extends StatelessWidget {
                                 (valeu) {},
                                 "Deal No",
                                 .105,
-                                autoFocus: true,
                               ),
                               InputFields.formField1(
                                   hintTxt: "",
@@ -157,7 +153,7 @@ class EdiRoBookingView extends StatelessWidget {
                               InputFields.formField1(
                                 hintTxt: "Zone",
                                 isEnable: false,
-                                controller: TextEditingController(),
+                                controller: controller.zoneTEC,
                                 width: 0.22,
                               ),
                             ],
@@ -187,13 +183,13 @@ class EdiRoBookingView extends StatelessWidget {
                               InputFields.formField1(
                                 hintTxt: "",
                                 isEnable: false,
-                                controller: TextEditingController(),
+                                controller: controller.payRouteCodeTEC,
                                 width: 0.05,
                               ),
                               InputFields.formField1(
                                 hintTxt: "Pay Route",
                                 isEnable: false,
-                                controller: TextEditingController(),
+                                controller: controller.payRouteTEC,
                                 width: 0.18,
                               ),
                               InputFields.formField1(
@@ -210,17 +206,17 @@ class EdiRoBookingView extends StatelessWidget {
                                   children: [
                                     InputFields.formField1(
                                       hintTxt: "Booking NO",
-                                      controller: TextEditingController(),
+                                      controller: controller.bookingNo1TEC,
                                       width: 0.075,
                                     ),
                                     InputFields.formField1(
                                       hintTxt: "",
-                                      controller: TextEditingController(),
+                                      controller: controller.bookingNo2TEC,
                                       width: 0.02,
                                     ),
                                     InputFields.formField1(
                                       hintTxt: "",
-                                      controller: TextEditingController(),
+                                      controller: controller.bookingNo3TEC,
                                       width: 0.075,
                                     ),
                                   ],
@@ -292,19 +288,19 @@ class EdiRoBookingView extends StatelessWidget {
                                       InputFields.formField1(
                                         hintTxt: "Sport",
                                         isEnable: false,
-                                        controller: TextEditingController(),
+                                        controller: controller.spotsAllTEC,
                                         width: 0.05,
                                       ),
                                       InputFields.formField1(
                                         hintTxt: "",
                                         isEnable: false,
-                                        controller: TextEditingController(),
+                                        controller: controller.spotsBookedTEC,
                                         width: 0.05,
                                       ),
                                       InputFields.formField1(
                                         hintTxt: "",
                                         isEnable: false,
-                                        controller: TextEditingController(),
+                                        controller: controller.spotsBalanceTEC,
                                         width: 0.05,
                                       ),
                                       Container(
@@ -314,19 +310,19 @@ class EdiRoBookingView extends StatelessWidget {
                                       InputFields.formField1(
                                         hintTxt: "Dur",
                                         isEnable: false,
-                                        controller: TextEditingController(),
+                                        controller: controller.durAllTEC,
                                         width: 0.05,
                                       ),
                                       InputFields.formField1(
                                         hintTxt: "",
                                         isEnable: false,
-                                        controller: TextEditingController(),
+                                        controller: controller.durBookedTEC,
                                         width: 0.05,
                                       ),
                                       InputFields.formField1(
                                         hintTxt: "",
                                         isEnable: false,
-                                        controller: TextEditingController(),
+                                        controller: controller.durBalanceTEC,
                                         width: 0.05,
                                       ),
                                       Container(
@@ -336,25 +332,25 @@ class EdiRoBookingView extends StatelessWidget {
                                       InputFields.formField1(
                                         hintTxt: "Amt",
                                         isEnable: false,
-                                        controller: TextEditingController(),
+                                        controller: controller.amtAllTEC,
                                         width: 0.05,
                                       ),
                                       InputFields.formField1(
                                         hintTxt: "",
                                         isEnable: false,
-                                        controller: TextEditingController(),
+                                        controller: controller.amtBookedTEC,
                                         width: 0.05,
                                       ),
                                       InputFields.formField1(
                                         hintTxt: "",
                                         isEnable: false,
-                                        controller: TextEditingController(),
+                                        controller: controller.amtBalanceTEC,
                                         width: 0.05,
                                       ),
                                       InputFields.formField1(
                                         hintTxt: "",
                                         isEnable: false,
-                                        controller: TextEditingController(),
+                                        controller: controller.amtValAmmountTEC,
                                         width: 0.05,
                                       ),
                                       Obx(
@@ -374,13 +370,13 @@ class EdiRoBookingView extends StatelessWidget {
                                       InputFields.formField1(
                                         hintTxt: "Pre. V Amt",
                                         isEnable: false,
-                                        controller: TextEditingController(),
+                                        controller: controller.preVAmtTEC,
                                         width: 0.05,
                                       ),
                                       InputFields.formField1(
                                         hintTxt: "Pre. B Amt",
                                         isEnable: false,
-                                        controller: TextEditingController(),
+                                        controller: controller.preBAmtTEC,
                                         width: 0.05,
                                       ),
                                       Container(
@@ -390,7 +386,9 @@ class EdiRoBookingView extends StatelessWidget {
                                           iconDataM:
                                               Icons.video_collection_rounded,
                                           btnText: "Show Programs",
-                                          callback: () {},
+                                          callback: () {
+                                            showProgramDilogBox();
+                                          },
                                         ),
                                       ),
                                       Container(
@@ -399,7 +397,9 @@ class EdiRoBookingView extends StatelessWidget {
                                           showIcon: true,
                                           iconDataM: Icons.done_outline_rounded,
                                           btnText: "Mark Done",
-                                          callback: () {},
+                                          callback: () {
+                                            controller.onMarkAsDone();
+                                          },
                                         ),
                                       ),
                                     ])))),
@@ -413,19 +413,19 @@ class EdiRoBookingView extends StatelessWidget {
                                     InputFields.formField1(
                                       hintTxt: "Max Spend",
                                       isEnable: false,
-                                      controller: TextEditingController(),
+                                      controller: controller.maxSpendTEC,
                                       width: 0.05,
                                     ),
                                     InputFields.formField1(
                                       hintTxt: "Booked Amount",
                                       isEnable: false,
-                                      controller: TextEditingController(),
+                                      controller: controller.bookedAmountTEC,
                                       width: 0.05,
                                     ),
                                     InputFields.formField1(
                                       hintTxt: "Val Amount",
                                       isEnable: false,
-                                      controller: TextEditingController(),
+                                      controller: controller.valAmountTEC,
                                       width: 0.05,
                                     ),
                                   ],
@@ -518,7 +518,9 @@ class EdiRoBookingView extends StatelessWidget {
                                                 formPermissions) ==
                                             null
                                         ? null
-                                        : () {}),
+                                        : () => formHandler(
+                                              btn['name'],
+                                            )),
                               FormButtonWrapper(
                                 btnText: "Info",
                                 callback: () {
@@ -560,6 +562,63 @@ class EdiRoBookingView extends StatelessWidget {
         });
   }
 
+  formHandler(String btnName) {
+    print(btnName);
+    if (btnName == "Clear") {
+      Get.delete<EdiRoBookingController>();
+      Get.find<HomeController>().clearPage1();
+    } else if (btnName == "Save") {
+      // saveValidate();
+    }
+  }
+
+  showProgramDilogBox() {
+    maincontroller.drgabbleDialog.value = Card(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
+      margin: EdgeInsets.zero,
+      color: Colors.white,
+      child: Container(
+          height: Get.height * .50,
+          width: Get.width * .20,
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                child: Align(
+                  alignment: Alignment.topRight,
+                  child: IconButton(
+                    onPressed: () {
+                      maincontroller.drgabbleDialog.value = null;
+                    },
+                    icon: const Icon(Icons.close),
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Container(
+                  decoration:
+                      BoxDecoration(border: Border.all(color: Colors.grey)),
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: maincontroller.programList.length,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: EdgeInsets.all(8),
+                        child: Text(
+                          maincontroller.programList[index].toString(),
+                          style:
+                              TextStyle(fontSize: SizeDefine.dropDownFontSize),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ),
+            ],
+          )),
+    );
+  }
+
   infoDilogBox() {
     maincontroller.drgabbleDialog.value = Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
@@ -573,7 +632,6 @@ class EdiRoBookingView extends StatelessWidget {
             Expanded(
               child: Obx(
                 () => Container(
-                  margin: const EdgeInsets.only(bottom: 8),
                   decoration: maincontroller.infoTableList.isEmpty
                       ? BoxDecoration(border: Border.all(color: Colors.grey))
                       : null,
@@ -664,7 +722,7 @@ class EdiRoBookingView extends StatelessWidget {
                   FormButton(
                     btnText: "Import & Mark",
                     callback: () {
-                      maincontroller.drgabbleDialog.value = null;
+                      maincontroller.pickFile();
                     },
                     showIcon: false,
                   ),
@@ -677,7 +735,6 @@ class EdiRoBookingView extends StatelessWidget {
             Expanded(
               child: Obx(
                 () => Container(
-                  margin: const EdgeInsets.only(bottom: 8),
                   decoration: maincontroller.infoTableList.isEmpty
                       ? BoxDecoration(border: Border.all(color: Colors.grey))
                       : null,

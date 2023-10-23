@@ -2625,7 +2625,7 @@ class DropDownField {
             style: TextStyle(
               fontSize: SizeDefine.labelSize1,
               color: textColor,
-              fontWeight: labelBold?FontWeight.w900:FontWeight.w500,
+              fontWeight: labelBold ? FontWeight.w900 : FontWeight.w500,
             ),
           ),
           const SizedBox(height: 5),
@@ -3299,7 +3299,10 @@ class DropDownField {
                                                 tempList[index].isSelected =
                                                     val;
                                                 if (onChanged != null) {
-                                                  onChanged(index, val);
+                                                  onChanged(
+                                                      tempList[index]
+                                                          .realIndex!,
+                                                      val);
                                                 }
                                                 selectedVal.value =
                                                     getSelectedName(tempList);

@@ -72,14 +72,6 @@ class ProgramWiseRevenueReportController extends GetxController {
     super.onClose();
   }
 
-  var listCheckBox = [
-    MultiCheckBoxModel(DropDownValue(key: "1", value: "Zee-Bihar-HD"), false),
-    MultiCheckBoxModel(DropDownValue(key: "1", value: "Zee TV"), false),
-    MultiCheckBoxModel(DropDownValue(key: "1", value: "Zing"), false),
-    MultiCheckBoxModel(DropDownValue(key: "1", value: "Zee Marathi"), false),
-    MultiCheckBoxModel(DropDownValue(key: "1", value: "Zee Bojpuri"), false),
-  ];
-
   getLoadData() {
     LoadingDialog.call();
     Get.find<ConnectorControl>().GETMETHODCALL(
@@ -93,41 +85,59 @@ class ProgramWiseRevenueReportController extends GetxController {
           zone.clear();
           revnue.clear();
           attribute.clear();
+          int i = 0;
           map["getInitialData"]["locationList"].forEach((e) {
             locations
-                .add(MultiCheckBoxModel(DropDownValue.fromJson1(e), false));
+                .add(MultiCheckBoxModel(DropDownValue.fromJson1(e), false, i));
+            i++;
           });
+          i = 0;
           map["getInitialData"]["channelList"].forEach((e) {
             channels.add(MultiCheckBoxModel(
                 DropDownValue(key: e["channelcode"], value: e["channelname"]),
-                false));
+                false,
+                i));
+            i++;
           });
+          i = 0;
           map["getInitialData"]["programTypeMasterList"].forEach((e) {
             programType.add(MultiCheckBoxModel(
                 DropDownValue(
                     key: e["programtypecode"], value: e["programtypename"]),
-                false));
+                false,
+                i));
+            i++;
           });
+          i = 0;
           map["getInitialData"]["programMasterList"].forEach((e) {
             program.add(MultiCheckBoxModel(
                 DropDownValue(
                     key: e["programcode"].toString(), value: e["programname"]),
-                false));
+                false,
+                i));
+            i++;
           });
-
+          i = 0;
           map["getInitialData"]["zoneList"].forEach((e) {
             zone.add(MultiCheckBoxModel(
                 DropDownValue(key: e["zonecode"], value: e["zonename"]),
-                false));
+                false,
+                i));
+            i++;
           });
+          i = 0;
           map["getInitialData"]["salesBookList"].forEach((e) {
             revnue.add(MultiCheckBoxModel(
                 DropDownValue(key: e["accountcode"], value: e["accountname"]),
-                false));
+                false,
+                i));
+            i++;
           });
+          i = 0;
           map["getInitialData"]["attribute2MasterList"].forEach((e) {
             attribute.add(MultiCheckBoxModel(
-                DropDownValue(key: e["a2code"], value: e["a2desc"]), false));
+                DropDownValue(key: e["a2code"], value: e["a2desc"]), false, i));
+            i++;
           });
         });
   }

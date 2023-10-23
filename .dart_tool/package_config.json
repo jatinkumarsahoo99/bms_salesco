@@ -866,11 +866,7 @@
       "languageVersion": "2.18"
     }
   ],
-<<<<<<< HEAD
-  "generated": "2023-10-19T05:32:09.270369Z",
-=======
-  "generated": "2023-10-18T12:33:48.984357Z",
->>>>>>> 539fabf2cc934737389425710ab0349e4378298c
+  "generated": "2023-10-20T05:02:38.045056Z",
   "generator": "pub",
   "generatorVersion": "2.19.6"
 }
