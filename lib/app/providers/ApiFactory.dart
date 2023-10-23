@@ -739,6 +739,9 @@ class ApiFactory {
   static String get AUDIT_STATUS_REPORT_GENERATE_AUDIT =>
       "$BASE_URL/api/AuditStatusReport/GenrateAudit";
 
+  static String get AUDIT_STATUS_REPORT_GENERATE_AUDIT_CANCEl =>
+      "$BASE_URL/api/AuditStatusReport/GenrateCancel";
+
   ////////////////////////////// EDIMAPPING ////////////////////////////////
 
   static String get EDI_MAPPING_CLIENT_SEARCH =>

@@ -1374,7 +1374,7 @@ class DataGridFromMapAmagiDialog extends StatelessWidget {
           width: (widthSpecificColumn != null &&
                   widthSpecificColumn!.containsKey(key))
               ? widthSpecificColumn![key]!
-              : Utils.getColumnSize(key: key, value: mapData[0][key]),
+              : 150,
           // width: Utils.getColumnSize(key: key, value: mapData[0][key]),
           enableAutoEditing: false,
           hide: showonly == null
@@ -1509,7 +1509,7 @@ FontWeight getChannelFont(PlutoColumnRendererContext plutoCon) {
     font = FontWeight.bold;
   }
   if (listOfHideColumn.isNotEmpty) {
-    // plutoCon.stateManager.hideColumns(listOfHideColumn, true);
+    plutoCon.stateManager.hideColumns(listOfHideColumn, true);
   }
   return font;
 }
@@ -1541,7 +1541,7 @@ FontWeight getMasterFont(PlutoColumnRendererContext plutoCon) {
     font = FontWeight.bold;
   }
   if (listOfHideColumn.isNotEmpty) {
-    // plutoCon.stateManager.hideColumns(listOfHideColumn, true);
+    plutoCon.stateManager.hideColumns(listOfHideColumn, true);
   }
   return font;
 }
@@ -1567,7 +1567,7 @@ FontWeight getLocalFont(PlutoColumnRendererContext plutoCon) {
     font = FontWeight.bold;
   }
   if (listOfHideColumn.isNotEmpty) {
-    // plutoCon.stateManager.hideColumns(listOfHideColumn, true);
+    plutoCon.stateManager.hideColumns(listOfHideColumn, true);
   }
   return font;
 }

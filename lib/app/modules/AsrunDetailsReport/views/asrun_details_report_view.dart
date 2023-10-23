@@ -207,6 +207,7 @@ class AsrunDetailsReportView extends StatelessWidget {
                             showSrNo: false,
                             hideCode: false,
                             formatDate: false,
+                            exportFileName: "Asrun Details Report",
                             widthSpecificColumn: Get.find<HomeController>().getGridWidthByKey(
                                 userGridSettingList: controllerX.userGridSetting1),
                             mapData: (controllerX.asrunDetailsReportModel!.generate
