@@ -162,7 +162,7 @@ class ProgramWiseRevenueReportView extends StatelessWidget {
                                       groupValue: controller.bookingType.value,
                                       onChanged: (value) {
                                         controller.bookingType.value = e;
-                                        controller.getRadioStatus(e);
+                                        controller.getRadioStatus(value!);
                                       }),
                                   Text(e),
                                   const SizedBox(
