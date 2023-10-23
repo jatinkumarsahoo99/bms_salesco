@@ -28,6 +28,7 @@ class ProgramWiseRevenueReportController extends GetxController {
   var zone = RxList<MultiCheckBoxModel>();
   var revnue = RxList<MultiCheckBoxModel>();
   var attribute = RxList<MultiCheckBoxModel>();
+  var timeFormat = DateFormat('dd-MM-yyyy hh:mm a');
 
   List<DropDownValue> selectLocation = [];
   List<DropDownValue> selectChannel = [];
@@ -42,15 +43,18 @@ class ProgramWiseRevenueReportController extends GetxController {
   var clientTableList = [].obs;
 
   var isDetails = true.obs;
+  bool val = true;
 
   Future<void> getRadioStatus(String name) async {
     print(name);
     switch (name) {
       case "Detail":
         isDetails.value = true;
+        val = true;
         break;
       case "Summary":
         isDetails.value = false;
+        val = false;
         break;
     }
   }
@@ -231,8 +235,11 @@ class ProgramWiseRevenueReportController extends GetxController {
               map['generateReport']['result'] != null &&
               map.containsKey('generateReport') &&
               (map['generateReport']['result'] as List<dynamic>).isNotEmpty) {
+            print("===============");
+            print(map);
             dataTableList.clear();
             dataTableList.value.addAll((map['generateReport']['result']));
+            print("===============1");
           } else {
             LoadingDialog.showErrorDialog('No data found.');
           }

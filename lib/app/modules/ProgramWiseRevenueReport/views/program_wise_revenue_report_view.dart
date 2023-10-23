@@ -1,6 +1,8 @@
+import 'package:bms_salesco/widgets/gridFromMap.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../widgets/DataGridShowOnly.dart';
 import '../../../../widgets/DateTime/DateWithThreeTextField.dart';
@@ -204,9 +206,31 @@ class ProgramWiseRevenueReportView extends StatelessWidget {
             () => Container(
               child: controller.dataTableList.value.isEmpty
                   ? null
-                  : DataGridShowOnlyKeys(
-                      mapData: controller.dataTableList.value,
+                  : DataGridFromMap(
+                      mapData: controller.dataTableList.value.map((e) {
+                        /// details
+                        if (controller.val && e['scheduletime'] != null) {
+                          e['scheduletime'] = controller.timeFormat.format(
+                              DateFormat('yyyy-MM-ddThh:mm:ss')
+                                  .parse(e['scheduletime']));
+                        }
+                        if (controller.val && e['telecasttime'] != null) {
+                          e['telecasttime'] = controller.timeFormat.format(
+                              DateFormat('yyyy-MM-ddThh:mm:ss')
+                                  .parse(e['telecasttime']));
+                        }
+
+                        /// Summary
+                        if (!controller.val && e['telecasttime'] != null) {
+                          e['telecasttime'] = controller.timeFormat.format(
+                              DateFormat('yyyy-MM-ddThh:mm:ss')
+                                  .parse(e['telecasttime']));
+                        }
+
+                        return e;
+                      }).toList(),
                       hideCode: false,
+                      // formatDate: false,
                       exportFileName: "ProgramWise Revenue Report",
                     ),
             ),

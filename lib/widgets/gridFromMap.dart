@@ -1484,8 +1484,7 @@ FontWeight getChannelFont(PlutoColumnRendererContext plutoCon) {
   // print(">>>>>>>>>>>>>>>DataValueCell${plutoCon.cell.value}");
   for (var element in plutoCon.stateManager.columns) {
     // print(">>>>>>>>>>>>>>>>>>>keyGetJKs${element.title} ${element.key}");
-    if (
-    element.title.toString().trim() == "Unallocated Spots Is Bold" ||
+    if (element.title.toString().trim() == "Unallocated Spots Is Bold" ||
         // element.title.toString().trim() == "${element.title.toString().trim()} Is Bold" ||
         element.title.toString().trim() == "Total Spots Is Bold" ||
         element.title.toString().trim() == "Locationname Is Bold" ||
@@ -1494,7 +1493,7 @@ FontWeight getChannelFont(PlutoColumnRendererContext plutoCon) {
     }
   }
 
- /* for (var element in plutoCon.stateManager.rows) {
+  /* for (var element in plutoCon.stateManager.rows) {
     print(">>>>>>>>>>>>>elementData"+(element.toJson()).toString());
   }*/
 
@@ -1519,7 +1518,7 @@ FontWeight getMasterFont(PlutoColumnRendererContext plutoCon) {
   plutoCon.stateManager.resetShowFrozenColumn();
   List<PlutoColumn> listOfHideColumn = [];
   for (var element in plutoCon.stateManager.columns) {
-    if (element.title.toString().trim() == "Booking Number Is Bold" ) {
+    if (element.title.toString().trim() == "Booking Number Is Bold") {
       // print(">>>>>>>>>>>>>>element.title.toString().trim()${element.title.toString().trim()}");
       listOfHideColumn.add(element);
     }
@@ -1537,7 +1536,7 @@ FontWeight getMasterFont(PlutoColumnRendererContext plutoCon) {
       "true") {
     font = FontWeight.bold;
   }*/
-  if(plutoCon.column.field.toString().trim() == "bookingNumber"){
+  if (plutoCon.column.field.toString().trim() == "bookingNumber") {
     font = FontWeight.bold;
   }
   if (listOfHideColumn.isNotEmpty) {
@@ -1551,7 +1550,7 @@ FontWeight getLocalFont(PlutoColumnRendererContext plutoCon) {
   plutoCon.stateManager.resetShowFrozenColumn();
   List<PlutoColumn> listOfHideColumn = [];
   for (var element in plutoCon.stateManager.columns) {
-    if (element.title.toString().trim() == "Booking Number Is Bold" ) {
+    if (element.title.toString().trim() == "Booking Number Is Bold") {
       listOfHideColumn.add(element);
     }
   }
