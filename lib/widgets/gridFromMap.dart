@@ -640,7 +640,7 @@ class DataGridFromMap3 extends StatelessWidget {
         try {
           for (var element in row.entries) {
             cells[element.key] = PlutoCell(
-              value: element.value,
+              value: element.value ?? "",
             );
           }
           segRows.add(PlutoRow(cells: cells, sortIdx: i));
@@ -968,9 +968,8 @@ class DataGridFromMapForAmagiSpotReplacement extends StatelessWidget {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
-                    fontSize: SizeDefine.columnTitleFontSize,
-                    fontWeight: getMasterFont(rendererContext)
-                  ),
+                      fontSize: SizeDefine.columnTitleFontSize,
+                      fontWeight: getMasterFont(rendererContext)),
                 ),
               );
             } else if (isLocalSpotGrid == true) {
@@ -993,9 +992,8 @@ class DataGridFromMapForAmagiSpotReplacement extends StatelessWidget {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
-                    fontSize: SizeDefine.columnTitleFontSize,
-                    fontWeight: getLocalFont(rendererContext)
-                  ),
+                      fontSize: SizeDefine.columnTitleFontSize,
+                      fontWeight: getLocalFont(rendererContext)),
                 ),
               );
             } else {
@@ -1530,12 +1528,12 @@ FontWeight getMasterFont(PlutoColumnRendererContext plutoCon) {
     print(">>>>>>>>>>>>>elementData"+(element.cells['bookingNumberIsBold']?.value).toString());
   }
   if (plutoCon
-      .stateManager
-      .rows[plutoCon.rowIdx]
-      .cells[("${(plutoCon.column.field ?? "").toString().trim()}IsBold")]
-      ?.value
-      .toString()
-      .trim() ==
+          .stateManager
+          .rows[plutoCon.rowIdx]
+          .cells[("${(plutoCon.column.field ?? "").toString().trim()}IsBold")]
+          ?.value
+          .toString()
+          .trim() ==
       "true") {
     font = FontWeight.bold;
   }*/
@@ -1559,12 +1557,12 @@ FontWeight getLocalFont(PlutoColumnRendererContext plutoCon) {
   }
 
   if (plutoCon
-      .stateManager
-      .rows[plutoCon.rowIdx]
-      .cells[("${(plutoCon.column.field ?? "").toString().trim()}IsBold")]
-      ?.value
-      .toString()
-      .trim() ==
+          .stateManager
+          .rows[plutoCon.rowIdx]
+          .cells[("${(plutoCon.column.field ?? "").toString().trim()}IsBold")]
+          ?.value
+          .toString()
+          .trim() ==
       "true") {
     font = FontWeight.bold;
   }

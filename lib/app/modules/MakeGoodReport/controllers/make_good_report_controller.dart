@@ -19,22 +19,29 @@ class MakeGoodReportController extends GetxController {
       clientList = <DropDownValue>[].obs,
       agencyList = <DropDownValue>[].obs,
       brandList = <DropDownValue>[].obs;
-  DropDownValue? selectedLocation, selectedChannel, selectedClient, selectedAgency, selectedBrand;
+  DropDownValue? selectedLocation,
+      selectedChannel,
+      selectedClient,
+      selectedAgency,
+      selectedBrand;
   var locationFN = FocusNode(), clientFN = FocusNode();
   List<PermissionModel>? formPermissions;
   var dataTableList = <dynamic>[].obs;
   var controllsEnable = true.obs;
   PlutoGridStateManager? stateManager;
-  Rxn<List<Map<String,Map<String, double>>>>? userGridSetting1 = Rxn<List<Map<String,Map<String, double>>>>(null);
+  Rxn<List<Map<String, Map<String, double>>>>? userGridSetting1 =
+      Rxn<List<Map<String, Map<String, double>>>>(null);
 
   fetchUserSetting1() async {
-    userGridSetting1?.value = await Get.find<HomeController>().fetchUserSetting1();
+    userGridSetting1?.value =
+        await Get.find<HomeController>().fetchUserSetting1();
     update(["grid"]);
   }
 
   @override
   void onInit() {
-    formPermissions = Utils.fetchPermissions1(Routes.MAKE_GOOD_REPORT.replaceAll("/", ""));
+    formPermissions =
+        Utils.fetchPermissions1(Routes.MAKE_GOOD_REPORT.replaceAll("/", ""));
     fetchUserSetting1();
     super.onInit();
   }
@@ -58,7 +65,10 @@ class MakeGoodReportController extends GetxController {
         ),
         fun: (resp2) {
           Get.back();
-          if (resp2 != null && resp2 is Map<String, dynamic> && resp2['clients'] != null && resp2['clients'] is List<dynamic>) {
+          if (resp2 != null &&
+              resp2 is Map<String, dynamic> &&
+              resp2['clients'] != null &&
+              resp2['clients'] is List<dynamic>) {
             clientList.clear();
             clientList.value.addAll(
               (resp2['clients'] as List<dynamic>)
@@ -81,7 +91,9 @@ class MakeGoodReportController extends GetxController {
   }
 
   getAgency() {
-    if (selectedLocation != null && selectedChannel != null && selectedClient != null) {
+    if (selectedLocation != null &&
+        selectedChannel != null &&
+        selectedClient != null) {
       LoadingDialog.call();
       Get.find<ConnectorControl>().GETMETHODCALL(
         api: ApiFactory.MAKE_GOOD_REPORT_GET_AGENCY(
@@ -91,7 +103,10 @@ class MakeGoodReportController extends GetxController {
         ),
         fun: (resp2) {
           Get.back();
-          if (resp2 != null && resp2 is Map<String, dynamic> && resp2['agency'] != null && resp2['agency'] is List<dynamic>) {
+          if (resp2 != null &&
+              resp2 is Map<String, dynamic> &&
+              resp2['agency'] != null &&
+              resp2['agency'] is List<dynamic>) {
             agencyList.clear();
             agencyList.value.addAll(
               (resp2['agency'] as List<dynamic>)
@@ -114,13 +129,19 @@ class MakeGoodReportController extends GetxController {
   }
 
   getBrand() {
-    if (selectedLocation != null && selectedChannel != null && selectedClient != null && selectedAgency != null) {
+    if (selectedLocation != null &&
+        selectedChannel != null &&
+        selectedClient != null &&
+        selectedAgency != null) {
       LoadingDialog.call();
       Get.find<ConnectorControl>().POSTMETHOD(
         api: ApiFactory.MAKE_GOOD_REPORT_GET_BRAND,
         fun: (resp2) {
           Get.back();
-          if (resp2 != null && resp2 is Map<String, dynamic> && resp2['brand'] != null && resp2['brand'] is List<dynamic>) {
+          if (resp2 != null &&
+              resp2 is Map<String, dynamic> &&
+              resp2['brand'] != null &&
+              resp2['brand'] is List<dynamic>) {
             brandList.clear();
             brandList.value.addAll(
               (resp2['brand'] as List<dynamic>)
@@ -137,8 +158,10 @@ class MakeGoodReportController extends GetxController {
         json: {
           "locationName": selectedLocation?.value ?? "",
           "channelName": selectedChannel?.value ?? "",
-          "fromdate": Utils.getRequiredFormatDateInString(fromDateTC.text, "yyyy-MM-dd"),
-          "todate": Utils.getRequiredFormatDateInString(toDateTC.text, "yyyy-MM-dd"),
+          "fromdate": Utils.getRequiredFormatDateInString(
+              fromDateTC.text, "yyyy-MM-dd"),
+          "todate":
+              Utils.getRequiredFormatDateInString(toDateTC.text, "yyyy-MM-dd"),
           "clientName": selectedClient?.value,
           "agencyName": selectedAgency?.value,
         },
@@ -169,7 +192,11 @@ class MakeGoodReportController extends GetxController {
     Get.find<ConnectorControl>().GETMETHODCALL(
         api: ApiFactory.MAKE_GOOD_REPORT_GET_LOCATION,
         fun: (resp) {
-          if (resp != null && resp is Map<String, dynamic> && resp['location'] != null && resp['location'] is List<dynamic>) {
+          if (resp != null &&
+              resp is Map<String, dynamic> &&
+              resp['location'] != null &&
+              resp['location'] is List<dynamic>) {
+            Get.back();
             locationList.clear();
             locationList.value.addAll((resp['location'] as List<dynamic>)
                 .map((e) => DropDownValue(
@@ -177,31 +204,11 @@ class MakeGoodReportController extends GetxController {
                       value: e['locationName'].toString(),
                     ))
                 .toList());
-            if (locationList.isNotEmpty) {
-              selectedLocation = locationList.first;
-              locationList.refresh();
-            }
-            Get.find<ConnectorControl>().GETMETHODCALL(
-              api: ApiFactory.MAKE_GOOD_REPORT_GET_CHANNEL,
-              fun: (resp2) {
-                Get.back();
-                if (resp2 != null && resp2 is Map<String, dynamic> && resp2['channel'] != null && resp2['channel'] is List<dynamic>) {
-                  channelList.clear();
-                  channelList.value.addAll((resp2['channel'] as List<dynamic>)
-                      .map((e) => DropDownValue(
-                            key: e['channelcode'].toString(),
-                            value: e['channelname'].toString(),
-                          ))
-                      .toList());
-                } else {
-                  LoadingDialog.showErrorDialog(resp2.toString());
-                }
-              },
-              failed: (resp3) {
-                Get.back();
-                LoadingDialog.showErrorDialog(resp3.toString());
-              },
-            );
+            // if (locationList.isNotEmpty) {
+            //   selectedLocation = locationList.first;
+            //   locationList.refresh();
+            // }
+            getChannel();
           } else {
             LoadingDialog.showErrorDialog(resp.toString());
           }
@@ -212,8 +219,40 @@ class MakeGoodReportController extends GetxController {
         });
   }
 
+  getChannel() {
+    LoadingDialog.call();
+    Get.find<ConnectorControl>().GETMETHODCALL(
+      api: ApiFactory.MAKE_GOOD_REPORT_GET_CHANNEL,
+      fun: (resp2) {
+        Get.back();
+        if (resp2 != null &&
+            resp2 is Map<String, dynamic> &&
+            resp2['channel'] != null &&
+            resp2['channel'] is List<dynamic>) {
+          channelList.clear();
+          channelList.value.addAll((resp2['channel'] as List<dynamic>)
+              .map((e) => DropDownValue(
+                    key: e['channelcode'].toString(),
+                    value: e['channelname'].toString(),
+                  ))
+              .toList());
+        } else {
+          LoadingDialog.showErrorDialog(resp2.toString());
+        }
+      },
+      failed: (resp3) {
+        Get.back();
+        LoadingDialog.showErrorDialog(resp3.toString());
+      },
+    );
+  }
+
   generateReport() {
-    if (selectedLocation != null && selectedChannel != null && selectedClient != null && selectedAgency != null && selectedBrand != null) {
+    if (selectedLocation != null &&
+        selectedChannel != null &&
+        selectedClient != null &&
+        selectedAgency != null &&
+        selectedBrand != null) {
       LoadingDialog.call();
       Get.find<ConnectorControl>().POSTMETHOD(
         api: ApiFactory.MAKE_GOOD_REPORT_GET_GENERATE,
@@ -222,16 +261,20 @@ class MakeGoodReportController extends GetxController {
           if (resp2 != null &&
               resp2 is Map<String, dynamic> &&
               resp2['generate'] != null &&
-              ((resp2['generate']['generateAllClient'] is List<dynamic>) || (resp2['generate']['generateSpecificReport'] is List<dynamic>))) {
+              ((resp2['generate']['generateAllClient'] is List<dynamic>) ||
+                  (resp2['generate']['generateSpecificReport']
+                      is List<dynamic>))) {
             dataTableList.clear();
             print(controllsEnable.value);
             if (!controllsEnable.value) {
               // dataTableList.value = (resp2['generate']['generateAllClient'] as List<dynamic>).map((e) => MakeGoodReportModel.fromJson(e)).toList();
-              dataTableList.value = (resp2['generate']['generateAllClient'] as List<dynamic>);
+              dataTableList.value =
+                  (resp2['generate']['generateAllClient'] as List<dynamic>);
             } else {
               dataTableList.value =
                   // (resp2['generate']['generateSpecificReport'] as List<dynamic>).map((e) => MakeGoodReportModel.fromJson(e)).toList();
-                  (resp2['generate']['generateSpecificReport'] as List<dynamic>);
+                  (resp2['generate']['generateSpecificReport']
+                      as List<dynamic>);
             }
             // print(dataTableList.value);
           } else {
@@ -241,8 +284,10 @@ class MakeGoodReportController extends GetxController {
         json: {
           "locationName": selectedLocation?.value ?? "",
           "channelName": selectedChannel?.value ?? "",
-          "fromDate": Utils.getRequiredFormatDateInString(fromDateTC.text, "yyyy-MM-dd"),
-          "toDate": Utils.getRequiredFormatDateInString(toDateTC.text, "yyyy-MM-dd"),
+          "fromDate": Utils.getRequiredFormatDateInString(
+              fromDateTC.text, "yyyy-MM-dd"),
+          "toDate":
+              Utils.getRequiredFormatDateInString(toDateTC.text, "yyyy-MM-dd"),
           "clientName": selectedClient?.value,
           "agencyName": selectedAgency?.value,
           "brandName": selectedBrand?.value,
@@ -255,11 +300,11 @@ class MakeGoodReportController extends GetxController {
   formHandler(btn) {
     if (btn == "Clear") {
       clearPage();
-    } if(btn == "Exit"){
-      Get.find<HomeController>().postUserGridSetting1(
-          listStateManager: [
-            stateManager,
-          ]);
+    }
+    if (btn == "Exit") {
+      Get.find<HomeController>().postUserGridSetting1(listStateManager: [
+        stateManager,
+      ]);
     }
   }
 }
