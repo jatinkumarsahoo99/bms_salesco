@@ -83,6 +83,7 @@ class AmagiSpotsReplacementView
                         showSrNo: false,
                         hideCode: false,
                         formatDate: false,
+                        widthSpecificColumn: {"0":150,"1":150,"clientname":150,"starttime":150,"endtime":150},
                         summary: controller.isSummary.value,
                         exportFileName: "Amagi Spot Replacement",
                         mode: PlutoGridMode.selectWithOneTap,
@@ -105,8 +106,9 @@ class AmagiSpotsReplacementView
     controller.canDialogShow.value = true;
   }
 
-  dragAbleDialogGetSummary() {
+  dragableDialogUnAlloc() {
     controller.initialOffset.value = 2;
+    // Completer<bool> completer = Completer<bool>();
     controller.dialogWidget = Material(
       color: Colors.white,
       borderOnForeground: false,
@@ -159,10 +161,16 @@ class AmagiSpotsReplacementView
                         showSrNo: false,
                         hideCode: false,
                         formatDate: false,
+                        columnAutoResize: false,
+                        widthSpecificColumn: const {"BookingDetailCode":150,"BookingNumber":150,"BrandCode":150,
+                          "Channel":150,"ClientName":150,"ColNo":150,"CommercialCaption":150,"DealRownumber":150,
+                          "Dealno":150,"EndTime":150,"ParentID":150,"ProductName":150,"Rate":150,"ScheduleDate":150,
+                          "SpotAmount":150,"Starttime":150,"TapeCode":150,"TapeDuration":150,"ValuationAmount":150,
+                          "Valuationrate":150,"ZoneName":150,"channelid":150},
+                        summary: controller.isSummary.value,
                         exportFileName: "Amagi Spot Replacement",
                         mode: PlutoGridMode.selectWithOneTap,
                         mapData: controller.mapList.value,
-                        summary: controller.isSummary.value,
                         // mapData: (controller.dataList)!,
                         widthRatio: Get.width / 9 - 1,
 
@@ -180,6 +188,88 @@ class AmagiSpotsReplacementView
     );
     controller.canDialogShow.value = true;
   }
+
+  dragableDialogSummary() {
+    controller.initialOffset.value = 2;
+    // Completer<bool> completer = Completer<bool>();
+    controller.dialogWidget = Material(
+      color: Colors.white,
+      borderOnForeground: false,
+      child: Padding(
+        padding: const EdgeInsets.all(5.0),
+        child: SizedBox(
+          width: Get.width * 0.8,
+          height: Get.height * 0.8,
+          child: Column(
+            children: [
+              Container(
+                height: 30,
+                // color: Colors.grey[200],
+                child: Stack(
+                  fit: StackFit.expand,
+                  // alignment: Alignment.center,
+                  children: [
+                    Align(
+                      alignment: Alignment.center,
+                      child: Obx(() {
+                        return Text(
+                          controller.title?.value ?? '',
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black,
+                            fontSize: 20,
+                          ),
+                        );
+                      }),
+                    ),
+                    Align(
+                      alignment: Alignment.topRight,
+                      child: IconButton(
+                        splashRadius: 20,
+                        onPressed: () {
+                          controller.dialogWidget = null;
+                          controller.canDialogShow.value = false;
+                        },
+                        icon: const Icon(Icons.close),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                // flex: 9,
+                child: Obx(() {
+                  return Container(
+                      child: DataGridFromMapAmagiDialog(
+                        showSrNo: false,
+                        hideCode: false,
+                        formatDate: false,
+                        columnAutoResize: false,
+                        widthSpecificColumn: const {"ParentID":150,"ASIA  ZEETV-Rajasthan":150,
+                          "ASIA  ZEETV-RoMaha":150,"ASIA  ZEETV-BIHAR":150,
+                          "ASIA  ZEETV-DelhiNCR":150,"ASIA  ZEETV-Gujarat":150,"ASIA  ZEETV-Mumbai":150},
+                        summary: controller.isSummary.value,
+                        exportFileName: "Amagi Spot Replacement",
+                        mode: PlutoGridMode.selectWithOneTap,
+                        mapData: controller.mapList.value,
+                        // mapData: (controller.dataList)!,
+                        widthRatio: Get.width / 9 - 1,
+
+                        onload: (PlutoGridOnLoadedEvent load) {
+                          controller.dialogStateManager = load.stateManager;
+                          // controller.stateManager = load.stateManager;
+                        },
+                      ));
+                }),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+    controller.canDialogShow.value = true;
+  }
+
 
   dragAbleDialogGetTotal() {
     controller.initialOffset.value = 2;
@@ -235,10 +325,16 @@ class AmagiSpotsReplacementView
                         showSrNo: false,
                         hideCode: false,
                         formatDate: false,
+                        columnAutoResize: false,
                         summary: controller.isSummary.value,
                         exportFileName: "Amagi Spot Replacement",
                         mode: PlutoGridMode.selectWithOneTap,
                         mapData: controller.mapList.value,
+                        widthSpecificColumn: const {"BookingDetailCode":150,"BookingNumber":150,"BrandName":150,"ClientName":150,
+                          "CombineSpots":150,"EndTime":150,"Hold":150,"LocalDuration":150,"LocalRevenue":150,
+                          "LocalValue":150,"NEW_ID":150,"Rate":150,"ScheduleDate":150,"ScheduleEndTime":150,"ScheduleTime":150,
+                          "SpotAmount":150,"Starttime":150,"TapeDuration":150,"TapeDuration1":150,"TotalDuration":150,"TotalRevenue":150,
+                          "TotalValue":150,"ValuationAmount":150,"Valuationrate":150,"Yeild":150,"tapeid":150},
                         // mapData: (controller.dataList)!,
                         widthRatio: Get.width / 9 - 1,
 
@@ -560,7 +656,7 @@ class AmagiSpotsReplacementView
                                       dragAbleDialogGet();
                                     }
                                   }
-                                  Future.delayed(Duration(seconds: 3), () {
+                                  Future.delayed(Duration(seconds: 2), () {
                                     controller.bindData();
                                   },);
                                 });
@@ -647,7 +743,7 @@ class AmagiSpotsReplacementView
                                           }
                                         }
                                         Future.delayed(
-                                          Duration(seconds: 3), () {
+                                          Duration(seconds: 2), () {
                                           controller.bindData();
                                         },);
                                       });
@@ -748,7 +844,7 @@ class AmagiSpotsReplacementView
                                                               0) >
                                                               0)
                                                           ? DataGridFromMapForAmagiSpotReplacement(
-                                                        showSrNo: false,
+                                                        showSrNo: true,
                                                         hideCode: false,
                                                         formatDate: false,
                                                         columnAutoResize: false,
@@ -901,7 +997,7 @@ class AmagiSpotsReplacementView
                                                               0) >
                                                               0)
                                                           ? DataGridFromMapForAmagiSpotReplacement(
-                                                        showSrNo: false,
+                                                        showSrNo: true,
                                                         hideCode: false,
                                                         formatDate: false,
                                                         columnAutoResize: false,
@@ -1089,7 +1185,7 @@ class AmagiSpotsReplacementView
                                                         .availableController,
                                                     width: 0.1,
                                                     // autoFocus: true,
-                                                    // isEnable: controllerX.isEnable,
+                                                    isEnable: controller.isEnable1,
                                                     onchanged: (value) {},
                                                     // autoFocus: true,
                                                   ),
@@ -1098,6 +1194,7 @@ class AmagiSpotsReplacementView
                                                     controller: controller
                                                         .allocatedController,
                                                     width: 0.1,
+                                                    isEnable: controller.isEnable1,
                                                     // autoFocus: true,
                                                     // isEnable: controllerX.isEnable,
                                                     onchanged: (value) {
@@ -1119,6 +1216,7 @@ class AmagiSpotsReplacementView
                                                     controller: controller
                                                         .unAllocatedController,
                                                     width: 0.1,
+                                                    isEnable: controller.isEnable1,
                                                     // autoFocus: true,
                                                     // isEnable: controllerX.isEnable,
                                                     onchanged: (value) {},
@@ -1129,6 +1227,7 @@ class AmagiSpotsReplacementView
                                                     controller: controller
                                                         .balanceController,
                                                     width: 0.1,
+                                                    isEnable: controller.isEnable1,
                                                     // autoFocus: true,
                                                     // isEnable: controllerX.isEnable,
                                                     onchanged: (value) {},
@@ -1148,6 +1247,7 @@ class AmagiSpotsReplacementView
                                                     controller: controller
                                                         .msTimeController,
                                                     width: 0.1,
+                                                    isEnable: controller.isEnable1,
                                                     // autoFocus: true,
                                                     // isEnable: controllerX.isEnable,
                                                     onchanged: (value) {},
@@ -1158,6 +1258,7 @@ class AmagiSpotsReplacementView
                                                     controller: controller
                                                         .lsAllocController,
                                                     width: 0.1,
+                                                    isEnable: controller.isEnable1,
                                                     // autoFocus: true,
                                                     // isEnable: controllerX.isEnable,
                                                     onchanged: (value) {},
@@ -1177,6 +1278,7 @@ class AmagiSpotsReplacementView
                                                     controller: controller
                                                         .lsRevController,
                                                     width: 0.2,
+                                                    isEnable: controller.isEnable1,
                                                     // autoFocus: true,
                                                     // isEnable: controllerX.isEnable,
                                                     onchanged: (value) {},
@@ -1240,7 +1342,7 @@ class AmagiSpotsReplacementView
                                               SizedBox(
                                                 height: 3,
                                               ),
-                                              Row(
+                                             /* Row(
                                                 mainAxisAlignment:
                                                 MainAxisAlignment.spaceAround,
                                                 children: [
@@ -1260,7 +1362,7 @@ class AmagiSpotsReplacementView
                                                   }),
                                                   Text("Show Allowed")
                                                 ],
-                                              ),
+                                              ),*/
                                               Row(
                                                 mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
@@ -1315,7 +1417,7 @@ class AmagiSpotsReplacementView
                                                               ['id']);
                                                           Future.delayed(
                                                             const Duration(
-                                                                seconds: 2),
+                                                                seconds: 1),
                                                                 () {
                                                               controller
                                                                   .getSummaryAPICall()
@@ -1368,7 +1470,7 @@ class AmagiSpotsReplacementView
                                                                   controller
                                                                       .isSummary
                                                                       .refresh();
-                                                                  dragableDialogClient();
+                                                                  dragableDialogSummary();
                                                                 }
                                                               });
                                                             },);
@@ -1414,7 +1516,7 @@ class AmagiSpotsReplacementView
 
                                                           Future.delayed(
                                                             const Duration(
-                                                                seconds: 2), () {
+                                                                seconds: 1), () {
                                                             controller
                                                                 .getUnallocatedHoldCall()
                                                                 .then((value) {
@@ -1461,7 +1563,7 @@ class AmagiSpotsReplacementView
                                                                 controller
                                                                     .isSummary
                                                                     .refresh();
-                                                                dragableDialogClient();
+                                                                dragableDialogUnAlloc();
                                                               }
                                                             });
                                                           },);
@@ -1498,7 +1600,7 @@ class AmagiSpotsReplacementView
 
                                                           Future.delayed(
                                                             const Duration(
-                                                                seconds: 2), () {
+                                                                seconds: 1), () {
                                                             controller
                                                                 .getClientAPICall()
                                                                 .then((value) {
@@ -1559,69 +1661,115 @@ class AmagiSpotsReplacementView
                                               SizedBox(
                                                 height: 3,
                                               ),
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    top: 4.0,
-                                                    left: 10,
-                                                    right: 10),
-                                                child: FormButtonWrapper(
-                                                  btnText: "Total",
-                                                  callback: () {
-                                                    controller.dialogWidget =
-                                                    null;
-                                                    controller.canDialogShow
-                                                        .value = false;
-                                                    controller.isSummary.value =
-                                                    false;
-                                                    controller.update(['id']);
+                                              Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                children: [
+                                                  Padding(
+                                                    padding: const EdgeInsets.only(
+                                                        top: 4.0,
+                                                        left: 10,
+                                                        right: 0),
+                                                    child: SizedBox(
+                                                      width: MediaQuery
+                                                        .of(context)
+                                                        .size
+                                                        .width *
+                                                        0.1,
+                                                      child: FormButtonWrapper(
+                                                        btnText: "Total",
+                                                        callback: () {
+                                                          controller.dialogWidget =
+                                                          null;
+                                                          controller.canDialogShow
+                                                              .value = false;
+                                                          controller.isSummary.value =
+                                                          false;
+                                                          controller.update(['id']);
 
-                                                    Future.delayed(
-                                                      const Duration(
-                                                          seconds: 2), () {
-                                                      controller
-                                                          .getTotalAPICall()
-                                                          .then((value) {
-                                                        if (controller
-                                                            .canDialogShow
-                                                            .value ==
-                                                            true) {
-                                                          controller.title
-                                                              ?.value =
-                                                          "Total";
-                                                          controller.mapList
-                                                              .value =
-                                                              value;
-                                                          controller.isSummary
-                                                              .value = false;
-                                                          controller.isSummary
-                                                              .refresh();
-                                                          controller.mapList
-                                                              .refresh();
-                                                          // dragableDialog(mapList: value);
-                                                          controller.title
-                                                              ?.refresh();
-                                                        } else {
-                                                          controller.title
-                                                              ?.value =
-                                                          "Total";
-                                                          print(
-                                                              ">>>>>>>>>valueMapData" +
-                                                                  value
-                                                                      .toString());
-                                                          controller.mapList
-                                                              .value =
-                                                              value;
-                                                          controller.isSummary
-                                                              .value = false;
-                                                          controller.isSummary
-                                                              .refresh();
-                                                          dragAbleDialogGetTotal();
-                                                        }
-                                                      });
-                                                    },);
-                                                  },
-                                                  showIcon: true,
-                                                ),
+                                                          Future.delayed(
+                                                            const Duration(
+                                                                seconds: 1), () {
+                                                            controller
+                                                                .getTotalAPICall()
+                                                                .then((value) {
+                                                              if (controller
+                                                                  .canDialogShow
+                                                                  .value ==
+                                                                  true) {
+                                                                controller.title
+                                                                    ?.value =
+                                                                "Total";
+                                                                controller.mapList
+                                                                    .value =
+                                                                    value;
+                                                                controller.isSummary
+                                                                    .value = false;
+                                                                controller.isSummary
+                                                                    .refresh();
+                                                                controller.mapList
+                                                                    .refresh();
+                                                                // dragableDialog(mapList: value);
+                                                                controller.title
+                                                                    ?.refresh();
+                                                              } else {
+                                                                controller.title
+                                                                    ?.value =
+                                                                "Total";
+                                                                print(
+                                                                    ">>>>>>>>>valueMapData" +
+                                                                        value
+                                                                            .toString());
+                                                                controller.mapList
+                                                                    .value =
+                                                                    value;
+                                                                controller.isSummary
+                                                                    .value = false;
+                                                                controller.isSummary
+                                                                    .refresh();
+                                                                dragAbleDialogGetTotal();
+                                                              }
+                                                            });
+                                                          },);
+                                                        },
+                                                        showIcon: true,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Padding(
+                                                    padding: const EdgeInsets.only(
+                                                        top: 4.0,
+                                                        left: 0,
+                                                        right: 10),
+                                                    child: SizedBox(
+                                                      width: MediaQuery
+                                                          .of(context)
+                                                          .size
+                                                          .width *
+                                                          0.1,
+                                                      child: Row(
+                                                        mainAxisAlignment:
+                                                        MainAxisAlignment.spaceAround,
+                                                        children: [
+                                                          Obx(() {
+                                                            return Checkbox(
+                                                                value: controller
+                                                                    .chkChecktimeBand
+                                                                    .value,
+                                                                onChanged: (val) {
+                                                                  controller
+                                                                      .chkChecktimeBand
+                                                                      .value = val!;
+                                                                  controller
+                                                                      .chkChecktimeBand
+                                                                      .refresh();
+                                                                });
+                                                          }),
+                                                          Text("Show Allowed")
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
                                               SizedBox(
                                                 height: 3,
@@ -1635,6 +1783,7 @@ class AmagiSpotsReplacementView
                                                     controller: controller
                                                         .loDurController,
                                                     width: 0.1,
+                                                    isEnable: controller.isEnable1,
                                                     // autoFocus: true,
                                                     // isEnable: controller.isEnable,
                                                     onchanged: (value) {},
@@ -1645,6 +1794,7 @@ class AmagiSpotsReplacementView
                                                     controller: controller
                                                         .loDurMisController,
                                                     width: 0.1,
+                                                    isEnable: controller.isEnable1,
                                                     // autoFocus: true,
                                                     // isEnable: controller.isEnable,
                                                     onchanged: (value) {},
@@ -1664,6 +1814,7 @@ class AmagiSpotsReplacementView
                                                     controller: controller
                                                         .loTotalController,
                                                     width: 0.1,
+                                                    isEnable: controller.isEnable1,
                                                     // autoFocus: true,
                                                     // isEnable: controller.isEnable,
                                                     onchanged: (value) {},
@@ -1674,6 +1825,7 @@ class AmagiSpotsReplacementView
                                                     controller: controller
                                                         .loMissController,
                                                     width: 0.1,
+                                                    isEnable: controller.isEnable1,
                                                     // autoFocus: true,
                                                     // isEnable: controller.isEnable,
                                                     onchanged: (value) {},
@@ -1720,11 +1872,12 @@ class AmagiSpotsReplacementView
                                                               0) >
                                                               0)
                                                           ? DataGridFromMapForAmagiSpotReplacement(
-                                                        showSrNo: false,
+                                                        showSrNo: true,
                                                         hideCode: false,
                                                         formatDate: false,
                                                         isLocalSpotGrid: true,
                                                         columnAutoResize: false,
+                                                        numTypeKeyList: ["bookingDetailCode"],
                                                         widthSpecificColumn: {
                                                           "colNo": 150,
                                                           "bookingNumber": 150,
@@ -1791,7 +1944,6 @@ class AmagiSpotsReplacementView
                                                           controller
                                                               .localSpotsStateManager =
                                                               load.stateManager;
-
                                                           controller
                                                               .localSpotsStateManager
                                                               ?.setCurrentCell(

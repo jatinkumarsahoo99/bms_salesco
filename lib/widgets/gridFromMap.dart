@@ -640,7 +640,7 @@ class DataGridFromMap3 extends StatelessWidget {
         try {
           for (var element in row.entries) {
             cells[element.key] = PlutoCell(
-              value: element.value,
+              value: element.value ?? "",
             );
           }
           segRows.add(PlutoRow(cells: cells, sortIdx: i));
@@ -968,9 +968,8 @@ class DataGridFromMapForAmagiSpotReplacement extends StatelessWidget {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
-                    fontSize: SizeDefine.columnTitleFontSize,
-                    fontWeight: getMasterFont(rendererContext)
-                  ),
+                      fontSize: SizeDefine.columnTitleFontSize,
+                      fontWeight: getMasterFont(rendererContext)),
                 ),
               );
             } else if (isLocalSpotGrid == true) {
@@ -993,9 +992,8 @@ class DataGridFromMapForAmagiSpotReplacement extends StatelessWidget {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
-                    fontSize: SizeDefine.columnTitleFontSize,
-                    fontWeight: getLocalFont(rendererContext)
-                  ),
+                      fontSize: SizeDefine.columnTitleFontSize,
+                      fontWeight: getLocalFont(rendererContext)),
                 ),
               );
             } else {
@@ -1376,7 +1374,7 @@ class DataGridFromMapAmagiDialog extends StatelessWidget {
           width: (widthSpecificColumn != null &&
                   widthSpecificColumn!.containsKey(key))
               ? widthSpecificColumn![key]!
-              : Utils.getColumnSize(key: key, value: mapData[0][key]),
+              : 150,
           // width: Utils.getColumnSize(key: key, value: mapData[0][key]),
           enableAutoEditing: false,
           hide: showonly == null
@@ -1455,14 +1453,14 @@ class DataGridFromMapAmagiDialog extends StatelessWidget {
 
 Color getColors(PlutoColumnRendererContext plutoCon) {
   Color color = Colors.white;
-  print(">>>>>>>>>>>>>>>>>>>keyGet" + plutoCon.cell.column.title.toString());
+  // print(">>>>>>>>>>>>>>>>>>>keyGet" + plutoCon.cell.column.title.toString());
   if (plutoCon.cell.column.title.toString().trim().toLowerCase() !=
       "Parent I D".toLowerCase()) {
     List<String>? data = plutoCon
         .stateManager.rows[plutoCon.rowIdx].cells['ParentID']?.value
         .toString()
         .split("-");
-    print(">>>>>>>>>splitList$data");
+    // print(">>>>>>>>>splitList$data");
     if (data != null && data.isEmpty) {
       color = Colors.white;
     } else if (plutoCon.cell.value == null ||
@@ -1483,15 +1481,22 @@ FontWeight getChannelFont(PlutoColumnRendererContext plutoCon) {
   FontWeight font = FontWeight.normal;
   plutoCon.stateManager.resetShowFrozenColumn();
   List<PlutoColumn> listOfHideColumn = [];
+  // print(">>>>>>>>>>>>>>>DataValueCell${plutoCon.cell.value}");
   for (var element in plutoCon.stateManager.columns) {
     // print(">>>>>>>>>>>>>>>>>>>keyGetJKs${element.title} ${element.key}");
-    if (element.title.toString().trim() == "Unallocated Spots Is Bold" ||
+    if (
+    element.title.toString().trim() == "Unallocated Spots Is Bold" ||
+        // element.title.toString().trim() == "${element.title.toString().trim()} Is Bold" ||
         element.title.toString().trim() == "Total Spots Is Bold" ||
         element.title.toString().trim() == "Locationname Is Bold" ||
         element.title.toString().trim() == "Channelname Is Bold") {
       listOfHideColumn.add(element);
     }
   }
+
+ /* for (var element in plutoCon.stateManager.rows) {
+    print(">>>>>>>>>>>>>elementData"+(element.toJson()).toString());
+  }*/
 
   if (plutoCon
           .stateManager
@@ -1515,18 +1520,24 @@ FontWeight getMasterFont(PlutoColumnRendererContext plutoCon) {
   List<PlutoColumn> listOfHideColumn = [];
   for (var element in plutoCon.stateManager.columns) {
     if (element.title.toString().trim() == "Booking Number Is Bold" ) {
+      // print(">>>>>>>>>>>>>>element.title.toString().trim()${element.title.toString().trim()}");
       listOfHideColumn.add(element);
     }
   }
-
+/*  for (var element in plutoCon.stateManager.rows) {
+    print(">>>>>>>>>>>>>elementData"+(element.cells['bookingNumberIsBold']?.value).toString());
+  }
   if (plutoCon
-      .stateManager
-      .rows[plutoCon.rowIdx]
-      .cells[("${(plutoCon.column.field ?? "").toString().trim()}IsBold")]
-      ?.value
-      .toString()
-      .trim() ==
+          .stateManager
+          .rows[plutoCon.rowIdx]
+          .cells[("${(plutoCon.column.field ?? "").toString().trim()}IsBold")]
+          ?.value
+          .toString()
+          .trim() ==
       "true") {
+    font = FontWeight.bold;
+  }*/
+  if(plutoCon.column.field.toString().trim() == "bookingNumber"){
     font = FontWeight.bold;
   }
   if (listOfHideColumn.isNotEmpty) {
@@ -1546,12 +1557,12 @@ FontWeight getLocalFont(PlutoColumnRendererContext plutoCon) {
   }
 
   if (plutoCon
-      .stateManager
-      .rows[plutoCon.rowIdx]
-      .cells[("${(plutoCon.column.field ?? "").toString().trim()}IsBold")]
-      ?.value
-      .toString()
-      .trim() ==
+          .stateManager
+          .rows[plutoCon.rowIdx]
+          .cells[("${(plutoCon.column.field ?? "").toString().trim()}IsBold")]
+          ?.value
+          .toString()
+          .trim() ==
       "true") {
     font = FontWeight.bold;
   }

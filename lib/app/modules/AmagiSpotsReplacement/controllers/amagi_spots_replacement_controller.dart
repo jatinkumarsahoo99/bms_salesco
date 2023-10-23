@@ -29,6 +29,7 @@ class AmagiSpotsReplacementController extends GetxController {
   //TODO: Implement AmagiSpotsReplacementController
 
   bool isEnable = true;
+  bool isEnable1 = false;
   final count = 0.obs;
 
   DropDownValue? selectedLocation;
@@ -54,7 +55,7 @@ class AmagiSpotsReplacementController extends GetxController {
   FocusNode channelNode = FocusNode();
   FocusNode objectiveNode = FocusNode();
   Rx<bool> allowMergeSta = Rx<bool>(false);
-  Rx<bool> chkChecktimeBand = Rx<bool>(false);
+  Rx<bool> chkChecktimeBand = Rx<bool>(true);
 
   var canDialogShow = false.obs;
   Widget? dialogWidget;
@@ -641,17 +642,28 @@ class AmagiSpotsReplacementController extends GetxController {
       if (localSpotsStateManager?.rows.length == 0) {
         return;
       }
-
-      // (tblLocal.DataSource as DataTable).DefaultView.RowFilter = rowFilter;
-
-      // (tblLocal.DataSource as DataTable).DefaultView.sort = "Parentid desc , Rate desc , spotamount desc";
       localSpotsStateManager?.sortDescending(localSpotsStateManager?.columns
               .where((element) => element.field == "parentID")
               .first ??
           PlutoColumn(
               title: "parentID",
               field: "parentID",
-              type: PlutoColumnType.text()));
+              type: PlutoColumnType.number()));
+      localSpotsStateManager?.sortDescending(localSpotsStateManager?.columns
+              .where((element) => element.field == "rate")
+              .first ??
+          PlutoColumn(
+              title: "rate", field: "rate", type: PlutoColumnType.number()));
+      localSpotsStateManager?.sortDescending(localSpotsStateManager?.columns
+              .where((element) => element.field == "spotAmount")
+              .first ??
+          PlutoColumn(
+              title: "spotAmount",
+              field: "spotAmount",
+              type: PlutoColumnType.number()));
+      // (tblLocal.DataSource as DataTable).DefaultView.RowFilter = rowFilter;
+      localSpotsStateManager?.notifyListeners();
+      // (tblLocal.DataSource as DataTable).DefaultView.sort = "Parentid desc , Rate desc , spotamount desc";
       double Alloc = 0.0, Unalloc = 0.0, AllocDur = 0.0, UnallocDur = 0.0;
 
       // Displaying allocated and unallocate duration
@@ -705,10 +717,10 @@ class AmagiSpotsReplacementController extends GetxController {
       }
 
       for (PlutoRow dd in (childChannelStateManager?.rows) ?? []) {
-        dd.cells['channelnameIsBold']?.value = true;
-        dd.cells['locationnameIsBold']?.value = true;
-        dd.cells['totalSpotsIsBold']?.value = true;
-        dd.cells['unallocatedSpotsIsBold']?.value = true;
+        dd.cells['channelnameIsBold']?.value = false;
+        dd.cells['locationnameIsBold']?.value = false;
+        dd.cells['totalSpotsIsBold']?.value = false;
+        dd.cells['unallocatedSpotsIsBold']?.value = false;
       }
       // High light Spots allocated and channels where they are allocated
       try {
@@ -719,7 +731,9 @@ class AmagiSpotsReplacementController extends GetxController {
         //     ["ClientName", "ParentID", "ColNo"]).toList();
 
         bool sta = await getPivotList(
-            postData: getDataFromGrid(localSpotsStateManager));
+            postData: (amagiSpotReplacementModel
+                ?.lstSpots
+                ?.localSpots?.map((e) => e.toJson()).toList()));
         pivotLocalSpotModel?.localSpot?.localBookingData?.forEach((element) {
           for (PlutoRow dd in (masterSpotsStateManager?.rows) ?? []) {
             if (element.parentID.toString().trim() ==
@@ -741,6 +755,7 @@ class AmagiSpotsReplacementController extends GetxController {
           }
         });
         childChannelStateManager?.notifyListeners();
+        masterSpotsStateManager?.notifyListeners();
 
         // var ddss = _ddsss.CopyToDataTable();
 
@@ -761,9 +776,7 @@ class AmagiSpotsReplacementController extends GetxController {
             }
           }
         }*/
-      } catch (ex) {
-
-      }
+      } catch (ex) {}
 
       try {
         // var _dt = DtLocalSpots.Copy();
@@ -805,7 +818,6 @@ class AmagiSpotsReplacementController extends GetxController {
       } catch (ex) {}
 
       btnFindAllocatedSpotsClick();
-
       // tblMaster.DataSource = DtMasterSpots
     } catch (ex) {
       // Handle the exception
@@ -819,7 +831,9 @@ class AmagiSpotsReplacementController extends GetxController {
         element.cells['channelnameIsBold']?.value = false;
         // element.Cells("Channelname").Style.Font = New Font(Control.DefaultFont, FontStyle.Regular)
       }
-      if (element.cells['channelid']?.value == channelId && channelId != 0) {
+      if ((element.cells['channelid']?.value).toString().trim() ==
+              channelId.toString().trim() &&
+          channelId != 0) {
         element.cells['channelnameIsBold']?.value = true;
         // element.Cells("Channelname").Style.Font = New Font(Control.DefaultFont, FontStyle.Bold)
       }
@@ -833,7 +847,9 @@ class AmagiSpotsReplacementController extends GetxController {
     parentId = masterSpotsStateManager?.currentRow?.cells['id']?.value;
 
     List<PlutoRow>? listOfRow = localSpotsStateManager?.rows
-        .where((element) => element.cells['parentID']?.value == parentId)
+        .where((element) =>
+            (element.cells['parentID']?.value ?? 0).toString().trim() ==
+            (parentId ?? 0).toString().trim())
         .toList();
 
     listOfRow?.forEach((element) {
@@ -973,25 +989,25 @@ class AmagiSpotsReplacementController extends GetxController {
   }
 
   callExcel() {
-    if(amagiSpotReplacementModel == null || amagiSpotReplacementModel?.lstSpots == null ||
+    if (amagiSpotReplacementModel == null ||
+        amagiSpotReplacementModel?.lstSpots == null ||
         amagiSpotReplacementModel?.lstSpots?.localSpots == null ||
         amagiSpotReplacementModel?.lstSpots?.childChannel == null ||
         amagiSpotReplacementModel?.lstSpots?.masterSpots == null ||
-        amagiSpotReplacementModel
-            ?.lstSpots?.fastInserts?.promoResponse == null
-    ){
+        amagiSpotReplacementModel?.lstSpots?.fastInserts?.promoResponse ==
+            null) {
       LoadingDialog.showErrorDialog("Data not found");
-    }else{
-      LoadingDialog.modify("Do you want to Include Master Spots on Hold?",cancelTitle:"Yes" ,deleteTitle: "No", () {
+    } else {
+      LoadingDialog.modify("Do you want to Include Master Spots on Hold?",
+          cancelTitle: "Yes", deleteTitle: "No", () {
         callExcelApi(true);
       }, () {
         callExcelApi(false);
       });
     }
-
   }
 
-   callExcelApi(bool sta) {
+  callExcelApi(bool sta) {
     // Completer<List<dynamic>> completer = Completer<List<dynamic>>();
     LoadingDialog.call();
     Map<String, dynamic> postData = {
@@ -1016,7 +1032,7 @@ class AmagiSpotsReplacementController extends GetxController {
           .format(DateFormat("dd-MM-yyyy").parse(frmDate.text)),
       "isMasterSpotOnHold": sta
     };
-    try{
+    try {
       Get.find<ConnectorControl>().POSTMETHOD(
           api: ApiFactory.AMAGI_SPOT_REPLACEMENT_GET_EXCEL(),
           fun: (map) {
@@ -1028,7 +1044,7 @@ class AmagiSpotsReplacementController extends GetxController {
                 map['fileByte'] != null) {
               FlutterFileSaver()
                   .writeFileAsBytes(
-                fileName:( map['fileName'] ?? "file") + '.xlsx',
+                fileName: (map['fileName'] ?? "file") + '.xlsx',
                 bytes: base64.decode(map['fileByte'] ?? "No data"),
               )
                   .catchError((error) {
@@ -1038,7 +1054,7 @@ class AmagiSpotsReplacementController extends GetxController {
             } else {}
           },
           json: postData);
-    }catch(e){
+    } catch (e) {
       closeDialogIfOpen();
     }
   }
@@ -1054,7 +1070,7 @@ class AmagiSpotsReplacementController extends GetxController {
     Map<String, dynamic> postData = {
       "locationcode": selectedLocation?.key ?? "",
       "channelcode": selectedChannel?.key ?? "",
-      "telecastdate":DateFormat("yyyy-MM-dd")
+      "telecastdate": DateFormat("yyyy-MM-dd")
           .format(DateFormat("dd-MM-yyyy").parse(frmDate.text)),
       "mine": mine,
       "eventType": eventType,
@@ -1068,20 +1084,28 @@ class AmagiSpotsReplacementController extends GetxController {
           json: postData,
           fun: (map) {
             closeDialogIfOpen();
-            print(">>>>>>>>>>>>map"+map.toString());
-            if(map is Map && map.containsKey("fastInsertsearch") &&
-                map['fastInsertsearch']['promoResponse'] != null && map['fastInsertsearch']['promoResponse'].length > 0 ){
-              print(">>>>>>>>>>map['fastInsertsearch']"+map['fastInsertsearch'].toString());
-              completer.complete((map['fastInsertsearch']['promoResponse']) as List<dynamic>);
-            }else{
+            print(">>>>>>>>>>>>map" + map.toString());
+            if (map is Map &&
+                map.containsKey("fastInsertsearch") &&
+                map['fastInsertsearch']['promoResponse'] != null &&
+                map['fastInsertsearch']['promoResponse'].length > 0) {
+              print(">>>>>>>>>>map['fastInsertsearch']" +
+                  map['fastInsertsearch'].toString());
+              completer.complete(
+                  (map['fastInsertsearch']['promoResponse']) as List<dynamic>);
+            } else {
               print("else call");
-              completer.complete([{"data":"Data not found"}]);
+              completer.complete([
+                {"data": "Data not found"}
+              ]);
             }
           });
     } catch (ex) {
       closeDialogIfOpen();
       print("exception call");
-      completer.complete([{"data":"Data not found"}]);
+      completer.complete([
+        {"data": "Data not found"}
+      ]);
     }
     return completer.future;
   }

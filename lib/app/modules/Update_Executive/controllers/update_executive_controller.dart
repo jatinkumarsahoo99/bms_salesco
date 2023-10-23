@@ -253,12 +253,12 @@ class UpdateExecutiveController extends GetxController {
 
   @override
   void onClose() {
-     locationNode.dispose();
+     /*locationNode.dispose();
      channelNode.dispose();
      clientNode.dispose();
      agencyNode.dispose() ;
      zoneNode.dispose() ;
-     executiveNamNode .dispose();
+     executiveNamNode .dispose();*/
     super.onClose();
   }
 

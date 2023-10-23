@@ -128,6 +128,7 @@ class ViewOldDealView extends GetView<ViewOldDealController> {
                                   showSrNo: false,
                                   hideCode: false,
                                   formatDate: false,
+                                  exportFileName: "View Old Deal",
                                   mode: PlutoGridMode.selectWithOneTap,
                                   mapData: (controllerX.viewOldDealResponseModel
                                       ?.deal?.lstdealusage

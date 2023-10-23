@@ -130,8 +130,9 @@ class AmagiStatusReportView extends GetView<AmagiStatusReportController> {
                             showSrNo: false,
                             hideCode: false,
                             formatDate: false,
+                            exportFileName: "Amagi Status Report",
                             widthSpecificColumn:  Get.find<HomeController>().getGridWidthByKey(
-                                userGridSettingList: controllerX.userGridSetting1),
+                                userGridSettingList: controllerX.userGridSetting1,key:controllerX.getTableNo(controllerX.selectValue.value) ??"tbl1"),
                             mode: PlutoGridMode.selectWithOneTap,
                             mapData: (controllerX.responseData['response']),
                             // mapData: (controllerX.dataList)!,
