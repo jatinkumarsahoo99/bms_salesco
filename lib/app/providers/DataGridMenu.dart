@@ -358,7 +358,7 @@ class DataGridMenu {
           format: pluto_grid_export.PdfPageFormat.a4.landscape,
         );
         ExportData().printFromGridData(plutoGridPdfExport, stateManager);
-        stateManager.setShowLoading(true);
+        // stateManager.setShowLoading(true);
 
         break;
       case DataGridMenuItem.exportToCSv:
