@@ -2231,14 +2231,16 @@ class InputFields {
       Color color = Colors.white,
       double? widthRatio,
       double? leftPad,
-      bool margin = false}) {
+      bool margin = false,
+      Color? txtColor}) {
     // var data = 0.obs;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
           padding: EdgeInsets.only(left: leftPad ?? 10),
-          child: LabelText.style(hint: hintTxt, txtColor: Colors.grey),
+          child:
+              LabelText.style(hint: hintTxt, txtColor: txtColor ?? Colors.grey),
         ),
         Container(
           // padding: const EdgeInsets.only(
