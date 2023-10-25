@@ -227,9 +227,15 @@ class ProgramWiseRevenueReportView extends StatelessWidget {
 
                         /// Summary
                         if (!controller.val && e['telecasttime'] != null) {
-                          e['telecasttime'] = controller.timeFormat.format(
+                          e['telecasttime'] = DateFormat('dd-MM-yyyy').format(
                               DateFormat('dd/MM/yyyy hh:mm:ss')
                                   .parse(e['telecasttime']));
+                        }
+
+                        if (!controller.val && e['scheduledate'] != null) {
+                          e['scheduledate'] = DateFormat('dd-MM-yyyy').format(
+                              DateFormat('dd/MM/yyyy hh:mm:ss')
+                                  .parse(e['scheduledate']));
                         }
 
                         return e;
