@@ -221,7 +221,7 @@ class CommercialCreationAutoDetailsController extends GetxController {
             if (map is Map &&
                 map.containsKey("lstsectype") &&
                 map["lstsectype"] != null) {
-              LoadingDialog.callDataSavedMessage("Data successfully");
+              LoadingDialog.callDataSavedMessage("Data Saved Successfully");
             } else {
               LoadingDialog.callInfoMessage(map.toString());
             }
