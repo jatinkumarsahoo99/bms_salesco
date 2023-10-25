@@ -157,7 +157,7 @@ class HistoryDetails {
   String? endDate;
   int? activityMonth;
   bool? isActive;
-  String? loginName;
+  dynamic loginName;
 
   HistoryDetails.fromJson(Map<String, dynamic> json) {
     id = json['id'];
