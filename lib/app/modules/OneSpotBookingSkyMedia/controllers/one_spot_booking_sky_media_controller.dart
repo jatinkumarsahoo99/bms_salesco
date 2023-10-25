@@ -100,6 +100,7 @@ class OneSpotBookingSkyMediaController extends GetxController {
         // "https://jsonkeeper.com/b/D537"
         fun: (map) {
           Get.back();
+
           if(map is Map && map.containsKey("onLeaveChannel") && map['onLeaveChannel'] != null){
             if(map['onLeaveChannel'].containsKey('lstclientmaster') &&
                 map['onLeaveChannel']['lstclientmaster'] != null &&

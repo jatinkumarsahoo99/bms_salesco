@@ -1453,27 +1453,32 @@ class DataGridFromMapAmagiDialog extends StatelessWidget {
 
 Color getColors(PlutoColumnRendererContext plutoCon) {
   Color color = Colors.white;
-  // print(">>>>>>>>>>>>>>>>>>>keyGet" + plutoCon.cell.column.title.toString());
-  if (plutoCon.cell.column.title.toString().trim().toLowerCase() !=
-      "Parent I D".toLowerCase()) {
-    List<String>? data = plutoCon
-        .stateManager.rows[plutoCon.rowIdx].cells['ParentID']?.value
-        .toString()
-        .split("-");
-    // print(">>>>>>>>>splitList$data");
-    if (data != null && data.isEmpty) {
+  print(">>>>>>>>>>>>>>>>>>>keyGet" + plutoCon.cell.column.title.toString());
+  try{
+    if (plutoCon.cell.column.title.toString().trim().toLowerCase() !=
+        "Parentid".toLowerCase()) {
+      List<String>? data = plutoCon
+          .stateManager.rows[plutoCon.rowIdx].cells['parentid']?.value
+          .toString()
+          .split("-");
+      // print(">>>>>>>>>splitList$data");
+      if (data != null && data.isEmpty) {
+        color = Colors.white;
+      } else if (plutoCon.cell.value == null ||
+          plutoCon.cell.value.toString().trim() == "null" ||
+          plutoCon.cell.value.toString().trim() == "") {
+        color = Colors.pink;
+      } else if (double.parse((plutoCon.cell.value ?? "0").toString()) <
+          double.parse(data![1] ?? "0")) {
+        color = Colors.lightBlue;
+      }
+    } else {
       color = Colors.white;
-    } else if (plutoCon.cell.value == null ||
-        plutoCon.cell.value.toString().trim() == "null" ||
-        plutoCon.cell.value.toString().trim() == "") {
-      color = Colors.pink;
-    } else if (double.parse((plutoCon.cell.value ?? "0").toString()) <
-        double.parse(data![1] ?? "0")) {
-      color = Colors.lightBlue;
     }
-  } else {
+  }catch(e){
     color = Colors.white;
   }
+
   return color;
 }
 

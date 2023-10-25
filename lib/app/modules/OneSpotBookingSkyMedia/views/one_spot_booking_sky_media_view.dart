@@ -32,7 +32,7 @@ class OneSpotBookingSkyMediaView extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 AppBar(
-                  title: Text('One Spot Booking(Sky Media)'),
+                  title: const Text('On Spot Booking(Sky Media)'),
                   centerTitle: true,
                   backgroundColor: Colors.deepPurple,
                 ),
@@ -179,6 +179,7 @@ class OneSpotBookingSkyMediaView extends StatelessWidget {
                           hintTxt: "BookingRegNo",
                           controller: controllerX.bookingRegController,
                           width:  0.46,
+                          maxLen: 1000,
                           // autoFocus: true,
                           // focusNode: controllerX.brandName,
                           isEnable: controllerX.isEnable,

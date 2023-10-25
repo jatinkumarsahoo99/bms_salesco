@@ -90,7 +90,7 @@ class CommercialCreationAutoView
                           widthSpecificColumn: Get.find<HomeController>().getGridWidthByKey(
                               userGridSettingList: controllerX.userGridSetting1),
                           hideKeys: ["acid"],
-                          mode: PlutoGridMode.selectWithOneTap,
+                          mode: PlutoGridMode.select,
                           // actionIcon: Icons.delete_forever_rounded,
                           onSelected: (PlutoGridOnSelectedEvent pluto) {
                             Get.toNamed(Routes.COMMERCIAL_CREATION_AUTO_DETAILS,
