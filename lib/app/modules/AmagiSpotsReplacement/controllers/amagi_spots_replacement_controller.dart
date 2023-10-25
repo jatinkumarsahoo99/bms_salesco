@@ -342,7 +342,9 @@ class AmagiSpotsReplacementController extends GetxController {
                   Map<String, dynamic> mapDa = {};
                   element.forEach((key, value) {
                     String k = key.toString().trim().replaceAll("\n", " ");
-                    mapDa[k] = value;
+                    String keyNew = k.toLowerCase();
+                    print("key from testing${keyNew.toLowerCase()} >>>>val  $value");
+                    mapDa[keyNew] = value;
                   });
                   mapData.add(mapDa);
                 }
