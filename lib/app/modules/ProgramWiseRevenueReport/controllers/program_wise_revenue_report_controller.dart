@@ -235,11 +235,8 @@ class ProgramWiseRevenueReportController extends GetxController {
               map['generateReport']['result'] != null &&
               map.containsKey('generateReport') &&
               (map['generateReport']['result'] as List<dynamic>).isNotEmpty) {
-            print("===============");
-            print(map);
             dataTableList.clear();
             dataTableList.value.addAll((map['generateReport']['result']));
-            print("===============1");
           } else {
             LoadingDialog.showErrorDialog('No data found.');
           }
