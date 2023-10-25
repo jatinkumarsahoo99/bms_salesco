@@ -46,7 +46,9 @@ class TapeIdDetails {
     agencytapeid = json['agencytapeid'];
     loginName = json['loginName'];
     brandCode = json['brandCode'];
-    locationLst = List.from(json['locationLst']).map((e) => LocationLst.fromJson(e)).toList();
+    locationLst = List.from(json['locationLst'])
+        .map((e) => LocationLst.fromJson(e))
+        .toList();
   }
 
   Map<String, dynamic> toJson() {
@@ -122,7 +124,9 @@ class TapeIdCampaignHistoryModel {
   late final List<HistoryDetails> historyDetails;
 
   TapeIdCampaignHistoryModel.fromJson(Map<String, dynamic> json) {
-    historyDetails = List.from(json['historyDetails']).map((e) => HistoryDetails.fromJson(e)).toList();
+    historyDetails = List.from(json['historyDetails'])
+        .map((e) => HistoryDetails.fromJson(e))
+        .toList();
   }
 
   Map<String, dynamic> toJson() {
@@ -153,6 +157,7 @@ class HistoryDetails {
   String? endDate;
   int? activityMonth;
   bool? isActive;
+  dynamic loginName;
 
   HistoryDetails.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -164,6 +169,7 @@ class HistoryDetails {
     endDate = json['endDate'];
     activityMonth = json['activityMonth'];
     isActive = json['isActive'];
+    loginName = json['loginName'];
   }
 
   Map<String, dynamic> toJson({bool fromSave = false}) {
@@ -172,7 +178,6 @@ class HistoryDetails {
       _data['id'] = id;
       _data['isActive'] = isActive;
     } else {
-      _data['isActive'] = (isActive ?? false).toString();
       _data['id'] = id;
       _data['locationName'] = locationName;
       _data['channelName'] = channelName;
@@ -181,6 +186,8 @@ class HistoryDetails {
       _data['startDate'] = startDate;
       _data['endDate'] = endDate;
       _data['activityMonth'] = activityMonth;
+      _data['loginName'] = loginName;
+      _data['isActive'] = (isActive ?? false).toString();
     }
     return _data;
   }

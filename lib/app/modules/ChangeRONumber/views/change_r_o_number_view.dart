@@ -24,27 +24,9 @@ class ChangeRONumberView extends GetView<ChangeRONumberController> {
               children: [
                 AppBar(
                   backgroundColor: Colors.deepPurple,
-                  title: const Text("Chage RO Number"),
+                  title: const Text("Change RO Number"),
                 ),
                 SizedBox(height: 20),
-                // Container(
-                //   width: context.width * .48,
-                //   height: 50,
-                //   margin: const EdgeInsets.all(30),
-                //   decoration: BoxDecoration(
-                //     borderRadius: BorderRadius.circular(12),
-                //     color: Colors.deepPurpleAccent.shade100,
-                //   ),
-                //   alignment: Alignment.center,
-                //   child: const Text(
-                //     "Chage RO Number",
-                //     style: TextStyle(
-                //       fontSize: 20,
-                //       fontWeight: FontWeight.bold,
-                //       color: Colors.white,
-                //     ),
-                //   ),
-                // ),
                 SizedBox(
                   width: context.width * .4,
                   child: Row(
@@ -55,7 +37,7 @@ class ChangeRONumberView extends GetView<ChangeRONumberController> {
                           controller.locationList.value,
                           controller.handleOnChangedLocation,
                           "Location",
-                          .16,
+                          .18,
                           autoFocus: true,
                           selected: controller.selectedLocation,
                           inkWellFocusNode: controller.locationFN,
@@ -66,7 +48,7 @@ class ChangeRONumberView extends GetView<ChangeRONumberController> {
                           controller.channelList.value,
                           (val) => controller.selectedChannel = val,
                           "Channel",
-                          .16,
+                          .18,
                           selected: controller.selectedChannel,
                         );
                       }),
@@ -85,6 +67,7 @@ class ChangeRONumberView extends GetView<ChangeRONumberController> {
                   hintTxt: "Booking Reference No.",
                   controller: controller.bookingRefNumber,
                   width: .4,
+                  maxLen: 999999,
                 ),
                 SizedBox(height: 20),
                 Align(
