@@ -18,7 +18,7 @@ class ProgramWiseRevenueReportController extends GetxController {
   TextEditingController toDate = TextEditingController();
   List<String> bookingTypes = [
     "Detail",
-    "Summery",
+    "Summary",
   ];
   List<PermissionModel>? formPermissions;
   var locations = RxList<MultiCheckBoxModel>();
@@ -28,6 +28,7 @@ class ProgramWiseRevenueReportController extends GetxController {
   var zone = RxList<MultiCheckBoxModel>();
   var revnue = RxList<MultiCheckBoxModel>();
   var attribute = RxList<MultiCheckBoxModel>();
+  var timeFormat = DateFormat('dd-MM-yyyy hh:mm a');
 
   List<DropDownValue> selectLocation = [];
   List<DropDownValue> selectChannel = [];
@@ -42,14 +43,18 @@ class ProgramWiseRevenueReportController extends GetxController {
   var clientTableList = [].obs;
 
   var isDetails = true.obs;
+  bool val = true;
 
   Future<void> getRadioStatus(String name) async {
+    print(name);
     switch (name) {
       case "Detail":
         isDetails.value = true;
+        val = true;
         break;
       case "Summary":
         isDetails.value = false;
+        val = false;
         break;
     }
   }
@@ -72,14 +77,6 @@ class ProgramWiseRevenueReportController extends GetxController {
     super.onClose();
   }
 
-  var listCheckBox = [
-    MultiCheckBoxModel(DropDownValue(key: "1", value: "Zee-Bihar-HD"), false),
-    MultiCheckBoxModel(DropDownValue(key: "1", value: "Zee TV"), false),
-    MultiCheckBoxModel(DropDownValue(key: "1", value: "Zing"), false),
-    MultiCheckBoxModel(DropDownValue(key: "1", value: "Zee Marathi"), false),
-    MultiCheckBoxModel(DropDownValue(key: "1", value: "Zee Bojpuri"), false),
-  ];
-
   getLoadData() {
     LoadingDialog.call();
     Get.find<ConnectorControl>().GETMETHODCALL(
@@ -93,41 +90,59 @@ class ProgramWiseRevenueReportController extends GetxController {
           zone.clear();
           revnue.clear();
           attribute.clear();
+          int i = 0;
           map["getInitialData"]["locationList"].forEach((e) {
             locations
-                .add(MultiCheckBoxModel(DropDownValue.fromJson1(e), false));
+                .add(MultiCheckBoxModel(DropDownValue.fromJson1(e), false, i));
+            i++;
           });
+          i = 0;
           map["getInitialData"]["channelList"].forEach((e) {
             channels.add(MultiCheckBoxModel(
                 DropDownValue(key: e["channelcode"], value: e["channelname"]),
-                false));
+                false,
+                i));
+            i++;
           });
+          i = 0;
           map["getInitialData"]["programTypeMasterList"].forEach((e) {
             programType.add(MultiCheckBoxModel(
                 DropDownValue(
                     key: e["programtypecode"], value: e["programtypename"]),
-                false));
+                false,
+                i));
+            i++;
           });
+          i = 0;
           map["getInitialData"]["programMasterList"].forEach((e) {
             program.add(MultiCheckBoxModel(
                 DropDownValue(
                     key: e["programcode"].toString(), value: e["programname"]),
-                false));
+                false,
+                i));
+            i++;
           });
-
+          i = 0;
           map["getInitialData"]["zoneList"].forEach((e) {
             zone.add(MultiCheckBoxModel(
                 DropDownValue(key: e["zonecode"], value: e["zonename"]),
-                false));
+                false,
+                i));
+            i++;
           });
+          i = 0;
           map["getInitialData"]["salesBookList"].forEach((e) {
             revnue.add(MultiCheckBoxModel(
                 DropDownValue(key: e["accountcode"], value: e["accountname"]),
-                false));
+                false,
+                i));
+            i++;
           });
+          i = 0;
           map["getInitialData"]["attribute2MasterList"].forEach((e) {
             attribute.add(MultiCheckBoxModel(
-                DropDownValue(key: e["a2code"], value: e["a2desc"]), false));
+                DropDownValue(key: e["a2code"], value: e["a2desc"]), false, i));
+            i++;
           });
         });
   }
@@ -220,8 +235,11 @@ class ProgramWiseRevenueReportController extends GetxController {
               map['generateReport']['result'] != null &&
               map.containsKey('generateReport') &&
               (map['generateReport']['result'] as List<dynamic>).isNotEmpty) {
+            print("===============");
+            print(map);
             dataTableList.clear();
             dataTableList.value.addAll((map['generateReport']['result']));
+            print("===============1");
           } else {
             LoadingDialog.showErrorDialog('No data found.');
           }
@@ -257,7 +275,7 @@ class ProgramWiseRevenueReportController extends GetxController {
           ),
           child: SizedBox(
             width: Get.width * 60,
-            height: Get.width * 6,
+            height: Get.height * 6,
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(

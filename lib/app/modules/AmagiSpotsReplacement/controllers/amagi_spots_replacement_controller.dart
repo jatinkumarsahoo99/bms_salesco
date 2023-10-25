@@ -66,6 +66,10 @@ class AmagiSpotsReplacementController extends GetxController {
   PlutoGridStateManager? masterSpotsStateManager;
   PlutoGridStateManager? localSpotsStateManager;
   PlutoGridStateManager? dialogStateManager;
+  PlutoGridStateManager? dialogStateManager1;
+  PlutoGridStateManager? dialogStateManager2;
+  PlutoGridStateManager? dialogStateManager3;
+  PlutoGridStateManager? dialogStateManager4;
 
   TextEditingController txCaptionController = TextEditingController();
   TextEditingController txIdController = TextEditingController();
@@ -146,7 +150,7 @@ class AmagiSpotsReplacementController extends GetxController {
                 map['localSpot'] != null) {
               pivotLocalSpotModel =
                   PivotLocalSpotModel.fromJson(map as Map<String, dynamic>);
-              // print(">>>>>>>>>>>mapData$map");
+              print(">>>>>>>>>>>mapData$map");
               // print(">>>>>>>>>>>>>>>>>>>pivotLocalSpotModel" +
               //     (pivotLocalSpotModel?.toJson()).toString());
               completer.complete(true);

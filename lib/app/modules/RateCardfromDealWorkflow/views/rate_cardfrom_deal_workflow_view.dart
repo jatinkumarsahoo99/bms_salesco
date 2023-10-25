@@ -100,6 +100,7 @@ class RateCardfromDealWorkflowView
                       showSrNo: false,
                       hideCode: false,
                       formatDate: false,
+                      exportFileName: "Rate Card Deal WorkFlow",
                       mapData: controller.gridData.export!
                           .map((e) => e.toJson())
                           .toList(),

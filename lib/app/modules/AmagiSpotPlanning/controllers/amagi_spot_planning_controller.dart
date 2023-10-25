@@ -213,6 +213,10 @@ class AmagiSpotPlanningController extends GetxController {
     fetchAllLoaderData();
     super.onReady();
   }
+  clearAll() {
+    Get.delete<AmagiSpotPlanningController>();
+    Get.find<HomeController>().clearPage1();
+  }
 
   formHandler(String str) {
     if(str == 'Exit'){
@@ -220,6 +224,8 @@ class AmagiSpotPlanningController extends GetxController {
           listStateManager: [
             stateManager
           ],tableNamesList: [getTableNo(selectValue.value)??'tbl1']);
+    }else if (str == "Clear") {
+      clearAll();
     }
   }
 
