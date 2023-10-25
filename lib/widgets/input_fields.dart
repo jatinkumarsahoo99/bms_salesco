@@ -216,13 +216,8 @@ class InputFields {
           ),
         },
         SizedBox(
-          // padding: const EdgeInsets.only(
-          //     top: 6.0,
-          //     bottom: 6.0),
-
           height: height ?? SizeDefine.heightInputField,
           width: Get.width * width!,
-
           child: TextFormField(
             maxLines: maxLines,
             focusNode: focusNode,
@@ -234,7 +229,7 @@ class InputFields {
                 : TextCapitalization.none,
             validator: validator,
             enabled: isEnable ?? true,
-            maxLength: maxLen ?? 25,
+            maxLength: maxLen,
             autovalidateMode: AutovalidateMode.onUserInteraction,
             // onChanged: (onchanged != null) ? onchanged : null,
             onChanged: (val) {
@@ -253,7 +248,8 @@ class InputFields {
             onFieldSubmitted: onFieldSubmitted,
             inputFormatters: inputformatters.isEmpty
                 ? [
-                    LengthLimitingTextInputFormatter(maxLen??(SizeDefine.maxcharlimit)),
+                    LengthLimitingTextInputFormatter(
+                        maxLen ?? (SizeDefine.maxcharlimit)),
                     FilteringTextInputFormatter.deny("  "),
                     // FilteringTextInputFormatter.allow(RegExp(r"^(\w+ ?)*$")),
                   ]
@@ -2235,14 +2231,16 @@ class InputFields {
       Color color = Colors.white,
       double? widthRatio,
       double? leftPad,
-      bool margin = false}) {
+      bool margin = false,
+      Color? txtColor}) {
     // var data = 0.obs;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
           padding: EdgeInsets.only(left: leftPad ?? 10),
-          child: LabelText.style(hint: hintTxt, txtColor: Colors.grey),
+          child:
+              LabelText.style(hint: hintTxt, txtColor: txtColor ?? Colors.grey),
         ),
         Container(
           // padding: const EdgeInsets.only(
