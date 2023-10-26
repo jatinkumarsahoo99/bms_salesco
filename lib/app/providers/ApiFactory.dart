@@ -215,6 +215,10 @@ class ApiFactory {
       "$BASE_URL/api/EDIRoBooking/OnMarkAsDone?FileName=$fileName";
   static String EDI_RO_SHOW_LINK = "$BASE_URL/api/EDIRoBooking/ShowLink";
 
+  static String EDI_RO_LEAVE_DEAL_NO(effDate, locationCode, channelCode, dealNo,
+          payRouteCode, agencyCode, clientCode, grpPDC) =>
+      "$BASE_URL/api/EDIRoBooking/OnLeaveDealNo?EffDate=$effDate&LocationCode=$locationCode&ChannelCode=$channelCode&DealNo=$dealNo&PayRouteCode=$payRouteCode&AgencyCode=$agencyCode&ClientCode=$clientCode&grpPDC=$grpPDC";
+
 ///////////////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////// Create Break Pattern ///////////////////////////////////////////

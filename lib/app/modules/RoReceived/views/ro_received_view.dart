@@ -107,6 +107,9 @@ class RoReceivedView extends StatelessWidget {
                                   hintTxt: "RO Number",
                                   controller: controller.roNumber,
                                   width: 0.24,
+                                  inputformatters: [
+                                    UpperCaseTextFormatter(),
+                                  ],
                                 ),
                                 DateWithThreeTextField(
                                   title: "RO Rec. Date",
@@ -114,7 +117,7 @@ class RoReceivedView extends StatelessWidget {
                                   widthRation: .115,
                                 ),
                                 DateWithThreeTextField(
-                                  title: "Eff. Date",
+                                  title: "Eff. Start Date",
                                   mainTextController: controller.effDate,
                                   onFocusChange: (date) {
                                     print(date);
@@ -122,6 +125,12 @@ class RoReceivedView extends StatelessWidget {
                                         date.split("-")[2] + date.split("-")[1];
                                     // controller.dateLeave(date);
                                   },
+                                  widthRation: .115,
+                                ),
+                                DateWithThreeTextField(
+                                  title: "Eff. End Date",
+                                  mainTextController: controller.effEndDate,
+                                  onFocusChange: (date) {},
                                   widthRation: .115,
                                 ),
                                 InputFields.formField1(
@@ -260,6 +269,9 @@ class RoReceivedView extends StatelessWidget {
                                 //     ),
                                 //   ),
                                 // ),
+                                const SizedBox(
+                                  width: 70,
+                                ),
                                 Obx(
                                   () => DropDownField.formDropDown1WidthMap(
                                       controller.revenueType.value, (valeu) {

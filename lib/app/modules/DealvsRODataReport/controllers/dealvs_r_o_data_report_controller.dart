@@ -43,7 +43,7 @@ class DealvsRODataReportController extends GetxController {
   bool isDealWise = true;
   bool isROWise = false;
   bool isDealvsRO = false;
-  var isDealMSG = false.obs;
+  var isDealMSG = "".obs;
 
   Future<void> getRadioStatus(String name) async {
     switch (name) {
@@ -157,6 +157,7 @@ class DealvsRODataReportController extends GetxController {
     clintCode,
   ) {
     LoadingDialog.call();
+    selectDealsNo.value = null;
     var startDate = DateFormat("dd-MM-yyyy").parse(fromDate.text);
     var endDate = DateFormat("dd-MM-yyyy").parse(toDate.text);
     Get.find<ConnectorControl>().GETMETHODCALL(
@@ -189,7 +190,7 @@ class DealvsRODataReportController extends GetxController {
   var dataTableList = [].obs;
 
   retrieveData() {
-    isDealMSG.value = false;
+    isDealMSG.value = '';
     if (selectLocation.value?.key == null ||
         selectChannel.value?.key == null ||
         selectDealsNo.value?.value == null) {
@@ -218,13 +219,20 @@ class DealvsRODataReportController extends GetxController {
                 (map['getReportData']["result"] as List<dynamic>).isNotEmpty) {
               dataTableList.clear();
               dataTableList.value = map['getReportData']['result'];
-              isDealMSG.value = true;
+              if (isDealWise) {
+                isDealMSG.value = 'Deal wise data showing.';
+              } else if (isROWise) {
+                isDealMSG.value = 'RO wise data showing.';
+              } else {
+                isDealMSG.value = 'DealvsRo wise data showing.';
+              }
             } else {
               LoadingDialog.showErrorDialog('No data found.');
             }
           },
           failed: (resp) {
             Get.back();
+            dataTableList.clear();
             LoadingDialog.showErrorDialog(resp.toString());
           });
     }
