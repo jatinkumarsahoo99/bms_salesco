@@ -21,7 +21,7 @@ class InternationalSalesReportController extends GetxController {
   DropDownValue? selectedLocation;
   DropDownValue? selectedChannel;
 
-  RxString selectValue=RxString("Detail");
+  RxnString selectValue=RxnString(null);
 
   TextEditingController fromDateController = TextEditingController() ;
   TextEditingController toDateController = TextEditingController() ;
