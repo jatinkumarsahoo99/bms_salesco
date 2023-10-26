@@ -254,8 +254,10 @@ class RateCardfromDealWorkflowController extends GetxController {
           if (map is Map &&
               map.containsKey('message') &&
               map['message'] != null) {
-            clearAll();
-            LoadingDialog.callDataSavedMessage(map['message'] ?? "");
+            LoadingDialog.callDataSavedMessage(map['message'] ?? "",
+                callback: () {
+              clearAll();
+            });
           } else {
             LoadingDialog.showErrorDialog((map ?? "").toString());
           }
@@ -275,10 +277,12 @@ class RateCardfromDealWorkflowController extends GetxController {
 
   docs() async {
     String documentKey = "";
-    if(selectedLocation == null || selectedChannel == null){
+    if (selectedLocation == null || selectedChannel == null) {
       documentKey = "";
-    }else{
-      documentKey = "Rate card " + (selectedLocation?.key??"") + (selectedChannel?.key??"");
+    } else {
+      documentKey = "Rate card " +
+          (selectedLocation?.key ?? "") +
+          (selectedChannel?.key ?? "");
     }
 
     Get.defaultDialog(
@@ -289,13 +293,12 @@ class RateCardfromDealWorkflowController extends GetxController {
     });
   }
 
-
   formHandler(btn) {
     if (btn == "Clear") {
       clearAll();
     } else if (btn == "Save") {
       saveBtn();
-    }else if(btn == "Docs"){
+    } else if (btn == "Docs") {
       docs();
     }
   }
