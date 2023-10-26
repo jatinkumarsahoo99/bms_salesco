@@ -4,6 +4,7 @@ import 'package:bms_salesco/widgets/input_fields.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
 import '../../../../widgets/FormButton.dart';
@@ -87,7 +88,20 @@ class RescheduleImportView extends GetView<RescheduleImportController> {
                         : DataGridFromMap(
                             formatDate: false,
                             mode: PlutoGridMode.selectWithOneTap,
-                            mapData: controller.dataTableList.value,
+                            mapData: controller.dataTableList.value.map((e) {
+                              print(e);
+                              if (e['Sch Date'].toString().contains('T')) {
+                                e['Sch Date'] = DateFormat('dd-MM-yyyy').format(
+                                    DateFormat('yyyy-MM-ddThh:mm:ss')
+                                        .parse(e['Sch Date']));
+                              }
+                              if (e['NEW DATE'].toString().contains('T')) {
+                                e['NEW DATE'] = DateFormat('dd-MM-yyyy').format(
+                                    DateFormat('yyyy-MM-ddThh:mm:ss')
+                                        .parse(e['NEW DATE']));
+                              }
+                              return e;
+                            }).toList(),
                             widthSpecificColumn: Get.find<HomeController>()
                                 .getGridWidthByKey(
                                     userGridSettingList:
