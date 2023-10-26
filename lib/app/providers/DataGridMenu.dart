@@ -644,19 +644,7 @@ class DataGridMenu {
                                                     label: Text("NO")),
                                               ]);
                                         } else {
-                                          // print(_slecetedRow
-                                          //         .cells[_selectedColumn]!.value
-                                          //         .toString() +
-                                          //     _slecetedRow
-                                          //         .cells[_selectedColumn]!
-                                          //         .value
-                                          //         .runtimeType
-                                          //         .toString());
-                                          // if (_slecetedRow.sortIdx == 0) {
-                                          //   _index = 1;
-                                          // } else {
-                                          //   _index = _slecetedRow.sortIdx;
-                                          // }
+                                         
                                           if (_fromstart.value) {
                                             _fromstart.value = false;
                                           }
@@ -669,38 +657,14 @@ class DataGridMenu {
                                           } else {
                                             stateManager.moveScrollByRow(
                                                 PlutoMoveDirection.down,
-                                                _slecetedRow.sortIdx + 10);
+                                                _slecetedRow.sortIdx );
                                           }
                                           stateManager.setKeepFocus(false);
                                           stateManager.setCurrentCell(
                                               _slecetedRow
                                                   .cells[_selectedColumn],
                                               _slecetedRow.sortIdx);
-                                          // for (var element in stateManager
-                                          //     .rows) {
-                                          //   stateManager.setRowChecked(
-                                          //       element, false, notify: false);
-                                          // }
-                                          // stateManager.setRowChecked(
-                                          //     _slecetedRow, true, notify: true);
-                                          // stateManager.setCurrentCell(
-                                          //     _index == 1
-                                          //         ? stateManager
-                                          //             .getRowByIdx(_index)!
-                                          //             .cells[_selectedColumn]
-                                          //         : _slecetedRow
-                                          //             .cells[_selectedColumn],
-                                          //     _index);
-                                          // if(stateManager.currentRow!=null && stateManager.currentRow?.sortIdx==0 && _slecetedRow.sortIdx==2){
-                                          //   stateManager.setCurrentCell(
-                                          //       stateManager.getRowByIdx(_slecetedRow.sortIdx-1)?.cells[_selectedColumn],
-                                          //       _slecetedRow.sortIdx-1);
-                                          // }else {
-                                          //   stateManager.setCurrentCell(
-                                          //       _slecetedRow
-                                          //           .cells[_selectedColumn],
-                                          //       _slecetedRow.sortIdx);
-                                          // }
+                                          
                                         }
                                       }
                                     },

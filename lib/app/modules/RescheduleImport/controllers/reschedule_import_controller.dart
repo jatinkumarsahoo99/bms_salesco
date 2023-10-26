@@ -58,7 +58,7 @@ class RescheduleImportController extends GetxController {
     Get.find<ConnectorControl>().POSTMETHOD(
       api: ApiFactory.Reschedule_Import_ReImport,
       fun: (map) {
-        closeDialogIfOpen();
+        Get.back();
         if (map is Map &&
             map.containsKey('message') &&
             map['message'] != null) {
@@ -119,7 +119,7 @@ class RescheduleImportController extends GetxController {
               locationList.add(new DropDownValue.fromJsonDynamic(
                   e, "locationCode", "locationName"));
             });
-            selectedLocation = locationList[0];
+            // selectedLocation = locationList[0];
           }
         },
         failed: (resp) {

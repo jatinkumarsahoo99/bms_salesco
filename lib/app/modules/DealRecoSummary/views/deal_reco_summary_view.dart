@@ -62,7 +62,7 @@ class DealRecoSummaryView extends GetView<DealRecoSummaryController> {
                                         (value) {
                                       controllerX.selectedLocation = value;
                                       controllerX.fetchClient(value.value??"");
-                                    }, "Location", .23,
+                                    }, "Location", .26,
                                     isEnable: controllerX.isEnable,
                                     selected: controllerX.selectedLocation,
                                     dialogHeight: Get.height * .3,
@@ -71,7 +71,7 @@ class DealRecoSummaryView extends GetView<DealRecoSummaryController> {
                                     controllerX.channelList.value??[],
                                         (value) {
                                       controllerX.selectedChannel = value;
-                                    }, "Channel", .23,
+                                    }, "Channel", .26,
                                     isEnable: controllerX.isEnable,
                                     selected: controllerX.selectedChannel,
                                     dialogHeight: Get.height * .4,
@@ -98,11 +98,11 @@ class DealRecoSummaryView extends GetView<DealRecoSummaryController> {
                               child: Obx(()=>DropDownField.formDropDown1WidthMap(
                                 controllerX.agencyList.value??[],
                                     (value) {
-                                  controllerX.selectedAgency = value;
+                                  controllerX.selectedAgency?.value = value;
 
                                 }, "Agency", .55,
                                 isEnable: controllerX.isEnable,
-                                selected: controllerX.selectedAgency,
+                                selected: controllerX.selectedAgency?.value,
                                 dialogHeight: Get.height * .3,
                                 autoFocus: true,),),
                             ),

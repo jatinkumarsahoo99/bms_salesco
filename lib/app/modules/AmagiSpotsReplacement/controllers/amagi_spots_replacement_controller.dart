@@ -18,6 +18,7 @@ import '../../../../widgets/gridFromMap.dart';
 import '../../../../widgets/input_fields.dart';
 import '../../../controller/ConnectorControl.dart';
 import '../../../controller/HomeController.dart';
+import '../../../controller/MainController.dart';
 import '../../../data/DropDownValue.dart';
 import '../../../providers/ApiFactory.dart';
 import '../../AsrunDetailsReport/ChannelListModel.dart';
@@ -343,12 +344,12 @@ class AmagiSpotsReplacementController extends GetxController {
                   element.forEach((key, value) {
                     String k = key.toString().trim().replaceAll("\n", " ");
                     String keyNew = k.toLowerCase();
-                    print("key from testing${keyNew.toLowerCase()} >>>>val  $value");
+                    // print("key from testing${keyNew.toLowerCase()} >>>>val  $value");
                     mapDa[keyNew] = value;
                   });
                   mapData.add(mapDa);
                 }
-                print(">>>>>>>>>>>mapSummary$mapData");
+                // print(">>>>>>>>>>>mapSummary$mapData");
                 completer.complete(mapData);
               } else {
                 clientNameList.clear();
@@ -425,7 +426,7 @@ class AmagiSpotsReplacementController extends GetxController {
 
   List<Map<String, dynamic>> getDataFromGrid(
       PlutoGridStateManager? statemanager) {
-    // statemanager.setFilter((element) => true);
+    statemanager?.setFilter((element) => true);
     // statemanager.notifyListeners();
     List<Map<String, dynamic>> mapList = [];
     if (statemanager != null) {
@@ -459,7 +460,7 @@ class AmagiSpotsReplacementController extends GetxController {
   int masterSpotIndex = 0;
   int channelSpotIndex = 0;
   int localSpotIndex = 0;
-
+  List<LocalSpots>? localSpotsFil = [];
   Future<void> bindData() async {
     //  childChannelStateManager
     //  masterSpotsStateManager
@@ -584,11 +585,15 @@ class AmagiSpotsReplacementController extends GetxController {
             .toList();
 
         lsAllocController.text = (drlocalspots?.length ?? 0).toString();
+        print(">>>>>>>>>>>>>>>>>>>>>>lsAllocController${lsAllocController.text}");
         double amt = 0.0;
         for (LocalSpots dr in drlocalspots!) {
           amt += double.parse((dr.spotAmount).toString());
+          print(">>>>>>>>>>>>>>>>>>>>>>drlocalspots${dr.toJson()}");
         }
+
         lsRevController.text = amt.toString();
+        print(">>>>>>>>>>>>>>>>>>>>>>lsRevController${lsRevController.text}");
       } catch (ex) {}
 
       // rowFilter = "( Parentid = '" & Parentid & "' or Parentid is null  ) and colno = '" & localChannel & "'  and ('" & MStarttime & "' >= starttime and '" & MStarttime & "' <endtime )  and ( '" & Tapeduration & "' >= tapeduration ) "
@@ -632,6 +637,36 @@ class AmagiSpotsReplacementController extends GetxController {
                 (DateTime.parse("2023-01-01 ${element.cells['endTime']?.value}")
                         .compareTo(M_endTimeDateTime) ==
                     0)));
+
+        try{
+          localSpotsFil = amagiSpotReplacementModel?.lstSpots?.localSpots?.where((element) {
+            if ((element.parentID == null ||
+                element.parentID.toString().trim() ==
+                    Parentid.toString().trim()) &&
+            element.colNo.toString().trim() ==
+            localChannel.toString().trim() &&
+            (element.tapeDuration.toString().trim() ==
+            Tapeduration.toString().trim() ||
+            (element.tapeDuration ?? 0) <= Tapeduration!) &&
+            (DateTime.parse("2023-01-01 ${element.starttime}")
+                .isBefore(M_starttimeDateTime) ||
+            (DateTime.parse("2023-01-01 ${element.starttime}")
+                .compareTo(M_starttimeDateTime) ==
+            0)) &&
+            (DateTime.parse("2023-01-01 ${element.endTime}")
+                .isAfter(M_endTimeDateTime) ||
+            (DateTime.parse("2023-01-01 ${element.endTime}")
+                .compareTo(M_endTimeDateTime) ==
+            0))){
+              return true;
+            }else{
+              return false;
+            }
+          }).toList();
+        }catch(e){
+          localSpotsFil = [];
+        }
+
         localSpotsStateManager?.notifyListeners();
       } else {
         localSpotsStateManager?.setFilter((element) => true);
@@ -642,8 +677,28 @@ class AmagiSpotsReplacementController extends GetxController {
             element.cells['colNo']?.value.toString().trim() ==
                 localChannel.toString().trim() &&
             (element.cells['tapeDuration']?.value ?? 0) <= Tapeduration);
+        try{
+          localSpotsFil = amagiSpotReplacementModel?.lstSpots?.localSpots?.where((element) {
+            if ((element.parentID == null ||
+                element.parentID.toString().trim() ==
+                    Parentid.toString().trim()) &&
+                element.colNo.toString().trim() ==
+                    localChannel.toString().trim() &&
+                (element.tapeDuration.toString().trim() ==
+                    Tapeduration.toString().trim() ||
+                    (element.tapeDuration ?? 0) <= Tapeduration!)){
+              return true;
+            }else{
+              return false;
+            }
+          }).toList();
+        }catch(e){
+          localSpotsFil = [];
+        }
         localSpotsStateManager?.notifyListeners();
       }
+
+
 
       if (localSpotsStateManager?.rows.length == 0) {
         return;
@@ -669,6 +724,19 @@ class AmagiSpotsReplacementController extends GetxController {
               type: PlutoColumnType.number()));
       // (tblLocal.DataSource as DataTable).DefaultView.RowFilter = rowFilter;
       localSpotsStateManager?.notifyListeners();
+
+      localSpotsFil?.sort((a,b)=> double.parse((b.parentID??0).toString()).compareTo(double.parse((a.parentID??0).toString())) );
+      localSpotsFil?.sort((a,b)=> double.parse((b.rate??0).toString()).compareTo(double.parse((a.rate??0).toString())) );
+      localSpotsFil?.sort((a,b)=> double.parse((b.spotAmount??0).toString()).compareTo(double.parse((a.spotAmount??0).toString())) );
+
+      localSpotsStateManager?.rows.forEach((element) {
+        print(">>>>>>>>>>afterFilter X "+element.toJson().toString());
+      });
+      localSpotsFil?.forEach((element) {
+        print(">>>>>>>>>>afterFilter Y "+element.toJson().toString());
+      });
+
+
       // (tblLocal.DataSource as DataTable).DefaultView.sort = "Parentid desc , Rate desc , spotamount desc";
       double Alloc = 0.0, Unalloc = 0.0, AllocDur = 0.0, UnallocDur = 0.0;
 
@@ -867,12 +935,16 @@ class AmagiSpotsReplacementController extends GetxController {
     for (PlutoRow element in localSpotsStateManager?.rows ?? []) {
       element.cells['parentID']?.value = null;
     }
+    localSpotsFil?.forEach((element) {
+      element.parentID = null;
+    });
     localSpotsStateManager?.notifyListeners();
     bindData();
   }
 
   btnAllocateClick() {
     double balance = double.parse(balanceController.text);
+    double balance1 = double.parse(balanceController.text);
     for (PlutoRow element in localSpotsStateManager?.rows ?? []) {
       if (element.cells['tapeDuration']?.value <= balance) {
         element.cells['parentID']?.value =
@@ -880,6 +952,13 @@ class AmagiSpotsReplacementController extends GetxController {
         balance = balance - element.cells['tapeDuration']?.value;
       }
     }
+    localSpotsFil?.forEach((element) {
+      if ((element.tapeDuration??0) <= balance1) {
+        element.parentID =
+            masterSpotsStateManager?.currentRow?.cells['id']?.value;
+        balance1 = balance1 - (element.tapeDuration??0);
+      }
+    });
     localSpotsStateManager?.notifyListeners();
     bindData();
   }
@@ -1116,6 +1195,71 @@ class AmagiSpotsReplacementController extends GetxController {
     return completer.future;
   }
 
+  saveApiCall(){
+    LoadingDialog.modify("Proceed with Save?\n This action will trigger all media workflows!",cancelTitle: "Yes",
+        deleteTitle: "No",(){
+          callSave(true);
+        },(){
+          callSave(false);
+        });
+  }
+  callSave(bool allDone){
+    try{
+      LoadingDialog.call();
+      Map<String, dynamic> postData = {
+        "lstmaster":getDataFromGrid(masterSpotsStateManager),
+        "lstlocal":getDataFromGrid(localSpotsStateManager),
+        "allDone": allDone,
+        "locationCode":  selectedLocation?.key ?? "",
+        "channelcode": selectedChannel?.key ?? "",
+        "modifiedby": Get.find<MainController>().user?.logincode ?? "",
+        "scheduledate":DateFormat("yyyy-MM-ddTHH:mm:ss")
+            .format(DateFormat("dd-MM-yyyy").parse(frmDate.text)),
+      };
+      Get.find<ConnectorControl>().POSTMETHOD(
+          api: ApiFactory.AMAGI_SPOT_REPLACEMENT_GET_SAVE(),
+        json: postData,
+        fun: (map){
+            closeDialogIfOpen();
+            getSpots().then((value) {
+              if ((amagiSpotReplacementModel
+                  ?.lstSpots
+                  ?.fastInserts
+                  ?.promoResponse
+                  ?.length ??
+                  0) >
+                  0) {
+                if (canDialogShow.value ==
+                    true) {
+                  title?.value = "";
+                  mapList.value = value;
+                  mapList.refresh();
+                  // dragableDialog(mapList: value);
+                  title?.refresh();
+                  // controller.bindData();
+                } else {
+                  title?.value = "";
+                  // print(">>>>>>>>>valueMapData" + value.toString());
+                  mapList.value = value;
+                  // dragAbleDialogGet();
+                }
+              }
+              Future.delayed(
+                Duration(seconds: 2),
+                    () {
+                  bindData();
+                },
+              );
+            });
+            print(">>>>>>>>>>>>savemap"+map.toString());
+
+      },);
+    }catch(e){
+      clearAll();
+    }
+  }
+
+
   @override
   void onInit() {
     locationNode = FocusNode(
@@ -1151,6 +1295,8 @@ class AmagiSpotsReplacementController extends GetxController {
   formHandler(String string) {
     if (string == "Clear") {
       clearAll();
+    }else if(string == "Save"){
+      saveApiCall();
     }
   }
 

@@ -1190,6 +1190,8 @@ class ApiFactory {
 ////////////////////////// Amagi Spots Replacement ////////////////////////////////////
   static String AMAGI_SPOT_REPLACEMENT_GET_LOCATION() =>
       "$BASE_URL/api/AmagiSpotsReplacement/GetLocation";
+  static String AMAGI_SPOT_REPLACEMENT_GET_SAVE() =>
+      "$BASE_URL/api/AmagiSpotsReplacement/Save";
   static String AMAGI_SPOT_REPLACEMENT_GET_CHANNEL() =>
       "$BASE_URL/api/AmagiSpotsReplacement/GetChannel";
   static String AMAGI_SPOT_REPLACEMENT_GET_SPOTS() =>

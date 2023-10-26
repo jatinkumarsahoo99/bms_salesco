@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:collection/collection.dart';
 import 'package:get/get.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
@@ -116,12 +117,26 @@ class CommercialLanguageSpecificationController extends GetxController {
               if (map is Map &&
                   map.containsKey("success") &&
                   map["success"] != null) {
-                LoadingDialog.callDataSavedMessage(map["success"]);
+                LoadingDialog.callDataSavedMessage(map["success"],
+                    callback: () {
+                  Get.delete<CommercialLanguageSpecificationController>();
+                  Get.find<HomeController>().clearPage1();
+                });
               } else {
                 LoadingDialog.callInfoMessage(map.toString());
               }
             });
       }
+    }
+  }
+
+  isEqualData() {
+    if (const IterableEquality().equals(
+        commercialLangModel?.display, commercialLangModel?.backupDisplay)) {
+      // if (const SetEquality().equals([1,2,3].toSet(),[1,2,3].toSet())) {
+      print("Equal");
+    } else {
+      print("Not equal");
     }
   }
 }

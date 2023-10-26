@@ -1394,7 +1394,7 @@ class InputFields {
     Function(String)? onchanged,
     double? padLeft = 0,
     bool? showbtn = true,
-    List<TextInputFormatter> inputformatters = const [],
+    List<TextInputFormatter>? inputformatters,
     num? width = 0.12,
     bool capital = false,
     bool isNegativeReq = true,
@@ -1457,11 +1457,12 @@ class InputFields {
                 textAlignVertical: TextAlignVertical.center,
                 keyboardType: TextInputType.datetime,
                 textAlign: TextAlign.left,
-                inputFormatters: [
-                  LengthLimitingTextInputFormatter(
-                      maxchar ?? SizeDefine.maxcharlimit),
-                  FilteringTextInputFormatter.digitsOnly,
-                ],
+                inputFormatters: inputformatters ??
+                    [
+                      LengthLimitingTextInputFormatter(
+                          maxchar ?? SizeDefine.maxcharlimit),
+                      FilteringTextInputFormatter.digitsOnly,
+                    ],
                 enabled: isEnabled ?? true,
                 decoration: InputDecoration(
                   errorBorder: InputBorder.none,
@@ -2384,6 +2385,7 @@ class InputFields {
       required double widthRatio,
       double? height,
       double? paddingLeft,
+      bool isHeaderRequiredGrey = true,
       Function? onEditComplete}) {
     // var data = 0.obs;
     return Column(
@@ -2391,7 +2393,9 @@ class InputFields {
       children: [
         Padding(
           padding: EdgeInsets.only(left: paddingLeft ?? 10),
-          child: LabelText.style(hint: hintTxt, txtColor: Colors.grey),
+          child: LabelText.style(
+              hint: hintTxt,
+              txtColor: isHeaderRequiredGrey ? Colors.grey : Colors.black),
         ),
         Container(
           // padding: const EdgeInsets.only(
