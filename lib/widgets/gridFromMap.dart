@@ -165,6 +165,7 @@ class DataGridFromMap extends StatelessWidget {
                           fontSize: SizeDefine.columnTitleFontSize,
                         ),
                         maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     );
                   }
@@ -233,6 +234,7 @@ class DataGridFromMap extends StatelessWidget {
                         fontSize: SizeDefine.columnTitleFontSize,
                       ),
                       maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   );
                 }
@@ -249,6 +251,7 @@ class DataGridFromMap extends StatelessWidget {
                       fontSize: SizeDefine.columnTitleFontSize,
                     ),
                     maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 );
               }
@@ -1454,7 +1457,7 @@ class DataGridFromMapAmagiDialog extends StatelessWidget {
 Color getColors(PlutoColumnRendererContext plutoCon) {
   Color color = Colors.white;
   print(">>>>>>>>>>>>>>>>>>>keyGet" + plutoCon.cell.column.title.toString());
-  try{
+  try {
     if (plutoCon.cell.column.title.toString().trim().toLowerCase() !=
         "Parentid".toLowerCase()) {
       List<String>? data = plutoCon
@@ -1475,7 +1478,7 @@ Color getColors(PlutoColumnRendererContext plutoCon) {
     } else {
       color = Colors.white;
     }
-  }catch(e){
+  } catch (e) {
     color = Colors.white;
   }
 

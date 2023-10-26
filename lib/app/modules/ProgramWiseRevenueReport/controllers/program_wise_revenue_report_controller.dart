@@ -40,7 +40,7 @@ class ProgramWiseRevenueReportController extends GetxController {
 
   RxnString bookingType = RxnString();
   var dataTableList = [].obs;
-  var clientTableList = [].obs;
+  var programSummaryTableList = [].obs;
 
   var isDetails = true.obs;
   bool val = true;
@@ -253,8 +253,8 @@ class ProgramWiseRevenueReportController extends GetxController {
             DateFormat("yyyy-MM-dd").format(endDate)),
         fun: (Map map) {
           Get.back();
-          clientTableList.clear();
-          clientTableList.value.addAll(map['summaryReport']['result']);
+          programSummaryTableList.clear();
+          programSummaryTableList.value.addAll(map['summaryReport']['result']);
         });
   }
 
@@ -281,14 +281,14 @@ class ProgramWiseRevenueReportController extends GetxController {
                     child: Obx(
                       () => Container(
                         margin: const EdgeInsets.only(bottom: 8),
-                        decoration: clientTableList.isEmpty
+                        decoration: programSummaryTableList.isEmpty
                             ? BoxDecoration(
                                 border: Border.all(color: Colors.grey))
                             : null,
-                        child: clientTableList.value.isEmpty
+                        child: programSummaryTableList.value.isEmpty
                             ? null
                             : DataGridShowOnlyKeys(
-                                mapData: clientTableList.value,
+                                mapData: programSummaryTableList.value,
                                 hideCode: false,
                                 exportFileName: "ProgramWise Revenue Report",
                               ),
@@ -302,6 +302,7 @@ class ProgramWiseRevenueReportController extends GetxController {
                       child: FormButton(
                         btnText: "Return",
                         callback: () {
+                          programSummaryTableList.clear();
                           Get.back();
                         },
                         showIcon: false,

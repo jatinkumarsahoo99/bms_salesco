@@ -1,14 +1,17 @@
 class CommercialLanguageModel {
   List<Display>? display;
+  List<Display>? backupDisplay;
 
   CommercialLanguageModel({this.display});
 
   CommercialLanguageModel.fromJson(Map<String, dynamic> json) {
     if (json['display'] != null) {
       display = <Display>[];
+      backupDisplay = <Display>[];
       json['display'].forEach((v) {
         display!.add(new Display.fromJson(v));
       });
+      backupDisplay = display;
     }
   }
 

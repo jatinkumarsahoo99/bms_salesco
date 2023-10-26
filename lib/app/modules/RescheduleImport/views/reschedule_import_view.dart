@@ -15,9 +15,6 @@ import '../controllers/reschedule_import_controller.dart';
 class RescheduleImportView extends GetView<RescheduleImportController> {
   RescheduleImportView({Key? key}) : super(key: key);
 
-  RescheduleImportController controller =
-      Get.put<RescheduleImportController>(RescheduleImportController());
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -87,22 +84,16 @@ class RescheduleImportView extends GetView<RescheduleImportController> {
                         : null,
                     child: controller.dataTableList.isEmpty
                         ? null
-                        : GetBuilder<RescheduleImportController>(
-                            assignId: true,
-                            id: "grid",
-                            builder: (controller) {
-                              return DataGridFromMap(
-                                formatDate: false,
-                                mode: PlutoGridMode.selectWithOneTap,
-                                mapData: controller.dataTableList.value,
-                                widthSpecificColumn: Get.find<HomeController>()
-                                    .getGridWidthByKey(
-                                        userGridSettingList:
-                                            controller.userGridSetting1),
-                                onload: (PlutoGridOnLoadedEvent load) {
-                                  controller.stateManager = load.stateManager;
-                                },
-                              );
+                        : DataGridFromMap(
+                            formatDate: false,
+                            mode: PlutoGridMode.selectWithOneTap,
+                            mapData: controller.dataTableList.value,
+                            widthSpecificColumn: Get.find<HomeController>()
+                                .getGridWidthByKey(
+                                    userGridSettingList:
+                                        controller.userGridSetting1),
+                            onload: (PlutoGridOnLoadedEvent load) {
+                              controller.stateManager = load.stateManager;
                             },
                           ),
                   );

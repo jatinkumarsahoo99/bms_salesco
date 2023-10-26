@@ -229,12 +229,15 @@ class TapeIDCampaignView extends GetView<TapeIDCampaignController> {
                                             .isEmpty
                                         ? const SizedBox()
                                         : DataGridFromMap3(
+                                            hideCode: false,
                                             columnAutoResize: false,
                                             exportFileName: "Tape ID Campaign",
                                             checkBoxColumnKey: ["isActive"],
                                             actionIconKey: ["isActive"],
                                             checkBoxStrComparison: "true",
                                             uncheckCheckBoxStr: "false",
+                                            mode:
+                                                PlutoGridMode.selectWithOneTap,
                                             colorCallback: (row) => (row
                                                     .row.cells
                                                     .containsValue(controller
@@ -249,13 +252,7 @@ class TapeIDCampaignView extends GetView<TapeIDCampaignController> {
                                                   .setSelectingMode(
                                                       PlutoGridSelectingMode
                                                           .row);
-                                              event.stateManager
-                                                  .setSelecting(true);
-                                              event.stateManager
-                                                  .moveScrollByRow(
-                                                      PlutoMoveDirection.down,
-                                                      controller
-                                                          .historyEditIdx);
+
                                               event.stateManager.setCurrentCell(
                                                 event.stateManager
                                                     .getRowByIdx(controller
@@ -263,6 +260,11 @@ class TapeIDCampaignView extends GetView<TapeIDCampaignController> {
                                                     ?.cells['isActive'],
                                                 controller.historyEditIdx,
                                               );
+                                              event.stateManager
+                                                  .moveScrollByRow(
+                                                      PlutoMoveDirection.down,
+                                                      controller
+                                                          .historyEditIdx);
                                             },
                                             onEdit: (event) {
                                               controller.historyEditIdx =
@@ -323,25 +325,28 @@ class TapeIDCampaignView extends GetView<TapeIDCampaignController> {
                                                         ?.currentCell))
                                                 ? Colors.deepPurple.shade200
                                                 : Colors.white,
+                                            mode:
+                                                PlutoGridMode.selectWithOneTap,
                                             onload: (event) {
                                               controller
                                                       .locationChannelManager =
                                                   event.stateManager;
-                                              event.stateManager
-                                                  .setSelectingMode(
-                                                      PlutoGridSelectingMode
-                                                          .row);
-                                              event.stateManager
-                                                  .setSelecting(true);
-                                              event.stateManager.moveScrollByRow(
-                                                  PlutoMoveDirection.down,
-                                                  controller
-                                                      .lastLocationChannelEditIdx);
+                                              // event.stateManager
+                                              //     .setSelectingMode(
+                                              //         PlutoGridSelectingMode
+                                              //             .row);
+                                              // event.stateManager
+                                              //     .setSelecting(true);
+
                                               event.stateManager.setCurrentCell(
                                                   event.stateManager
                                                       .getRowByIdx(controller
                                                           .lastLocationChannelEditIdx)
-                                                      ?.cells['selectRow'],
+                                                      ?.cells['locationName'],
+                                                  controller
+                                                      .lastLocationChannelEditIdx);
+                                              event.stateManager.moveScrollByRow(
+                                                  PlutoMoveDirection.down,
                                                   controller
                                                       .lastLocationChannelEditIdx);
                                             },

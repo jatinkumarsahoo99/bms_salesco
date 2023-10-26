@@ -1912,8 +1912,7 @@ class InputFields {
                   /* controller.text =
                       "${(int.tryParse(controller.text) ?? 1) - 1}";*/
                   if (!isNegativeReq) {
-                    if (double.tryParse(controller.text) != 1.00 &&
-                        double.tryParse(controller.text) != 0.00) {
+                    if (double.tryParse(controller.text) != 0.00) {
                       double result =
                           (double.tryParse(controller.text) ?? 1.00) - 1.00;
                       controller.text = result.toStringAsFixed(2);
@@ -2007,7 +2006,7 @@ class InputFields {
                                   if (!isNegativeReq) {
                                     print("Click on negative>>>" +
                                         controller.text);
-                                    if (controller.text != "0") {
+                                    if (controller.text != "0.00") {
                                       double result =
                                           (double.tryParse(controller.text) ??
                                                   1.00) -
@@ -2386,6 +2385,7 @@ class InputFields {
       required double widthRatio,
       double? height,
       double? paddingLeft,
+      bool isHeaderRequiredGrey = true,
       Function? onEditComplete}) {
     // var data = 0.obs;
     return Column(
@@ -2393,7 +2393,9 @@ class InputFields {
       children: [
         Padding(
           padding: EdgeInsets.only(left: paddingLeft ?? 10),
-          child: LabelText.style(hint: hintTxt, txtColor: Colors.grey),
+          child: LabelText.style(
+              hint: hintTxt,
+              txtColor: isHeaderRequiredGrey ? Colors.grey : Colors.black),
         ),
         Container(
           // padding: const EdgeInsets.only(
