@@ -98,7 +98,7 @@ class CommercialLanguageSpecificationController extends GetxController {
       LoadingDialog.callInfoMessage("Please select channel");
     } else {
       bool? isDataOk =
-          await areListsEqual(initialIndexRows, stateManager?.checkedRows);
+          await areListsEqual1(initialIndexRows, stateManager?.checkedRows);
       print("Value is>>>" + isDataOk.toString());
       if ((stateManager?.checkedRows.length ?? 0) == 0) {
         LoadingDialog.callInfoMessage("Please select rows");
@@ -151,14 +151,9 @@ class CommercialLanguageSpecificationController extends GetxController {
     }
   }*/
 
-  areListsEqual(var list1, var list2) {
+  /*Future<> areListsEqual(var list1, var list2) {
     Completer<bool> completer = Completer<bool>();
-    // check if both are lists
-    if (!(list1 is List && list2 is List)
-        // check if both have same length
-        ||
-        list1.length != list2.length) {
-      // return false;
+    if (list1.length != list2.length) {
       completer.complete(false);
     }
 
@@ -174,5 +169,27 @@ class CommercialLanguageSpecificationController extends GetxController {
       completer.complete(true);
     }
     return completer.future;
+  }*/
+
+  Future<bool> areListsEqual1(var list1, var list2) async {
+    if (list1.length != list2.length) {
+      // completer.complete(false);
+      return false;
+    }
+
+    // check if elements are equal
+    for (int i = 0; i < list1.length; i++) {
+      if (list1[i].cells["selectLanguage"]?.value !=
+          list2[i].cells["selectLanguage"]?.value) {
+        // return false;
+        // completer.complete(false);
+        return false;
+      }
+    }
+    return true;
+    // if (!completer.isCompleted) {
+    //   completer.complete(true);
+    // }
+    // return completer.future;
   }
 }
