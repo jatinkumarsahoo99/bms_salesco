@@ -74,6 +74,8 @@ class TapeIDCampaignController extends GetxController {
     loadModel = null;
     tapeIdFN.requestFocus();
     updateUI();
+
+    // Get.find<HomeController>().clearPage1();
   }
 
   updateUI() {
