@@ -36,7 +36,6 @@ class RescheduleImportController extends GetxController {
   List<Map<String, Map<String, double>>>? userGridSetting1;
   fetchUserSetting1() async {
     userGridSetting1 = await Get.find<HomeController>().fetchUserSetting1();
-    update(["grid"]);
   }
 
   @override
@@ -54,6 +53,10 @@ class RescheduleImportController extends GetxController {
   }
 
   saveRecord() {
+    if (dataTableList.isEmpty) {
+      LoadingDialog.callInfoMessage("Please add data first");
+      return;
+    }
     LoadingDialog.call();
     Get.find<ConnectorControl>().POSTMETHOD(
       api: ApiFactory.Reschedule_Import_ReImport,
