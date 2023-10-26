@@ -147,10 +147,16 @@ class RescheduleImportController extends GetxController {
     }
   }
 
-  void handleCheckAndUncheck() {}
   clearAll() {
-    Get.delete<RescheduleImportController>();
-    Get.find<HomeController>().clearPage1();
+    selectedLocation = null;
+    selectedChannel = null;
+    locationList.refresh();
+    channelList.refresh();
+    fileName.value = "";
+    dataTableList.value = [];
+    dataTableList.refresh();
+    // Get.delete<RescheduleImportController>();
+    // Get.find<HomeController>().clearPage1();
   }
 
   Future<void> selectFile() async {
