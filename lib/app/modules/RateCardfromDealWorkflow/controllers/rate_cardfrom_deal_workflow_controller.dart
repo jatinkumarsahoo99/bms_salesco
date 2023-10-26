@@ -245,23 +245,29 @@ class RateCardfromDealWorkflowController extends GetxController {
       "modifiedby": Get.find<MainController>().user?.logincode ?? "",
       "typeRateCards": gridData.export?.map((e) => e.toJson1()).toList()
     };
-    Get.find<ConnectorControl>().POSTMETHOD(
-        api: ApiFactory.Rate_Card_From_Deal_Workflow_SAVE,
-        json: postData,
-        fun: (map) {
-          closeDialogIfOpen();
-          print(">>" + map.toString());
-          if (map is Map &&
+    try{
+      Get.find<ConnectorControl>().POSTMETHOD(
+          api: ApiFactory.Rate_Card_From_Deal_Workflow_SAVE,
+          json: postData,
+          fun: (map) {
+            closeDialogIfOpen();
+            print(">>" + map.toString());
+            /*if (map is Map &&
               map.containsKey('message') &&
               map['message'] != null) {
             LoadingDialog.callDataSavedMessage(map['message'] ?? "",
                 callback: () {
               clearAll();
             });
-          } else {
-            LoadingDialog.showErrorDialog((map ?? "").toString());
           }
-        });
+          else {
+            LoadingDialog.showErrorDialog((map ?? "").toString());
+          }*/
+          });
+    }catch(e){
+      closeDialogIfOpen();
+    }
+
   }
 
   clearAll() {
