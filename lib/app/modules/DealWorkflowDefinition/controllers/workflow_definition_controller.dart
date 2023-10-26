@@ -16,7 +16,7 @@ class WorkflowDefinitionController extends GetxController {
   //TODO: Implement WorkflowDefinitionController
   Rx<bool> isEnable = Rx<bool>(true);
   Rx<bool> userEnable = Rx<bool>(true);
-  Rx<bool> groupEnable = Rx<bool>(false);
+  Rx<bool> groupEnable = Rx<bool>(true);
   final count = 0.obs;
   var clientDetails = RxList<DropDownValue>();
   DropDownValue? selectedClientDetails;
@@ -55,7 +55,7 @@ class WorkflowDefinitionController extends GetxController {
   TextEditingController stepNameController = new TextEditingController();
   TextEditingController formNameController = new TextEditingController();
 
-  RxString selectRadio1 = RxString("Employee");
+  RxnString selectRadio1 = RxnString(null);
   RxString selectRadio2 = RxString("After");
 
   FocusNode brandName = FocusNode();
@@ -279,13 +279,13 @@ class WorkflowDefinitionController extends GetxController {
             dealWorkDefinitionGridModel = DealWorkDefinitionGridModel.fromJson(
                 map as Map<String, dynamic>);
             approvalSequenceId="";
-            clearNew();
+            // clearNew();
             update(['grid']);
           } else {
             dealWorkDefinitionGridModel = DealWorkDefinitionGridModel(display: []);
             approvalSequenceId="";
             gridStateManager = null;
-            clearNew();
+            // clearNew();
             update(['grid']);
           }
         });
@@ -347,7 +347,7 @@ class WorkflowDefinitionController extends GetxController {
                     approvalSequenceID: e.approvalSequenceID ?? 0,
                     employees: e.employees ?? "",
                     formName: e.formName ?? "",
-                    groupID: e.groupID ?? 0,
+                    groupID: e.groupID ?? "",
                     groupName: e.groupName ?? "",
                     personnelNo: e.personnelNo ?? "",
                     sequenceName: e.sequenceName ?? ""));
@@ -370,7 +370,7 @@ class WorkflowDefinitionController extends GetxController {
         Map<String, dynamic> rowMap = {};
         for (var key in row.cells.keys) {
           if(key.toString().trim() == "groupID"){
-            if(row.cells[key]?.value == 0){
+            if(row.cells[key]?.value == "0" || row.cells[key]?.value == ""){
               rowMap[key] = null;
             }else{
               rowMap[key] = row.cells[key]?.value;
@@ -440,13 +440,16 @@ class WorkflowDefinitionController extends GetxController {
           approvalSequenceId != "0") || isDoubleClick) {
         // LoadingDialog.call();
         int selIndex = (selectedIndex ?? 0);
+        if(selectRadio1 == null || selectRadio1.value == null){
+          selectedUser = null;
+        }
 
-        gridStateManager?.rows[selIndex].cells['approvalSequenceID']?.value = int.parse(approvalSequenceId ?? "0");
+        gridStateManager?.rows[selIndex].cells['approvalSequenceID']?.value = int.parse((approvalSequenceId != null && approvalSequenceId != "" )?approvalSequenceId:"0");
         gridStateManager?.rows[selIndex].cells['sequenceName']?.value = stepNameController.text ?? "";
         gridStateManager?.rows[selIndex].cells['formName']?.value = formNameController.text ?? "";
         gridStateManager?.rows[selIndex].cells['personnelNo']?.value = selectedUser?.key ?? "";
         gridStateManager?.rows[selIndex].cells['groupID']?.value = (selectedGroup?.key != null &&
-            selectedGroup?.key != "" )? int.parse(selectedGroup?.key??"0"):0;
+            selectedGroup?.key != "" )? (selectedGroup?.key??""):"";
         gridStateManager?.rows[selIndex].cells['groupName']?.value = selectedGroup?.value ?? "";
         gridStateManager?.rows[selIndex].cells['employees']?.value = selectedUser?.value ?? "";
 
@@ -473,39 +476,46 @@ class WorkflowDefinitionController extends GetxController {
         dealWorkDefinitionGridModel?.display?[selIndex].groupName =
             selectedGroup?.value ?? "";*/
         // Get.back();
-      } else {
+      }
+      else {
         // LoadingDialog.call();
         int selIndex = (selectedIndex ?? 0) + 1;
-        if(gridStateManager == null || (gridStateManager?.rows.length??0) == 0){
+        // if(gridStateManager == null || (gridStateManager?.rows.length??0) == 0){
           selIndex = 0;
+          if(selectRadio1 == null || selectRadio1.value == null){
+            selectedUser = null;
+          }
            dealWorkDefinitionGridModel?.display?.insert(
             selIndex,
             Display(
-                approvalSequenceID: int.parse(approvalSequenceId ?? "0"),
+                approvalSequenceID: int.parse((approvalSequenceId != null && approvalSequenceId != "" )?approvalSequenceId:"0"),
                 employees: selectedUser?.value ?? "",
                 formName: formNameController.text ?? "",
                 groupID: (selectedGroup?.key != null &&
-                    selectedGroup?.key != "" )? int.parse(selectedGroup?.key??"0"):0,
+                    selectedGroup?.key != "" )?(selectedGroup?.key??""):"",
                 groupName: selectedGroup?.value ?? "",
                 personnelNo: selectedUser?.key ?? "",
                 sequenceName: stepNameController.text ?? ""));
           update(['grid']);
-        }
-        else{
+        // }
+       /* else{
+          if(selectRadio1 == null || selectRadio1.value == null){
+            selectedUser = null;
+          }
           gridStateManager?.insertRows(selIndex,
               [PlutoRow(cells: {
-                "approvalSequenceID":PlutoCell(value: int.parse(approvalSequenceId ?? "0")),
+                "approvalSequenceID":PlutoCell(value: (int.parse((approvalSequenceId != null && approvalSequenceId != "" )?approvalSequenceId:"0"))),
                 "sequenceName": PlutoCell(value:stepNameController.text ?? "" ) ,
                 "formName": PlutoCell(value:formNameController.text ?? ""),
                 "personnelNo": PlutoCell(value:selectedUser?.key ?? ""),
-                "groupID":PlutoCell(value: (selectedGroup?.key != null &&
-                    selectedGroup?.key != "" )? int.parse(selectedGroup?.key??"0"):0),
+                "groupID":PlutoCell(value: ((selectedGroup?.key != null &&
+                    selectedGroup?.key != "" )? (selectedGroup?.key??""):"")),
                 "groupName": PlutoCell(value: selectedGroup?.value ?? ""),
                 "employees":PlutoCell(value: selectedUser?.value ?? "")
 
               })]);
           gridStateManager?.notifyListeners();
-        }
+        }*/
         // Get.back();
       }
       clearNew();
@@ -515,13 +525,16 @@ class WorkflowDefinitionController extends GetxController {
       if ((approvalSequenceId != null &&
           approvalSequenceId != "" &&
           approvalSequenceId != "0") || isDoubleClick) {
+        if(selectRadio1 == null || selectRadio1.value == null){
+          selectedUser = null;
+        }
         // LoadingDialog.call();
-        gridStateManager?.rows[(selectedIndex??0)].cells['approvalSequenceID']?.value = int.parse(approvalSequenceId ?? "0");
+        gridStateManager?.rows[(selectedIndex??0)].cells['approvalSequenceID']?.value = int.parse((approvalSequenceId != null && approvalSequenceId != "" )?approvalSequenceId:"0");
         gridStateManager?.rows[(selectedIndex??0)].cells['sequenceName']?.value = stepNameController.text ?? "";
         gridStateManager?.rows[(selectedIndex??0)].cells['formName']?.value = formNameController.text ?? "";
         gridStateManager?.rows[selectedIndex??0].cells['personnelNo']?.value = selectedUser?.key ?? "";
         gridStateManager?.rows[(selectedIndex??0)].cells['groupID']?.value = (selectedGroup?.key != null &&
-            selectedGroup?.key != "" )? int.parse(selectedGroup?.key??"0"):0;
+            selectedGroup?.key != "" )? (selectedGroup?.key??""):"";
         gridStateManager?.rows[(selectedIndex??0)].cells['groupName']?.value = selectedGroup?.value ?? "";
         gridStateManager?.rows[(selectedIndex??0)].cells['employees']?.value = selectedUser?.value ?? "";
 
@@ -551,34 +564,40 @@ class WorkflowDefinitionController extends GetxController {
         // Get.back();
       } else {
         // LoadingDialog.call();
-        if(gridStateManager == null || (gridStateManager?.rows.length??0) == 0){
+        // if(gridStateManager == null || (gridStateManager?.rows.length??0) == 0){
+          if(selectRadio1 == null || selectRadio1.value == null){
+            selectedUser = null;
+          }
           dealWorkDefinitionGridModel?.display?.insert(
             selectedIndex ?? 0,
             Display(
-                approvalSequenceID: int.parse(approvalSequenceId ?? "0"),
+                approvalSequenceID: int.parse((approvalSequenceId != null && approvalSequenceId != "" )?approvalSequenceId:"0"),
                 employees: selectedUser?.value ?? "",
                 formName: formNameController.text ?? "",
                 groupID:(selectedGroup?.key != null &&
-                    selectedGroup?.key != "" )? int.parse(selectedGroup?.key??"0"):0,
+                    selectedGroup?.key != "" )? (selectedGroup?.key??""):"",
                 groupName: selectedGroup?.value ?? "",
                 personnelNo: selectedUser?.key ?? "",
                 sequenceName: stepNameController.text ?? ""));
           update(['grid']);
-        }
-        else{
+        // }
+       /* else{
+          if(selectRadio1 == null || selectRadio1.value == null){
+            selectedUser = null;
+          }
           gridStateManager?.insertRows((selectedIndex??0),
               [PlutoRow(cells: {
-                "approvalSequenceID":PlutoCell(value: int.parse(approvalSequenceId ?? "0")),
+                "approvalSequenceID":PlutoCell(value: (int.parse((approvalSequenceId != null && approvalSequenceId != "" )?approvalSequenceId:"0"))),
                 "sequenceName": PlutoCell(value:stepNameController.text ?? "" ) ,
                 "formName": PlutoCell(value:formNameController.text ?? ""),
                 "personnelNo": PlutoCell(value:selectedUser?.key ?? ""),
-                "groupID":PlutoCell(value: (selectedGroup?.key != null &&
-                    selectedGroup?.key != "" )? int.parse(selectedGroup?.key??"0"):0),
+                "groupID":PlutoCell(value: ((selectedGroup?.key != null &&
+                    selectedGroup?.key != "" )? (selectedGroup?.key??""):"")),
                 "groupName": PlutoCell(value: selectedGroup?.value ?? ""),
                 "employees":PlutoCell(value: selectedUser?.value ?? "")
               })]);
           gridStateManager?.notifyListeners();
-        }
+        }*/
         // Get.back();
       }
       clearNew();
@@ -590,7 +609,7 @@ class WorkflowDefinitionController extends GetxController {
   clearNew() {
     selectedGroup = null;
     selectedUser = null;
-    selectRadio1.value = "Employee";
+    selectRadio1 =  RxnString("Employee");
     stepNameController.text = "";
     formNameController.text = "";
     approvalSequenceId = "0";
