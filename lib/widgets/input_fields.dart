@@ -1912,8 +1912,7 @@ class InputFields {
                   /* controller.text =
                       "${(int.tryParse(controller.text) ?? 1) - 1}";*/
                   if (!isNegativeReq) {
-                    if (double.tryParse(controller.text) != 1.00 &&
-                        double.tryParse(controller.text) != 0.00) {
+                    if (double.tryParse(controller.text) != 0.00) {
                       double result =
                           (double.tryParse(controller.text) ?? 1.00) - 1.00;
                       controller.text = result.toStringAsFixed(2);
@@ -2007,7 +2006,7 @@ class InputFields {
                                   if (!isNegativeReq) {
                                     print("Click on negative>>>" +
                                         controller.text);
-                                    if (controller.text != "0") {
+                                    if (controller.text != "0.00") {
                                       double result =
                                           (double.tryParse(controller.text) ??
                                                   1.00) -

@@ -80,10 +80,19 @@ class EdiRoBookingView extends StatelessWidget {
                                 selected: controller.selectedRoRefNo,
                                 isEnable: controller.isEnable.value,
                               ),
-                              SizedBox(
+                              Obx(
+                                () => SizedBox(
                                   width: Get.width * 0.08,
                                   child: FormButtonWrapper(
-                                      btnText: "Show & Link")),
+                                    btnText: "Show & Link",
+                                    callback: () {
+                                      controller.showLink();
+                                    },
+                                    showIcon: false,
+                                    isEnabled: controller.isShowLink.value,
+                                  ),
+                                ),
+                              ),
                               DropDownField.formDropDown1WidthMap(
                                 controller.loactions.value,
                                 (data) {
@@ -122,14 +131,15 @@ class EdiRoBookingView extends StatelessWidget {
                                 isEnable: controller.isEnable.value,
                               ),
                               DropDownField.formDropDown1WidthMap(
-                                [],
-                                (valeu) {},
-                                "Deal No",
-                                .105,
-                              ),
+                                  controller.dealNo.value, (data) {
+                                controller.selectedDealNo = data;
+                                controller.dealLeave();
+                              }, "Deal No", .105,
+                                  dialogHeight: 250,
+                                  selected: controller.selectedDealNo),
                               InputFields.formField1(
                                   hintTxt: "",
-                                  controller: TextEditingController(),
+                                  controller: controller.dealTypeTEC,
                                   width: 0.105,
                                   isEnable: false),
                               DropDownField.formDropDown1WidthMap(
@@ -140,13 +150,13 @@ class EdiRoBookingView extends StatelessWidget {
                                   selected: controller.selectedBrand),
                               DateWithThreeTextField(
                                 title: "Start Date",
-                                mainTextController: TextEditingController(),
+                                mainTextController: controller.startDateTEC,
                                 widthRation: .105,
                                 isEnable: false,
                               ),
                               DateWithThreeTextField(
                                 title: "End Date",
-                                mainTextController: TextEditingController(),
+                                mainTextController: controller.endDateTEC,
                                 widthRation: .105,
                                 isEnable: false,
                               ),
@@ -195,7 +205,7 @@ class EdiRoBookingView extends StatelessWidget {
                               InputFields.formField1(
                                 hintTxt: "Pay Mode",
                                 isEnable: false,
-                                controller: TextEditingController(),
+                                controller: controller.payModeTEC,
                                 width: 0.18,
                               ),
                               SizedBox(
@@ -404,57 +414,79 @@ class EdiRoBookingView extends StatelessWidget {
                                         ),
                                       ),
                                     ])))),
-                    Card(
-                        child: Padding(
-                            padding: EdgeInsets.all(4),
-                            child: SizedBox(
-                                width: Get.width * 0.07,
-                                child: Wrap(
-                                  children: [
-                                    InputFields.formField1(
-                                      hintTxt: "Max Spend",
-                                      isEnable: false,
-                                      controller: controller.maxSpendTEC,
-                                      width: 0.05,
-                                    ),
-                                    InputFields.formField1(
-                                      hintTxt: "Booked Amount",
-                                      isEnable: false,
-                                      controller: controller.bookedAmountTEC,
-                                      width: 0.05,
-                                    ),
-                                    InputFields.formField1(
-                                      hintTxt: "Val Amount",
-                                      isEnable: false,
-                                      controller: controller.valAmountTEC,
-                                      width: 0.05,
-                                    ),
-                                  ],
-                                )))),
+                    Column(
+                      children: [
+                        Card(
+                            child: Padding(
+                                padding: EdgeInsets.all(4),
+                                child: SizedBox(
+                                    width: Get.width * 0.07,
+                                    child: Wrap(
+                                      children: [
+                                        InputFields.formField1(
+                                          hintTxt: "Max Spend",
+                                          isEnable: false,
+                                          controller: controller.maxSpendTEC,
+                                          width: 0.05,
+                                        ),
+                                        InputFields.formField1(
+                                          hintTxt: "Booked Amount",
+                                          isEnable: false,
+                                          controller:
+                                              controller.bookedAmountTEC,
+                                          width: 0.05,
+                                        ),
+                                        InputFields.formField1(
+                                          hintTxt: "Val Amount",
+                                          isEnable: false,
+                                          controller: controller.valAmountTEC,
+                                          width: 0.05,
+                                        ),
+                                      ],
+                                    )))),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Obx(
+                          () => Visibility(
+                            visible: controller.lDButton.value,
+                            child: FormButtonWrapper(
+                              btnText: controller.linkDealName.value,
+                              callback: () {
+                                controller.showDilogBox();
+                              },
+                              showIcon: false,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ],
                 ),
-                SizedBox(
-                  height: Get.height * 0.25,
-                  child: DataGridFromMap(
-                    mapData: [
-                      {
-                        "dsad": "dsadsa",
-                        "Dsadsa": "dsadsa",
-                      }
-                    ],
+                Obx(
+                  () => SizedBox(
+                    height: Get.height * 0.25,
+                    child: controller.lstDgvDealEntriesList.value.isEmpty
+                        ? null
+                        : DataGridShowOnlyKeys(
+                            mapData: controller.lstDgvDealEntriesList.value,
+                            hideCode: false,
+                            exportFileName: "EDI R.O. Booking",
+                          ),
                   ),
                 ),
                 Expanded(
-                    child: Container(
-                  child: DataGridFromMap(
-                    mapData: const [
-                      {
-                        "dsad": "dsadsa",
-                        "Dsadsa": "dsadsa",
-                      }
-                    ],
-                  ),
-                )),
+                  child: Container(
+                      // child: DataGridFromMap(
+                      //   mapData: const [
+                      //     {
+                      //       "dsad": "dsadsa",
+                      //       "Dsadsa": "dsadsa",
+                      //     }
+                      //   ],
+                      // ),
+                      ),
+                ),
                 // GetBuilder<HomeController>(
                 //     id: "buttons",
                 //     init: Get.find<HomeController>(),

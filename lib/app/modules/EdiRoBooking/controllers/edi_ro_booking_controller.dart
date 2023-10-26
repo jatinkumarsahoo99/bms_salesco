@@ -11,6 +11,8 @@ import 'package:pluto_grid/pluto_grid.dart';
 
 import '../../../../widgets/DataGridShowOnly.dart';
 import '../../../../widgets/FormButton.dart';
+import '../../../../widgets/dropdown.dart';
+import '../../../../widgets/input_fields.dart';
 import '../../../controller/ConnectorControl.dart';
 import '../../../controller/HomeController.dart';
 import '../../../providers/ApiFactory.dart';
@@ -37,13 +39,26 @@ class EdiRoBookingController extends GetxController {
       valAmountTEC = TextEditingController(text: "0"),
       zoneTEC = TextEditingController(),
       payRouteTEC = TextEditingController(),
-      payRouteCodeTEC = TextEditingController();
+      payRouteCodeTEC = TextEditingController(),
+      startDateTEC = TextEditingController(),
+      endDateTEC = TextEditingController(),
+      dealTypeTEC = TextEditingController(),
+      payModeTEC = TextEditingController(),
+      gstNoTEC = TextEditingController();
 
   final count = 0.obs;
   var infoTableList = [].obs;
   var drgabbleDialog = Rxn<Widget>();
   var programList = [].obs;
   var zoneCode = "".obs;
+  var lstDgvDealEntriesList = [].obs;
+  var lstDgvLinkedDealsList = [].obs;
+  var lDButton = false.obs;
+  var linkDealNO = "".obs;
+  var linkDealName = "".obs;
+  bool showGstPopUp = true;
+  var isShowLink = false.obs;
+  var lstXmlDtList = [].obs;
 
   EdiRoInitData? initData;
   var fileNames = RxList<DropDownValue>();
@@ -55,6 +70,8 @@ class EdiRoBookingController extends GetxController {
   var agency = RxList<DropDownValue>();
   var brand = RxList<DropDownValue>();
   var channel = RxList<DropDownValue>();
+  var dealNo = RxList<DropDownValue>();
+  var gstPlant = RxList<DropDownValue>();
 
   // Selected DropDownValues
   DropDownValue? selectedFile;
@@ -66,6 +83,8 @@ class EdiRoBookingController extends GetxController {
   DropDownValue? selectedAgency;
   DropDownValue? selectedBrand;
   DropDownValue? selectedChannel;
+  DropDownValue? selectedDealNo;
+  DropDownValue? selectedGstPlant;
 
   TextEditingController effectiveDate = TextEditingController();
 
@@ -80,16 +99,16 @@ class EdiRoBookingController extends GetxController {
 
   @override
   void onInit() {
-    getInitData();
-    fetchUserSetting1();
     super.onInit();
   }
 
   getInitData() {
     try {
+      LoadingDialog.call();
       Get.find<ConnectorControl>().GETMETHODCALL(
           api: ApiFactory.EDI_RO_INIT,
           fun: (map) {
+            Get.back();
             // initData = EdiRoInitData.fromJson(map["onLoadInfo"]);
             //FileName
             fileNames.clear();
@@ -222,6 +241,15 @@ class EdiRoBookingController extends GetxController {
                   return result;
                 },
               );
+              //Deal No
+              dealNo.clear();
+              map["infoFileNameLeave"]['headerData']['lstDealNumbers']
+                  .forEach((e) {
+                dealNo.add(DropDownValue(key: e['code'], value: e['name']));
+              });
+              //Lst Xml Dt
+              lstXmlDtList.value =
+                  map["infoFileNameLeave"]['lstLoadXml']['lstXmlDt'];
               leaveFileNameClagdetails();
               update(["initData"]);
             } else {
@@ -291,6 +319,181 @@ class EdiRoBookingController extends GetxController {
     }
   }
 
+  dealLeave() {
+    try {
+      LoadingDialog.call();
+      var effFromDate = DateFormat("dd-MM-yyyy").parse(effectiveDate.text);
+      Get.find<ConnectorControl>().GETMETHODCALL(
+          api: ApiFactory.EDI_RO_LEAVE_DEAL_NO(
+            DateFormat("yyyy-MM-dd").format(effFromDate),
+            selectedLoactions?.key,
+            selectedChannel?.key,
+            selectedDealNo?.key,
+            payRouteTEC.text,
+            selectedAgency?.key,
+            selectedClient?.key,
+            'false',
+          ),
+          fun: (map) {
+            Get.back();
+            if (map != null &&
+                map['infoLeaveOnDealNumber'] != null &&
+                map.containsKey('infoLeaveOnDealNumber')) {
+              //Booking No.
+              bookingNo1TEC.text =
+                  map['infoLeaveOnDealNumber']['bookingMonth'] ?? "";
+              //Start & End Date
+              startDateTEC.text = DateFormat("dd-MM-yyyy").format(
+                  DateFormat("MM/dd/yyyy hh:mm:ss").parse(
+                      map['infoLeaveOnDealNumber']['displayDealDetails']
+                              ['startDate'] ??
+                          "10/01/2023 00:00:00"));
+              endDateTEC.text = DateFormat("dd-MM-yyyy").format(
+                  DateFormat("MM/dd/yyyy hh:mm:ss").parse(
+                      map['infoLeaveOnDealNumber']['displayDealDetails']
+                              ['endDate'] ??
+                          "10/01/2023 00:00:00"));
+              //Deal Type
+              dealTypeTEC.text = map['infoLeaveOnDealNumber']
+                      ['displayDealDetails']['dealType'] ??
+                  "";
+              //Max Spend
+              maxSpendTEC.text = map['infoLeaveOnDealNumber']
+                      ['displayDealDetails']['dealMaxSpent'] ??
+                  "";
+              //Pay Mode
+              payModeTEC.text = map['infoLeaveOnDealNumber']
+                      ['displayDealDetails']['payMode'] ??
+                  "";
+              //Pre V. Amt
+              preVAmtTEC.text = map['infoLeaveOnDealNumber']
+                      ['displayDealDetails']['previousValAmount'] ??
+                  "";
+              //Pre B. Amt
+              preBAmtTEC.text = map['infoLeaveOnDealNumber']
+                      ['displayDealDetails']['previousBookedAmount'] ??
+                  "";
+              //Deal Enter List
+              List dealEntriesList = map['infoLeaveOnDealNumber']
+                      ['displayDealDetails']['lstDgvDealEntries'] ??
+                  "";
+              lstDgvDealEntriesList.value = dealEntriesList.where((element) {
+                var result = selectedLoactions?.value ==
+                        element['locationname'].toString() &&
+                    selectedChannel?.value ==
+                        element['channelname'].toString() &&
+                    selectedDealNo?.value == element['dealnumber'].toString();
+
+                return result;
+              }).toList();
+              //Linked Deal List
+
+              lstDgvLinkedDealsList.value = map['infoLeaveOnDealNumber']
+                      ['displayDealDetails']['lstDgvLinkedDeals'] ??
+                  "";
+//LD Button
+              lDButton.value = true;
+
+              linkDealNO.value = map['infoLeaveOnDealNumber']['showLinkDeal']
+                      ['linkDealNo'] ??
+                  "";
+              linkDealName.value = map['infoLeaveOnDealNumber']['showLinkDeal']
+                      ['linkDealName'] ??
+                  "";
+              //GST Plants
+              gstNoTEC.text = map["infoLeaveOnDealNumber"]['gstRegNo'] ?? "";
+              map["infoLeaveOnDealNumber"]['gstPlantList'].forEach((e) {
+                gstPlant.add(DropDownValue(
+                    key: e['plantid'].toString() ?? "",
+                    value: e['column1'] ?? ""));
+              });
+              selectedGstPlant = gstPlant.firstWhereOrNull(
+                (element) {
+                  var result =
+                      element.key == map['infoLeaveOnDealNumber']['gstPlantID'];
+                  return result;
+                },
+              );
+              if (showGstPopUp) {
+                showGstPopUp = false;
+                Get.defaultDialog(
+                    radius: 05,
+                    title: "GST Plant",
+                    confirm: FormButtonWrapper(
+                      btnText: "Done",
+                      callback: () {
+                        Get.back();
+                      },
+                    ),
+                    content: SizedBox(
+                      height: Get.height / 6,
+                      width: Get.width / 4,
+                      child: Column(
+                        children: [
+                          DropDownField.formDropDown1WidthMap(
+                            gstPlant.value,
+                            (value) => {selectedGstPlant = value},
+                            "GST Plant",
+                            0.20,
+                            selected: selectedGstPlant,
+                            autoFocus: true,
+                          ),
+                          InputFields.formField1(
+                            hintTxt: "GST Reg#",
+                            controller: gstNoTEC,
+                            width: 0.20,
+                          )
+                        ],
+                      ),
+                    ));
+              }
+              isShowLink.value = true;
+            }
+          });
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  showLink() {
+    try {
+      LoadingDialog.call();
+      var payload = {
+        "dealNo": selectedDealNo?.key,
+        "locationCode": selectedLoactions?.key,
+        "channelCode": selectedChannel?.key,
+        "agencyCode": selectedAgency?.key,
+        "roRefNo": selectedRoRefNo?.value,
+        "lstDgvDealEntries": lstDgvLinkedDealsList.value.map((e) {
+          if (e['programname'] == null) {
+            e['programname'] = "";
+          }
+          if (e['programCategoryName'] == null) {
+            e['programCategoryName'] = "";
+          }
+          return e;
+        }).toList(),
+        "lstXmlDt": lstXmlDtList.value,
+        "duration": durAllTEC.text,
+        "spots": spotsAllTEC.text,
+        "amount": amtAllTEC.text
+      };
+      Get.find<ConnectorControl>().POSTMETHOD(
+          api: ApiFactory.EDI_RO_SHOW_LINK,
+          json: payload,
+          fun: (map) {
+            Get.back();
+            print(map);
+            if (map != null &&
+                map['infoChannelList'] != null &&
+                map.containsKey('infoChannelList') &&
+                (map['infoChannelList'] as List<dynamic>).isNotEmpty) {}
+          });
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
   agencyLeave() {
     try {
       LoadingDialog.call();
@@ -342,132 +545,6 @@ class EdiRoBookingController extends GetxController {
     }
   }
 
-  showLink() {
-    try {
-      LoadingDialog.call();
-      var payload = {
-        "dealNo": "<string>",
-        "locationCode": selectedLoactions?.key,
-        "channelCode": selectedChannel?.key,
-        "agencyCode": selectedAgency?.key,
-        "roRefNo": selectedRoRefNo?.value,
-        "lstDgvDealEntries": [
-          {
-            "recordnumber": "<integer>",
-            "bandcode": "<string>",
-            "impactNonImpact": "<string>",
-            "sponsorTypeName": "<string>",
-            "programCategoryName": "<string>",
-            "programname": "<string>",
-            "starttime": {
-              "ticks": "<long>",
-              "days": "<integer>",
-              "hours": "<integer>",
-              "milliseconds": "<integer>",
-              "minutes": "<integer>",
-              "seconds": "<integer>",
-              "totalDays": "<double>",
-              "totalHours": "<double>",
-              "totalMilliseconds": "<double>",
-              "totalMinutes": "<double>",
-              "totalSeconds": "<double>"
-            },
-            "endTime": {
-              "ticks": "<long>",
-              "days": "<integer>",
-              "hours": "<integer>",
-              "milliseconds": "<integer>",
-              "minutes": "<integer>",
-              "seconds": "<integer>",
-              "totalDays": "<double>",
-              "totalHours": "<double>",
-              "totalMilliseconds": "<double>",
-              "totalMinutes": "<double>",
-              "totalSeconds": "<double>"
-            },
-            "seconds": "<double>",
-            "costPer10Sec": "<double>",
-            "utilisedTime": "<double>",
-            "balance": "<integer>",
-            "amount": "<double>",
-            "valuationrate": "<double>",
-            "groupCode": "<integer>",
-            "sun": "<integer>",
-            "mon": "<integer>",
-            "tue": "<integer>",
-            "wed": "<integer>",
-            "thu": "<integer>",
-            "fri": "<integer>",
-            "sat": "<integer>",
-            "booked": "<double>",
-            "fromdate": "<dateTime>",
-            "todate": "<dateTime>",
-            "locationname": "<string>",
-            "channelname": "<string>",
-            "maxspend": "<double>",
-            "paymentmodecaption": "<string>",
-            "ispdcenterd": "<integer>",
-            "startdate": "<dateTime>",
-            "enddate": "<dateTime>",
-            "clientName": "<string>",
-            "agencyName": "<string>",
-            "dealnumber": "<string>",
-            "valuationAmount": "<double>",
-            "balanceAmount": "<double>",
-            "dealValAmount": "<double>",
-            "balanceValAmount": "<double>",
-            "utilInRo": "<integer>",
-            "totalUtil": "<integer>",
-            "totalBookedAmt": "<integer>",
-            "totalValAmt": "<integer>",
-            "bookedAmt": "<double>",
-            "locationcode": "<string>",
-            "channelCode": "<string>",
-            "baseduration": "<integer>",
-            "countbased": "<integer>"
-          }
-        ],
-        "lstXmlDt": [
-          {
-            "rO_NUM": "<string>",
-            "rO_DATE": "<string>",
-            "clienT_ID": "<string>",
-            "clienT_NAME": "<string>",
-            "statioN_ID": "<string>",
-            "station": "<string>",
-            "program": "<string>",
-            "stime": "<string>",
-            "etime": "<string>",
-            "dur": "<string>",
-            "title": "<string>",
-            "acT_DT": "<string>",
-            "spoT_RATE": "<string>",
-            "schD_ID": "<string>",
-            "tapE_ID": "<string>",
-            "branD_ID": "<string>",
-            "brand": "<string>"
-          }
-        ],
-        "duration": "<string>",
-        "spots": "<string>",
-        "amount": "<string>"
-      };
-      Get.find<ConnectorControl>().POSTMETHOD(
-          api: ApiFactory.EDI_RO_SHOW_LINK,
-          json: payload,
-          fun: (map) {
-            Get.back();
-            print(map);
-            if (map != null &&
-                map['infoChannelList'] != null &&
-                map.containsKey('infoChannelList') &&
-                (map['infoChannelList'] as List<dynamic>).isNotEmpty) {}
-          });
-    } catch (e) {
-      print(e.toString());
-    }
-  }
-
   pickFile() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles();
     if (result != null && result.files.single != null) {
@@ -478,9 +555,67 @@ class EdiRoBookingController extends GetxController {
     }
   }
 
+  showDilogBox() {
+    showDialog(
+      context: Get.context!,
+      builder: (_) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: SizedBox(
+            width: Get.width * 0.60,
+            height: Get.height * 0.6,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                children: [
+                  Expanded(
+                    child: Obx(
+                      () => Container(
+                        margin: const EdgeInsets.only(bottom: 8),
+                        decoration: lstDgvLinkedDealsList.isEmpty
+                            ? BoxDecoration(
+                                border: Border.all(color: Colors.grey))
+                            : null,
+                        child: lstDgvLinkedDealsList.value.isEmpty
+                            ? null
+                            : DataGridShowOnlyKeys(
+                                mapData: lstDgvLinkedDealsList.value,
+                                hideCode: false,
+                                exportFileName: "EDI R.O. Booking",
+                              ),
+                      ),
+                    ),
+                  ),
+                  // Padding(
+                  //   padding: const EdgeInsets.symmetric(vertical: 8),
+                  //   child: Align(
+                  //     alignment: Alignment.topRight,
+                  //     child: FormButton(
+                  //       btnText: "Return",
+                  //       callback: () {
+                  //         programSummaryTableList.clear();
+                  //         Get.back();
+                  //       },
+                  //       showIcon: false,
+                  //     ),
+                  //   ),
+                  // ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   @override
   void onReady() {
     super.onReady();
+    getInitData();
+    fetchUserSetting1();
   }
 
   @override
