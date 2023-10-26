@@ -1,3 +1,5 @@
+import 'package:bms_salesco/app/providers/Utils.dart';
+
 class ViewOldDealResponseModel {
   Deal? deal;
 
@@ -199,8 +201,8 @@ class Lstdealusage {
     data['utilisedTime'] = this.utilisedTime;
     data['booked'] = this.booked;
     data['valuationrate'] = this.valuationrate;
-    data['fromdate'] = this.fromdate;
-    data['todate'] = this.todate;
+    data['fromdate'] = Utils.toDateFormat4(this.fromdate) ;
+    data['todate'] = Utils.toDateFormat4(this.todate);
     data['balance'] = this.balance;
     data['locationname'] = this.locationname;
     data['channelname'] = this.channelname;
