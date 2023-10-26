@@ -300,8 +300,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.P_D_C_CHEQUES,
-      page: () => const PDCChequesView(),
-      binding: PDCChequesBinding(),
+      page: () => AuthGuard(childName: _Paths.P_D_C_CHEQUES),
     ),
   ];
 }

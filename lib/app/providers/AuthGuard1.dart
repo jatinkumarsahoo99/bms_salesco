@@ -34,6 +34,7 @@ import '../modules/DealRecoSummary/views/deal_reco_summary_view.dart';
 import '../modules/EDI_Mapping/views/e_d_i_mapping_view.dart';
 
 import '../modules/OneSpotBookingSkyMedia/views/one_spot_booking_sky_media_view.dart';
+import '../modules/PDCCheques/views/p_d_c_cheques_view.dart';
 import '../modules/PeriodicDealUtilisationFormat2/views/periodic_deal_utilisation_format2_view.dart';
 import '../modules/RateCardfromDealWorkflow/views/rate_cardfrom_deal_workflow_view.dart';
 import '../modules/ReleseOrderRescheduleTapeID/views/relese_order_reschedule_tape_i_d_view.dart';
@@ -76,6 +77,9 @@ class AuthGuard extends StatelessWidget {
         }
         if (controller.loginVal.value == 1) {
           switch (childName) {
+            case Routes.P_D_C_CHEQUES:
+              currentWidget = const PDCChequesView();
+              break;
             case Routes.BOOKINGS_AGAINST_P_D_C:
               currentWidget = const BookingsAgainstPDCView();
               break;

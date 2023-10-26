@@ -157,6 +157,6 @@ abstract class _Paths {
   static const BOOKING_STATUS_REPORT = '/frmnewbookingstatus';
   static const PROGRAM_WISE_REVENUE_REPORT = '/frmnewprogramwisereport';
   static const DEAL_UTIL_PERIODIC = '/frmsearching##BMS_DealUtilPeriodic';
-  static const BOOKINGS_AGAINST_P_D_C = '/bookings-against-p-d-c';
-  static const P_D_C_CHEQUES = '/p-d-c-cheques';
+  static const BOOKINGS_AGAINST_P_D_C = '/frmBookingsAgainstPDC';
+  static const P_D_C_CHEQUES = '/frmPDCs';
 }
