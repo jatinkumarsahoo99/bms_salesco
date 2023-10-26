@@ -218,7 +218,7 @@ class CommercialCreationAutoDetailsView
                               () => InputFields.formFieldDisableWidth(
                                 hintTxt: "Seg Dur",
                                 paddingLeft: 5,
-                                // isHeaderRequiredGrey:false,
+                                isHeaderRequiredGrey:false,
                                 value: controllerX.duration.value,
                                 widthRatio: 0.12,
                               ),
