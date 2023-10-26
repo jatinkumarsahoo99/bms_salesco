@@ -232,6 +232,7 @@ class EdiRoBookingView extends StatelessWidget {
                                   .18,
                                   selected: controller.selectedExecutives,
                                   autoFocus: true,
+                                  dialogHeight: 250,
                                 ),
                               ),
                             ],
@@ -545,6 +546,14 @@ class EdiRoBookingView extends StatelessWidget {
                                 callback: () {},
                                 showIcon: false,
                               ),
+                              colorBox(
+                                  "NO Tape", Colors.pink[300], Colors.white),
+                              colorBox("Kill Date", Colors.white, Colors.black),
+                              colorBox(
+                                  "Language", Colors.red[700], Colors.white),
+                              colorBox("Revenue Type", Colors.yellow[700],
+                                  Colors.white),
+                              colorBox("Campaign", Colors.white, Colors.black),
                             ],
                           );
                         }
@@ -560,6 +569,21 @@ class EdiRoBookingView extends StatelessWidget {
             ),
           );
         });
+  }
+
+  Container colorBox(text, color, textColor) {
+    return Container(
+      decoration:
+          BoxDecoration(color: color, borderRadius: BorderRadius.circular(3)),
+      child: Padding(
+        padding: const EdgeInsets.only(left: 8, right: 8, top: 6, bottom: 6),
+        child: Text(
+          text,
+          style:
+              TextStyle(color: textColor, fontSize: SizeDefine.fontSizeButton),
+        ),
+      ),
+    );
   }
 
   formHandler(String btnName) {

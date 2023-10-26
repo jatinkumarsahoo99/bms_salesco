@@ -211,26 +211,37 @@ class ProgramWiseRevenueReportView extends StatelessWidget {
                         /// details
                         if (controller.val && e['scheduletime'] != null) {
                           e['scheduletime'] = controller.timeFormat.format(
-                              DateFormat('yyyy-MM-ddThh:mm:ss')
+                              DateFormat('dd/MM/yyyy hh:mm:ss')
                                   .parse(e['scheduletime']));
                         }
                         if (controller.val && e['telecasttime'] != null) {
                           e['telecasttime'] = controller.timeFormat.format(
-                              DateFormat('yyyy-MM-ddThh:mm:ss')
+                              DateFormat('dd/MM/yyyy hh:mm:ss')
                                   .parse(e['telecasttime']));
+                        }
+                        if (controller.val && e['scheduledate'] != null) {
+                          e['scheduledate'] = DateFormat('dd-MM-yyyy').format(
+                              DateFormat('dd/MM/yyyy hh:mm:ss')
+                                  .parse(e['scheduledate']));
                         }
 
                         /// Summary
                         if (!controller.val && e['telecasttime'] != null) {
-                          e['telecasttime'] = controller.timeFormat.format(
-                              DateFormat('yyyy-MM-ddThh:mm:ss')
+                          e['telecasttime'] = DateFormat('dd-MM-yyyy').format(
+                              DateFormat('dd/MM/yyyy hh:mm:ss')
                                   .parse(e['telecasttime']));
+                        }
+
+                        if (!controller.val && e['scheduledate'] != null) {
+                          e['scheduledate'] = DateFormat('dd-MM-yyyy').format(
+                              DateFormat('dd/MM/yyyy hh:mm:ss')
+                                  .parse(e['scheduledate']));
                         }
 
                         return e;
                       }).toList(),
                       hideCode: false,
-                      // formatDate: false,
+                      formatDate: false,
                       exportFileName: "ProgramWise Revenue Report",
                     ),
             ),
