@@ -44,7 +44,7 @@ class LstApprovalTrail {
   int? approvalSequenceID;
   String? sequenceName;
   String? formName;
-  int? groupID;
+  String? groupID;
   String? groupName;
   String? personnelNo;
   String? employees;
@@ -62,7 +62,7 @@ class LstApprovalTrail {
     approvalSequenceID = json['approvalSequenceID'];
     sequenceName = json['sequenceName'];
     formName = json['formName'];
-    groupID = json['groupID'];
+    groupID = (json['groupID']??"").toString();
     groupName = json['groupName'];
     personnelNo = json['personnelNo'];
     employees = json['employees'];

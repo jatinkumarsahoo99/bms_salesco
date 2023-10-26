@@ -68,7 +68,7 @@ class InternationalDetails {
   int? bonusDuration;
   int? paidDuration;
   int? totalDuration;
-  double? amount;
+  String? amount;
   String? currencyType;
   String? zonename;
   String? brandname;
@@ -144,7 +144,7 @@ class InternationalDetails {
     bonusDuration = json['bonusDuration'];
     paidDuration = json['paidDuration'];
     totalDuration = json['totalDuration'];
-    amount = json['amount'];
+    amount = (json['amount']??"").toString();
     currencyType = json['currencyType'];
     zonename = json['zonename'];
     brandname = json['brandname'];
@@ -249,7 +249,7 @@ class InternationalSalesSummary {
     paidDur = json['paidDur'];
     bonusDur = json['bonusDur'];
     totDur = json['totDur'];
-    spotAmount = json['spotAmount'].toString();
+    spotAmount = (json['spotAmount']??"").toString();
     currencyType = json['currencyType'];
     executivname = json['executivname'];
   }

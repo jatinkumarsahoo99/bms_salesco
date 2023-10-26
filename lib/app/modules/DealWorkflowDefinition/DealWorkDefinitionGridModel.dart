@@ -25,7 +25,7 @@ class Display {
   int? approvalSequenceID;
   String? sequenceName;
   String? formName;
-  int? groupID;
+  String? groupID;
   String? groupName;
   String? personnelNo;
   String? employees;
@@ -46,7 +46,7 @@ class Display {
     approvalSequenceID = json['approvalSequenceID'];
     sequenceName = json['sequenceName'];
     formName = json['formName'];
-    groupID = json['groupID'];
+    groupID = (json['groupID']??"").toString();
     groupName = json['groupName'];
     personnelNo = json['personnelNo'];
     employees = json['employees'];
@@ -72,10 +72,10 @@ class Display {
     data['approvalSequenceID'] = this.approvalSequenceID;
     data['sequenceName'] = this.sequenceName;
     data['formName'] = this.formName;
-    data['groupID'] = this.groupID;
+    data['groupID'] = (this.groupID == "0" || this.groupID == 0)?"":this.groupID;
     data['groupName'] = this.groupName??"";
-    data['personnelNo'] = this.personnelNo;
-    data['employees'] = this.employees;
+    data['personnelNo'] = this.personnelNo??"";
+    data['employees'] = this.employees??"";
     // data['employeeCode'] = this.personnelNo;
     return data;
   }
@@ -85,7 +85,7 @@ class Display {
     data['approvalSequenceID'] = this.approvalSequenceID;
     data['sequenceName'] = this.sequenceName;
     data['formName'] = this.formName??"";
-    data['groupID'] = (this.groupID == 0)?null:this.groupID;
+    data['groupID'] = (this.groupID == "0")?null:this.groupID;
     data['GroupName'] = this.groupName??"";
     data['personnelNo'] = this.personnelNo??"";
     data['employeename'] = this.employees??"";

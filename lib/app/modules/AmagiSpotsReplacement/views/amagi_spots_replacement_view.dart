@@ -2028,7 +2028,7 @@ class AmagiSpotsReplacementView
                                                               ],
                                                               mode:
                                                                   PlutoGridMode
-                                                                      .normal,
+                                                                      .selectWithOneTap,
                                                               exportFileName:
                                                                   "Amagi Spot Replacement",
                                                               mapData: controller
@@ -2079,11 +2079,12 @@ class AmagiSpotsReplacementView
                                                                             ?.getRowByIdx(controller.localSpotsStateManager?.currentRowIdx ??
                                                                                 0)
                                                                             ?.cells[
-                                                                        'tapeDuration'],
+                                                                        'starttime'],
                                                                     controller
                                                                             .localSpotsStateManager
                                                                             ?.currentRowIdx ??
                                                                         0);
+                                                                // controller.localSpotsStateManager?.setCurrentSelectingRowsByRange(0, 1);
                                                                 load.stateManager
                                                                     .setSelectingMode(
                                                                         PlutoGridSelectingMode

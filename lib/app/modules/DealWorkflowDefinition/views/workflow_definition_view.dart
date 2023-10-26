@@ -393,8 +393,8 @@ class WorkflowDefinitionView extends GetView<WorkflowDefinitionController> {
                                   }
                                 }
                               },
-                                  child: DataGridFromMap3(
-                                      showSrNo: false,
+                                  child: DataGridFromMap(
+                                      showSrNo: true,
                                       hideCode: false,
                                       formatDate: false,
                                       exportFileName: "WorkFlow Definition",
