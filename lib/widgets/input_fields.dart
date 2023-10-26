@@ -253,7 +253,8 @@ class InputFields {
             onFieldSubmitted: onFieldSubmitted,
             inputFormatters: inputformatters.isEmpty
                 ? [
-                    LengthLimitingTextInputFormatter(maxLen??(SizeDefine.maxcharlimit)),
+                    LengthLimitingTextInputFormatter(
+                        maxLen ?? (SizeDefine.maxcharlimit)),
                     FilteringTextInputFormatter.deny("  "),
                     // FilteringTextInputFormatter.allow(RegExp(r"^(\w+ ?)*$")),
                   ]
@@ -2387,6 +2388,7 @@ class InputFields {
       required double widthRatio,
       double? height,
       double? paddingLeft,
+      bool isHeaderRequiredGrey = true,
       Function? onEditComplete}) {
     // var data = 0.obs;
     return Column(
@@ -2394,7 +2396,9 @@ class InputFields {
       children: [
         Padding(
           padding: EdgeInsets.only(left: paddingLeft ?? 10),
-          child: LabelText.style(hint: hintTxt, txtColor: Colors.grey),
+          child: LabelText.style(
+              hint: hintTxt,
+              txtColor: isHeaderRequiredGrey ? Colors.grey : Colors.black),
         ),
         Container(
           // padding: const EdgeInsets.only(
