@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:collection/collection.dart';
@@ -21,6 +22,7 @@ class CommercialLanguageSpecificationController extends GetxController {
   CommercialLanguageModel? commercialLangModel;
   PlutoGridStateManager? stateManager;
   List<Map<String, Map<String, double>>>? userGridSetting1;
+  List<PlutoRow> initialIndexRows = [];
 
   fetchUserSetting1() async {
     userGridSetting1 = await Get.find<HomeController>().fetchUserSetting1();
@@ -89,14 +91,19 @@ class CommercialLanguageSpecificationController extends GetxController {
     }
   }
 
-  void save() {
+  void save() async {
     if (selectLocation == null) {
       LoadingDialog.callInfoMessage("Please select location");
     } else if (selectChannel == null) {
       LoadingDialog.callInfoMessage("Please select channel");
     } else {
+      bool? isDataOk =
+          await areListsEqual(initialIndexRows, stateManager?.checkedRows);
+      print("Value is>>>" + isDataOk.toString());
       if ((stateManager?.checkedRows.length ?? 0) == 0) {
         LoadingDialog.callInfoMessage("Please select rows");
+      } else if (isDataOk == true) {
+        LoadingDialog.callInfoMessage("No changes to save");
       } else {
         LoadingDialog.call();
         var postMap = {
@@ -130,13 +137,42 @@ class CommercialLanguageSpecificationController extends GetxController {
     }
   }
 
-  isEqualData() {
+  /*isEqualData() {
     if (const IterableEquality().equals(
-        commercialLangModel?.display, commercialLangModel?.backupDisplay)) {
+        commercialLangModel?.display?.toSet(),
+        commercialLangModel?.backupDisplay?.toSet())) {
       // if (const SetEquality().equals([1,2,3].toSet(),[1,2,3].toSet())) {
       print("Equal");
     } else {
       print("Not equal");
     }
+    for (int i = 0; i < (commercialLangModel?.display?.length ?? 0); i++) {
+      if (commercialLangModel?.display)
+    }
+  }*/
+
+  areListsEqual(var list1, var list2) {
+    Completer<bool> completer = Completer<bool>();
+    // check if both are lists
+    if (!(list1 is List && list2 is List)
+        // check if both have same length
+        ||
+        list1.length != list2.length) {
+      // return false;
+      completer.complete(false);
+    }
+
+    // check if elements are equal
+    for (int i = 0; i < list1.length; i++) {
+      if (list1[i].cells["selectLanguage"]?.value !=
+          list2[i].cells["selectLanguage"]?.value) {
+        // return false;
+        completer.complete(false);
+      }
+    }
+    if (!completer.isCompleted) {
+      completer.complete(true);
+    }
+    return completer.future;
   }
 }

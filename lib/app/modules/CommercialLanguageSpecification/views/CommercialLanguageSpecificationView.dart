@@ -115,6 +115,8 @@ class CommercialLanguageSpecificationView
                                       controllerX.userGridSetting1),
                           onload: (PlutoGridOnLoadedEvent grid) {
                             controllerX.stateManager = grid.stateManager;
+                            controllerX.initialIndexRows =
+                                (controllerX.stateManager?.checkedRows)!;
                           },
                           mode: PlutoGridMode.selectWithOneTap,
                           // actionIcon: Icons.delete_forever_rounded,
