@@ -24,7 +24,7 @@ class ExportData {
       }
       var value = excel.encode()!;
       String time = DateTime.now().toString();
-      var fileBytes = excel.save(fileName: "$screenName-$time.xlsx");
+      var fileBytes = excel.save(fileName: "$screenName.xlsx");
       // FlutterFileSaver()
       //     .writeFileAsBytes(
       //       fileName: 'fpc_search.xlsx',

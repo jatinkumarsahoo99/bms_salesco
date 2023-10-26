@@ -98,6 +98,14 @@ class CommercialCreationAutoDetailsController extends GetxController {
               secTypeList.value.add(new DropDownValue(
                   key: e["eventCode"].toString(), value: e["eventName"]));
             });
+
+            if (secTypeList.value != null &&
+                secTypeList.value.length > 0 &&
+                secTypeList.value.length == 1) {
+              selectSectype?.value = secTypeList.value[0];
+            }else{
+              selectSectype?.value=null;
+            }
           }
         });
   }
@@ -221,11 +229,29 @@ class CommercialCreationAutoDetailsController extends GetxController {
             if (map is Map &&
                 map.containsKey("lstsectype") &&
                 map["lstsectype"] != null) {
-              LoadingDialog.callDataSavedMessage("Data Saved Successfully");
+              LoadingDialog.callDataSavedMessage("Data Saved Successfully",callback: (){
+                clear();
+              });
             } else {
               LoadingDialog.callInfoMessage(map.toString());
             }
           });
     }
+  }
+  
+  clear(){
+    selectClient?.value = null;
+    selectBrand?.value = null;
+    selectLanguage?.value = null;
+    selectCensorship?.value = null;
+    selectRevenue?.value = null;
+    agencyId_.text = "";
+    tapeId_.text = "";
+    som_.text = "00:00:00:00";
+    eom_.text = "00:00:00:00";
+    duration.value = "00:00:00:00";
+    endDate_.text = "";
+    caption_.text = "";
+    update(["update"]);
   }
 }

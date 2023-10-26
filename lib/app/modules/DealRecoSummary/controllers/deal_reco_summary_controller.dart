@@ -23,7 +23,7 @@ class DealRecoSummaryController extends GetxController {
   DropDownValue? selectedLocation;
   DropDownValue? selectedChannel;
   DropDownValue? selectedClient;
-  DropDownValue? selectedAgency;
+  Rxn<DropDownValue>? selectedAgency = Rxn<DropDownValue>(null);
   DropDownValue? selectedDealNo;
 
   TextEditingController fromDateController = TextEditingController();
@@ -124,6 +124,11 @@ class DealRecoSummaryController extends GetxController {
               dataList.add(DropDownValue.fromJsonDynamic(e, "agencycode", "agencyname"));
             });
             agencyList = dataList;
+            if(agencyList.isNotEmpty){
+              selectedAgency?.value =DropDownValue(value:(agencyList[0].value ??"").toString(),key:(agencyList[0].key??"").toString()) ;
+              selectedAgency?.refresh();
+            }
+
           }
 
         });
@@ -145,6 +150,7 @@ class DealRecoSummaryController extends GetxController {
               map['dealleave'].length > 0){
             fromDateController.text = DateFormat('dd-MM-yyyy').format (DateFormat('yyyy-MM-ddTHH:mm:ss').parse(map['dealleave'][0]['fromdate']) );
             toDateController.text = DateFormat('dd-MM-yyyy').format (DateFormat('yyyy-MM-ddTHH:mm:ss').parse(map['dealleave'][0]['todate']) );
+            utilAsOnDateController.text = DateFormat('dd-MM-yyyy').format (DateFormat('yyyy-MM-ddTHH:mm:ss').parse(map['dealleave'][0]['todate']) );
           }
         });
   }

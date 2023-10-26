@@ -116,7 +116,9 @@ class CommercialLanguageSpecificationController extends GetxController {
               if (map is Map &&
                   map.containsKey("success") &&
                   map["success"] != null) {
-                LoadingDialog.callDataSavedMessage(map["success"]);
+                LoadingDialog.callDataSavedMessage(map["success"],callback: (){
+
+                });
               } else {
                 LoadingDialog.callInfoMessage(map.toString());
               }

@@ -218,6 +218,7 @@ class CommercialCreationAutoDetailsView
                               () => InputFields.formFieldDisableWidth(
                                 hintTxt: "Seg Dur",
                                 paddingLeft: 5,
+                                // isHeaderRequiredGrey:false,
                                 value: controllerX.duration.value,
                                 widthRatio: 0.12,
                               ),
@@ -364,19 +365,7 @@ class CommercialCreationAutoDetailsView
         controllerX.save();
         break;
       case "Clear":
-        controllerX.selectClient?.value = null;
-        controllerX.selectBrand?.value = null;
-        controllerX.selectLanguage?.value = null;
-        controllerX.selectCensorship?.value = null;
-        controllerX.selectRevenue?.value = null;
-        controllerX.agencyId_.text = "";
-        controllerX.tapeId_.text = "";
-        controllerX.som_.text = "00:00:00:00";
-        controllerX.eom_.text = "00:00:00:00";
-        controllerX.duration.value = "00:00:00:00";
-        controllerX.endDate_.text = "";
-        controllerX.caption_.text = "";
-        controllerX.update(["update"]);
+        controllerX.clear();
 
         // Get.find<HomeController>().clearPage1();
         // Get.delete<CommercialCreationAutoDetailsController>();
