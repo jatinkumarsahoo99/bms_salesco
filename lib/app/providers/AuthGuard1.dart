@@ -15,6 +15,7 @@ import '../../widgets/NoDataFoundPage.dart';
 
 import '../modules/AmagiStatusReport/views/amagi_status_report_view.dart';
 import '../modules/AutoTimeLock/views/auto_time_lock_view.dart';
+import '../modules/BookingsAgainstPDC/views/bookings_against_p_d_c_view.dart';
 import '../modules/ChangeRONumber/views/change_r_o_number_view.dart';
 import '../modules/CommonSearch/views/common_search_view.dart';
 import '../modules/DealWorkflowDefinition/views/workflow_definition_view.dart';
@@ -75,6 +76,9 @@ class AuthGuard extends StatelessWidget {
         }
         if (controller.loginVal.value == 1) {
           switch (childName) {
+            case Routes.BOOKINGS_AGAINST_P_D_C:
+              currentWidget = const BookingsAgainstPDCView();
+              break;
             case Routes.ASRUN_DETAILS_REPORT:
               currentWidget = AsrunDetailsReportView();
               break;

@@ -1394,7 +1394,7 @@ class InputFields {
     Function(String)? onchanged,
     double? padLeft = 0,
     bool? showbtn = true,
-    List<TextInputFormatter> inputformatters = const [],
+    List<TextInputFormatter>? inputformatters,
     num? width = 0.12,
     bool capital = false,
     bool isNegativeReq = true,
@@ -1457,11 +1457,12 @@ class InputFields {
                 textAlignVertical: TextAlignVertical.center,
                 keyboardType: TextInputType.datetime,
                 textAlign: TextAlign.left,
-                inputFormatters: [
-                  LengthLimitingTextInputFormatter(
-                      maxchar ?? SizeDefine.maxcharlimit),
-                  FilteringTextInputFormatter.digitsOnly,
-                ],
+                inputFormatters: inputformatters ??
+                    [
+                      LengthLimitingTextInputFormatter(
+                          maxchar ?? SizeDefine.maxcharlimit),
+                      FilteringTextInputFormatter.digitsOnly,
+                    ],
                 enabled: isEnabled ?? true,
                 decoration: InputDecoration(
                   errorBorder: InputBorder.none,

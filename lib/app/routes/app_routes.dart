@@ -56,6 +56,8 @@ abstract class Routes {
   static const BOOKING_STATUS_REPORT = _Paths.BOOKING_STATUS_REPORT;
   static const PROGRAM_WISE_REVENUE_REPORT = _Paths.PROGRAM_WISE_REVENUE_REPORT;
   static const DEAL_UTIL_PERIODIC = _Paths.DEAL_UTIL_PERIODIC;
+  static const BOOKINGS_AGAINST_P_D_C = _Paths.BOOKINGS_AGAINST_P_D_C;
+  static const P_D_C_CHEQUES = _Paths.P_D_C_CHEQUES;
 }
 
 abstract class RoutesList {
@@ -155,4 +157,6 @@ abstract class _Paths {
   static const BOOKING_STATUS_REPORT = '/frmnewbookingstatus';
   static const PROGRAM_WISE_REVENUE_REPORT = '/frmnewprogramwisereport';
   static const DEAL_UTIL_PERIODIC = '/frmsearching##BMS_DealUtilPeriodic';
+  static const BOOKINGS_AGAINST_P_D_C = '/bookings-against-p-d-c';
+  static const P_D_C_CHEQUES = '/p-d-c-cheques';
 }
