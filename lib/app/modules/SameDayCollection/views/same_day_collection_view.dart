@@ -148,6 +148,7 @@ class SameDayCollectionView extends GetView<SameDayCollectionController> {
                             mapData: controller.dataTableList.value
                                 .map((e) => e.toJson())
                                 .toList(),
+                            columnAutoResize: false,
                           ),
                   );
                 },
