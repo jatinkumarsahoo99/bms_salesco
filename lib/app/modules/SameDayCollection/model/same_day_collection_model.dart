@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 class SameDayCollectionModel {
   bool? cancel;
   String? locationCode;
@@ -80,7 +82,8 @@ class SameDayCollectionModel {
       data['dealNumber'] = dealNumber;
       data['commercialCaption'] = commercialCaption;
       data['scheduleDate'] = (scheduleDate ?? '').contains("T")
-          ? scheduleDate!.split("T")[0]
+          ? DateFormat('dd-MM-yyyy')
+              .format(DateFormat('yyyy-MM-ddThh:mm:ss').parse(scheduleDate!))
           : scheduleDate;
       data['scheduleTime'] = scheduleTime;
       data['dealTime'] = dealTime;
