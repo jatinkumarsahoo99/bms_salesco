@@ -187,15 +187,11 @@ class DealvsRODataReportView extends StatelessWidget {
                                 width: 5,
                               ),
                               Obx(
-                                () => Visibility(
-                                  visible: controller.isDealMSG.value,
-                                  child: Text(
-                                    "Deal wise data showing.",
-                                    style: TextStyle(
-                                        color: Colors.green,
-                                        fontSize:
-                                            SizeDefine.fontSizeInputField),
-                                  ),
+                                () => Text(
+                                  controller.isDealMSG.value,
+                                  style: TextStyle(
+                                      color: Colors.green,
+                                      fontSize: SizeDefine.fontSizeInputField),
                                 ),
                               ),
                             ],

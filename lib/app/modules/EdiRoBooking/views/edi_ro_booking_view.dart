@@ -80,10 +80,19 @@ class EdiRoBookingView extends StatelessWidget {
                                 selected: controller.selectedRoRefNo,
                                 isEnable: controller.isEnable.value,
                               ),
-                              SizedBox(
+                              Obx(
+                                () => SizedBox(
                                   width: Get.width * 0.08,
                                   child: FormButtonWrapper(
-                                      btnText: "Show & Link")),
+                                    btnText: "Show & Link",
+                                    callback: () {
+                                      controller.showLink();
+                                    },
+                                    showIcon: false,
+                                    isEnabled: controller.isShowLink.value,
+                                  ),
+                                ),
+                              ),
                               DropDownField.formDropDown1WidthMap(
                                 controller.loactions.value,
                                 (data) {

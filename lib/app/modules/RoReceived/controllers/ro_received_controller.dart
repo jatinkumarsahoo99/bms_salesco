@@ -32,6 +32,7 @@ class RoReceivedController extends GetxController {
   TextEditingController roNumber = TextEditingController(),
       roRecDate = TextEditingController(),
       effDate = TextEditingController(),
+      effEndDate = TextEditingController(),
       activityMonth = TextEditingController(),
       roAmount = TextEditingController(text: "0.00"),
       roValAmount = TextEditingController(text: "0.00"),
@@ -301,11 +302,30 @@ class RoReceivedController extends GetxController {
           Get.back();
           if (rawdata is Map && rawdata.containsKey("onSaveRecord")) {
             LoadingDialog.callDataSaved(
-                msg: rawdata["onSaveRecord"]["message"]);
+                msg: rawdata["onSaveRecord"]["message"],
+                callback: () {
+                  clear();
+                });
           } else if (rawdata is String) {
             LoadingDialog.callErrorMessage1(msg: rawdata);
           }
         });
+  }
+
+  clear() {
+    selectedLocation?.value = null;
+    selectedChannel?.value = null;
+    selectedClient?.value = null;
+    selectedAgency?.value = null;
+    selectedBrand?.value = null;
+    roNumber.clear();
+    roRecDate.clear();
+    effDate.clear();
+    roAmount.text = "0.00";
+    roValAmount.text = "0.00";
+    fct.clear();
+    remark.clear();
+    selectedRevenue?.value = null;
   }
 
   @override
