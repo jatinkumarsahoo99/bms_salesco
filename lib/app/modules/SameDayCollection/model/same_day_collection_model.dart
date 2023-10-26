@@ -79,7 +79,9 @@ class SameDayCollectionModel {
       data['brandname'] = brandname;
       data['dealNumber'] = dealNumber;
       data['commercialCaption'] = commercialCaption;
-      data['scheduleDate'] = scheduleDate;
+      data['scheduleDate'] = (scheduleDate ?? '').contains("T")
+          ? scheduleDate!.split("T")[0]
+          : scheduleDate;
       data['scheduleTime'] = scheduleTime;
       data['dealTime'] = dealTime;
       data['spotAmount'] = spotAmount;
