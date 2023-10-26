@@ -565,83 +565,92 @@ class DataGridMenu {
                                         if (_slecetedRow == null) {
                                           stateManager.resetScrollToZero();
 
+                                          void performOperation  (){
+ _index = 0;
+                                                        stateManager
+                                                            .resetScrollToZero();
+                                                        Get.back();
+                                                        var _slecetedRow = _almost.value
+                                                            ? stateManager.rows.firstWhereOrNull((element) => (element
+                                                                    .cells[
+                                                                        _selectedColumn]!
+                                                                    .value
+                                                                    .toString()
+                                                                    .toLowerCase()
+                                                                    .trim()
+                                                                    .contains(_findctrl.text
+                                                                        .toLowerCase()
+                                                                        .trim()) &&
+                                                                (_index == 0 ||
+                                                                    element.sortIdx >
+                                                                        (_index ??
+                                                                            0))))
+                                                            : stateManager.rows
+                                                                .firstWhere((element) => (element.cells[_selectedColumn]!.value.toString().toLowerCase().trim() == _findctrl.text.toLowerCase().trim() && (_index == 0 || element.sortIdx > (_index ?? 0))));
+                                                        print(_slecetedRow!
+                                                                .cells[
+                                                                    _selectedColumn]!
+                                                                .value
+                                                                .toString() +
+                                                            _slecetedRow
+                                                                .cells[
+                                                                    _selectedColumn]!
+                                                                .value
+                                                                .runtimeType
+                                                                .toString());
+                                                        _index =
+                                                            _slecetedRow.sortIdx;
+                                                        stateManager
+                                                            .resetScrollToZero();
+                                                
+                                                        stateManager
+                                                            .moveScrollByRow(
+                                                                PlutoMoveDirection
+                                                                    .down,
+                                                                _slecetedRow
+                                                                        .sortIdx -
+                                                                    1);
+                                                
+                                                        stateManager
+                                                            .setKeepFocus(false);
+                                                        stateManager.setCurrentCell(
+                                                            _slecetedRow.cells[
+                                                                _selectedColumn],
+                                                            _slecetedRow.sortIdx);
+                                          }
+
                                           Get.defaultDialog(
                                               content: Text(
                                                   "You Have reach the end !\nDo u want to restart?"),
                                               actions: [
-                                                ElevatedButton.icon(
-                                                    onPressed: () {
-                                                      _index = 0;
-                                                      stateManager
-                                                          .resetScrollToZero();
-                                                      Get.back();
-                                                      var _slecetedRow = _almost.value
-                                                          ? stateManager.rows.firstWhereOrNull((element) => (element
-                                                                  .cells[
-                                                                      _selectedColumn]!
-                                                                  .value
-                                                                  .toString()
-                                                                  .toLowerCase()
-                                                                  .trim()
-                                                                  .contains(_findctrl.text
-                                                                      .toLowerCase()
-                                                                      .trim()) &&
-                                                              (_index == 0 ||
-                                                                  element.sortIdx >
-                                                                      (_index ??
-                                                                          0))))
-                                                          : stateManager.rows
-                                                              .firstWhere((element) => (element.cells[_selectedColumn]!.value.toString().toLowerCase().trim() == _findctrl.text.toLowerCase().trim() && (_index == 0 || element.sortIdx > (_index ?? 0))));
-                                                      print(_slecetedRow!
-                                                              .cells[
-                                                                  _selectedColumn]!
-                                                              .value
-                                                              .toString() +
-                                                          _slecetedRow
-                                                              .cells[
-                                                                  _selectedColumn]!
-                                                              .value
-                                                              .runtimeType
-                                                              .toString());
-                                                      _index =
-                                                          _slecetedRow.sortIdx;
-                                                      stateManager
-                                                          .resetScrollToZero();
-
-                                                      stateManager
-                                                          .moveScrollByRow(
-                                                              PlutoMoveDirection
-                                                                  .down,
-                                                              _slecetedRow
-                                                                      .sortIdx -
-                                                                  1);
-
-                                                      stateManager
-                                                          .setKeepFocus(false);
-                                                      // for (var element in stateManager
-                                                      //     .rows) {
-                                                      //   stateManager
-                                                      //       .setRowChecked(
-                                                      //       element, false,
-                                                      //       notify: false);
-                                                      // }
-                                                      // stateManager
-                                                      //     .setRowChecked(
-                                                      //     _slecetedRow, true,
-                                                      //     notify: true);
-                                                      stateManager.setCurrentCell(
-                                                          _slecetedRow.cells[
-                                                              _selectedColumn],
-                                                          _slecetedRow.sortIdx);
-                                                    },
-                                                    icon: Icon(Icons.done),
-                                                    label: Text("YES")),
-                                                ElevatedButton.icon(
-                                                    onPressed: () {
-                                                      Get.back();
-                                                    },
-                                                    icon: Icon(Icons.clear),
-                                                    label: Text("NO")),
+                                                RawKeyboardListener(
+                                                  focusNode: FocusNode(),
+                                                  onKey: (value) {
+                                                    if(value.logicalKey==LogicalKeyboardKey.keyY){
+                                                      performOperation();
+                                                    }
+                                                  },
+                                                  child: ElevatedButton.icon(
+                                                      onPressed: () {
+                                                       performOperation();
+                                                      },
+                                                      icon: Icon(Icons.done),
+                                                      label: Text("YES")),
+                                                ),
+                                                RawKeyboardListener(
+                                                  focusNode: FocusNode(),
+                                                  onKey: (key){
+                                                    if(key.logicalKey==LogicalKeyboardKey.keyN){
+                                                       Get.back();
+                                                    }
+                                                  },
+                                                  child: ElevatedButton.icon(
+                                                      onPressed: () {
+                                                        Get.back();
+                                                      },
+                                                      icon: Icon(Icons.clear),
+                                                      label: Text("NO")),
+                                                ),
                                               ]);
                                         } else {
                                          
