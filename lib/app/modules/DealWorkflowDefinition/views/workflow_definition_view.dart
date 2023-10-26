@@ -170,18 +170,20 @@ class WorkflowDefinitionView extends GetView<WorkflowDefinitionController> {
                                       controllerX.typeList.value ?? [],
                                       (value) {
                                         controllerX.selectedType = value;
-                                        controllerX.getDisplayApi();
+
                                       },
                                       "Type",
                                       0.36,
                                       isEnable: controllerX.isEnable.value,
                                       selected: controllerX.selectedType,
                                       inkWellFocusNode: controllerX.typeNode,
-                                      /* onFocusChange: (val) {
+                                       onFocusChange: (val) {
                                         if (!val) {
-                                          controllerX.getDisplayApi();
+                                          if(controllerX.selectedType != null){
+                                            controllerX.getDisplayApi();
+                                          }
                                         }
-                                      },*/
+                                      },
                                       dialogHeight: Get.height * .35,
                                       autoFocus: true,
                                     ),

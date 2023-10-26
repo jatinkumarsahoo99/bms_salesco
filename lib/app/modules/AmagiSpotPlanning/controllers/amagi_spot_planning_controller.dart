@@ -23,7 +23,7 @@ class AmagiSpotPlanningController extends GetxController {
   DropDownValue? selectedLocation;
   DropDownValue? selectedChannel;
 
-  RxString selectValue = RxString("");
+  RxString selectValue = RxString("Master Spots");
 
   TextEditingController scheduleDateController = TextEditingController();
   bool isMasterSpots = false;
