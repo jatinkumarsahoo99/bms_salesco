@@ -37,13 +37,22 @@ class EdiRoBookingController extends GetxController {
       valAmountTEC = TextEditingController(text: "0"),
       zoneTEC = TextEditingController(),
       payRouteTEC = TextEditingController(),
-      payRouteCodeTEC = TextEditingController();
+      payRouteCodeTEC = TextEditingController(),
+      startDateTEC = TextEditingController(),
+      endDateTEC = TextEditingController(),
+      dealTypeTEC = TextEditingController(),
+      payModeTEC = TextEditingController();
 
   final count = 0.obs;
   var infoTableList = [].obs;
   var drgabbleDialog = Rxn<Widget>();
   var programList = [].obs;
   var zoneCode = "".obs;
+  var lstDgvDealEntriesList = [].obs;
+  var lstDgvLinkedDealsList = [].obs;
+  var lDButton = false.obs;
+  var linkDealNO = "".obs;
+  var linkDealName = "".obs;
 
   EdiRoInitData? initData;
   var fileNames = RxList<DropDownValue>();
@@ -55,6 +64,7 @@ class EdiRoBookingController extends GetxController {
   var agency = RxList<DropDownValue>();
   var brand = RxList<DropDownValue>();
   var channel = RxList<DropDownValue>();
+  var dealNo = RxList<DropDownValue>();
 
   // Selected DropDownValues
   DropDownValue? selectedFile;
@@ -66,6 +76,7 @@ class EdiRoBookingController extends GetxController {
   DropDownValue? selectedAgency;
   DropDownValue? selectedBrand;
   DropDownValue? selectedChannel;
+  DropDownValue? selectedDealNo;
 
   TextEditingController effectiveDate = TextEditingController();
 
@@ -80,16 +91,16 @@ class EdiRoBookingController extends GetxController {
 
   @override
   void onInit() {
-    getInitData();
-    fetchUserSetting1();
     super.onInit();
   }
 
   getInitData() {
     try {
+      LoadingDialog.call();
       Get.find<ConnectorControl>().GETMETHODCALL(
           api: ApiFactory.EDI_RO_INIT,
           fun: (map) {
+            Get.back();
             // initData = EdiRoInitData.fromJson(map["onLoadInfo"]);
             //FileName
             fileNames.clear();
@@ -222,6 +233,12 @@ class EdiRoBookingController extends GetxController {
                   return result;
                 },
               );
+              //Deal No
+              dealNo.clear();
+              map["infoFileNameLeave"]['headerData']['lstDealNumbers']
+                  .forEach((e) {
+                dealNo.add(DropDownValue(key: e['code'], value: e['name']));
+              });
               leaveFileNameClagdetails();
               update(["initData"]);
             } else {
@@ -284,6 +301,69 @@ class EdiRoBookingController extends GetxController {
                 channel.add(DropDownValue(
                     key: e['channelCode'], value: e['channelName']));
               });
+            }
+          });
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  dealLeave() {
+    try {
+      LoadingDialog.call();
+      var effFromDate = DateFormat("dd-MM-yyyy").parse(effectiveDate.text);
+      Get.find<ConnectorControl>().GETMETHODCALL(
+          api: ApiFactory.EDI_RO_LEAVE_DEAL_NO(
+            DateFormat("yyyy-MM-dd").format(effFromDate),
+            selectedLoactions?.key,
+            selectedChannel?.key,
+            selectedDealNo?.key,
+            payRouteTEC.text,
+            selectedAgency?.key,
+            selectedClient?.key,
+            'false',
+          ),
+          fun: (map) {
+            Get.back();
+            if (map != null &&
+                map['infoLeaveOnDealNumber'] != null &&
+                map.containsKey('infoLeaveOnDealNumber')) {
+              bookingNo1TEC.text = map['infoLeaveOnDealNumber']['bookingMonth'];
+              startDateTEC.text = DateFormat("dd-MM-yyyy").format(
+                  DateFormat("MM/dd/yyyy hh:mm:ss").parse(
+                      map['infoLeaveOnDealNumber']['displayDealDetails']
+                              ['startDate'] ??
+                          "10/01/2023 00:00:00"));
+              endDateTEC.text = DateFormat("dd-MM-yyyy").format(
+                  DateFormat("MM/dd/yyyy hh:mm:ss").parse(
+                      map['infoLeaveOnDealNumber']['displayDealDetails']
+                              ['endDate'] ??
+                          "10/01/2023 00:00:00"));
+              dealTypeTEC.text = map['infoLeaveOnDealNumber']
+                  ['displayDealDetails']['dealType'];
+              maxSpendTEC.text = map['infoLeaveOnDealNumber']
+                  ['displayDealDetails']['dealMaxSpent'];
+              payModeTEC.text =
+                  map['infoLeaveOnDealNumber']['displayDealDetails']['payMode'];
+              preVAmtTEC.text = map['infoLeaveOnDealNumber']
+                  ['displayDealDetails']['previousValAmount'];
+              preBAmtTEC.text = map['infoLeaveOnDealNumber']
+                  ['displayDealDetails']['previousBookedAmount'];
+              List dealEntriesList = map['infoLeaveOnDealNumber']
+                  ['displayDealDetails']['lstDgvDealEntries'];
+              lstDgvDealEntriesList.value = dealEntriesList
+                  .where((element) =>
+                      maxSpendTEC.text == element['maxspend'].toString())
+                  .toList();
+
+              lstDgvLinkedDealsList.value = map['infoLeaveOnDealNumber']
+                  ['displayDealDetails']['lstDgvLinkedDeals'];
+
+              lDButton.value = true;
+              linkDealNO.value =
+                  map['infoLeaveOnDealNumber']['showLinkDeal']['linkDealNo'];
+              linkDealName.value =
+                  map['infoLeaveOnDealNumber']['showLinkDeal']['linkDealName'];
             }
           });
     } catch (e) {
@@ -478,9 +558,67 @@ class EdiRoBookingController extends GetxController {
     }
   }
 
+  showDilogBox() {
+    showDialog(
+      context: Get.context!,
+      builder: (_) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: SizedBox(
+            width: Get.width * 0.60,
+            height: Get.height * 0.6,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                children: [
+                  Expanded(
+                    child: Obx(
+                      () => Container(
+                        margin: const EdgeInsets.only(bottom: 8),
+                        decoration: lstDgvLinkedDealsList.isEmpty
+                            ? BoxDecoration(
+                                border: Border.all(color: Colors.grey))
+                            : null,
+                        child: lstDgvLinkedDealsList.value.isEmpty
+                            ? null
+                            : DataGridShowOnlyKeys(
+                                mapData: lstDgvLinkedDealsList.value,
+                                hideCode: false,
+                                exportFileName: "EDI R.O. Booking",
+                              ),
+                      ),
+                    ),
+                  ),
+                  // Padding(
+                  //   padding: const EdgeInsets.symmetric(vertical: 8),
+                  //   child: Align(
+                  //     alignment: Alignment.topRight,
+                  //     child: FormButton(
+                  //       btnText: "Return",
+                  //       callback: () {
+                  //         programSummaryTableList.clear();
+                  //         Get.back();
+                  //       },
+                  //       showIcon: false,
+                  //     ),
+                  //   ),
+                  // ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   @override
   void onReady() {
     super.onReady();
+    getInitData();
+    fetchUserSetting1();
   }
 
   @override
