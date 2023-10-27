@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 import '../../../../widgets/LoadingDialog.dart';
@@ -135,36 +136,36 @@ class ProductLevel3Controller extends GetxController {
       "Level3Name": level3Controller.text,
       "pl3": 0,
     };
+    try{
+      Get.find<ConnectorControl>().GET_METHOD_WITH_PARAM(
+          api: ApiFactory.PRODUCT_LEVEL3_RETRIEVE,
+          json: sendData,
+          // "https://jsonkeeper.com/b/D537"
+          fun: (map) {
+            // Get.back();
+            closeDialogIfOpen();
 
-    Get.find<ConnectorControl>().GET_METHOD_WITH_PARAM(
-        api: ApiFactory.PRODUCT_LEVEL3_RETRIEVE,
-        json: sendData,
-        // "https://jsonkeeper.com/b/D537"
-        fun: (map) {
-          Get.back();
-
-          // strProductevel2
-          if (map is Map &&
-              map.containsKey("retrieveRecord") &&
-              map['retrieveRecord'] != null &&
-              map['retrieveRecord'].length > 0) {
-            print(">>>>>>mapJKS" + map.toString());
-            strProductevel3 =
-                (map['retrieveRecord'][0]['pl3'] ?? "0").toString();
-            level3Controller.text =
-                map['retrieveRecord'][0]['level3Name'] ?? "";
-            for(int i=0;i<typeList.length;i++){
-              if(typeList[i].key.toString().trim() == map['retrieveRecord'][0]['ptcode'].toString().trim() ){
-                selectedType?.value =  DropDownValue(key: typeList[i].key, value: typeList[i].value);
-                selectedType?.refresh();
-                break;
+            // strProductevel2
+            if (map is Map &&
+                map.containsKey("retrieveRecord") &&
+                map['retrieveRecord'] != null &&
+                map['retrieveRecord'].length > 0) {
+              print(">>>>>>mapJKS" + map.toString());
+              strProductevel3 =
+                  (map['retrieveRecord'][0]['pl3'] ?? "0").toString();
+              level3Controller.text =
+                  map['retrieveRecord'][0]['level3Name'] ?? "";
+              for(int i=0;i<typeList.length;i++){
+                if(typeList[i].key.toString().trim() == map['retrieveRecord'][0]['ptcode'].toString().trim() ){
+                  selectedType?.value =  DropDownValue(key: typeList[i].key, value: typeList[i].value);
+                  selectedType?.refresh();
+                  break;
+                }
               }
-            }
+              fetchProductLevel1((map['retrieveRecord'][0]['ptcode']??0).toString(),pl1: (map['retrieveRecord'][0]['pl1']??"").toString() );
+              fetchProductLevel2( (map['retrieveRecord'][0]['pl1']??0),pl2:(map['retrieveRecord'][0]['pl2'] ??"").toString());
 
-            fetchProductLevel1((map['retrieveRecord'][0]['ptcode']??0).toString(),pl1: (map['retrieveRecord'][0]['pl1']??"").toString() );
-            fetchProductLevel2( (map['retrieveRecord'][0]['pl1']??0),pl2:(map['retrieveRecord'][0]['pl2'] ??"").toString());
-
-           /* for (var element in level1List) {
+              /* for (var element in level1List) {
               if (element.key == map['retrieveRecord'][0]['pl1'].toString()) {
                 selectedLevel1?.value =
                     new DropDownValue(key: element.key, value: element.value);
@@ -181,24 +182,26 @@ class ProductLevel3Controller extends GetxController {
               }
             }*/
 
-          } else {
-            // strProductevel3 = "0";
-            // LoadingDialog.showErrorDialog((map??"").toString());
-          }
-        });
+            } else {
+              // strProductevel3 = "0";
+              // LoadingDialog.showErrorDialog((map??"").toString());
+            }
+          });
+    }catch(e){
+      closeDialogIfOpen();
+    }
+
+
   }
 
   bool contin = true;
   productLevel3Save() {
-    if (strProductevel3 != "0" && contin) {
+    if (strProductevel3 != "0" ) {
       LoadingDialog.recordExists(
           "Record Already exist!\nDo you want to modify it?", () {
-        isListenerActive = false;
-        contin = false;
+        // isListenerActive = false;
+        // contin = false;
         saveCall();
-      }, cancel: () {
-        contin = false;
-        // Get.back();
       });
     }else{
       saveCall();
@@ -235,26 +238,34 @@ class ProductLevel3Controller extends GetxController {
     if (level3Controller.text == null || level3Controller.text == "") {
       LoadingDialog.showErrorDialog("Product Type cannot be empty.");
     } else {
-      Map<String, dynamic> postData = {
-        "pl3": int.parse(strProductevel3),
-        "level3Name": level3Controller.text ?? "",
-        "pl2": int.parse((selectedLevel2?.value?.key) ?? "0"),
-      };
-      Get.find<ConnectorControl>().POSTMETHOD(
-          api: ApiFactory.PRODUCT_LEVEL3_SAVE,
-          json: postData,
-          // "https://jsonkeeper.com/b/D537"
-          fun: (map) {
-            Get.back();
-            print(">>>>>>" + map.toString());
-            if (map is Map && map.containsKey('save')) {
-              clearAll();
-              LoadingDialog.callDataSavedMessage(map['save'] ?? "");
-            } else {
-              LoadingDialog.showErrorDialog((map ?? "").toString());
-            }
-            // strProductevel2
-          });
+      try{
+        LoadingDialog.call();
+        Map<String, dynamic> postData = {
+          "pl3": int.parse(strProductevel3),
+          "level3Name": level3Controller.text ?? "",
+          "pl2": int.parse((selectedLevel2?.value?.key) ?? "0"),
+        };
+        Get.find<ConnectorControl>().POSTMETHOD(
+            api: ApiFactory.PRODUCT_LEVEL3_SAVE,
+            json: postData,
+            // "https://jsonkeeper.com/b/D537"
+            fun: (map) {
+              // Get.back();
+              closeDialogIfOpen();
+              // print(">>>>>>" + map.toString());
+              if (map is Map && map.containsKey('save')) {
+                LoadingDialog.callDataSavedMessage(map['save'] ?? "",callback: (){
+                  clearAll();
+                });
+              } else {
+                LoadingDialog.showErrorDialog((map ?? "").toString());
+              }
+              // strProductevel2
+            });
+      }catch(e){
+        closeDialogIfOpen();
+      }
+
     }
   }
 
@@ -270,14 +281,27 @@ class ProductLevel3Controller extends GetxController {
   @override
   void onInit() {
     fetchAllLoaderData();
-    level3Node.addListener(() {
+   /* level3Node.addListener(() {
       if (level3Node.hasFocus) {
         isListenerActive = true;
       }
       if (!level3Node.hasFocus && isListenerActive) {
         leaveLevel3();
       }
-    });
+    });*/
+    level3Node = FocusNode(
+      onKeyEvent: (node, event) {
+        if (event.logicalKey == LogicalKeyboardKey.tab) {
+          if(level3Controller.text != null && level3Controller.text != ""){
+            leaveLevel3();
+          }
+          return KeyEventResult.ignored;
+        }
+        return KeyEventResult.ignored;
+      },
+    );
+
+
     super.onInit();
   }
   void search() {

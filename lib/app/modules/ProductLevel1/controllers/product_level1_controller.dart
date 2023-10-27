@@ -1,5 +1,6 @@
 import 'package:bms_salesco/widgets/LoadingDialog.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 import '../../../controller/ConnectorControl.dart';
@@ -20,7 +21,7 @@ class ProductLevel1Controller extends GetxController {
   TextEditingController level1Controller = TextEditingController();
   FocusNode typeNode = FocusNode();
   FocusNode level1Node = FocusNode();
-  bool isListenerActive = false;
+  // bool isListenerActive = false;
   String strProductevel2 = "0";
 
   fetchAllLoaderData() {
@@ -46,55 +47,66 @@ class ProductLevel1Controller extends GetxController {
 
   level1OnLeave(){
     LoadingDialog.call();
-    isListenerActive = false;
+    // isListenerActive = false;
     level1Controller.text = (level1Controller.text??"").toString().toUpperCase();
     Map<String,dynamic> sendData = {
       "Pl1":0,
       "Level1Name":level1Controller.text
     };
-    Get.find<ConnectorControl>().GET_METHOD_WITH_PARAM(
-        api: ApiFactory.PRODUCT_LEVEL1_RETRIEVE,
-        json: sendData,
-        // "https://jsonkeeper.com/b/D537"
-        fun: (map) {
-          Get.back();
-          print(">>>>>>"+map.toString());
-          // strProductevel2
-          if(map is Map && map.containsKey("retrieveRecord") && map['retrieveRecord'] != null &&
-              map['retrieveRecord'].length >0 ){
-            strProductevel2 =(map['retrieveRecord'][0]['pl1']??"0").toString();
-            level1Controller.text =map['retrieveRecord'][0]['level1Name'];
-            for (var element in typeList) {
-              if(element.key == map['retrieveRecord'][0]['pTcode'].toString()){
-                selectedType?.value = new DropDownValue(key:element.key.toString() ,value:element.value) ;
-                selectedType?.refresh();
-                break;
+    try{
+      Get.find<ConnectorControl>().GET_METHOD_WITH_PARAM(
+          api: ApiFactory.PRODUCT_LEVEL1_RETRIEVE,
+          json: sendData,
+          // "https://jsonkeeper.com/b/D537"
+          fun: (map) {
+            closeDialogIfOpen();
+            print(">>>>>>"+map.toString());
+            // strProductevel2
+            if(map is Map && map.containsKey("retrieveRecord") && map['retrieveRecord'] != null &&
+                map['retrieveRecord'].length >0 ){
+              strProductevel2 =(map['retrieveRecord'][0]['pl1']??"0").toString();
+              level1Controller.text =map['retrieveRecord'][0]['level1Name'];
+              for (var element in typeList) {
+                if(element.key == map['retrieveRecord'][0]['pTcode'].toString()){
+                  selectedType?.value = new DropDownValue(key:element.key.toString() ,value:element.value) ;
+                  selectedType?.refresh();
+                  break;
+                }
               }
+            }else{
+              // strProductevel2 = "0";
+              // LoadingDialog.showErrorDialog((map??"").toString());
             }
-          }else{
-            strProductevel2 = "0";
-            // LoadingDialog.showErrorDialog((map??"").toString());
-          }
-        });
+          });
+    }catch(e){
+      closeDialogIfOpen();
+    }
+
   }
 
-  bool contin = true;
+  // bool contin = true;
   productLevel1Save(){
-    if(strProductevel2 != "0" && contin){
+    if(level1Controller.text == null || level1Controller.text == ""){
+      LoadingDialog.showErrorDialog("Product Type cannot be empty.");
+    }else if(selectedType?.value == null){
+      LoadingDialog.showErrorDialog("Product Type cannot be empty.");
+    }
+    else if(strProductevel2 != "0" && strProductevel2 != ""){
       LoadingDialog.recordExists(
           "Record Already exist!\nDo you want to modify it?",
               (){
-            isListenerActive =false;
-            contin = false;
-          },cancel: (){
-        contin= false;
-        // Get.back();
-      });
+            // isListenerActive =false;
+            // contin = false;
+            saveApiCall();
+          });
+    }else{
+      saveApiCall();
     }
-    else if(level1Controller.text == null || level1Controller.text == ""){
-      LoadingDialog.showErrorDialog("Product Type cannot be empty.");
-    }
-    else{
+  }
+
+  saveApiCall(){
+    try{
+      LoadingDialog.call();
       Map<String,dynamic> postData = {
         "pl1":int.parse(strProductevel2),
         "level1Name": level1Controller.text??"",
@@ -105,31 +117,48 @@ class ProductLevel1Controller extends GetxController {
           json: postData,
           // "https://jsonkeeper.com/b/D537"
           fun: (map) {
-            Get.back();
-            print(">>>>>>"+map.toString());
+            closeDialogIfOpen();
+            // print(">>>>>>"+map.toString());
             if(map is Map && map.containsKey('save')){
-              clearAll();
-              LoadingDialog.callDataSavedMessage(map['save']??"");
+              LoadingDialog.callDataSavedMessage(map['save']??"",callback: (){
+                clearAll();
+              });
             }else{
               LoadingDialog.showErrorDialog((map??"").toString());
             }
             // strProductevel2
 
           });
+    }catch(e){
+      closeDialogIfOpen();
     }
+
+
   }
 
   @override
   void onInit() {
     fetchAllLoaderData();
-    level1Node.addListener(() {
+   /* level1Node.addListener(() {
       if(level1Node.hasFocus){
         isListenerActive = true;
       }if(!level1Node.hasFocus && isListenerActive){
         level1OnLeave();
       }
 
-    });
+    });*/
+    level1Node = FocusNode(
+      onKeyEvent: (node, event) {
+        if (event.logicalKey == LogicalKeyboardKey.tab) {
+          if(level1Controller.text != null && level1Controller.text != ""){
+            level1OnLeave();
+          }
+          return KeyEventResult.ignored;
+        }
+        return KeyEventResult.ignored;
+      },
+    );
+
     super.onInit();
   }
   clearAll() {

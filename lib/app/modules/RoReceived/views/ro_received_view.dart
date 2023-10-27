@@ -360,18 +360,19 @@ class RoReceivedView extends StatelessWidget {
         break;
       case "Search":
         Get.to(SearchPage(
+          key: Key("RO Received"),
           screenName: "RO Received",
           strViewName: "BMS_vRoReceived",
           appBarName: "RO Received",
-          isPopup: true,
+          // isPopup: true,
           isAppBarReq: true,
-          actionableSearch: true,
-          actionableMap: {
-            "RoReceivedCode": (value) {
-              print(value);
-              maincontroller.retriveData(value);
-            }
-          },
+          // actionableSearch: true,
+          // actionableMap: {
+          //   "RoReceivedCode": (value) {
+          //     print(value);
+          //     maincontroller.retriveData(value);
+          //   }
+          // },
         ));
         break;
       case "Delete":

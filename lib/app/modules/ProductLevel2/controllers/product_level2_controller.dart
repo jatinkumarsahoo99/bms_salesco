@@ -1,5 +1,6 @@
 import 'package:bms_salesco/widgets/LoadingDialog.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 import '../../../controller/ConnectorControl.dart';
@@ -89,47 +90,64 @@ class ProductLevel2Controller extends GetxController {
       "Level1Name":level2Controller.text,
       "Pl1":int.parse((selectedLevel1?.value?.key??"0")),
     };
-
-    Get.find<ConnectorControl>().GET_METHOD_WITH_PARAM(
-        api: ApiFactory.PRODUCT_LEVEL2_RETRIEVE,
-        json: sendData,
-        // "https://jsonkeeper.com/b/D537"
-        fun: (map) {
-          Get.back();
-          // print(">>>>>>"+map.toString());
-          // strProductevel2
-          if(map is Map && map.containsKey("retrieveRecord") && map['retrieveRecord'] != null &&
-              map['retrieveRecord'].length >0 ){
-            print("in if block");
-            strProductevel2 =(map['retrieveRecord'][0]['pl2']??"0").toString();
-            level2Controller.text =map['retrieveRecord'][0]['level2Name']??"";
-            for (var element in typeList) {
-              if(element.key == map['retrieveRecord'][0]['pTcode'].toString()){
-                selectedType?.value = new DropDownValue(key:element.key.toString() ,value:element.value) ;
-                selectedType?.refresh();
-                break;
+    try{
+      Get.find<ConnectorControl>().GET_METHOD_WITH_PARAM(
+          api: ApiFactory.PRODUCT_LEVEL2_RETRIEVE,
+          json: sendData,
+          // "https://jsonkeeper.com/b/D537"
+          fun: (map) {
+            // Get.back();
+            closeDialogIfOpen();
+            // print(">>>>>>"+map.toString());
+            // strProductevel2
+            if(map is Map && map.containsKey("retrieveRecord") && map['retrieveRecord'] != null &&
+                map['retrieveRecord'].length >0 ){
+              print("in if block");
+              strProductevel2 =(map['retrieveRecord'][0]['pl2']??"0").toString();
+              level2Controller.text =map['retrieveRecord'][0]['level2Name']??"";
+              for (var element in typeList) {
+                if(element.key == map['retrieveRecord'][0]['pTcode'].toString()){
+                  selectedType?.value = new DropDownValue(key:element.key.toString() ,value:element.value) ;
+                  selectedType?.refresh();
+                  break;
+                }
               }
+              // map['retrieveRecord'][0]['pl1'].toString()
+              fetchProductLevel1((map['retrieveRecord'][0]['pTcode'].toString()),pl1: map['retrieveRecord'][0]['pl1'].toString());
+            }else{
+              // strProductevel2 = "0";
+              // LoadingDialog.showErrorDialog((map??"").toString());
             }
-            // map['retrieveRecord'][0]['pl1'].toString()
-            fetchProductLevel1((map['retrieveRecord'][0]['pTcode'].toString()),pl1: map['retrieveRecord'][0]['pl1'].toString());
-          }else{
-            // strProductevel2 = "0";
-            // LoadingDialog.showErrorDialog((map??"").toString());
-          }
-        });
+          });
+    }catch(e){
+      closeDialogIfOpen();
+    }
+
+
   }
 
   @override
   void onInit() {
     fetchAllLoaderData();
-    level2Node.addListener(() {
+    /*level2Node.addListener(() {
       if(level2Node.hasFocus){
         isListenerActive = true;
       }if(!level2Node.hasFocus && isListenerActive){
         level2OnLeave();
       }
+    });*/
+    level2Node = FocusNode(
+      onKeyEvent: (node, event) {
+        if (event.logicalKey == LogicalKeyboardKey.tab) {
+          if(level2Controller.text != null && level2Controller.text != ""){
+            level2OnLeave();
+          }
+          return KeyEventResult.ignored;
+        }
+        return KeyEventResult.ignored;
+      },
+    );
 
-    });
     super.onInit();
   }
   bool contin = true;
@@ -140,8 +158,6 @@ class ProductLevel2Controller extends GetxController {
         isListenerActive = false;
         // contin = false;
         saveCall();
-      }, cancel: () {
-        // Get.back();
       });
     }else{
       saveCall();
@@ -152,26 +168,34 @@ class ProductLevel2Controller extends GetxController {
     if (level2Controller.text == null || level2Controller.text == "") {
       LoadingDialog.showErrorDialog("Product Type cannot be empty.");
     } else {
-      Map<String, dynamic> postData = {
-        "pl2": int.parse(strProductevel2),
-        "level2Name":level2Controller.text ?? "",
-        "pl1": int.parse((selectedLevel1?.value?.key) ?? "0"),
-      };
-      Get.find<ConnectorControl>().POSTMETHOD(
-          api: ApiFactory.PRODUCT_LEVEL2_SAVE,
-          json: postData,
-          // "https://jsonkeeper.com/b/D537"
-          fun: (map) {
-            Get.back();
-            print(">>>>>>" + map.toString());
-            if (map is Map && map.containsKey('save')) {
-              clearAll();
-              LoadingDialog.callDataSavedMessage(map['save'] ?? "");
-            } else {
-              LoadingDialog.showErrorDialog((map ?? "").toString());
-            }
-            // strProductevel2
-          });
+      try{
+        LoadingDialog.call();
+        Map<String, dynamic> postData = {
+          "pl2": int.parse(strProductevel2),
+          "level2Name":level2Controller.text ?? "",
+          "pl1": int.parse((selectedLevel1?.value?.key) ?? "0"),
+        };
+        Get.find<ConnectorControl>().POSTMETHOD(
+            api: ApiFactory.PRODUCT_LEVEL2_SAVE,
+            json: postData,
+            // "https://jsonkeeper.com/b/D537"
+            fun: (map) {
+              // Get.back();
+              closeDialogIfOpen();
+              // print(">>>>>>" + map.toString());
+              if (map is Map && map.containsKey('save')) {
+                LoadingDialog.callDataSavedMessage(map['save'] ?? "",callback: (){
+                  clearAll();
+                });
+              } else {
+                LoadingDialog.showErrorDialog((map ?? "").toString());
+              }
+              // strProductevel2
+            });
+      }catch(e){
+        closeDialogIfOpen();
+      }
+
     }
   }
   void search() {
