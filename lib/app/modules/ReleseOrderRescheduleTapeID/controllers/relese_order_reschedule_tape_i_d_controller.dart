@@ -337,7 +337,10 @@ class ReleseOrderRescheduleTapeIDController extends GetxController {
                 tapeListRight.add(tapeList[i]);
               }
             }
-            if (tapeListRight.isEmpty || lstBookingDetails.isEmpty) {
+            if (lstBookingDetails.isEmpty) {
+              LoadingDialog.callInfoMessage(
+                  'No booking records found for ReSchedule for selected filter.');
+            } else if (tapeListRight.isEmpty) {
               LoadingDialog.callInfoMessage(
                   "No optional TapeID found for replacing existing TapeID.");
             }

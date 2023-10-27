@@ -1,6 +1,7 @@
 import 'package:bms_salesco/app/controller/ConnectorControl.dart';
 import 'package:bms_salesco/app/providers/ApiFactory.dart';
 import 'package:bms_salesco/widgets/LoadingDialog.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -12,6 +13,7 @@ import '../../../providers/Utils.dart';
 import '../../../routes/app_pages.dart';
 import '../../CommonSearch/views/common_search_view.dart';
 import '../model/tape_id_campaign_model.dart';
+import 'package:dio/dio.dart' as dio;
 
 class TapeIDCampaignController extends GetxController {
   List<PermissionModel>? formPermissions;
@@ -29,6 +31,8 @@ class TapeIDCampaignController extends GetxController {
   TapeIDCampaignLoadModel? loadModel;
   TapeIdCampaignHistoryModel? history;
   var tapeIdFN = FocusNode();
+  var camoaignHistoryList = [].obs;
+  var tapeIdCampaignList = [].obs;
 
   var startDate =
       DateTime.now().subtract(Duration(days: DateTime.now().day - 1));
@@ -37,7 +41,6 @@ class TapeIDCampaignController extends GetxController {
   List<Map<String, Map<String, double>>>? userGridSetting1;
   fetchUserSetting1() async {
     userGridSetting1 = await Get.find<HomeController>().fetchUserSetting1();
-    update(["grid"]);
   }
 
   @override
@@ -49,6 +52,9 @@ class TapeIDCampaignController extends GetxController {
       }
     });
     startDateTC.addListener(() {});
+
+    getCampaignHistory();
+    getTapeIdCampaignDetails();
   }
 
   @override
@@ -88,6 +94,40 @@ class TapeIDCampaignController extends GetxController {
       var tempSplit = startDateTC.text.split("-");
       activityMonth.value = "${tempSplit[2]}${tempSplit[1]}";
     }
+  }
+
+  getCampaignHistory() {
+    Get.find<ConnectorControl>().GETMETHODCALL(
+      api: ApiFactory.TAPE_ID_CAMPAIGN_CAMPAIGN_HISTORY,
+      fun: (resp) {
+        if (resp is Map<String, dynamic> && resp['result'] != null) {
+          camoaignHistoryList.value = resp['result'];
+          if (selectedTab.value == 2 || selectedTab.value == 3) {
+            if (camoaignHistoryList.isNotEmpty) {
+              selectedTab.refresh();
+            }
+          }
+        }
+      },
+      failed: (resp) {},
+    );
+  }
+
+  getTapeIdCampaignDetails() {
+    Get.find<ConnectorControl>().GETMETHODCALL(
+      api: ApiFactory.TAPE_ID_CAMPAIGN_TAPE_CAMPAIGN_DETAILS,
+      fun: (resp) {
+        if (resp is Map<String, dynamic> && resp['result'] != null) {
+          tapeIdCampaignList.value = resp['result'];
+          if (selectedTab.value == 2 || selectedTab.value == 3) {
+            if (tapeIdCampaignList.isNotEmpty) {
+              selectedTab.refresh();
+            }
+          }
+        }
+      },
+      failed: (resp) {},
+    );
   }
 
   tapeIdLeave() {
@@ -241,6 +281,47 @@ class TapeIDCampaignController extends GetxController {
           appBarName: "Tape ID Campaign",
           strViewName: "BMS_vListTapeIDCampaign",
           isAppBarReq: true));
+    }
+  }
+
+  Future<void> handleImportTap() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      allowMultiple: false,
+      type: FileType.custom,
+      allowedExtensions: ['xls', 'xlsx'],
+    );
+    if (result != null && result.files.single != null) {
+      PlatformFile file = result.files.single;
+      String? fileName = result.files.single.name;
+      LoadingDialog.call();
+      dio.FormData formData = dio.FormData.fromMap(
+        {
+          'ImportFile': dio.MultipartFile.fromBytes(
+            file.bytes!.toList(),
+            filename: fileName,
+          ),
+        },
+      );
+
+      Get.find<ConnectorControl>().POSTMETHOD_FORMDATA(
+        api: ApiFactory.TAPE_ID_CAMPAIGN_IMPORT,
+        json: formData,
+        fun: (resp) {
+          Get.back();
+          if (resp != null &&
+              resp is Map<String, dynamic> &&
+              resp['result']['message'] != null &&
+              resp['result']['message'].toString().contains('Successfully')) {
+            camoaignHistoryList.value = resp['result']['campaignHistory'];
+            tapeIdCampaignList.value = resp['result']['tapeIDCampaignDetail'];
+            if (selectedTab.value == 2 || selectedTab.value == 3) {
+              selectedTab.refresh();
+            }
+          } else {
+            LoadingDialog.showErrorDialog(resp.toString());
+          }
+        },
+      );
     }
   }
 }

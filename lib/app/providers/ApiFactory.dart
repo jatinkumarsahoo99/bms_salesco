@@ -980,6 +980,12 @@ class ApiFactory {
       "$BASE_URL/api/TapeIDCampaign/TapeIdHistoryUpdate";
   static String get TAPE_ID_CAMPAIGN_SAVE_RECORD =>
       "$BASE_URL/api/TapeIDCampaign/Save";
+  static String get TAPE_ID_CAMPAIGN_IMPORT =>
+      "$BASE_URL/api/TapeIDCampaign/Import";
+  static String get TAPE_ID_CAMPAIGN_CAMPAIGN_HISTORY =>
+      "$BASE_URL/api/TapeIDCampaign/CampaignHistory";
+  static String get TAPE_ID_CAMPAIGN_TAPE_CAMPAIGN_DETAILS =>
+      "$BASE_URL/api/TapeIDCampaign/TapeIDCampaignDetail";
   ///////////////////////// TAPE-ID-CAMPAIGN-END//////
   ///
   ///
