@@ -221,7 +221,7 @@ class UserGroupsForDealWorkflowView
                                 .permissionList!
                                 .lastWhere((element) =>
                                     element.appFormName ==
-                                    "frmCommercialMaster");
+                                    "frmDP_UserGroups");
                         if (controller.buttons != null) {
                           return Wrap(
                             spacing: 5,
