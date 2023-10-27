@@ -485,17 +485,18 @@ class EdiRoBookingView extends StatelessWidget {
                               hideCode: false,
                               formatDate: false,
                               exportFileName: "EDI R.O. Booking",
+                              onload: (load) {
+                                controller.dvgSpotGrid = load.stateManager;
+                              },
                               onRowDoubleTap: (event) {
                                 print("==============");
                                 // print(event.cell.row.sortIdx);
-                                // print(event.cell.value);
-
+                                print(event.cell.value);
                                 print(event.cell.column.field);
                                 if (event.cell.column.field.toString() ==
                                     'fpcstart') {
                                   print(event.row.cells['acT_DT']?.value);
                                   // print(event.cell.column.field);
-                                  // print(event.cell.row.cells['acT_DT']);
                                   controller.spotFpcStart(
                                       controller.selectedLoactions?.key,
                                       controller.selectedChannel?.key,

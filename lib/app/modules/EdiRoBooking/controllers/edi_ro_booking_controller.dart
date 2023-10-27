@@ -62,6 +62,8 @@ class EdiRoBookingController extends GetxController {
   var lstDgvSpotsList = [].obs;
   var fpcStartTabelList = [].obs;
 
+  PlutoGridStateManager? dvgSpotGrid;
+
   EdiRoInitData? initData;
   var fileNames = RxList<DropDownValue>();
   var loactions = RxList<DropDownValue>();
@@ -676,6 +678,20 @@ class EdiRoBookingController extends GetxController {
                                 hideCode: false,
                                 exportFileName: "EDI R.O. Booking",
                                 formatDate: false,
+                                onRowDoubleTap: (event) {
+                                  print(event.cell.column.field);
+
+                                  if (event.cell.column.field.toString() ==
+                                      'telecastTime') {
+                                    print(
+                                        event.row.cells['telecastTime']?.value);
+                                    dvgSpotGrid!.setCurrentCell(
+                                        dvgSpotGrid
+                                            ?.getRowByIdx(0)
+                                            ?.cells['telecastTime'],
+                                        0);
+                                  }
+                                },
                               ),
                       ),
                     ),
