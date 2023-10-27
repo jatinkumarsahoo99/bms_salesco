@@ -300,6 +300,7 @@ class TapeIDCampaignController extends GetxController {
             file.bytes!.toList(),
             filename: fileName,
           ),
+          'ActivityMonth': activityMonth.value.toString(),
         },
       );
 
