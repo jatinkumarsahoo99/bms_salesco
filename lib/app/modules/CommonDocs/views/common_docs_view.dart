@@ -37,10 +37,14 @@ class CommonDocsView extends GetView<CommonDocsController> {
                         child: RawKeyboardListener(
                           focusNode: FocusNode(),
                           onKey: (value) {
-                            if (value.isKeyPressed(LogicalKeyboardKey.delete) && controller.documents.isNotEmpty) {
+                            if (value.logicalKey == LogicalKeyboardKey.escape) {
+                              Get.back();
+                            }
+                            if (value.isKeyPressed(LogicalKeyboardKey.delete) &&
+                                controller.documents.isNotEmpty) {
                               LoadingDialog.delete(
                                 "Want to delete selected row",
-                                    () => controller.handleOnDelete(documentKey),
+                                () => controller.handleOnDelete(documentKey),
                                 cancel: () {},
                               );
                             }
@@ -56,9 +60,12 @@ class CommonDocsView extends GetView<CommonDocsController> {
                               hideKeys: const ["documentId"],
                               dateFromat: "dd-MM-yyyy HH:mm",
                               mode: PlutoGridMode.selectWithOneTap,
-                              mapData: controller.documents.value.map((e) => e.toJson()).toList(),
+                              mapData: controller.documents.value
+                                  .map((e) => e.toJson())
+                                  .toList(),
                               onload: (loadGrid) {
-                                controller.viewDocsStateManger = loadGrid.stateManager;
+                                controller.viewDocsStateManger =
+                                    loadGrid.stateManager;
                               },
                               onRowDoubleTap: controller.handleOnRowDoubleTap,
                             );
@@ -69,15 +76,24 @@ class CommonDocsView extends GetView<CommonDocsController> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          FormButton(btnText: "Add Docs", callback: () => controller.handleAddDocs(documentKey)),
+                          FormButton(
+                              btnText: "Add Docs",
+                              callback: () =>
+                                  controller.handleAddDocs(documentKey)),
                           const SizedBox(width: 20),
-                          FormButton(btnText: "View Doc", callback: () => controller.handleViewDocs(documentKey)),
+                          FormButton(
+                              btnText: "View Doc",
+                              callback: () =>
+                                  controller.handleViewDocs(documentKey)),
                           const SizedBox(width: 20),
-                          FormButton(btnText: "Attach Emails", callback: () {
-                            // LoadingDialog.callInfoMessage("");
-                          }),
+                          FormButton(
+                              btnText: "Attach Emails",
+                              callback: () {
+                                // LoadingDialog.callInfoMessage("");
+                              }),
                           const SizedBox(width: 20),
-                          FormButton(btnText: "Close", callback: () => Get.back()),
+                          FormButton(
+                              btnText: "Close", callback: () => Get.back()),
                         ],
                       ),
                     ],
