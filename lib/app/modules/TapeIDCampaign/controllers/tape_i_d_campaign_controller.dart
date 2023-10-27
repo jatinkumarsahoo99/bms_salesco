@@ -318,8 +318,14 @@ class TapeIDCampaignController extends GetxController {
             if (selectedTab.value == 2 || selectedTab.value == 3) {
               selectedTab.refresh();
             }
+            LoadingDialog.callInfoMessage(resp['result']['message'].toString());
           } else {
-            LoadingDialog.showErrorDialog(resp.toString());
+            if (resp['result']['message'] != null) {
+              LoadingDialog.showErrorDialog(
+                  resp['result']['message'].toString());
+            } else {
+              LoadingDialog.showErrorDialog(resp.toString());
+            }
           }
         },
       );
