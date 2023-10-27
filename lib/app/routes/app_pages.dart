@@ -62,8 +62,8 @@ class AppPages {
 
   static const INITIAL = kReleaseMode
       ? Routes.HOME
-      : Routes.TAPE_I_D_CAMPAIGN +
-          "?personalNo=R9vVPL7er1Os/usemWG/Iw==&loginCode=0iGe3vK5h2KGjfSKZTpmsQ==&formName=OI8ukDpPPVN0I2BEXu2h4nuFu%2BZm1ZRpvP8NL4XCXzQ%3D";
+      : Routes.RO_RECEIVED +
+          "?personalNo=CX5CP1oS3/epJloRhT/7JQ==&loginCode=2kU6SMfhqW4twroiqMiHoA==&formName=OI8ukDpPPVN0I2BEXu2h4nuFu%2BZm1ZRpvP8NL4XCXzQ%3D";
 
   static final routes = [
     GetPage(
