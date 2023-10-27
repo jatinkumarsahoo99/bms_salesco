@@ -272,7 +272,7 @@ class RoReceivedController extends GetxController {
       LoadingDialog.showErrorDialog("Please select additional / cancellation.");
     } else if (selectedRevenue?.key == null) {
       LoadingDialog.showErrorDialog("Please select revenue type.");
-    } else if (fct.text.length > 10) {
+    } else if (fct.text.length > 9) {
       LoadingDialog.showErrorDialog(
           "Error converting data type nvarchar to int.");
     } else {
