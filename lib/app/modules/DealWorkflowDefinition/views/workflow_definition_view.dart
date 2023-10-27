@@ -407,6 +407,23 @@ class WorkflowDefinitionView extends GetView<WorkflowDefinitionController> {
                                             load.stateManager;
 
                                       },
+                                    colorCallback:
+                                        (
+                                        PlutoRowColorContext
+                                        colorData) {
+                                      Color color =
+                                          Colors
+                                              .white;
+                                      if (controllerX
+                                          .gridStateManager
+                                          ?.currentRowIdx ==
+                                          colorData
+                                              .rowIdx) {
+                                        color = Color(
+                                            0xFFD1C4E9);
+                                      }
+                                      return color;
+                                    },
                                       onSelected:
                                           (PlutoGridOnSelectedEvent? val) {
                                             controllerX.isDoubleClick = false;
