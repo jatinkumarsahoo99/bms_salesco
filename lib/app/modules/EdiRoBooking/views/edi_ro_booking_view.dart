@@ -475,17 +475,46 @@ class EdiRoBookingView extends StatelessWidget {
                           ),
                   ),
                 ),
-                Expanded(
-                  child: Container(
-                      // child: DataGridFromMap(
-                      //   mapData: const [
-                      //     {
-                      //       "dsad": "dsadsa",
-                      //       "Dsadsa": "dsadsa",
-                      //     }
-                      //   ],
-                      // ),
-                      ),
+                Obx(
+                  () => Expanded(
+                    child: Container(
+                      child: controller.lstDgvSpotsList.value.isEmpty
+                          ? null
+                          : DataGridFromMap(
+                              mapData: controller.lstDgvSpotsList.value,
+                              hideCode: false,
+                              formatDate: false,
+                              exportFileName: "EDI R.O. Booking",
+                              onRowDoubleTap: (event) {
+                                print("==============");
+                                // print(event.cell.row.sortIdx);
+                                // print(event.cell.value);
+
+                                print(event.cell.column.field);
+                                if (event.cell.column.field.toString() ==
+                                    'fpcstart') {
+                                  print(event.row.cells['acT_DT']?.value);
+                                  // print(event.cell.column.field);
+                                  // print(event.cell.row.cells['acT_DT']);
+                                  controller.spotFpcStart(
+                                      controller.selectedLoactions?.key,
+                                      controller.selectedChannel?.key,
+                                      event.row.cells['acT_DT']?.value
+                                          .toString());
+                                } else if (event.cell.column.field.toString() ==
+                                    'program') {
+                                  print(event.cell.column.field);
+                                } else if (event.cell.column.field.toString() ==
+                                    'spoT_RATE') {
+                                  print(event.cell.column.field);
+                                } else if (event.cell.column.field.toString() ==
+                                    'tapE_ID') {
+                                  controller.tapeIdDilogBox();
+                                }
+                              },
+                            ),
+                    ),
+                  ),
                 ),
                 // GetBuilder<HomeController>(
                 //     id: "buttons",
