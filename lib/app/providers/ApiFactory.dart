@@ -219,6 +219,10 @@ class ApiFactory {
           payRouteCode, agencyCode, clientCode, grpPDC) =>
       "$BASE_URL/api/EDIRoBooking/OnLeaveDealNo?EffDate=$effDate&LocationCode=$locationCode&ChannelCode=$channelCode&DealNo=$dealNo&PayRouteCode=$payRouteCode&AgencyCode=$agencyCode&ClientCode=$clientCode&grpPDC=$grpPDC";
 
+  static String EDI_RO_SPOT_FPC_START(
+          locationCode, channelCode, telecastDate) =>
+      "$BASE_URL/api/EDIRoBooking/SpotFPCStart?LocationCode=$locationCode&ChannelCode=$channelCode&TelecastDate=$telecastDate";
+
 ///////////////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////// Create Break Pattern ///////////////////////////////////////////

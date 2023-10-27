@@ -59,6 +59,10 @@ class EdiRoBookingController extends GetxController {
   bool showGstPopUp = true;
   var isShowLink = false.obs;
   var lstXmlDtList = [].obs;
+  var lstDgvSpotsList = [].obs;
+  var fpcStartTabelList = [].obs;
+
+  PlutoGridStateManager? dvgSpotGrid;
 
   EdiRoInitData? initData;
   var fileNames = RxList<DropDownValue>();
@@ -485,9 +489,42 @@ class EdiRoBookingController extends GetxController {
             Get.back();
             print(map);
             if (map != null &&
-                map['infoChannelList'] != null &&
-                map.containsKey('infoChannelList') &&
-                (map['infoChannelList'] as List<dynamic>).isNotEmpty) {}
+                map['infoShowLink'] != null &&
+                map.containsKey('infoShowLink')) {
+              lstDgvSpotsList.value = map['infoShowLink']['lstDgvSpots'];
+              spotsAllTEC.text = map['infoShowLink']['allSpots'];
+              durAllTEC.text = map['infoShowLink']['allDuration'];
+              amtAllTEC.text = map['infoShowLink']['allAmount'];
+              durBalanceTEC.text = map['infoShowLink']['balanceDuration'];
+              spotsBalanceTEC.text = map['infoShowLink']['balanceSpots'];
+              amtBalanceTEC.text = map['infoShowLink']['balanceAmount'];
+            }
+          });
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  spotFpcStart(locationCode, channelCode, telicastDate) {
+    try {
+      LoadingDialog.call();
+      Get.find<ConnectorControl>().GETMETHODCALL(
+          api: ApiFactory.EDI_RO_SPOT_FPC_START(
+              locationCode ?? "", channelCode ?? "", telicastDate ?? ""),
+          fun: (map) {
+            Get.back();
+            if (map != null &&
+                map['spotFPCStart'] != null &&
+                map.containsKey('spotFPCStart') &&
+                (map['spotFPCStart'] as List<dynamic>).isNotEmpty) {
+              fpcStartTabelList.clear();
+              fpcStartTabelList.value = map['spotFPCStart'];
+              fpcStartDilogBox();
+              // map["infoChannelList"].forEach((e) {
+              //   channel.add(DropDownValue(
+              //       key: e['channelCode'], value: e['channelName']));
+              // });
+            }
           });
     } catch (e) {
       print(e.toString());
@@ -602,6 +639,117 @@ class EdiRoBookingController extends GetxController {
                   //     ),
                   //   ),
                   // ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  fpcStartDilogBox() {
+    showDialog(
+      context: Get.context!,
+      builder: (_) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: SizedBox(
+            width: Get.width * 0.60,
+            height: Get.height * 0.6,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                children: [
+                  Expanded(
+                    child: Obx(
+                      () => Container(
+                        margin: const EdgeInsets.only(bottom: 8),
+                        decoration: fpcStartTabelList.isEmpty
+                            ? BoxDecoration(
+                                border: Border.all(color: Colors.grey))
+                            : null,
+                        child: fpcStartTabelList.value.isEmpty
+                            ? null
+                            : DataGridShowOnlyKeys(
+                                mapData: fpcStartTabelList.value,
+                                hideCode: false,
+                                exportFileName: "EDI R.O. Booking",
+                                formatDate: false,
+                                onRowDoubleTap: (event) {
+                                  print(event.cell.column.field);
+
+                                  if (event.cell.column.field.toString() ==
+                                      'telecastTime') {
+                                    print(
+                                        event.row.cells['telecastTime']?.value);
+                                    dvgSpotGrid!.setCurrentCell(
+                                        dvgSpotGrid
+                                            ?.getRowByIdx(0)
+                                            ?.cells['telecastTime'],
+                                        0);
+                                  }
+                                },
+                              ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  tapeIdDilogBox() {
+    showDialog(
+      context: Get.context!,
+      builder: (_) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: SizedBox(
+            width: Get.width * 0.60,
+            height: Get.height * 0.6,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  InputFields.formField1(
+                    hintTxt: "Search Tape ID",
+                    controller: TextEditingController(),
+                    onchanged: (value) {
+                      print(value);
+                    },
+                    width: 0.3,
+                  ),
+                  const SizedBox(
+                    height: 8,
+                  ),
+                  Expanded(
+                    child: Obx(
+                      () => Container(
+                        margin: const EdgeInsets.only(bottom: 8),
+                        decoration: fpcStartTabelList.isEmpty
+                            ? BoxDecoration(
+                                border: Border.all(color: Colors.grey))
+                            : null,
+                        child: fpcStartTabelList.value.isEmpty
+                            ? null
+                            : DataGridShowOnlyKeys(
+                                mapData: fpcStartTabelList.value,
+                                hideCode: false,
+                                exportFileName: "EDI R.O. Booking",
+                              ),
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
