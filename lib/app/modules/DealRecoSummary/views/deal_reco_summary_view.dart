@@ -153,7 +153,7 @@ class DealRecoSummaryView extends GetView<DealRecoSummaryController> {
                       ),
                     ),
                     SizedBox(
-                      width: size.width*0.07,
+                      width: size.width*0.017 ,
                     ),
                     Padding(
                       padding: const EdgeInsets.only(right: 8.0),

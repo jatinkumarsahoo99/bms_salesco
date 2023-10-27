@@ -56,7 +56,7 @@ class WorkflowDefinitionController extends GetxController {
   TextEditingController formNameController = new TextEditingController();
 
   RxnString selectRadio1 = RxnString(null);
-  RxString selectRadio2 = RxString("After");
+  RxString selectRadio2 = RxString("Before");
 
   FocusNode brandName = FocusNode();
 
