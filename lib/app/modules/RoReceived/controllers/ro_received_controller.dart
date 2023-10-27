@@ -8,8 +8,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
+import '../../../controller/HomeController.dart';
+
 class RoReceivedController extends GetxController {
-  List<DropDownValue>? locations;
+  var locations = <DropDownValue>[].obs;
   var channels = RxList<DropDownValue>([]);
 
   var revenueType = RxList<DropDownValue>([]);
@@ -74,7 +76,7 @@ class RoReceivedController extends GetxController {
             // for (var client in data["lstClient"]) {
             //   clients.add(DropDownValue(key: client["clientCode"], value: client["clientName"]));
             // }
-            locations = [];
+            locations.value = [];
             for (var location in data["lstLocation"]) {
               locations?.add(DropDownValue(
                   key: location["locationCode"],
@@ -270,6 +272,9 @@ class RoReceivedController extends GetxController {
       LoadingDialog.showErrorDialog("Please select additional / cancellation.");
     } else if (selectedRevenue?.key == null) {
       LoadingDialog.showErrorDialog("Please select revenue type.");
+    } else if (fct.text.length > 10) {
+      LoadingDialog.showErrorDialog(
+          "Error converting data type nvarchar to int.");
     } else {
       save();
     }
@@ -313,19 +318,21 @@ class RoReceivedController extends GetxController {
   }
 
   clear() {
-    selectedLocation?.value = null;
-    selectedChannel?.value = null;
-    selectedClient?.value = null;
-    selectedAgency?.value = null;
-    selectedBrand?.value = null;
-    roNumber.clear();
-    roRecDate.clear();
-    effDate.clear();
-    roAmount.text = "0.00";
-    roValAmount.text = "0.00";
-    fct.clear();
-    remark.clear();
-    selectedRevenue?.value = null;
+    Get.delete<RoReceivedController>();
+    Get.find<HomeController>().clearPage1();
+    // selectedLocation?.value = null;
+    // selectedChannel?.value = null;
+    // selectedClient?.value = null;
+    // selectedAgency?.value = null;
+    // selectedBrand?.value = null;
+    // roNumber.clear();
+    // roRecDate.clear();
+    // effDate.clear();
+    // roAmount.text = "0.00";
+    // roValAmount.text = "0.00";
+    // fct.clear();
+    // remark.clear();
+    // selectedRevenue?.value = null;
   }
 
   @override

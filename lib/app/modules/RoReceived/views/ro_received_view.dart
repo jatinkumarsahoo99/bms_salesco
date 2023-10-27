@@ -12,6 +12,9 @@ import 'package:flutter/services.dart';
 
 import 'package:get/get.dart';
 
+import '../../../controller/MainController.dart';
+import '../../../data/PermissionModel.dart';
+import '../../../providers/Utils.dart';
 import '../../CommonSearch/views/common_search_view.dart';
 import '../controllers/ro_received_controller.dart';
 
@@ -50,16 +53,18 @@ class RoReceivedView extends StatelessWidget {
                               runSpacing: 5,
                               spacing: Get.width * 0.01,
                               children: [
-                                DropDownField.formDropDown1WidthMap(
-                                  controller.locations,
-                                  (value) {
-                                    controller.selectedLocation = value;
-                                    controller.getChannel(value.key);
-                                  },
-                                  "Location",
-                                  .24,
-                                  selected: controller.selectedLocation,
-                                  autoFocus: true,
+                                Obx(
+                                  () => DropDownField.formDropDown1WidthMap(
+                                    controller.locations.value,
+                                    (value) {
+                                      controller.selectedLocation = value;
+                                      controller.getChannel(value.key);
+                                    },
+                                    "Location",
+                                    .24,
+                                    selected: controller.selectedLocation,
+                                    autoFocus: true,
+                                  ),
                                 ),
                                 Obx(
                                   () => DropDownField.formDropDown1WidthMap(
@@ -77,13 +82,12 @@ class RoReceivedView extends StatelessWidget {
                                   Get.context!,
                                   title: "Client",
                                   url: ApiFactory.RO_RECEIVED_GET_CLIENTS,
-                                  parseKeyForKey: "clientCode",
-                                  parseKeyForValue: 'clientName',
+                                  parseKeyForKey: "ClientCode",
+                                  parseKeyForValue: 'ClientName',
                                   onchanged: (value) {
                                     controller.selectedClient = value;
                                     controller.clientLeave();
                                   },
-                                  customInData: "clientList",
                                   selectedValue: controller.selectedClient,
                                   width: Get.width * .24,
                                 ),
@@ -297,6 +301,12 @@ class RoReceivedView extends StatelessWidget {
                                   id: "buttons",
                                   init: Get.find<HomeController>(),
                                   builder: (btncontroller) {
+                                    PermissionModel formPermissions =
+                                        Get.find<MainController>()
+                                            .permissionList!
+                                            .lastWhere((element) =>
+                                                element.appFormName ==
+                                                "frmROReceived");
                                     if (btncontroller.buttons != null) {
                                       return SizedBox(
                                         height: 40,
@@ -310,20 +320,17 @@ class RoReceivedView extends StatelessWidget {
                                             for (var btn
                                                 in btncontroller.buttons!)
                                               FormButtonWrapper(
-                                                  btnText: btn["name"],
-                                                  callback: () {
-                                                    btnHandler(btn["name"]);
-                                                  }
-                                                  //  ((Utils.btnAccessHandler(btn['name'], controller.formPermissions!) == null))
-                                                  //     ? null
-                                                  //     : () => controller.formHandler(btn['name']),
-                                                  )
-
-                                            // for (var btn in btncontroller.buttons!)
-                                            //   FormButtonWrapper(
-                                            //     btnText: btn["name"],
-                                            //     callback: () => controller.formHandler(btn['name'].toString()),
-                                            //   ),
+                                                btnText: btn["name"],
+                                                callback: Utils.btnAccessHandler2(
+                                                            btn['name'],
+                                                            btncontroller,
+                                                            formPermissions) ==
+                                                        null
+                                                    ? null
+                                                    : () => btnHandler(
+                                                          btn['name'],
+                                                        ),
+                                              )
                                           ],
                                         ),
                                       );
@@ -344,10 +351,12 @@ class RoReceivedView extends StatelessWidget {
     switch (save) {
       case "Save":
         maincontroller.validation();
+        // maincontroller.clear();
         break;
       case "Clear":
-        Get.delete<RoReceivedController>();
-        Get.find<HomeController>().clearPage1();
+        maincontroller.clear();
+        // Get.delete<RoReceivedController>();
+        // Get.find<HomeController>().clearPage1();
         break;
       case "Search":
         Get.to(SearchPage(

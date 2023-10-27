@@ -219,6 +219,10 @@ class ApiFactory {
           payRouteCode, agencyCode, clientCode, grpPDC) =>
       "$BASE_URL/api/EDIRoBooking/OnLeaveDealNo?EffDate=$effDate&LocationCode=$locationCode&ChannelCode=$channelCode&DealNo=$dealNo&PayRouteCode=$payRouteCode&AgencyCode=$agencyCode&ClientCode=$clientCode&grpPDC=$grpPDC";
 
+  static String EDI_RO_SPOT_FPC_START(
+          locationCode, channelCode, telecastDate) =>
+      "$BASE_URL/api/EDIRoBooking/SpotFPCStart?LocationCode=$locationCode&ChannelCode=$channelCode&TelecastDate=$telecastDate";
+
 ///////////////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////// Create Break Pattern ///////////////////////////////////////////
@@ -980,6 +984,12 @@ class ApiFactory {
       "$BASE_URL/api/TapeIDCampaign/TapeIdHistoryUpdate";
   static String get TAPE_ID_CAMPAIGN_SAVE_RECORD =>
       "$BASE_URL/api/TapeIDCampaign/Save";
+  static String get TAPE_ID_CAMPAIGN_IMPORT =>
+      "$BASE_URL/api/TapeIDCampaign/Import";
+  static String get TAPE_ID_CAMPAIGN_CAMPAIGN_HISTORY =>
+      "$BASE_URL/api/TapeIDCampaign/CampaignHistory";
+  static String get TAPE_ID_CAMPAIGN_TAPE_CAMPAIGN_DETAILS =>
+      "$BASE_URL/api/TapeIDCampaign/TapeIDCampaignDetail";
   ///////////////////////// TAPE-ID-CAMPAIGN-END//////
   ///
   ///

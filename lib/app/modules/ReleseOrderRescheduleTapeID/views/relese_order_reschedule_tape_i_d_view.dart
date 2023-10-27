@@ -122,6 +122,7 @@ class ReleseOrderRescheduleTapeIDView extends StatelessWidget {
                           "Brand",
                           .12,
                           selected: controller.selectedBrand,
+                          dialogWidth: 300,
                         );
                       }),
                       Obx(() {
@@ -355,8 +356,8 @@ class ReleseOrderRescheduleTapeIDView extends StatelessWidget {
                   Get.find<HomeController>()
                       .getCommonButton<ReleseOrderRescheduleTapeIDController>(
                     Routes.COMMERCIAL_CREATION_AUTO,
-                    (formName) {
-                      if (formName == "Save") {
+                    (btnName) {
+                      if (btnName == "Save") {
                         controller.saveData(
                           Get.find<MainController>().user!.logincode!,
                           controller.selectedLocation,
@@ -368,8 +369,18 @@ class ReleseOrderRescheduleTapeIDView extends StatelessWidget {
                           controller.toDateTC.text,
                           controller.selectedTape,
                         );
+                      } else if (btnName == "Docs") {
+                        controller.docs(
+                          controller.selectedLocation,
+                          controller.selectedChannel,
+                          controller.selectedClient,
+                          controller.selectedAgency,
+                          controller.selectedBrand,
+                          controller.selectedTape,
+                        );
                       }
                     },
+                    disableBtns: ['Search'],
                   ),
                 ],
               ),

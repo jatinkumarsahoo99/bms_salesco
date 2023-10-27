@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
+import '../../CommonDocs/controllers/common_docs_controller.dart';
+import '../../CommonDocs/views/common_docs_view.dart';
 import '../model/ro_reschedule_tape_id_model.dart';
 
 class ReleseOrderRescheduleTapeIDController extends GetxController {
@@ -335,7 +337,10 @@ class ReleseOrderRescheduleTapeIDController extends GetxController {
                 tapeListRight.add(tapeList[i]);
               }
             }
-            if (tapeListRight.isEmpty) {
+            if (lstBookingDetails.isEmpty) {
+              LoadingDialog.callInfoMessage(
+                  'No booking records found for ReSchedule for selected filter.');
+            } else if (tapeListRight.isEmpty) {
               LoadingDialog.callInfoMessage(
                   "No optional TapeID found for replacing existing TapeID.");
             }
@@ -418,6 +423,35 @@ class ReleseOrderRescheduleTapeIDController extends GetxController {
         },
       );
     }
+  }
+
+  docs(
+    DropDownValue? location,
+    DropDownValue? channel,
+    DropDownValue? client,
+    DropDownValue? agency,
+    DropDownValue? brand,
+    DropDownValue? tapeCode,
+  ) async {
+    String documentKey = "";
+    if (location?.key == null ||
+        channel?.key == null ||
+        client?.key == null ||
+        agency?.key == null ||
+        brand?.key == null ||
+        tapeCode?.value == null) {
+      documentKey = "";
+    } else {
+      documentKey =
+          "ROReschedule_ByTapeID ${location?.value}${channel?.value}${client?.key}${agency?.key}${brand?.key}${selectedTapeRight?.key ?? ''}${tapeCode?.key}";
+    }
+
+    Get.defaultDialog(
+      title: "Documents",
+      content: CommonDocsView(documentKey: documentKey),
+    ).then((value) {
+      Get.delete<CommonDocsController>(tag: "commonDocs");
+    });
   }
 
   changeExportTapeCode() {
