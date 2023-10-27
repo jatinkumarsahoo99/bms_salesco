@@ -54,6 +54,9 @@ class TapeIDCampaignController extends GetxController {
     startDateTC.addListener(() {});
 
     getCampaignHistory();
+    Future.delayed(Duration(seconds: 2)).then((value) {
+      generateActivityMonth();
+    });
     // getTapeIdCampaignDetails();
   }
 
