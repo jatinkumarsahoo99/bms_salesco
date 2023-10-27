@@ -15,6 +15,7 @@ import '../../../controller/HomeController.dart';
 import '../../../controller/MainController.dart';
 import '../../../data/PermissionModel.dart';
 import '../../../providers/ApiFactory.dart';
+import '../../../providers/SizeDefine.dart';
 import '../../../providers/Utils.dart';
 import '../DealWorkDefinitionGridModel.dart';
 import '../controllers/workflow_definition_controller.dart';
@@ -404,17 +405,7 @@ class WorkflowDefinitionView extends GetView<WorkflowDefinitionController> {
                                       onload: (PlutoGridOnLoadedEvent load) {
                                         controllerX.gridStateManager =
                                             load.stateManager;
-                                       /* controllerX.gridStateManager!
-                                            .setCurrentCell(
-                                                controllerX.gridStateManager!
-                                                    .getRowByIdx(controllerX
-                                                        .selectedIndex)!
-                                                    .cells['sequenceName'],
-                                                controllerX.selectedIndex);
-                                        controllerX.gridStateManager!
-                                            .moveCurrentCellByRowIdx(
-                                                controllerX.selectedIndex ?? 0,
-                                                PlutoMoveDirection.down);*/
+
                                       },
                                       onSelected:
                                           (PlutoGridOnSelectedEvent? val) {
@@ -427,17 +418,18 @@ class WorkflowDefinitionView extends GetView<WorkflowDefinitionController> {
                                           (PlutoGridOnRowDoubleTapEvent? val) {
                                             controllerX.selectedIndex =
                                                 val?.rowIdx ?? 0;
-                                            /*controllerX.gridStateManager!
+
+                                            controllerX.gridStateManager!
                                                 .setCurrentCell(
                                                 controllerX.gridStateManager!
                                                     .getRowByIdx(controllerX
                                                     .selectedIndex)!
-                                                    .cells['sequenceName'],
+                                                    .cells['approvalSequenceID'],
                                                 controllerX.selectedIndex);
                                             controllerX.gridStateManager!
                                                 .moveCurrentCellByRowIdx(
                                                 controllerX.selectedIndex ?? 0,
-                                                PlutoMoveDirection.down);*/
+                                                PlutoMoveDirection.down);
                                         controllerX.onDoubleTap(val?.rowIdx ?? 0);
                                             // controllerX.isDoubleClick = true;
                                       },
@@ -503,9 +495,9 @@ class WorkflowDefinitionView extends GetView<WorkflowDefinitionController> {
       contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       content: Container(
         height: Get.height * 0.65,
-        width: Get.width * 0.45,
+        width: Get.width * 0.43,
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Obx(
               () => DropDownField.formDropDown1WidthMap(
@@ -516,7 +508,7 @@ class WorkflowDefinitionView extends GetView<WorkflowDefinitionController> {
                       controllerX.selectedCopyToLocation?.key ?? "");
                 },
                 "Location",
-                0.36,
+                0.395,
                 isEnable: controllerX.isEnable.value,
                 selected: controllerX.selectedCopyToLocation,
                 dialogHeight: Get.height * .35,
@@ -533,7 +525,7 @@ class WorkflowDefinitionView extends GetView<WorkflowDefinitionController> {
                   controllerX.selectedCopyToChannel = value;
                 },
                 "Channel",
-                0.36,
+                0.395,
                 isEnable: controllerX.isEnable.value,
                 selected: controllerX.selectedCopyToChannel,
                 dialogHeight: Get.height * .35,
@@ -552,7 +544,7 @@ class WorkflowDefinitionView extends GetView<WorkflowDefinitionController> {
                       controllerX.selectedCopyToZone?.key ?? "");
                 },
                 "Zone",
-                0.36,
+                0.395,
                 isEnable: controllerX.isEnable.value,
                 selected: controllerX.selectedCopyToZone,
                 dialogHeight: Get.height * .35,
@@ -566,10 +558,35 @@ class WorkflowDefinitionView extends GetView<WorkflowDefinitionController> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                 Obx(()=>Checkbox(value: controllerX.checkAll.value, onChanged: (val){
-                   controllerX.checkAll.value =  val!;
-                   controllerX.checkAllList(val);
-                 }),),
+                 Column(
+                   children: [
+                      Text("Station",
+                        style: TextStyle(
+                       fontSize: SizeDefine.labelSize1,
+                       color: Colors.black,
+                       fontWeight: FontWeight.w500,
+                     ),),
+                     SizedBox(
+                       height: Get.height*0.2,
+                     ),
+                     Row(
+                       children: [
+                         Obx(()=>Checkbox(value: controllerX.checkAll.value, onChanged: (val){
+                           controllerX.checkAll.value =  val!;
+                           controllerX.checkAllList(val);
+                         }),),
+                          Text("All",style: TextStyle(
+                           fontSize: SizeDefine.labelSize1,
+                           color: Colors.black,
+                           fontWeight: FontWeight.w500,
+                         ))
+                       ],
+                     ),
+                   ],
+                 ),
+                  SizedBox(
+                    width: Get.width*0.002,
+                  ),
                   Expanded(
                     child: GetBuilder<WorkflowDefinitionController>(
                         id: "copyToGrid",
