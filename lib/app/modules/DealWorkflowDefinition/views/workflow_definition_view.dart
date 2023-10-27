@@ -404,17 +404,7 @@ class WorkflowDefinitionView extends GetView<WorkflowDefinitionController> {
                                       onload: (PlutoGridOnLoadedEvent load) {
                                         controllerX.gridStateManager =
                                             load.stateManager;
-                                       /* controllerX.gridStateManager!
-                                            .setCurrentCell(
-                                                controllerX.gridStateManager!
-                                                    .getRowByIdx(controllerX
-                                                        .selectedIndex)!
-                                                    .cells['sequenceName'],
-                                                controllerX.selectedIndex);
-                                        controllerX.gridStateManager!
-                                            .moveCurrentCellByRowIdx(
-                                                controllerX.selectedIndex ?? 0,
-                                                PlutoMoveDirection.down);*/
+
                                       },
                                       onSelected:
                                           (PlutoGridOnSelectedEvent? val) {
@@ -427,17 +417,18 @@ class WorkflowDefinitionView extends GetView<WorkflowDefinitionController> {
                                           (PlutoGridOnRowDoubleTapEvent? val) {
                                             controllerX.selectedIndex =
                                                 val?.rowIdx ?? 0;
-                                            /*controllerX.gridStateManager!
+
+                                            controllerX.gridStateManager!
                                                 .setCurrentCell(
                                                 controllerX.gridStateManager!
                                                     .getRowByIdx(controllerX
                                                     .selectedIndex)!
-                                                    .cells['sequenceName'],
+                                                    .cells['approvalSequenceID'],
                                                 controllerX.selectedIndex);
                                             controllerX.gridStateManager!
                                                 .moveCurrentCellByRowIdx(
                                                 controllerX.selectedIndex ?? 0,
-                                                PlutoMoveDirection.down);*/
+                                                PlutoMoveDirection.down);
                                         controllerX.onDoubleTap(val?.rowIdx ?? 0);
                                             // controllerX.isDoubleClick = true;
                                       },

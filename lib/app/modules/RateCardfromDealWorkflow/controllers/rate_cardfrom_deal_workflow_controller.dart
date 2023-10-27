@@ -245,21 +245,29 @@ class RateCardfromDealWorkflowController extends GetxController {
       "modifiedby": Get.find<MainController>().user?.logincode ?? "",
       "typeRateCards": gridData.export?.map((e) => e.toJson1()).toList()
     };
-    Get.find<ConnectorControl>().POSTMETHOD(
-        api: ApiFactory.Rate_Card_From_Deal_Workflow_SAVE,
-        json: postData,
-        fun: (map) {
-          closeDialogIfOpen();
-          print(">>" + map.toString());
-          if (map is Map &&
+    try{
+      Get.find<ConnectorControl>().POSTMETHOD(
+          api: ApiFactory.Rate_Card_From_Deal_Workflow_SAVE,
+          json: postData,
+          fun: (map) {
+            closeDialogIfOpen();
+            print(">>" + map.toString());
+            /*if (map is Map &&
               map.containsKey('message') &&
               map['message'] != null) {
-            clearAll();
-            LoadingDialog.callDataSavedMessage(map['message'] ?? "");
-          } else {
-            LoadingDialog.showErrorDialog((map ?? "").toString());
+            LoadingDialog.callDataSavedMessage(map['message'] ?? "",
+                callback: () {
+              clearAll();
+            });
           }
-        });
+          else {
+            LoadingDialog.showErrorDialog((map ?? "").toString());
+          }*/
+          });
+    }catch(e){
+      closeDialogIfOpen();
+    }
+
   }
 
   clearAll() {
@@ -275,10 +283,12 @@ class RateCardfromDealWorkflowController extends GetxController {
 
   docs() async {
     String documentKey = "";
-    if(selectedLocation == null || selectedChannel == null){
+    if (selectedLocation == null || selectedChannel == null) {
       documentKey = "";
-    }else{
-      documentKey = "Rate card " + (selectedLocation?.key??"") + (selectedChannel?.key??"");
+    } else {
+      documentKey = "Rate card " +
+          (selectedLocation?.key ?? "") +
+          (selectedChannel?.key ?? "");
     }
 
     Get.defaultDialog(
@@ -289,13 +299,12 @@ class RateCardfromDealWorkflowController extends GetxController {
     });
   }
 
-
   formHandler(btn) {
     if (btn == "Clear") {
       clearAll();
     } else if (btn == "Save") {
       saveBtn();
-    }else if(btn == "Docs"){
+    } else if (btn == "Docs") {
       docs();
     }
   }

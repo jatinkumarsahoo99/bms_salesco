@@ -73,6 +73,10 @@ class CommonDocsView extends GetView<CommonDocsController> {
                           const SizedBox(width: 20),
                           FormButton(btnText: "View Doc", callback: () => controller.handleViewDocs(documentKey)),
                           const SizedBox(width: 20),
+                          FormButton(btnText: "Attach Emails", callback: () {
+                            // LoadingDialog.callInfoMessage("");
+                          }),
+                          const SizedBox(width: 20),
                           FormButton(btnText: "Close", callback: () => Get.back()),
                         ],
                       ),
