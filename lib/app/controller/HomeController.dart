@@ -56,10 +56,10 @@ class HomeController extends GetxController {
               Aes.encrypt(Get.find<MainController>().user?.personnelNo ?? "") ??
                   "";
           String loginCode =
-          (Aes.encrypt(Get.find<MainController>().user?.logincode ?? "") ??
-              "");
+              (Aes.encrypt(Get.find<MainController>().user?.logincode ?? "") ??
+                  "");
           String formName =
-          (Aes.encrypt(Get.find<MainController>().formName) ?? "");
+              (Aes.encrypt(Get.find<MainController>().formName) ?? "");
           Get.offAndToNamed("/" + extractName, parameters: {
             "loginCode": loginCode,
             "personalNo": personalNo,
@@ -261,8 +261,11 @@ class HomeController extends GetxController {
   }
 
   Widget getCommonButton<T>(
-      String frmName, void Function(String formName) formhandler,
-      {bool handleAutoClear = true}) {
+    String frmName,
+    void Function(String btnName) formhandler, {
+    bool handleAutoClear = true,
+    List<String>? disableBtns,
+  }) {
     return GetBuilder<HomeController>(
       init: Get.find<HomeController>(),
       id: "buttons",
@@ -306,21 +309,26 @@ class HomeController extends GetxController {
                   index++) ...{
                 FormButtonWrapper(
                   btnText: controller.buttons?[index]["name"],
-                  callback: Utils.btnAccessHandler2(
-                              controller.buttons?[index]['name'],
-                              controller,
-                              formPermissions!) ==
-                          null
+                  callback: (disableBtns != null &&
+                          disableBtns
+                              .contains(controller.buttons?[index]["name"]))
                       ? null
-                      : () {
-                          formhandler(controller.buttons?[index]['name']);
-                          if (handleAutoClear &&
-                              controller.buttons?[index]['name'] == "Clear") {
-                            Get.delete<T>().then((value) {
-                              clearPage1();
-                            });
-                          }
-                        },
+                      : Utils.btnAccessHandler2(
+                                  controller.buttons?[index]['name'],
+                                  controller,
+                                  formPermissions!) ==
+                              null
+                          ? null
+                          : () {
+                              formhandler(controller.buttons?[index]['name']);
+                              if (handleAutoClear &&
+                                  controller.buttons?[index]['name'] ==
+                                      "Clear") {
+                                Get.delete<T>().then((value) {
+                                  clearPage1();
+                                });
+                              }
+                            },
                 )
               }
             ],
