@@ -1,3 +1,4 @@
+import 'package:bms_salesco/app/data/DropDownValue.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -66,6 +67,7 @@ class DealRecoSummaryView extends GetView<DealRecoSummaryController> {
                                     isEnable: controllerX.isEnable,
                                     selected: controllerX.selectedLocation,
                                     dialogHeight: Get.height * .3,
+                                    inkWellFocusNode: controllerX.locationNode,
                                     autoFocus: true,),),
                                   Obx(()=>DropDownField.formDropDown1WidthMap(
                                     controllerX.channelList.value??[],
@@ -75,7 +77,8 @@ class DealRecoSummaryView extends GetView<DealRecoSummaryController> {
                                     isEnable: controllerX.isEnable,
                                     selected: controllerX.selectedChannel,
                                     dialogHeight: Get.height * .4,
-                                    autoFocus: true,),),
+                                    inkWellFocusNode: controllerX.channelNode,
+                                    autoFocus: false,),),
                                 ],
                               ),
                             ),
@@ -85,13 +88,25 @@ class DealRecoSummaryView extends GetView<DealRecoSummaryController> {
                                 controllerX.clientList.value??[],
                                     (value) {
                                   controllerX.selectedClient = value;
-                                  controllerX.fetchAgency();
-                                  controllerX.fetchADealNo();
+                                  // controllerX.fetchAgency();
+                                  // controllerX.fetchADealNo();
                                 }, "Client", .55,
                                 isEnable: controllerX.isEnable,
                                 selected: controllerX.selectedClient,
                                 dialogHeight: Get.height * .4,
-                                autoFocus: true,),),
+                                inkWellFocusNode:controllerX.clientNode ,
+                                onFocusChange: (val){
+                                  if(!val){
+                                    if(controllerX.selectedClient?.value != null){
+                                      controllerX.selectedAgency = Rxn<DropDownValue>(null);
+                                      controllerX.selectedDealNo  = null;
+                                      controllerX.selectedAgency?.refresh();
+                                      controllerX.fetchAgency();
+                                      controllerX.fetchADealNo();
+                                    }
+                                  }
+                                },
+                                autoFocus: false,),),
                             ),
                             Container(
                               width: MediaQuery.of(context).size.width*0.55,
@@ -104,7 +119,8 @@ class DealRecoSummaryView extends GetView<DealRecoSummaryController> {
                                 isEnable: controllerX.isEnable,
                                 selected: controllerX.selectedAgency?.value,
                                 dialogHeight: Get.height * .3,
-                                autoFocus: true,),),
+                                inkWellFocusNode: controllerX.agencyNode,
+                                autoFocus: false,),),
                             ),
                             Container(
                               width:MediaQuery.of(context).size.width*0.55,
@@ -119,6 +135,7 @@ class DealRecoSummaryView extends GetView<DealRecoSummaryController> {
                                     }, "DealNo", .1,
                                     isEnable: controllerX.isEnable,
                                     selected: controllerX.selectedDealNo,
+                                    inkWellFocusNode: controllerX.dealNoFocusNode,
                                     onFocusChange:(sta){
                                       // print("fta"+sta.toString());
                                       if(!sta){
@@ -126,7 +143,7 @@ class DealRecoSummaryView extends GetView<DealRecoSummaryController> {
                                       }
                                     },
                                     dialogHeight: Get.height * .3,
-                                    autoFocus: true,),),
+                                    autoFocus: false,),),
                                   DateWithThreeTextField(
                                     title: "Util As ON",
                                     mainTextController: controllerX.utilAsOnDateController,
