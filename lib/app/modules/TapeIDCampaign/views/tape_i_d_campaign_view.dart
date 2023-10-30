@@ -406,12 +406,54 @@ class TapeIDCampaignView extends GetView<TapeIDCampaignController> {
                             );
                           } else if (controller.selectedTab.value == 2) {
                             return DataGridFromMap3(
-                                mapData: controller.camoaignHistoryList.value,
+                                mapData: controller.camoaignHistoryList.value
+                                    .map((e) {
+                                  if (e['startDate'] != null) {
+                                    e['startDate'] = DateFormat('dd-MM-yyyy')
+                                        .format(
+                                            DateFormat('yyyy-MM-ddThh:mm:ss')
+                                                .parse(e['startDate']));
+                                  }
+                                  if (e['endDate'] != null) {
+                                    e['endDate'] = DateFormat('dd-MM-yyyy')
+                                        .format(
+                                            DateFormat('yyyy-MM-ddThh:mm:ss')
+                                                .parse(e['endDate']));
+                                  }
+                                  if (e['createdDate'] != null) {
+                                    e['createdDate'] = DateFormat('dd-MM-yyyy')
+                                        .format(
+                                            DateFormat('yyyy-MM-ddThh:mm:ss')
+                                                .parse(e['createdDate']));
+                                  }
+                                  return e;
+                                }).toList(),
                                 formatDate: false,
                                 hideCode: false);
                           } else if (controller.selectedTab.value == 3) {
                             return DataGridFromMap3(
-                                mapData: controller.tapeIdCampaignList.value,
+                                mapData: controller.tapeIdCampaignList.value
+                                    .map((e) {
+                                  if (e['startDate'] != null) {
+                                    e['startDate'] = DateFormat('dd-MM-yyyy')
+                                        .format(
+                                            DateFormat('yyyy-MM-ddThh:mm:ss')
+                                                .parse(e['startDate']));
+                                  }
+                                  if (e['endDate'] != null) {
+                                    e['endDate'] = DateFormat('dd-MM-yyyy')
+                                        .format(
+                                            DateFormat('yyyy-MM-ddThh:mm:ss')
+                                                .parse(e['endDate']));
+                                  }
+                                  if (e['createdDate'] != null) {
+                                    e['createdDate'] = DateFormat('dd-MM-yyyy')
+                                        .format(
+                                            DateFormat('yyyy-MM-ddThh:mm:ss')
+                                                .parse(e['createdDate']));
+                                  }
+                                  return e;
+                                }).toList(),
                                 formatDate: false,
                                 hideCode: false);
                           } else {
