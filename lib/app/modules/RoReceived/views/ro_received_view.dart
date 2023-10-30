@@ -367,12 +367,12 @@ class RoReceivedView extends StatelessWidget {
           // isPopup: true,
           isAppBarReq: true,
           // actionableSearch: true,
-          // actionableMap: {
-          //   "RoReceivedCode": (value) {
-          //     print(value);
-          //     maincontroller.retriveData(value);
-          //   }
-          // },
+          actionableMap: {
+            "RoReceivedCode": (value) {
+              print(value);
+              maincontroller.retriveData(value);
+            }
+          },
         ));
         break;
       case "Delete":
