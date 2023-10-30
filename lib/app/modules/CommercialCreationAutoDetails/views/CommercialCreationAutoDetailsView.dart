@@ -100,6 +100,7 @@ class CommercialCreationAutoDetailsView
                                       parseKeyForValue: "Brandname",
                                       onchanged: (data) {
                                     controllerX.selectBrand?.value = data;
+                                    FocusScope.of(context).nextFocus();
                                   },
                                       selectedValue:
                                           controllerX.selectBrand?.value,
@@ -142,6 +143,7 @@ class CommercialCreationAutoDetailsView
                                             ?.lstLanguage ??
                                         [], (data) {
                                   controllerX.selectLanguage?.value = data;
+                                  FocusScope.of(context).nextFocus();
                                 }, "Language", 0.12,
                                     searchReq: true,
                                     selected:
@@ -156,6 +158,7 @@ class CommercialCreationAutoDetailsView
                                             ?.lstCensorship ??
                                         [], (data) {
                                   controllerX.selectCensorship?.value = data;
+                                  FocusScope.of(context).nextFocus();
                                 }, "Censorship", 0.12,
                                     searchReq: true,
                                     labelBold: true,
@@ -218,7 +221,7 @@ class CommercialCreationAutoDetailsView
                               () => InputFields.formFieldDisableWidth(
                                 hintTxt: "Seg Dur",
                                 paddingLeft: 5,
-                                isHeaderRequiredGrey:false,
+                                isHeaderRequiredGrey: false,
                                 value: controllerX.duration.value,
                                 widthRatio: 0.12,
                               ),

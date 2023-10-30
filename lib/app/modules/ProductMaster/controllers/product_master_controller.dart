@@ -120,8 +120,9 @@ class ProductMasterController extends GetxController {
             Get.back();
             print(">>>>>>" + map.toString());
             if (map is Map && map.containsKey('save')) {
-              clearAll();
-              LoadingDialog.callDataSavedMessage(map['save'] ?? "");
+              LoadingDialog.callDataSavedMessage(map['save'] ?? "",callback: (){
+                clearAll();
+              });
             } else {
               LoadingDialog.showErrorDialog((map ?? "").toString());
             }

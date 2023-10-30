@@ -46,7 +46,7 @@ class AutoTimeLockModel {
       data['resCanLockTime'] = this.resCanLockTime;
       data['channelLockYN'] = this.channelLockYN;
       data['fpcLockDays'] = this.fpcLockDays;
-      data['excessBooking'] = this.excessBooking;
+      data['excessBooking %'] = this.excessBooking;
       data['nextDayLockTime'] = this.nextDayLockTime;
     }
     return data;

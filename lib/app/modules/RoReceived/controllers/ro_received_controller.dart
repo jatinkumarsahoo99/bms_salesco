@@ -5,6 +5,7 @@ import 'package:bms_salesco/app/modules/RoReceived/bindings/ro_received_data.dar
 import 'package:bms_salesco/app/providers/ApiFactory.dart';
 import 'package:bms_salesco/widgets/LoadingDialog.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
@@ -19,6 +20,8 @@ class RoReceivedController extends GetxController {
   var agencies = RxList<DropDownValue>([]);
   var brands = RxList<DropDownValue>([]);
   String? roreciveId;
+
+  // var effStartDateFN = FocusNode();
 
   DropDownValue? selectedLocation;
   DropDownValue? selectedChannel;
@@ -88,6 +91,10 @@ class RoReceivedController extends GetxController {
                   key: revenue["accountCode"], value: revenue["accountName"]));
             }
             activityMonth.text = data["activityMonth"];
+            effEndDate.text = DateFormat("dd-MM-yyyy").format(
+                DateFormat("yyyy-MM-ddThh:mm:ss")
+                    .parse(data['dtpEndDate'] ?? "2023/01/09T00:00:00"));
+
             update(["main"]);
           }
         });
@@ -138,25 +145,21 @@ class RoReceivedController extends GetxController {
   }
 
   dateLeave(String date) {
+    LoadingDialog.call();
     Get.find<ConnectorControl>().GETMETHODCALL(
-        api: ApiFactory.RO_RECEIVED_DATE_LEAVE(
+        api: ApiFactory.RO_RECEIVED_START_DATE_LEAVE(
             date: DateFormat("yyyy-MM-dd")
                 .format(DateFormat("dd-MM-yyyy").parse(date))),
         fun: (rawdata) {
-          // if (rawdata is Map && rawdata.containsKey("onLeaveClient")) {
-          //   Map data = rawdata["onLeaveClient"];
-          //   agencies.value = [];
-          //   for (var agency in data["lstAgencies"]) {
-          //     agencies.add(DropDownValue(
-          //         key: agency["agencyCode"], value: agency["agencyName"]));
-          //   }
-          //   brands.value = [];
-          //   for (var brand in data["lstBrand"]) {
-          //     brands.add(DropDownValue(
-          //         key: brand["brandCode"], value: brand["brandName"]));
-          //   }
-          //   groupCode = data["groupCode"];
-          // }
+          Get.back();
+          if (rawdata is Map && rawdata.containsKey("dateOnLeaveInfo")) {
+            activityMonth.text =
+                rawdata["dateOnLeaveInfo"]["activityMonth"] ?? "";
+            effEndDate.text = DateFormat("dd-MM-yyyy").format(
+                DateFormat("yyyy-MM-ddThh:mm:ss").parse(
+                    rawdata["dateOnLeaveInfo"]['dtpEndDate'] ??
+                        "2023-01-09T00:00:00"));
+          }
         });
   }
 
@@ -169,6 +172,10 @@ class RoReceivedController extends GetxController {
         fun: (rawdata) {
           Get.back();
           if (rawdata is Map && rawdata.containsKey("onDeleteRecord")) {
+            effEndDate.text = DateFormat("dd-MM-yyyy").format(
+                DateFormat("yyyy-MM-ddThh:mm:ss").parse(
+                    rawdata['onDeleteRecord']['dtpEndDate'] ??
+                        "2023/01/09T00:00:00"));
             LoadingDialog.callDataSaved(
                 msg: rawdata["onDeleteRecord"]["message"]);
           } else if (rawdata is String) {
@@ -301,7 +308,11 @@ class RoReceivedController extends GetxController {
           "fct": int.tryParse(fct.text),
           "additional": additional.value,
           "loggedUser": Get.find<MainController>().user?.logincode,
-          "remarks": remark.text
+          "remarks": remark.text,
+          "startDate": DateFormat("yyyy-MM-dd")
+              .format(DateFormat("dd-MM-yyyy").parse(effDate.text)),
+          "endDate": DateFormat("yyyy-MM-dd")
+              .format(DateFormat("dd-MM-yyyy").parse(effEndDate.text)),
         },
         fun: (rawdata) {
           Get.back();
@@ -335,10 +346,21 @@ class RoReceivedController extends GetxController {
     // selectedRevenue?.value = null;
   }
 
+  //  addListeneres() {
+  //   effStartDateFN.onKey = (node, event) {
+  //     if (event.logicalKey == LogicalKeyboardKey.tab && !event.isShiftPressed) {
+
+  //     }
+  //     return KeyEventResult.ignored;
+  //   };
+  // }
+
   @override
   void onReady() {
     super.onReady();
-    getInitData();
+    Future.delayed(Duration(seconds: 1)).then((value) {
+      getInitData();
+    });
   }
 
   @override
