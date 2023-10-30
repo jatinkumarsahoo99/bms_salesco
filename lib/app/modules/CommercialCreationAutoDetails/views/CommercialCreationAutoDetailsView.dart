@@ -71,6 +71,7 @@ class CommercialCreationAutoDetailsView
                                     GlobalKey(), context,
                                     title: "Client",
                                     autoFocus: true,
+                                    inkwellFocus: controller.clientFocus,
                                     customInData: "lstClientMaster",
                                     url: ApiFactory
                                         .COMMERCIAL_CREATION_CLIENT_LIST(),
@@ -143,7 +144,10 @@ class CommercialCreationAutoDetailsView
                                             ?.lstLanguage ??
                                         [], (data) {
                                   controllerX.selectLanguage?.value = data;
-                                  FocusScope.of(context).nextFocus();
+                                  Future.delayed(Duration(milliseconds: 500),(){
+                                    FocusScope.of(context).nextFocus();
+                                  });
+                                  // FocusScope.of(context).nextFocus();
                                 }, "Language", 0.12,
                                     searchReq: true,
                                     selected:
@@ -158,7 +162,10 @@ class CommercialCreationAutoDetailsView
                                             ?.lstCensorship ??
                                         [], (data) {
                                   controllerX.selectCensorship?.value = data;
-                                  FocusScope.of(context).nextFocus();
+                                  Future.delayed(Duration(milliseconds: 500),(){
+                                    FocusScope.of(context).nextFocus();
+                                  });
+                                  // FocusScope.of(context).nextFocus();
                                 }, "Censorship", 0.12,
                                     searchReq: true,
                                     labelBold: true,
