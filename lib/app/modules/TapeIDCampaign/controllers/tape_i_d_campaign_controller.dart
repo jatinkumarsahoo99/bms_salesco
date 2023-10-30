@@ -27,7 +27,7 @@ class TapeIDCampaignController extends GetxController {
   PlutoGridStateManager? locationChannelManager, historyManager;
   int lastLocationChannelEditIdx = 0, historyEditIdx = 0;
 
-  var selectedTab = 0.obs;
+  var selectedTab = 1.obs;
   TapeIDCampaignLoadModel? loadModel;
   TapeIdCampaignHistoryModel? history;
   var tapeIdFN = FocusNode();
@@ -71,20 +71,20 @@ class TapeIDCampaignController extends GetxController {
   }
 
   clearPage() {
-    locationChannelManager = null;
-    historyManager = null;
-    tapeIDTC.clear();
-    history = null;
-    startDateTC.clear();
-    lastLocationChannelEditIdx = 0;
-    historyEditIdx = 0;
-    endDateTC.clear();
-    // activityMonth.obs = "";
-    loadModel = null;
-    tapeIdFN.requestFocus();
-    updateUI();
-
-    // Get.find<HomeController>().clearPage1();
+    // locationChannelManager = null;
+    // historyManager = null;
+    // tapeIDTC.clear();
+    // history = null;
+    // startDateTC.clear();
+    // lastLocationChannelEditIdx = 0;
+    // historyEditIdx = 0;
+    // endDateTC.clear();
+    // // activityMonth.obs = "";
+    // loadModel = null;
+    // tapeIdFN.requestFocus();
+    // updateUI();
+    Get.delete<TapeIDCampaignController>();
+    Get.find<HomeController>().clearPage1();
   }
 
   updateUI() {
@@ -264,24 +264,24 @@ class TapeIDCampaignController extends GetxController {
     }
   }
 
-  formHandler(btn) {
-    if (btn == "Clear") {
-      clearPage();
-    } else if (btn == "Save") {
-      saveRecord();
-    } else if (btn == "Exit") {
-      Get.find<HomeController>().postUserGridSetting1(
-          listStateManager: [historyManager, locationChannelManager],
-          tableNamesList: ['tbl1', 'tbl2']);
-    } else if (btn == "Search") {
-      Get.to(SearchPage(
-          key: Key("Tape ID Campaign"),
-          screenName: "Tape ID Campaign",
-          appBarName: "Tape ID Campaign",
-          strViewName: "BMS_vListTapeIDCampaign",
-          isAppBarReq: true));
-    }
-  }
+  // formHandler(btn) {
+  //   if (btn == "Clear") {
+  //     clearPage();
+  //   } else if (btn == "Save") {
+  //     saveRecord();
+  //   } else if (btn == "Exit") {
+  //     Get.find<HomeController>().postUserGridSetting1(
+  //         listStateManager: [historyManager, locationChannelManager],
+  //         tableNamesList: ['tbl1', 'tbl2']);
+  //   } else if (btn == "Search") {
+  //     Get.to(SearchPage(
+  //         key: Key("Tape ID Campaign"),
+  //         screenName: "Tape ID Campaign",
+  //         appBarName: "Tape ID Campaign",
+  //         strViewName: "BMS_vListTapeIDCampaign",
+  //         isAppBarReq: true));
+  //   }
+  // }
 
   Future<void> handleImportTap() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
