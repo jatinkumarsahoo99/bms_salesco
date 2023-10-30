@@ -148,9 +148,7 @@ class TapeIDCampaignController extends GetxController {
               loadModel = null;
               LoadingDialog.showErrorDialog("Tape id not found.");
             } else {
-              if (selectedTab.value == 0) {
-                updateUI();
-              }
+              updateUI();
               getHistory();
             }
           } else {
@@ -177,9 +175,7 @@ class TapeIDCampaignController extends GetxController {
         Get.back();
         if (resp is Map<String, dynamic> && resp['historyDetails'] != null) {
           history = TapeIdCampaignHistoryModel.fromJson(resp);
-          if (selectedTab.value == 1) {
-            updateUI();
-          }
+          updateUI();
         } else {
           LoadingDialog.showErrorDialog(resp.toString());
         }
