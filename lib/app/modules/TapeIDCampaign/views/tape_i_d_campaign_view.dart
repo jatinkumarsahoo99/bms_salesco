@@ -707,7 +707,8 @@ class TapeIDCampaignView extends StatelessWidget {
                     ),
 
                     /// bottom common buttons
-                    Get.find<HomeController>().getCommonButton(
+                    Get.find<HomeController>()
+                        .getCommonButton<TapeIDCampaignController>(
                       Routes.TAPE_I_D_CAMPAIGN,
                       (btn) {
                         if (btn == "Save") {
