@@ -291,6 +291,14 @@ class ReleseOrderRescheduleTapeIDView extends StatelessWidget {
                                           .refRows[position.rowIdx!]
                                           .sortIdx]
                                       .action = newVal;
+                                  controller.stateManager?.changeCellValue(
+                                      controller
+                                          .stateManager!
+                                          .refRows[position.rowIdx!]
+                                          .cells['action']!,
+                                      newVal.toString(),
+                                      callOnChangedEvent: true,
+                                      force: true);
                                 }
                               },
                               onEdit: (event) {
