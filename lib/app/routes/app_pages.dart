@@ -94,7 +94,7 @@ class AppPages {
     GetPage(
       name: _Paths.TAPE_I_D_CAMPAIGN,
       page: () => AuthGuard(childName: _Paths.TAPE_I_D_CAMPAIGN),
-      binding: TapeIDCampaignBinding(),
+      // binding: TapeIDCampaignBinding(),
     ),
     GetPage(
       name: _Paths.RO_RECEIVED,

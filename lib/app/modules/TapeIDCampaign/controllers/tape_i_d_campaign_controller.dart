@@ -27,7 +27,7 @@ class TapeIDCampaignController extends GetxController {
   PlutoGridStateManager? locationChannelManager, historyManager;
   int lastLocationChannelEditIdx = 0, historyEditIdx = 0;
 
-  var selectedTab = 0.obs;
+  var selectedTab = 1.obs;
   TapeIDCampaignLoadModel? loadModel;
   TapeIdCampaignHistoryModel? history;
   var tapeIdFN = FocusNode();
@@ -71,20 +71,20 @@ class TapeIDCampaignController extends GetxController {
   }
 
   clearPage() {
-    locationChannelManager = null;
-    historyManager = null;
-    tapeIDTC.clear();
-    history = null;
-    startDateTC.clear();
-    lastLocationChannelEditIdx = 0;
-    historyEditIdx = 0;
-    endDateTC.clear();
-    // activityMonth.obs = "";
-    loadModel = null;
-    tapeIdFN.requestFocus();
-    updateUI();
-
-    // Get.find<HomeController>().clearPage1();
+    // locationChannelManager = null;
+    // historyManager = null;
+    // tapeIDTC.clear();
+    // history = null;
+    // startDateTC.clear();
+    // lastLocationChannelEditIdx = 0;
+    // historyEditIdx = 0;
+    // endDateTC.clear();
+    // // activityMonth.obs = "";
+    // loadModel = null;
+    // tapeIdFN.requestFocus();
+    // updateUI();
+    Get.delete<TapeIDCampaignController>(force: true);
+    Get.find<HomeController>().clearPage1();
   }
 
   updateUI() {
@@ -148,9 +148,7 @@ class TapeIDCampaignController extends GetxController {
               loadModel = null;
               LoadingDialog.showErrorDialog("Tape id not found.");
             } else {
-              if (selectedTab.value == 0) {
-                updateUI();
-              }
+              updateUI();
               getHistory();
             }
           } else {
@@ -177,9 +175,7 @@ class TapeIDCampaignController extends GetxController {
         Get.back();
         if (resp is Map<String, dynamic> && resp['historyDetails'] != null) {
           history = TapeIdCampaignHistoryModel.fromJson(resp);
-          if (selectedTab.value == 1) {
-            updateUI();
-          }
+          updateUI();
         } else {
           LoadingDialog.showErrorDialog(resp.toString());
         }
@@ -268,24 +264,24 @@ class TapeIDCampaignController extends GetxController {
     }
   }
 
-  formHandler(btn) {
-    if (btn == "Clear") {
-      clearPage();
-    } else if (btn == "Save") {
-      saveRecord();
-    } else if (btn == "Exit") {
-      Get.find<HomeController>().postUserGridSetting1(
-          listStateManager: [historyManager, locationChannelManager],
-          tableNamesList: ['tbl1', 'tbl2']);
-    } else if (btn == "Search") {
-      Get.to(SearchPage(
-          key: Key("Tape ID Campaign"),
-          screenName: "Tape ID Campaign",
-          appBarName: "Tape ID Campaign",
-          strViewName: "BMS_vListTapeIDCampaign",
-          isAppBarReq: true));
-    }
-  }
+  // formHandler(btn) {
+  //   if (btn == "Clear") {
+  //     clearPage();
+  //   } else if (btn == "Save") {
+  //     saveRecord();
+  //   } else if (btn == "Exit") {
+  //     Get.find<HomeController>().postUserGridSetting1(
+  //         listStateManager: [historyManager, locationChannelManager],
+  //         tableNamesList: ['tbl1', 'tbl2']);
+  //   } else if (btn == "Search") {
+  //     Get.to(SearchPage(
+  //         key: Key("Tape ID Campaign"),
+  //         screenName: "Tape ID Campaign",
+  //         appBarName: "Tape ID Campaign",
+  //         strViewName: "BMS_vListTapeIDCampaign",
+  //         isAppBarReq: true));
+  //   }
+  // }
 
   Future<void> handleImportTap() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
