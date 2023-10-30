@@ -499,62 +499,62 @@ class DataGridFromMap3 extends StatelessWidget {
               if (checkBoxColumnKey != null &&
                   checkBoxColumnKey!.isNotEmpty &&
                   checkBoxColumnKey!.contains(key)) {
-                return InkWell(
-                  canRequestFocus: false,
-                  onTap: () {
-                    if (showTitleInCheckBox != null &&
-                        showTitleInCheckBox!.isNotEmpty) {
-                      var temp = mapData[rendererContext.rowIdx][key];
-                      temp['key'] = (temp['key'] == checkBoxStrComparison)
-                          ? uncheckCheckBoxStr
-                          : checkBoxStrComparison;
-                      rendererContext.stateManager.changeCellValue(
-                        rendererContext.cell,
-                        temp,
-                        force: true,
-                        callOnChangedEvent: true,
-                        notify: true,
-                      );
-                      rendererContext.stateManager.setCurrentCell(
-                          rendererContext.cell, rendererContext.rowIdx);
-                      if (rendererContext.stateManager.onSelected != null) {
-                        rendererContext
-                            .stateManager.onSelected!(PlutoGridOnSelectedEvent(
-                          cell: rendererContext.cell,
-                          row: rendererContext.row,
-                          rowIdx: rendererContext.rowIdx,
-                          selectedRows:
-                              rendererContext.stateManager.currentSelectingRows,
-                        ));
-                      }
-                    } else {
-                      rendererContext.stateManager.changeCellValue(
-                        rendererContext.cell,
-                        rendererContext.cell.value == checkBoxStrComparison
-                            ? uncheckCheckBoxStr
-                            : checkBoxStrComparison,
-                        force: true,
-                        callOnChangedEvent: true,
-                        notify: true,
-                      );
-                      rendererContext.stateManager.setCurrentCell(
-                          rendererContext.cell, rendererContext.rowIdx);
-                      if (rendererContext.stateManager.onSelected != null) {
-                        rendererContext
-                            .stateManager.onSelected!(PlutoGridOnSelectedEvent(
-                          cell: rendererContext.cell,
-                          row: rendererContext.row,
-                          rowIdx: rendererContext.rowIdx,
-                          selectedRows:
-                              rendererContext.stateManager.currentSelectingRows,
-                        ));
-                      }
-                    }
-                  },
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Icon(
+                return Row(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    InkWell(
+                      canRequestFocus: false,
+                      onTap: () {
+                        if (showTitleInCheckBox != null &&
+                            showTitleInCheckBox!.isNotEmpty) {
+                          var temp = mapData[rendererContext.rowIdx][key];
+                          temp['key'] = (temp['key'] == checkBoxStrComparison)
+                              ? uncheckCheckBoxStr
+                              : checkBoxStrComparison;
+                          rendererContext.stateManager.changeCellValue(
+                            rendererContext.cell,
+                            temp,
+                            force: true,
+                            callOnChangedEvent: true,
+                            notify: true,
+                          );
+                          rendererContext.stateManager.setCurrentCell(
+                              rendererContext.cell, rendererContext.rowIdx);
+                          if (rendererContext.stateManager.onSelected != null) {
+                            rendererContext.stateManager
+                                .onSelected!(PlutoGridOnSelectedEvent(
+                              cell: rendererContext.cell,
+                              row: rendererContext.row,
+                              rowIdx: rendererContext.rowIdx,
+                              selectedRows: rendererContext
+                                  .stateManager.currentSelectingRows,
+                            ));
+                          }
+                        } else {
+                          rendererContext.stateManager.changeCellValue(
+                            rendererContext.cell,
+                            rendererContext.cell.value == checkBoxStrComparison
+                                ? uncheckCheckBoxStr
+                                : checkBoxStrComparison,
+                            force: true,
+                            callOnChangedEvent: true,
+                            notify: true,
+                          );
+                          rendererContext.stateManager.setCurrentCell(
+                              rendererContext.cell, rendererContext.rowIdx);
+                          if (rendererContext.stateManager.onSelected != null) {
+                            rendererContext.stateManager
+                                .onSelected!(PlutoGridOnSelectedEvent(
+                              cell: rendererContext.cell,
+                              row: rendererContext.row,
+                              rowIdx: rendererContext.rowIdx,
+                              selectedRows: rendererContext
+                                  .stateManager.currentSelectingRows,
+                            ));
+                          }
+                        }
+                      },
+                      child: Icon(
                         ((showTitleInCheckBox != null &&
                                         showTitleInCheckBox!.isNotEmpty)
                                     ? mapData[rendererContext.rowIdx][key]
@@ -572,24 +572,24 @@ class DataGridFromMap3 extends StatelessWidget {
                             ? Colors.deepPurpleAccent
                             : Colors.grey,
                       ),
-                      if (showTitleInCheckBox != null &&
-                          showTitleInCheckBox!.isNotEmpty &&
-                          showTitleInCheckBox!.contains(key)) ...{
-                        const SizedBox(width: 5),
-                        Text(
-                          (showTitleInCheckBox != null &&
-                                  showTitleInCheckBox!.isNotEmpty)
-                              ? mapData[rendererContext.rowIdx][key]['value']
-                              : mapData[rendererContext.rowIdx][key],
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontSize: SizeDefine.columnTitleFontSize,
-                          ),
+                    ),
+                    if (showTitleInCheckBox != null &&
+                        showTitleInCheckBox!.isNotEmpty &&
+                        showTitleInCheckBox!.contains(key)) ...{
+                      const SizedBox(width: 5),
+                      Text(
+                        (showTitleInCheckBox != null &&
+                                showTitleInCheckBox!.isNotEmpty)
+                            ? mapData[rendererContext.rowIdx][key]['value']
+                            : mapData[rendererContext.rowIdx][key],
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontSize: SizeDefine.columnTitleFontSize,
                         ),
-                      }
-                    ],
-                  ),
+                      ),
+                    }
+                  ],
                 );
               } else {
                 return GestureDetector(

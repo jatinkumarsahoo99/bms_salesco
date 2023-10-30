@@ -323,7 +323,10 @@ class RoReceivedController extends GetxController {
                   clear();
                 });
           } else if (rawdata is String) {
-            LoadingDialog.callErrorMessage1(msg: rawdata);
+            if (rawdata.toString().contains('Violation of UNIQUE KEY"')) {
+              LoadingDialog.callErrorMessage1(
+                  msg: "cannot enter duplicate RO number");
+            }
           }
         });
   }

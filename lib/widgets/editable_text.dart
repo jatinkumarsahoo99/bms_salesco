@@ -68,6 +68,7 @@ class _ChangableTextState extends State<ChangableText> {
                 },
                 autofocus: true,
                 controller: _textEditingController,
+                maxLines: 1,
               ),
             ),
           )
@@ -85,6 +86,8 @@ class _ChangableTextState extends State<ChangableText> {
                 ? Container()
                 : Text(
                     _text,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
                   ));
   }
 }

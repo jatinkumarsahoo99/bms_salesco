@@ -14,8 +14,11 @@ import '../../../controller/HomeController.dart';
 import '../../../providers/Utils.dart';
 import '../controllers/mark_r_os_flag_controller.dart';
 
-class MarkROsFlagView extends GetView<MarkROsFlagController> {
-  const MarkROsFlagView({Key? key}) : super(key: key);
+class MarkROsFlagView extends StatelessWidget {
+  MarkROsFlagView({Key? key}) : super(key: key);
+
+  MarkROsFlagController controller =
+      Get.put<MarkROsFlagController>(MarkROsFlagController());
 
   @override
   Widget build(BuildContext context) {
@@ -86,80 +89,71 @@ class MarkROsFlagView extends GetView<MarkROsFlagController> {
                 child: Obx(
                   () {
                     return Container(
-                      margin: const EdgeInsets.symmetric(vertical: 10),
-                      decoration: controller.dataTableList.value.isEmpty
-                          ? BoxDecoration(
-                              border: Border.all(
-                                color: Colors.grey,
-                              ),
-                            )
-                          : null,
-                      child: controller.dataTableList.value.isEmpty
-                          ? null
-                          : GetBuilder<MarkROsFlagController>(
-                              assignId: true,
-                              id: "grid",
-                              builder: (controller) {
-                                return DataGridFromMap3(
-                                  exportFileName: "Manage ROS Flag",
-                                  mapData: controller.dataTableList.value
-                                      .map((e) => e.toJson())
-                                      .toList(),
-                                  checkBoxColumnKey: ['flag'],
-                                  checkBoxStrComparison: "true",
-                                  uncheckCheckBoxStr: "false",
-                                  actionIconKey: ['flag'],
-                                  actionOnPress: (position, isSpaceCalled) {
-                                    if (isSpaceCalled) {
-                                      controller.lastSelectedIdx =
-                                          position.rowIdx ?? 0;
-                                      controller.stateManager!.changeCellValue(
-                                        controller.stateManager!.currentCell!,
-                                        controller.stateManager!.currentCell!
-                                                    .value ==
-                                                "true"
-                                            ? "false"
-                                            : "true",
-                                        force: true,
-                                        callOnChangedEvent: true,
-                                        notify: true,
-                                      );
-                                    }
-                                  },
-                                  onEdit: (row) {
-                                    controller.lastSelectedIdx = row.rowIdx;
-                                    controller.madeChanges = true;
-                                    controller.dataTableList[row.rowIdx].flag =
-                                        row.value == "true";
-                                  },
-                                  mode: PlutoGridMode.normal,
-                                  colorCallback: (row) => (row.row.cells
-                                          .containsValue(controller
-                                              .stateManager?.currentCell))
-                                      ? Colors.deepPurple.shade200
-                                      : Colors.white,
-                                  onload: (event) {
-                                    controller.stateManager =
-                                        event.stateManager;
-                                    event.stateManager.setSelectingMode(
-                                        PlutoGridSelectingMode.row);
-                                    event.stateManager.setSelecting(true);
-                                    event.stateManager.setCurrentCell(
-                                        event.stateManager
-                                            .getRowByIdx(
-                                                controller.lastSelectedIdx)
-                                            ?.cells['telecastDate'],
-                                        controller.lastSelectedIdx);
-                                  },
-                                  widthSpecificColumn:
-                                      Get.find<HomeController>()
-                                          .getGridWidthByKey(
-                                              userGridSettingList: controller
-                                                  .userGridSetting1?.value),
-                                );
-                              },
-                            ),
-                    );
+                        margin: const EdgeInsets.symmetric(vertical: 10),
+                        decoration: controller.dataTableList.value.isEmpty
+                            ? BoxDecoration(
+                                border: Border.all(
+                                  color: Colors.grey,
+                                ),
+                              )
+                            : null,
+                        child: controller.dataTableList.value.isEmpty
+                            ? null
+                            : DataGridFromMap3(
+                                exportFileName: "Manage ROS Flag",
+                                mapData: controller.dataTableList.value
+                                    .map((e) => e.toJson())
+                                    .toList(),
+                                checkBoxColumnKey: ['flag'],
+                                checkBoxStrComparison: "true",
+                                uncheckCheckBoxStr: "false",
+                                actionIconKey: ['flag'],
+                                actionOnPress: (position, isSpaceCalled) {
+                                  if (isSpaceCalled) {
+                                    controller.lastSelectedIdx =
+                                        position.rowIdx ?? 0;
+                                    controller.stateManager!.changeCellValue(
+                                      controller.stateManager!.currentCell!,
+                                      controller.stateManager!.currentCell!
+                                                  .value ==
+                                              "true"
+                                          ? "false"
+                                          : "true",
+                                      force: true,
+                                      callOnChangedEvent: true,
+                                      notify: true,
+                                    );
+                                  }
+                                },
+                                onEdit: (row) {
+                                  controller.lastSelectedIdx = row.rowIdx;
+                                  controller.madeChanges = true;
+                                  controller.dataTableList[row.rowIdx].flag =
+                                      row.value == "true";
+                                },
+                                mode: PlutoGridMode.normal,
+                                colorCallback: (row) => (row.row.cells
+                                        .containsValue(controller
+                                            .stateManager?.currentCell))
+                                    ? Colors.deepPurple.shade200
+                                    : Colors.white,
+                                onload: (event) {
+                                  controller.stateManager = event.stateManager;
+                                  event.stateManager.setSelectingMode(
+                                      PlutoGridSelectingMode.row);
+                                  event.stateManager.setSelecting(true);
+                                  event.stateManager.setCurrentCell(
+                                      event.stateManager
+                                          .getRowByIdx(
+                                              controller.lastSelectedIdx)
+                                          ?.cells['telecastDate'],
+                                      controller.lastSelectedIdx);
+                                },
+                                widthSpecificColumn: Get.find<HomeController>()
+                                    .getGridWidthByKey(
+                                        userGridSettingList:
+                                            controller.userGridSetting1?.value),
+                              ));
                   },
                 ),
               ),
@@ -182,7 +176,7 @@ class MarkROsFlagView extends GetView<MarkROsFlagController> {
                   ).toList(),
                 );
               }),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
 
               ///Common Buttons
               Align(
