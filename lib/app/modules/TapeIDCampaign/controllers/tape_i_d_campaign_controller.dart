@@ -2,6 +2,7 @@ import 'package:bms_salesco/app/controller/ConnectorControl.dart';
 import 'package:bms_salesco/app/providers/ApiFactory.dart';
 import 'package:bms_salesco/widgets/LoadingDialog.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -46,11 +47,17 @@ class TapeIDCampaignController extends GetxController {
   @override
   void onReady() {
     super.onReady();
-    tapeIdFN.addListener(() {
-      if (!tapeIdFN.hasFocus) {
+    tapeIdFN.onKey = (node, event) {
+      if (event.logicalKey == LogicalKeyboardKey.tab) {
         tapeIdLeave();
       }
-    });
+      return KeyEventResult.ignored;
+    };
+    // tapeIdFN.addListener(() {
+    //   if (!tapeIdFN.hasFocus) {
+    //     tapeIdLeave();
+    //   }
+    // });
     startDateTC.addListener(() {});
 
     getCampaignHistory();
