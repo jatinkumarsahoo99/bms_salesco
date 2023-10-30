@@ -127,7 +127,7 @@ class RoReceivedView extends StatelessWidget {
                                     print(date);
                                     controller.activityMonth.text =
                                         date.split("-")[2] + date.split("-")[1];
-                                    // controller.dateLeave(date);
+                                    controller.dateLeave(date);
                                   },
                                   widthRation: .115,
                                 ),
@@ -355,8 +355,6 @@ class RoReceivedView extends StatelessWidget {
         break;
       case "Clear":
         maincontroller.clear();
-        // Get.delete<RoReceivedController>();
-        // Get.find<HomeController>().clearPage1();
         break;
       case "Search":
         Get.to(SearchPage(
@@ -364,9 +362,9 @@ class RoReceivedView extends StatelessWidget {
           screenName: "RO Received",
           strViewName: "BMS_vRoReceived",
           appBarName: "RO Received",
-          // isPopup: true,
+          isPopup: true,
           isAppBarReq: true,
-          // actionableSearch: true,
+          actionableSearch: true,
           actionableMap: {
             "RoReceivedCode": (value) {
               print(value);

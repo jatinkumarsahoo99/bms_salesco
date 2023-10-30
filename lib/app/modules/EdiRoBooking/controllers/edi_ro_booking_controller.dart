@@ -679,7 +679,7 @@ class EdiRoBookingController extends GetxController {
                                 exportFileName: "EDI R.O. Booking",
                                 formatDate: false,
                                 onRowDoubleTap: (event) {
-                                  print(event.cell.column.field);
+                                  // print(event.cell.column.field);
 
                                   if (event.cell.column.field.toString() ==
                                       'telecastTime') {
@@ -699,8 +699,8 @@ class EdiRoBookingController extends GetxController {
                                         force: true,
                                       );
                                     }
-                                    print(
-                                        event.row.cells['telecastTime']?.value);
+                                    // print(
+                                    //     event.row.cells['telecastTime']?.value);
                                   }
                                 },
                               ),
