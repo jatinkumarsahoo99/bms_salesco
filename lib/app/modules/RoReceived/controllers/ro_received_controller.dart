@@ -145,25 +145,21 @@ class RoReceivedController extends GetxController {
   }
 
   dateLeave(String date) {
+    LoadingDialog.call();
     Get.find<ConnectorControl>().GETMETHODCALL(
-        api: ApiFactory.RO_RECEIVED_DATE_LEAVE(
+        api: ApiFactory.RO_RECEIVED_START_DATE_LEAVE(
             date: DateFormat("yyyy-MM-dd")
                 .format(DateFormat("dd-MM-yyyy").parse(date))),
         fun: (rawdata) {
-          // if (rawdata is Map && rawdata.containsKey("onLeaveClient")) {
-          //   Map data = rawdata["onLeaveClient"];
-          //   agencies.value = [];
-          //   for (var agency in data["lstAgencies"]) {
-          //     agencies.add(DropDownValue(
-          //         key: agency["agencyCode"], value: agency["agencyName"]));
-          //   }
-          //   brands.value = [];
-          //   for (var brand in data["lstBrand"]) {
-          //     brands.add(DropDownValue(
-          //         key: brand["brandCode"], value: brand["brandName"]));
-          //   }
-          //   groupCode = data["groupCode"];
-          // }
+          Get.back();
+          if (rawdata is Map && rawdata.containsKey("dateOnLeaveInfo")) {
+            activityMonth.text =
+                rawdata["dateOnLeaveInfo"]["activityMonth"] ?? "";
+            effEndDate.text = DateFormat("dd-MM-yyyy").format(
+                DateFormat("yyyy-MM-ddThh:mm:ss").parse(
+                    rawdata["dateOnLeaveInfo"]['dtpEndDate'] ??
+                        "2023-01-09T00:00:00"));
+          }
         });
   }
 
@@ -329,16 +325,6 @@ class RoReceivedController extends GetxController {
           } else if (rawdata is String) {
             LoadingDialog.callErrorMessage1(msg: rawdata);
           }
-        });
-  }
-
-  startDateLeave() {
-    LoadingDialog.call();
-    Get.find<ConnectorControl>().GETMETHODCALL(
-        api: ApiFactory.RO_RECEIVED_LOAD,
-        fun: (rawdata) {
-          Get.back();
-          if (rawdata is Map && rawdata.containsKey("onLoadRoRecevice")) {}
         });
   }
 
