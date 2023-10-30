@@ -49,6 +49,7 @@ class CommercialCreationAutoDetailsController extends GetxController {
 
   Rxn<ComercialAutoLoadModel>? loadModel = Rxn<ComercialAutoLoadModel>(null);
   CommercialDetailsModel? commercialDetails;
+  FocusNode clientFocus=FocusNode();
 
   @override
   void onInit() {
@@ -113,7 +114,7 @@ class CommercialCreationAutoDetailsController extends GetxController {
   getDataFromACID() {
     Get.find<ConnectorControl>().GETMETHODCALL(
         api: ApiFactory.COMMERCIAL_CREATION_SHOW_ACID(
-            Aes.decrypt(Get.parameters["acId"] ?? "") ?? "322"),
+            Aes.decrypt(Get.parameters["acId"] ?? "") ?? ""),
         fun: (Map map) {
           commercialDetails =
               CommercialDetailsModel.fromJson(map as Map<String, dynamic>);
@@ -146,10 +147,18 @@ class CommercialCreationAutoDetailsController extends GetxController {
               value:
                   commercialDetails?.lstShowACID![0].commerciallanguage ?? "");
           htmlBody.value = commercialDetails?.lstShowACID![0].mailBody ?? "";
-          selectClientFromApi(
+          selectClient?.value = DropDownValue(
+              key: commercialDetails?.lstShowACID![0].clientCode,
+              value: commercialDetails?.lstShowACID![0].clientName);
+
+          selectBrand?.value = DropDownValue(
+              key: commercialDetails?.lstShowACID![0].brandCode,
+              value: commercialDetails?.lstShowACID![0].brandName);
+          clientFocus.requestFocus();
+         /* selectClientFromApi(
               commercialDetails?.lstShowACID![0].clientCode ?? "");
           selectBrandFromApi(
-              commercialDetails?.lstShowACID![0].clientCode ?? "");
+              commercialDetails?.lstShowACID![0].clientCode ?? "");*/
         });
   }
 
@@ -162,6 +171,7 @@ class CommercialCreationAutoDetailsController extends GetxController {
               selectClient?.value = DropDownValue(
                   key: map["lstClientMaster"][0]["clientcode"],
                   value: map["lstClientMaster"][0]["Clientname"]);
+              clientFocus.requestFocus();
             }
           }
         });

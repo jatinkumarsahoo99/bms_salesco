@@ -20,6 +20,7 @@ class AutoTimeLockController extends GetxController {
   PlutoGridStateManager? stateManager;
   int lastSelectedIdx = 0;
   var dataTableList = <AutoTimeLockModel>[].obs;
+  Rx<bool> enable = Rx<bool>(true);
 
   List<Map<String, Map<String, double>>>? userGridSetting1;
   fetchUserSetting1() async {
@@ -77,12 +78,19 @@ class AutoTimeLockController extends GetxController {
   }
 
   clearPage() {
-    lastSelectedIdx = 0;
-    stateManager = null;
-    dataTableList.clear();
-    selectedLocation = null;
-    locationList.refresh();
-    locationFN.requestFocus();
+    if(selectedLocation == null){
+      LoadingDialog.showErrorDialog("Please select location");
+    }else{
+      lastSelectedIdx = 0;
+      stateManager = null;
+      dataTableList.clear();
+      selectedLocation = null;
+      enable.value = true;
+      enable.refresh();
+      locationList.refresh();
+      locationFN.requestFocus();
+    }
+
   }
 
   handleOnChangedLocation(DropDownValue? val) {
@@ -96,15 +104,22 @@ class AutoTimeLockController extends GetxController {
           if (resp != null &&
               resp is Map<String, dynamic> &&
               resp['show'] != null) {
+            enable.value = false;
+            enable.refresh();
             dataTableList.clear();
             dataTableList.value = (resp['show'] as List<dynamic>)
                 .map((e) => AutoTimeLockModel.fromJson(e))
                 .toList();
+
           } else {
+            enable.value = true;
+            enable.refresh();
             LoadingDialog.showErrorDialog(resp.toString());
           }
         },
         failed: (resp) {
+          enable.value = true;
+          enable.refresh();
           Get.back();
           LoadingDialog.showErrorDialog(resp.toString());
         },

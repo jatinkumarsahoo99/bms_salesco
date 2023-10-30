@@ -117,6 +117,7 @@ class ZoneWiseInventoryUtilizationController extends GetxController {
                   e, "channelCode", "channelName"));
             });
             channelList = dataList;
+            selectedChannel = null;
           }
         },
         failed: (resp) {

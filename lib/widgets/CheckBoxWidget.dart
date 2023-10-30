@@ -30,6 +30,25 @@ class CheckBoxWidget1 extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
+          if (showIcon) ...{
+            Tooltip(
+              message: title,
+              child: Icon(
+                iconData,
+                color: Colors.deepPurpleAccent,
+                size: 18,
+              ),
+            ),
+          }
+          else ...{
+            Text(
+              title,
+              style: TextStyle(
+                color: isEnable ? Colors.black : Colors.grey,
+                fontSize: 13,
+              ),
+            )
+          },
           StatefulBuilder(builder: (context, re) {
             return Checkbox(
               value: value,
@@ -43,24 +62,6 @@ class CheckBoxWidget1 extends StatelessWidget {
               },
             );
           }),
-          if (showIcon) ...{
-            Tooltip(
-              message: title,
-              child: Icon(
-                iconData,
-                color: Colors.deepPurpleAccent,
-                size: 18,
-              ),
-            ),
-          } else ...{
-            Text(
-              title,
-              style: TextStyle(
-                color: isEnable ? Colors.black : Colors.grey,
-                fontSize: 13,
-              ),
-            )
-          }
         ],
       ),
     );
