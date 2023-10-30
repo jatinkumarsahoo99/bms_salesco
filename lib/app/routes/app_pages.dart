@@ -10,8 +10,6 @@ import '../modules/AuditStatusReport/bindings/audit_status_report_binding.dart';
 import '../modules/AutoTimeLock/bindings/auto_time_lock_binding.dart';
 import '../modules/BookingStatusReport/bindings/booking_status_report_binding.dart';
 import '../modules/BookingStatusReport/views/booking_status_report_view.dart';
-import '../modules/BookingsAgainstPDC/bindings/bookings_against_p_d_c_binding.dart';
-import '../modules/BookingsAgainstPDC/views/bookings_against_p_d_c_view.dart';
 import '../modules/ChangeRONumber/bindings/change_r_o_number_binding.dart';
 import '../modules/CommonDocs/bindings/common_docs_binding.dart';
 import '../modules/CommonDocs/views/common_docs_view.dart';
@@ -32,8 +30,6 @@ import '../modules/MonthlyReport/bindings/monthly_report_binding.dart';
 import '../modules/NewShortContentForm/bindings/new_short_content_form_binding.dart';
 import '../modules/NewShortContentForm/views/new_short_content_form_view.dart';
 import '../modules/OneSpotBookingSkyMedia/bindings/one_spot_booking_sky_media_binding.dart';
-import '../modules/PDCCheques/bindings/p_d_c_cheques_binding.dart';
-import '../modules/PDCCheques/views/p_d_c_cheques_view.dart';
 import '../modules/PeriodicDealUtilisationFormat2/bindings/periodic_deal_utilisation_format2_binding.dart';
 import '../modules/ProductLevel1/bindings/product_level1_binding.dart';
 import '../modules/ProductLevel2/bindings/product_level2_binding.dart';
@@ -62,8 +58,8 @@ class AppPages {
 
   static const INITIAL = kReleaseMode
       ? Routes.HOME
-      : (Routes.DEAL_RECO_SUMMARY +
-          "?personalNo=R9vVPL7er1Os/usemWG/Iw==&loginCode=0iGe3vK5h2KGjfSKZTpmsQ==&formName=OI8ukDpPPVN0I2BEXu2h4nuFu%2BZm1ZRpvP8NL4XCXzQ%3D");
+      : Routes.COMMERCIAL_CREATION_AUTO +
+          "?personalNo=R9vVPL7er1Os/usemWG/Iw==&loginCode=0iGe3vK5h2KGjfSKZTpmsQ==&formName=OI8ukDpPPVN0I2BEXu2h4nuFu%2BZm1ZRpvP8NL4XCXzQ%3D";
 
   static final routes = [
     GetPage(
@@ -289,18 +285,6 @@ class AppPages {
     GetPage(
       name: _Paths.DEALVS_R_O_DATA_REPORT,
       page: () => AuthGuard(childName: _Paths.DEALVS_R_O_DATA_REPORT),
-    ),
-    GetPage(
-      name: _Paths.DEAL_UTIL_PERIODIC,
-      page: () => AuthGuard(childName: _Paths.DEAL_UTIL_PERIODIC),
-    ),
-    GetPage(
-      name: _Paths.BOOKINGS_AGAINST_P_D_C,
-      page: () => AuthGuard(childName: _Paths.BOOKINGS_AGAINST_P_D_C),
-    ),
-    GetPage(
-      name: _Paths.P_D_C_CHEQUES,
-      page: () => AuthGuard(childName: _Paths.P_D_C_CHEQUES),
     ),
   ];
 }
