@@ -189,14 +189,14 @@ class TapeIDCampaignView extends GetView<TapeIDCampaignController> {
                             controller.selectedTab.value = value ?? 0;
                           },
                           children: <int, Widget>{
-                            0: Text(
+                            1: Text(
                               'Location & Channel',
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontSize: SizeDefine.fontSizeTab,
                               ),
                             ),
-                            1: Text(
+                            0: Text(
                               'History',
                               textAlign: TextAlign.center,
                               style: TextStyle(
