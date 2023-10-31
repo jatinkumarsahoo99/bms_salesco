@@ -32,6 +32,7 @@ class SearchController extends GetxController {
       {this.isPopUp = false,
       this.actionableSearch = false,
       this.actionableMap});
+
   final String screenName;
   final String strViewName;
   final bool? isPopUp;
@@ -52,6 +53,7 @@ class SearchController extends GetxController {
   /////// MASTER SEARCH DAILOG //////
   var masterDialogList = RxList();
   var checknotcheck = RxBool(false);
+
   //////////////////////////////////
   var addsum = RxBool(false);
   List<DataColumn2> searchGridColumns = [];
@@ -71,10 +73,17 @@ class SearchController extends GetxController {
   void onReady() {
     super.onReady();
     gridFN.onKey = (node, event) {
-      if (event.logicalKey == LogicalKeyboardKey.arrowDown) {
+      if (event is RawKeyDownEvent &&
+          event.logicalKey == LogicalKeyboardKey.arrowDown) {
         gridFN.nextFocus();
         gridFN.nextFocus();
         gridFN.nextFocus();
+        return KeyEventResult.ignored;
+      } else if (event is RawKeyDownEvent &&
+          event.logicalKey == LogicalKeyboardKey.arrowUp) {
+        gridFN.previousFocus();
+        gridFN.previousFocus();
+        gridFN.previousFocus();
         return KeyEventResult.ignored;
       }
       return KeyEventResult.ignored;
