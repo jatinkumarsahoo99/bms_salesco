@@ -670,7 +670,7 @@ class EdiRoBookingView extends StatelessWidget {
           child: Column(
             children: [
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8),
+                padding: const EdgeInsets.symmetric(vertical: 3),
                 child: Align(
                   alignment: Alignment.topRight,
                   child: IconButton(

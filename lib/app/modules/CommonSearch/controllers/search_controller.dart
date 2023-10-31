@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:js';
 import 'dart:math' as math;
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/cupertino.dart';
@@ -36,6 +37,7 @@ class SearchController extends GetxController {
   final bool? isPopUp;
   final bool actionableSearch;
   final Map<String, Function(String value)>? actionableMap;
+  FocusNode gridFN = FocusNode();
 
   SearchBindGrid? grid;
   List? searchResult;
@@ -63,6 +65,20 @@ class SearchController extends GetxController {
   void onInit() {
     getInitialData();
     super.onInit();
+  }
+
+  @override
+  void onReady() {
+    super.onReady();
+    gridFN.onKey = (node, event) {
+      if (event.logicalKey == LogicalKeyboardKey.arrowDown) {
+        gridFN.nextFocus();
+        gridFN.nextFocus();
+        gridFN.nextFocus();
+        return KeyEventResult.ignored;
+      }
+      return KeyEventResult.ignored;
+    };
   }
 
   parsePivotTemplate(String templateString) {
@@ -688,19 +704,21 @@ class SearchController extends GetxController {
 
   var selectedRow = 0.obs;
 
-  void handleArrowKey(RawKeyEvent event) {
-    if (event is RawKeyDownEvent) {
-      if (event.logicalKey == LogicalKeyboardKey.arrowDown) {
-        if (selectedRow.value < searchGridColumns.length - 1) {
-          selectedRow.value++;
-        }
-      } else if (event.logicalKey == LogicalKeyboardKey.arrowUp) {
-        if (selectedRow.value > 0) {
-          selectedRow.value--;
-        }
-      }
-    }
-  }
+  // void handleArrowKey(RawKeyEvent event) {
+  //   if (event is RawKeyDownEvent) {
+  //     if (event.logicalKey == LogicalKeyboardKey.arrowDown) {
+  //       if (selectedRow.value < searchGridColumns.length - 1) {
+  //         selectedRow.value++;
+  //         FocusScope.of(Get.context!).nextFocus();
+  //       }
+  //     } else if (event.logicalKey == LogicalKeyboardKey.arrowUp) {
+  //       if (selectedRow.value > 0) {
+  //         selectedRow.value--;
+  //         FocusScope.of(Get.context!).previousFocus();
+  //       }
+  //     }
+  //   }
+  // }
 
   executeSearch() async {
     LoadingDialog.call();

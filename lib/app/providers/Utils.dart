@@ -54,6 +54,31 @@ class Utils {
     return formatter;
   }
 
+  static String formatDateTime(String? inputDateTime) {
+    if(inputDateTime != null && inputDateTime !=""){
+      try {
+        final RegExp timeRegExp = RegExp(r'(\d{2}:\d{2}:\d{2})$');
+        final DateTime dateTime = DateTime.parse(inputDateTime);
+        final String time = timeRegExp.hasMatch(inputDateTime)
+            ? DateFormat('h:mm a').format(dateTime)
+            : '';
+
+        final String formattedDate = DateFormat('MM/dd/yyyy').format(dateTime);
+
+        if (time.isNotEmpty && time != '12:00 AM') {
+          return formattedDate + ' $time';
+        } else {
+          return formattedDate;
+        }
+      } catch (e) {
+        return "";
+      }
+    }else{
+        return "";
+    }
+
+  }
+
 
   static bool isNumeric(String s) {
     if (s == null) {
