@@ -65,6 +65,7 @@ abstract class RoutesList {
 
   static List<String> listRoutes = [
     _Paths.HOME,
+    _Paths.BOOKINGS_AGAINST_P_D_C,
     _Paths.CHANGE_R_O_NUMBER,
     _Paths.SAME_DAY_COLLECTION,
     _Paths.ASRUN_DETAILS_REPORT,
@@ -157,7 +158,7 @@ abstract class _Paths {
   static const DEALVS_R_O_DATA_REPORT = '/frmDealvsRODataReport';
   static const BOOKING_STATUS_REPORT = '/frmnewbookingstatus';
   static const PROGRAM_WISE_REVENUE_REPORT = '/frmnewprogramwisereport';
-  static const DEAL_UTIL_PERIODIC = '/frmsearching##BMS_DealUtilPeriodic';
+  static const DEAL_UTIL_PERIODIC = '/frmsearchingKKBMS_DealUtilPeriodic';
   static const BOOKINGS_AGAINST_P_D_C = '/frmBookingsAgainstPDC';
   static const P_D_C_CHEQUES = '/frmPDCs';
 }

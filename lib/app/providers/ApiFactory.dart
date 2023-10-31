@@ -1202,6 +1202,23 @@ class ApiFactory {
   ///
   ///
   ///
+  /////////////////////////////// Booking against PDC Start//////////////////////
+  static String get BOOKING_AGAINST_PDC_GET_CLIENT =>
+      "$BASE_URL/api/BookingsAgainstPDC/GetClientList?ContainSearch=";
+  static String BOOKING_AGAINST_PDC_GET_AGENCY(String client) =>
+      "$BASE_URL/api/BookingsAgainstPDC/GetAgencyList?ClientCode=$client";
+  static String BOOKING_AGAINST_PDC_GET_CHEQUE_NO(
+          String client, String agency, String activityMonth) =>
+      "$BASE_URL/api/BookingsAgainstPDC/GetPDCList?ClientCode=$client&AgencyCode=$agency&ActivityMonth=$activityMonth";
+  static String BOOKING_AGAINST_PDC_GET_BOOKING_LIST(String client,
+          String agency, String activityMonth, String chequeNo) =>
+      "$BASE_URL/api/BookingsAgainstPDC/BookingList?ClientCode=$client&AgencyCode=$agency&ActivityMonth=$activityMonth&ChequeNo=$chequeNo";
+  /////////////////////////////// Booking against PDC End//////////////////////
+  ///
+  ///
+  ///
+  ///
+  ///
 ////////////////////////// Amagi Spots Replacement ////////////////////////////////////
   static String AMAGI_SPOT_REPLACEMENT_GET_LOCATION() =>
       "$BASE_URL/api/AmagiSpotsReplacement/GetLocation";

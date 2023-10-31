@@ -25,10 +25,13 @@ class TapeIDCampaignController extends GetxController {
   String selectedValuUI = "selectedValuUI";
   var activityMonth = "".obs;
   DateTime now = DateTime.now();
-  PlutoGridStateManager? locationChannelManager, historyManager;
+  PlutoGridStateManager? locationChannelManager,
+      historyManager,
+      campaignHistorySM,
+      tapeIDCampaignSM;
   int lastLocationChannelEditIdx = 0, historyEditIdx = 0;
 
-  var selectedTab = 1.obs;
+  var selectedTab = 0.obs;
   TapeIDCampaignLoadModel? loadModel;
   TapeIdCampaignHistoryModel? history;
   var tapeIdFN = FocusNode();
@@ -53,24 +56,16 @@ class TapeIDCampaignController extends GetxController {
       }
       return KeyEventResult.ignored;
     };
-    // tapeIdFN.addListener(() {
-    //   if (!tapeIdFN.hasFocus) {
-    //     tapeIdLeave();
-    //   }
-    // });
-    startDateTC.addListener(() {});
 
-    getCampaignHistory();
     Future.delayed(Duration(seconds: 2)).then((value) {
       generateActivityMonth();
     });
-    // getTapeIdCampaignDetails();
+    getCampaignHistory();
   }
 
   @override
   void onInit() {
     endDate = DateTime(startDate.year, startDate.month + 1, 0);
-    print(endDate.toString());
     formPermissions =
         Utils.fetchPermissions1(Routes.TAPE_I_D_CAMPAIGN.replaceAll("/", ""));
     fetchUserSetting1();
@@ -82,6 +77,8 @@ class TapeIDCampaignController extends GetxController {
     historyManager = null;
     tapeIDTC.clear();
     history = null;
+    camoaignHistoryList.value = [];
+    tapeIdCampaignList.value = [];
     startDateTC.clear();
     lastLocationChannelEditIdx = 0;
     historyEditIdx = 0;
@@ -90,7 +87,6 @@ class TapeIDCampaignController extends GetxController {
     loadModel = null;
     tapeIdFN.requestFocus();
     updateUI();
-
     // Get.find<HomeController>().clearPage1();
   }
 
@@ -123,22 +119,22 @@ class TapeIDCampaignController extends GetxController {
     );
   }
 
-  getTapeIdCampaignDetails() {
-    Get.find<ConnectorControl>().GETMETHODCALL(
-      api: ApiFactory.TAPE_ID_CAMPAIGN_TAPE_CAMPAIGN_DETAILS,
-      fun: (resp) {
-        if (resp is Map<String, dynamic> && resp['result'] != null) {
-          tapeIdCampaignList.value = resp['result'];
-          if (selectedTab.value == 2 || selectedTab.value == 3) {
-            if (tapeIdCampaignList.isNotEmpty) {
-              selectedTab.refresh();
-            }
-          }
-        }
-      },
-      failed: (resp) {},
-    );
-  }
+  // getTapeIdCampaignDetails() {
+  //   Get.find<ConnectorControl>().GETMETHODCALL(
+  //     api: ApiFactory.TAPE_ID_CAMPAIGN_TAPE_CAMPAIGN_DETAILS,
+  //     fun: (resp) {
+  //       if (resp is Map<String, dynamic> && resp['result'] != null) {
+  //         tapeIdCampaignList.value = resp['result'];
+  //         if (selectedTab.value == 2 || selectedTab.value == 3) {
+  //           if (tapeIdCampaignList.isNotEmpty) {
+  //             selectedTab.refresh();
+  //           }
+  //         }
+  //       }
+  //     },
+  //     failed: (resp) {},
+  //   );
+  // }
 
   tapeIdLeave() {
     if (tapeIDTC.text.trim().isNotEmpty) {
@@ -277,9 +273,17 @@ class TapeIDCampaignController extends GetxController {
     } else if (btn == "Save") {
       saveRecord();
     } else if (btn == "Exit") {
-      Get.find<HomeController>().postUserGridSetting1(
-          listStateManager: [historyManager, locationChannelManager],
-          tableNamesList: ['tbl1', 'tbl2']);
+      Get.find<HomeController>().postUserGridSetting1(listStateManager: [
+        locationChannelManager,
+        historyManager,
+        campaignHistorySM,
+        tapeIDCampaignSM,
+      ], tableNamesList: [
+        'tbl1',
+        'tbl2',
+        'tbl3',
+        'tbl4'
+      ]);
     } else if (btn == "Search") {
       Get.to(SearchPage(
           key: Key("Tape ID Campaign"),
@@ -321,10 +325,9 @@ class TapeIDCampaignController extends GetxController {
               resp['result']['message'].toString().contains('Successfully')) {
             camoaignHistoryList.value = resp['result']['campaignHistory'];
             tapeIdCampaignList.value = resp['result']['tapeIDCampaignDetail'];
-            if (selectedTab.value == 2 || selectedTab.value == 3) {
-              selectedTab.refresh();
-            }
-            LoadingDialog.callInfoMessage(resp['result']['message'].toString());
+            selectedTab.refresh();
+            LoadingDialog.callDataSaved(
+                msg: resp['result']['message'].toString());
           } else {
             if (resp['result']['message'] != null) {
               LoadingDialog.showErrorDialog(
