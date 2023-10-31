@@ -101,11 +101,11 @@ class BookingsAgainstPDCController extends GetxController {
 
   getChequeNo() {
     if (selctedClient == null) {
-      LoadingDialog.callInfoMessage("Please select Client");
+      // LoadingDialog.callInfoMessage("Please select Client");
     } else if (selctedAgency == null) {
-      LoadingDialog.callInfoMessage("Please select Agency");
+      // LoadingDialog.callInfoMessage("Please select Agency");
     } else {
-      LoadingDialog.call();
+      // LoadingDialog.call();
       Get.find<ConnectorControl>().GETMETHODCALL(
           api: ApiFactory.BOOKING_AGAINST_PDC_GET_CHEQUE_NO(
             selctedClient!.key!,
@@ -121,7 +121,7 @@ class BookingsAgainstPDCController extends GetxController {
                       key: e['chequeid'].toString(),
                       value: e['chequeno'].toString()))
                   .toList());
-              chequeFN.requestFocus();
+              // chequeFN.requestFocus();
             } else {
               LoadingDialog.showErrorDialog(resp.toString());
             }
