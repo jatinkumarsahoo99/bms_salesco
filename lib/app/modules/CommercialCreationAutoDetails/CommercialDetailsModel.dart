@@ -42,6 +42,8 @@ class LstShowACID {
   String? tapeid;
   String? endDate;
   String? txtSOM;
+  String? brandName;
+  String? clientName;
   int? txtDurationInSeconds;
   int? txtEOMDurationInSeconds;
 
@@ -67,6 +69,8 @@ class LstShowACID {
         this.endDate,
         this.txtSOM,
         this.txtDurationInSeconds,
+        this.brandName,
+        this.clientName,
         this.txtEOMDurationInSeconds});
 
   LstShowACID.fromJson(Map<String, dynamic> json) {
@@ -92,6 +96,8 @@ class LstShowACID {
     txtSOM = json['txtSOM'];
     txtDurationInSeconds = json['txtDurationInSeconds'];
     txtEOMDurationInSeconds = json['txtEOMDurationInSeconds'];
+    brandName = json['brandName'];
+    clientName = json['clientName'];
   }
 
   Map<String, dynamic> toJson() {
@@ -116,6 +122,8 @@ class LstShowACID {
     data['tapeid'] = this.tapeid;
     data['endDate'] = this.endDate;
     data['txtSOM'] = this.txtSOM;
+    data['clientName'] = this.clientName;
+    data['brandName'] = this.brandName;
     data['txtDurationInSeconds'] = this.txtDurationInSeconds;
     data['txtEOMDurationInSeconds'] = this.txtEOMDurationInSeconds;
     return data;

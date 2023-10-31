@@ -2,6 +2,7 @@ import 'package:bms_salesco/app/controller/ConnectorControl.dart';
 import 'package:bms_salesco/app/providers/ApiFactory.dart';
 import 'package:bms_salesco/widgets/LoadingDialog.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -27,7 +28,7 @@ class TapeIDCampaignController extends GetxController {
   PlutoGridStateManager? locationChannelManager, historyManager;
   int lastLocationChannelEditIdx = 0, historyEditIdx = 0;
 
-  var selectedTab = 0.obs;
+  var selectedTab = 1.obs;
   TapeIDCampaignLoadModel? loadModel;
   TapeIdCampaignHistoryModel? history;
   var tapeIdFN = FocusNode();
@@ -46,11 +47,17 @@ class TapeIDCampaignController extends GetxController {
   @override
   void onReady() {
     super.onReady();
-    tapeIdFN.addListener(() {
-      if (!tapeIdFN.hasFocus) {
+    tapeIdFN.onKey = (node, event) {
+      if (event.logicalKey == LogicalKeyboardKey.tab) {
         tapeIdLeave();
       }
-    });
+      return KeyEventResult.ignored;
+    };
+    // tapeIdFN.addListener(() {
+    //   if (!tapeIdFN.hasFocus) {
+    //     tapeIdLeave();
+    //   }
+    // });
     startDateTC.addListener(() {});
 
     getCampaignHistory();
@@ -148,9 +155,7 @@ class TapeIDCampaignController extends GetxController {
               loadModel = null;
               LoadingDialog.showErrorDialog("Tape id not found.");
             } else {
-              if (selectedTab.value == 0) {
-                updateUI();
-              }
+              updateUI();
               getHistory();
             }
           } else {
@@ -177,9 +182,7 @@ class TapeIDCampaignController extends GetxController {
         Get.back();
         if (resp is Map<String, dynamic> && resp['historyDetails'] != null) {
           history = TapeIdCampaignHistoryModel.fromJson(resp);
-          if (selectedTab.value == 1) {
-            updateUI();
-          }
+          updateUI();
         } else {
           LoadingDialog.showErrorDialog(resp.toString());
         }

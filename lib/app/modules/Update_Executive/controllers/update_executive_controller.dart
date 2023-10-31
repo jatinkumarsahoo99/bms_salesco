@@ -41,6 +41,8 @@ class UpdateExecutiveController extends GetxController {
   FocusNode agencyNode = FocusNode();
   FocusNode zoneNode = FocusNode();
   FocusNode executiveNamNode = FocusNode();
+  FocusNode selectAllNode = FocusNode();
+  FocusNode btnNode = FocusNode();
 
   fetchAllLoaderData() {
     // LoadingDialog.call();
@@ -114,6 +116,8 @@ class UpdateExecutiveController extends GetxController {
               dataList.add(DropDownValue.fromJsonDynamic(e, "clientcode", "clientname"));
             });
             clientList.addAll(dataList);
+            selectedClient?.value = null;
+            selectedClient?.refresh();
           }else{
             clientList.clear();
           }
@@ -138,6 +142,8 @@ class UpdateExecutiveController extends GetxController {
             map['agency'].forEach((e){
               agencyList.add(DropDownValue.fromJsonDynamic(e, "agencycode", "agencyname"));
             });
+            selectedAgency?.value = null;
+            selectedAgency?.refresh();
           }else{
             agencyList.clear();
           }
@@ -173,6 +179,7 @@ class UpdateExecutiveController extends GetxController {
 
   }
 
+  // List<FocusNode> listOfNode = [];
   getVerify(){
     LoadingDialog.call();
     Map<String,dynamic> sendData = {
@@ -192,7 +199,9 @@ class UpdateExecutiveController extends GetxController {
           Get.back();
           if(map is Map && map.containsKey("verifiy") &&
               map['verifiy'] != null && map['verifiy'].length >0){
+            // listOfNode.clear();
             verifyDataModel = VerifyDataModel.fromJson(map as Map<String,dynamic>);
+            // listOfNode = List.generate((verifyDataModel?.verifiy?.length??0), (index) => FocusNode());
             update(['grid']);
           }else{
             verifyDataModel = null;
@@ -217,8 +226,9 @@ class UpdateExecutiveController extends GetxController {
         fun: ( map) {
           Get.back();
           if(map is Map && map.containsKey("client") && map['client'] != null){
-            clearAll();
-            LoadingDialog.callDataSavedMessage(map['client']??"");
+            LoadingDialog.callDataSavedMessage(map['client']??"",callback: (){
+              clearAll();
+            });
           }else{
             LoadingDialog.showErrorDialog((map??"Something went wrong").toString());
           }

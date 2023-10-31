@@ -9,15 +9,10 @@ class PDCChequesController extends GetxController {
     super.onInit();
   }
 
+  var dataTableList = [].obs;
+
   @override
   void onReady() {
     super.onReady();
   }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
-  void increment() => count.value++;
 }

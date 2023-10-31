@@ -71,6 +71,7 @@ class CommercialCreationAutoDetailsView
                                     GlobalKey(), context,
                                     title: "Client",
                                     autoFocus: true,
+                                    inkwellFocus: controller.clientFocus,
                                     customInData: "lstClientMaster",
                                     url: ApiFactory
                                         .COMMERCIAL_CREATION_CLIENT_LIST(),
@@ -100,6 +101,7 @@ class CommercialCreationAutoDetailsView
                                       parseKeyForValue: "Brandname",
                                       onchanged: (data) {
                                     controllerX.selectBrand?.value = data;
+                                    FocusScope.of(context).nextFocus();
                                   },
                                       selectedValue:
                                           controllerX.selectBrand?.value,
@@ -142,6 +144,10 @@ class CommercialCreationAutoDetailsView
                                             ?.lstLanguage ??
                                         [], (data) {
                                   controllerX.selectLanguage?.value = data;
+                                  Future.delayed(Duration(milliseconds: 500),(){
+                                    FocusScope.of(context).nextFocus();
+                                  });
+                                  // FocusScope.of(context).nextFocus();
                                 }, "Language", 0.12,
                                     searchReq: true,
                                     selected:
@@ -156,6 +162,10 @@ class CommercialCreationAutoDetailsView
                                             ?.lstCensorship ??
                                         [], (data) {
                                   controllerX.selectCensorship?.value = data;
+                                  Future.delayed(Duration(milliseconds: 500),(){
+                                    FocusScope.of(context).nextFocus();
+                                  });
+                                  // FocusScope.of(context).nextFocus();
                                 }, "Censorship", 0.12,
                                     searchReq: true,
                                     labelBold: true,
@@ -218,7 +228,7 @@ class CommercialCreationAutoDetailsView
                               () => InputFields.formFieldDisableWidth(
                                 hintTxt: "Seg Dur",
                                 paddingLeft: 5,
-                                isHeaderRequiredGrey:false,
+                                isHeaderRequiredGrey: false,
                                 value: controllerX.duration.value,
                                 widthRatio: 0.12,
                               ),

@@ -35,6 +35,7 @@ class AutoTimeLockView extends GetView<AutoTimeLockController> {
                   autoFocus: true,
                   selected: controller.selectedLocation,
                   inkWellFocusNode: controller.locationFN,
+                   isEnable: controller.enable.value,
                 );
               }),
 
@@ -72,7 +73,7 @@ class AutoTimeLockView extends GetView<AutoTimeLockController> {
                                 var nextDayLockTC = TextEditingController(
                                     text: temp.nextDayLockTime);
                                 Get.defaultDialog(
-                                  title: "Edit",
+                                  title: "",
                                   content: SizedBox(
                                     width: context.width * .6,
                                     child: Column(
@@ -86,7 +87,7 @@ class AutoTimeLockView extends GetView<AutoTimeLockController> {
                                           value: temp.channelName ?? "",
                                           widthRatio: .3,
                                         ),
-                                        InputFields.numbers(
+                                        InputFields.numbers5(
                                           hintTxt: "Same Day Close",
                                           controller: TextEditingController(
                                               text: (temp.sameDayClose ?? "0")
@@ -103,6 +104,22 @@ class AutoTimeLockView extends GetView<AutoTimeLockController> {
                                           controller: resCanLockTC,
                                           widthRatio: .3,
                                           isTime: true,
+                                        ),
+                                        SizedBox(
+                                          width: Get.width*0.3,
+                                          child: Row(
+                                            children: [
+                                              CheckBoxWidget1(
+                                                title: "Channel Lock Y N",
+                                                value: (temp.channelLockYN ?? "N") ==
+                                                    "Y",
+                                                onChanged: (val) {
+                                                  temp.channelLockYN =
+                                                  (val ?? false) ? "Y" : "N";
+                                                },horizontalPadding: 0,
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                         InputFields.numbers(
                                           hintTxt: "FPC Lock Days",
@@ -133,15 +150,7 @@ class AutoTimeLockView extends GetView<AutoTimeLockController> {
                                           widthRatio: .3,
                                           isTime: true,
                                         ),
-                                        CheckBoxWidget1(
-                                          title: "Channel Lock Y N",
-                                          value: (temp.channelLockYN ?? "N") ==
-                                              "Y",
-                                          onChanged: (val) {
-                                            temp.channelLockYN =
-                                                (val ?? false) ? "Y" : "N";
-                                          },
-                                        ),
+
                                       ],
                                     ),
                                   ),

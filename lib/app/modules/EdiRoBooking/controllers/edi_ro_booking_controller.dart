@@ -679,17 +679,28 @@ class EdiRoBookingController extends GetxController {
                                 exportFileName: "EDI R.O. Booking",
                                 formatDate: false,
                                 onRowDoubleTap: (event) {
-                                  print(event.cell.column.field);
+                                  // print(event.cell.column.field);
 
                                   if (event.cell.column.field.toString() ==
                                       'telecastTime') {
-                                    print(
-                                        event.row.cells['telecastTime']?.value);
-                                    dvgSpotGrid!.setCurrentCell(
-                                        dvgSpotGrid
-                                            ?.getRowByIdx(0)
-                                            ?.cells['telecastTime'],
-                                        0);
+                                    if (dvgSpotGrid?.currentRow?.sortIdx ==
+                                        null) {
+                                      LoadingDialog.callInfoMessage(
+                                          "Please select row.");
+                                    } else {
+                                      lstDgvSpotsList.value[
+                                              dvgSpotGrid!.currentRow!.sortIdx]
+                                          ['fpcstart'] = event.cell.value!;
+                                      dvgSpotGrid!.changeCellValue(
+                                        dvgSpotGrid!
+                                            .currentRow!.cells['fpcstart']!,
+                                        event.cell.value!,
+                                        callOnChangedEvent: false,
+                                        force: true,
+                                      );
+                                    }
+                                    // print(
+                                    //     event.row.cells['telecastTime']?.value);
                                   }
                                 },
                               ),

@@ -27,7 +27,10 @@ import '../views/pivotPage.dart';
 import '../views/searchResult.dart';
 
 class SearchController extends GetxController {
-  SearchController(this.strViewName, this.screenName, {this.isPopUp = false, this.actionableSearch = false, this.actionableMap});
+  SearchController(this.strViewName, this.screenName,
+      {this.isPopUp = false,
+      this.actionableSearch = false,
+      this.actionableMap});
   final String screenName;
   final String strViewName;
   final bool? isPopUp;
@@ -75,7 +78,10 @@ class SearchController extends GetxController {
   }
 
   String getPivotTemplate() {
-    if (chklstColumns.isEmpty || chklstDataField.isEmpty || chklstRows.isEmpty || cboAggregrateFunction == "") {
+    if (chklstColumns.isEmpty ||
+        chklstDataField.isEmpty ||
+        chklstRows.isEmpty ||
+        cboAggregrateFunction == "") {
       return "";
     } else {
       String template = "";
@@ -121,7 +127,10 @@ class SearchController extends GetxController {
           title: "Variance Name",
           content: Column(
             children: [
-              InputFields.formField1(hintTxt: "Add Vairiant", controller: _textEditingController, width: 0.30),
+              InputFields.formField1(
+                  hintTxt: "Add Vairiant",
+                  controller: _textEditingController,
+                  width: 0.30),
               Row(
                 children: [
                   Obx(() => Checkbox(
@@ -165,7 +174,9 @@ class SearchController extends GetxController {
                   await Get.find<ConnectorControl>().POSTMETHOD_FORMDATA_HEADER(
                       api: ApiFactory.ADD_SEARCH_VARIANCE(
                         screenName: screenName,
-                        loginCode: allUsers.value ? "" : Get.find<MainController>().user?.logincode ?? "",
+                        loginCode: allUsers.value
+                            ? ""
+                            : Get.find<MainController>().user?.logincode ?? "",
                         sVariant: _textEditingController.text,
                         strViewName: strViewName,
                       ),
@@ -221,38 +232,48 @@ class SearchController extends GetxController {
       if (selectVarianceId == null) {
         LoadingDialog.showErrorDialog("Please Select Variance");
       } else {
-        Get.defaultDialog(title: "Delete Variance", content: Text("Do you want to delete selected Variance?"), actions: [
-          FormButton(
-            // icon: Icon(Icons.clear),
-            btnText: "No",
-            callback: () {
-              Get.back();
-            },
-          ),
-          FormButton(
-            callback: () async {
-              LoadingDialog.call();
-              try {
-                await Get.find<ConnectorControl>().POSTMETHOD_FORMDATA_HEADER(
-                    json: {},
-                    api: ApiFactory.DELETE_SEARCH_VARIANCE(
-                        screenName: screenName, varianceId: selectVarianceId.toString(), loginCode: Get.find<MainController>().user?.logincode ?? ""),
-                    fun: (value) async {
-                      Get.back();
-                      Get.back();
-                      LoadingDialog.callDataSavedMessage("Variance Deleted Successfully");
-                      //Snack.callSuccess("Varinat Deleted Successfully");
-                    });
-              } catch (e) {
-                Get.back();
-                // Snack.callError("Something Went Wrong");
-                LoadingDialog.showErrorDialog("Something Went Wrong");
-              }
-            },
-            // icon: Icon(Icons.done),
-            btnText: "Yes",
-          )
-        ]);
+        Get.defaultDialog(
+            title: "Delete Variance",
+            content: Text("Do you want to delete selected Variance?"),
+            actions: [
+              FormButton(
+                // icon: Icon(Icons.clear),
+                btnText: "No",
+                callback: () {
+                  Get.back();
+                },
+              ),
+              FormButton(
+                callback: () async {
+                  LoadingDialog.call();
+                  try {
+                    await Get.find<ConnectorControl>()
+                        .POSTMETHOD_FORMDATA_HEADER(
+                            json: {},
+                            api: ApiFactory.DELETE_SEARCH_VARIANCE(
+                                screenName: screenName,
+                                varianceId: selectVarianceId.toString(),
+                                loginCode: Get.find<MainController>()
+                                        .user
+                                        ?.logincode ??
+                                    ""),
+                            fun: (value) async {
+                              Get.back();
+                              Get.back();
+                              LoadingDialog.callDataSavedMessage(
+                                  "Variance Deleted Successfully");
+                              //Snack.callSuccess("Varinat Deleted Successfully");
+                            });
+                  } catch (e) {
+                    Get.back();
+                    // Snack.callError("Something Went Wrong");
+                    LoadingDialog.showErrorDialog("Something Went Wrong");
+                  }
+                },
+                // icon: Icon(Icons.done),
+                btnText: "Yes",
+              )
+            ]);
       }
     }
   }
@@ -271,7 +292,9 @@ class SearchController extends GetxController {
         LoadingDialog.call();
         await Get.find<ConnectorControl>().POSTMETHOD_FORMDATA_HEADER(
             api: ApiFactory.SEARCH_EXECUTE_SEARCH(
-                screenName: screenName, strViewName: strViewName, loginCode: Get.find<MainController>().user?.logincode ?? ""),
+                screenName: screenName,
+                strViewName: strViewName,
+                loginCode: Get.find<MainController>().user?.logincode ?? ""),
             json: grid!.toJson(),
             fun: (value) {
               searchResult = jsonDecode(value)["Table"];
@@ -363,17 +386,22 @@ class SearchController extends GetxController {
       executeSearch();
     }
     if (btnName == "Pivot") {
-      List allFields = searchResult!.isEmpty ? [] : searchResult![0].keys.map((e) => e).toList();
+      List allFields = searchResult!.isEmpty
+          ? []
+          : searchResult![0].keys.map((e) => e).toList();
       var dataFields = RxList(chklstDataField);
       var rowFields = RxList(chklstRows);
       var columnFields = RxList(chklstColumns);
-      var aggerateFnc = cboAggregrateFunction == "" ? "Average" : cboAggregrateFunction;
+      var aggerateFnc =
+          cboAggregrateFunction == "" ? "Average" : cboAggregrateFunction;
       Get.defaultDialog(
           title: "Pivot Your Data",
           content: Column(
             children: [
               DropDownField.formDropDown1WidthMap(
-                ["Average", "Sum", "Count", "Min", "Max"].map((e) => DropDownValue(key: e, value: e)).toList(),
+                ["Average", "Sum", "Count", "Min", "Max"]
+                    .map((e) => DropDownValue(key: e, value: e))
+                    .toList(),
                 (value) {
                   aggerateFnc = value.value!;
                 },
@@ -390,7 +418,8 @@ class SearchController extends GetxController {
                 children: [
                   SizedBox(width: Get.width * 0.15, child: Text("Data Fields")),
                   SizedBox(width: Get.width * 0.15, child: Text("Row Fields")),
-                  SizedBox(width: Get.width * 0.15, child: Text("Columns Fields")),
+                  SizedBox(
+                      width: Get.width * 0.15, child: Text("Columns Fields")),
                 ],
               ),
               Row(
@@ -407,7 +436,8 @@ class SearchController extends GetxController {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 Obx(() => Checkbox(
-                                    value: dataFields.contains(allFields[index]),
+                                    value:
+                                        dataFields.contains(allFields[index]),
                                     onChanged: (value) {
                                       if (value!) {
                                         dataFields.add(allFields[index]);
@@ -459,7 +489,8 @@ class SearchController extends GetxController {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 Obx(() => Checkbox(
-                                    value: columnFields.contains(allFields[index]),
+                                    value:
+                                        columnFields.contains(allFields[index]),
                                     onChanged: (value) {
                                       if (value!) {
                                         columnFields.add(allFields[index]);
@@ -535,26 +566,41 @@ class SearchController extends GetxController {
               ? Text(
                   key.capitalizeFirst!,
                   textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 12),
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 12,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 )
               : Center(
                   heightFactor: 1,
                   child: Text(
                     key.capitalizeFirst!,
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 12),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 12),
                   ),
                 ),
         ));
       }
     }
-    for (var variance
-        in value == "" ? grid!.variances! : grid!.variances!.where((element) => element.name!.toLowerCase().contains(value!.toLowerCase()))) {
+    for (var variance in value == ""
+        ? grid!.variances!
+        : grid!.variances!.where((element) =>
+            element.name!.toLowerCase().contains(value!.toLowerCase()))) {
       var row = variance.toJson();
       if (!(row["name"]).contains("code")) {
         List<DataCell> cells = [];
         for (var key in row.keys) {
-          if (key != "dataType" && key != "tableName" && key != "valueColumnName") {
+          if (key != "dataType" &&
+              key != "tableName" &&
+              key != "valueColumnName") {
             log(row["searchCriteria"].toString());
             cells.add(DataCell(key != "name"
                 ? Center(
@@ -564,26 +610,45 @@ class SearchController extends GetxController {
                             value: row[key],
                             onChanged: (value) {
                               if (key == "selected") {
-                                var selected = grid!.variances!.where((element) => element.selected == true);
+                                var selected = grid!.variances!.where(
+                                    (element) => element.selected == true);
                                 if (selected.isEmpty) {
                                   row["sequence"] = 1;
                                 } else {
-                                  var _variance = grid!.variances!.where((element) => element.selected == true).map((e) => e.sequence).toList();
-                                  row["sequence"] = (_variance.reduce((value, nxtvalue) => (value!) > (nxtvalue!) ? value : nxtvalue) ?? 1) + 1;
+                                  var _variance = grid!.variances!
+                                      .where(
+                                          (element) => element.selected == true)
+                                      .map((e) => e.sequence)
+                                      .toList();
+                                  row["sequence"] = (_variance.reduce(
+                                              (value, nxtvalue) =>
+                                                  (value!) > (nxtvalue!)
+                                                      ? value
+                                                      : nxtvalue) ??
+                                          1) +
+                                      1;
                                 }
                               }
                               row[key] = value;
-                              grid!.variances![grid!.variances!.indexWhere((element) => element.name == row["name"])] = Variances.fromJson(row);
+                              grid!.variances![grid!.variances!.indexWhere(
+                                      (element) =>
+                                          element.name == row["name"])] =
+                                  Variances.fromJson(row);
 
                               updateGrid();
                             })
                         : key == "searchCriteria"
                             ? ChangableText(
                                 focusColor: Colors.deepPurple[200],
-                                key: Key(row["name"] + "${math.Random().nextInt(342)}"),
+                                key: Key(row["name"] +
+                                    "${math.Random().nextInt(342)}"),
                                 intialtext: row["searchCriteria"].toString(),
                                 onChange: (value) {
-                                  grid!.variances![grid!.variances!.indexWhere((element) => element.name == row["name"])].searchCriteria = value;
+                                  grid!
+                                      .variances![grid!.variances!.indexWhere(
+                                          (element) =>
+                                              element.name == row["name"])]
+                                      .searchCriteria = value;
                                 },
                                 onDoubleTap: () {
                                   doubleClickHandler(variance);
@@ -592,17 +657,24 @@ class SearchController extends GetxController {
                             : Text(
                                 row[key].toString(),
                                 textAlign: TextAlign.left,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
                               ),
                   )
                 : Text(
                     row[key].toString(),
                     textAlign: TextAlign.left,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   )));
           }
         }
         searchGridRows.add(DataRow2(
           cells: cells,
-          selected: grid!.variances![grid!.variances!.indexWhere((element) => element.name == row["name"])].selected!,
+          selected: grid!
+              .variances![grid!.variances!
+                  .indexWhere((element) => element.name == row["name"])]
+              .selected!,
         ));
       }
     }
@@ -614,10 +686,27 @@ class SearchController extends GetxController {
     //     .toList();
   }
 
+  var selectedRow = 0.obs;
+
+  void handleArrowKey(RawKeyEvent event) {
+    if (event is RawKeyDownEvent) {
+      if (event.logicalKey == LogicalKeyboardKey.arrowDown) {
+        if (selectedRow.value < searchGridColumns.length - 1) {
+          selectedRow.value++;
+        }
+      } else if (event.logicalKey == LogicalKeyboardKey.arrowUp) {
+        if (selectedRow.value > 0) {
+          selectedRow.value--;
+        }
+      }
+    }
+  }
+
   executeSearch() async {
     LoadingDialog.call();
     try {
-      if ((grid!.pivotTemplate!) != "" && (grid!.pivotTemplate!.split("#").length == 4)) {
+      if ((grid!.pivotTemplate!) != "" &&
+          (grid!.pivotTemplate!.split("#").length == 4)) {
         if (grid!.pivotTemplate!.isNotEmpty) {
           parsePivotTemplate(grid!.pivotTemplate!);
           await Get.find<ConnectorControl>().POSTMETHOD_FORMDATA_HEADER(
@@ -668,7 +757,9 @@ class SearchController extends GetxController {
       } else {
         await Get.find<ConnectorControl>().POSTMETHOD_FORMDATA_HEADER(
             api: ApiFactory.SEARCH_EXECUTE_SEARCH(
-                screenName: screenName, strViewName: strViewName, loginCode: Get.find<MainController>().user?.logincode ?? ""),
+                screenName: screenName,
+                strViewName: strViewName,
+                loginCode: Get.find<MainController>().user?.logincode ?? ""),
             json: grid!.toJson(),
             fun: (value) {
               var dataValue = jsonDecode(value);
@@ -715,8 +806,16 @@ class SearchController extends GetxController {
         " between convert ( varchar(6) , dateadd ( month , -1 , getdate() ) , 112 ) + '01' and dateadd ( day , - datepart ( day , getdate() ) , getdate() ) "
       ];
 
-      List dateTypes = ["My Dates", "Today", "Tomorrow", "Current Month", "Current Year", "Last Month"];
-      var fromTextCtr = TextEditingController(), toTextCtr = TextEditingController();
+      List dateTypes = [
+        "My Dates",
+        "Today",
+        "Tomorrow",
+        "Current Month",
+        "Current Year",
+        "Last Month"
+      ];
+      var fromTextCtr = TextEditingController(),
+          toTextCtr = TextEditingController();
       Get.defaultDialog(
           title: rowvariance.name!,
           content: Column(
@@ -815,11 +914,16 @@ class SearchController extends GetxController {
               btnText: "Done",
               callback: () {
                 if (dateType.value == "My Dates") {
-                  grid!.variances!.firstWhere((element) => element.name == rowvariance.name).searchCriteria =
+                  grid!.variances!
+                          .firstWhere((element) => element.name == rowvariance.name)
+                          .searchCriteria =
                       "between '${DateFormat("dd-MMM-yyyy").format(DateFormat('dd-MM-yyyy').parse(fromTextCtr.text))}' and '${DateFormat("dd-MMM-yyyy").format(DateFormat('dd-MM-yyyy').parse(toTextCtr.text))}'";
                 } else {
-                  grid!.variances!.firstWhere((element) => element.name == rowvariance.name).searchCriteria =
-                      queries[dateTypes.indexWhere((dType) => dateType == dType)];
+                  grid!.variances!
+                          .firstWhere((element) => element.name == rowvariance.name)
+                          .searchCriteria =
+                      queries[
+                          dateTypes.indexWhere((dType) => dateType == dType)];
                 }
                 // grid!.variances!
                 //         .firstWhere((element) => element.name == rowvariance.name)
@@ -832,7 +936,9 @@ class SearchController extends GetxController {
             FormButton(
               btnText: "Clear",
               callback: () {
-                grid!.variances!.firstWhere((element) => element.name == rowvariance.name).searchCriteria = "";
+                grid!.variances!
+                    .firstWhere((element) => element.name == rowvariance.name)
+                    .searchCriteria = "";
                 updateGrid();
 
                 Get.back();
@@ -863,11 +969,17 @@ class SearchController extends GetxController {
                 label: Text("Cancel")),*/
           ],
           radius: 10.0);
-    } else if ((rowvariance.dataType == "varchar" || rowvariance.dataType == "char") && rowvariance.tableName != "") {
+    } else if ((rowvariance.dataType == "varchar" ||
+            rowvariance.dataType == "char") &&
+        rowvariance.tableName != "") {
       var allselect = RxBool(false);
       if (rowvariance.searchCriteria != "") {
-        var tempser =
-            rowvariance.searchCriteria!.replaceAll("In ('", "").replaceAll("Not In('", "").replaceAll(")", "").replaceAll("'", "").split(",");
+        var tempser = rowvariance.searchCriteria!
+            .replaceAll("In ('", "")
+            .replaceAll("Not In('", "")
+            .replaceAll(")", "")
+            .replaceAll("'", "")
+            .split(",");
         List tempmaster = [];
         for (var element in tempser) {
           tempmaster.add({"name": element, "selected": true});
@@ -908,32 +1020,40 @@ class SearchController extends GetxController {
                           ],
                           onchanged: (value) {
                             if (value == "%%" || value.length > 2) {
-                              masterDialogList.removeWhere((element) => element["selected"] == false);
-                              Get.find<ConnectorControl>().GET_METHOD_CALL_HEADER(
-                                  api: ApiFactory.SEARCH_MASTER_SEARCH(
-                                      screenName: screenName,
-                                      name: rowvariance.name.toString(),
-                                      valuecolumnname: rowvariance.valueColumnName!,
-                                      TableName: rowvariance.tableName!,
-                                      chkLikeNotLike: checknotcheck.value,
-                                      searchvalue: value),
-                                  fun: (map) {
-                                    if (map is List) {
-                                      var templist = [];
-                                      for (var element in map) {
-                                        if (masterDialogList.firstWhereOrNull((value) => element["name"] == value["name"]) == null) {
-                                          element["selected"] = false;
-                                          templist.add(element);
-                                        }
-                                      }
-                                      masterDialogList.addAll(templist);
+                              masterDialogList.removeWhere(
+                                  (element) => element["selected"] == false);
+                              Get.find<ConnectorControl>()
+                                  .GET_METHOD_CALL_HEADER(
+                                      api: ApiFactory.SEARCH_MASTER_SEARCH(
+                                          screenName: screenName,
+                                          name: rowvariance.name.toString(),
+                                          valuecolumnname:
+                                              rowvariance.valueColumnName!,
+                                          TableName: rowvariance.tableName!,
+                                          chkLikeNotLike: checknotcheck.value,
+                                          searchvalue: value),
+                                      fun: (map) {
+                                        if (map is List) {
+                                          var templist = [];
+                                          for (var element in map) {
+                                            if (masterDialogList
+                                                    .firstWhereOrNull((value) =>
+                                                        element["name"] ==
+                                                        value["name"]) ==
+                                                null) {
+                                              element["selected"] = false;
+                                              templist.add(element);
+                                            }
+                                          }
+                                          masterDialogList.addAll(templist);
 
-                                      print(map.toString());
-                                    } else {
-                                      // Snack.callError("Failed To Get Data");
-                                      LoadingDialog.showErrorDialog("Failed To Get Data");
-                                    }
-                                  });
+                                          print(map.toString());
+                                        } else {
+                                          // Snack.callError("Failed To Get Data");
+                                          LoadingDialog.showErrorDialog(
+                                              "Failed To Get Data");
+                                        }
+                                      });
                             }
                           }),
                     ],
@@ -953,7 +1073,9 @@ class SearchController extends GetxController {
                               value: allselect.value,
                               onChanged: (val) {
                                 allselect.value = val!;
-                                for (var i = 0; i < masterDialogList.length; i++) {
+                                for (var i = 0;
+                                    i < masterDialogList.length;
+                                    i++) {
                                   masterDialogList[i]["selected"] = val;
                                 }
                                 masterDialogList.refresh();
@@ -965,13 +1087,17 @@ class SearchController extends GetxController {
                         width: Get.width / 4,
                         height: Get.height / 2,
                         decoration: BoxDecoration(
-                          border: Border.all(style: masterDialogList.isEmpty ? BorderStyle.none : BorderStyle.solid),
+                          border: Border.all(
+                              style: masterDialogList.isEmpty
+                                  ? BorderStyle.none
+                                  : BorderStyle.solid),
                         ),
                         child: ListView.builder(
                           shrinkWrap: true,
                           itemBuilder: (context, index) {
                             var item = masterDialogList[index];
                             return ListTile(
+                              visualDensity: const VisualDensity(vertical: -3),
                               leading: Checkbox(
                                   value: item["selected"],
                                   onChanged: (value) {
@@ -983,75 +1109,143 @@ class SearchController extends GetxController {
                           },
                           itemCount: masterDialogList.length,
                         ),
-                      ))
-                ],
-              ),
-              actions: [
-                /*FormButton(
+                      )),
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      /*FormButton(
                     onPressed: () {
 
                     },
                     icon: Icon(Icons.done),
                     label: Text("Done")),*/
-                FormButton(
-                    btnText: "Done",
-                    callback: () {
-                      String _searchCriteria = "";
-                      if ((grid!.type!) == "V") {
-                        for (var i = 0; i < masterDialogList.where((e) => e["selected"] == true).length; i++) {
-                          _searchCriteria = _searchCriteria +
-                              (i == (masterDialogList.where((e) => e["selected"] == true).length - 1)
-                                  ? "'" + masterDialogList.where((e) => e["selected"] == true).toList()[i]["name"] + "'"
-                                  : "'" + masterDialogList.where((e) => e["selected"] == true).toList()[i]["name"] + "',");
-                        }
-                      } else {
-                        for (var i = 0; i < masterDialogList.where((e) => e["selected"] == true).length; i++) {
-                          _searchCriteria = _searchCriteria +
-                              (i == (masterDialogList.where((e) => e["selected"] == true).length - 1)
-                                  ? masterDialogList.where((e) => e["selected"] == true).toList()[i]["name"]
-                                  : (masterDialogList.where((e) => e["selected"] == true).toList()[i]["name"] + ","));
-                        }
-                      }
-                      grid!.variances!.firstWhere((element) => element.name == rowvariance.name).searchCriteria =
-                          (grid!.type!) == "V" ? "${checknotcheck.value ? "Not In" : "In"} ($_searchCriteria)" : _searchCriteria;
-                      updateGrid();
-                      Get.back();
-                    }),
-                FormButton(
-                  btnText: "Clear",
-                  callback: () {
-                    grid!.variances!.firstWhere((element) => element.name == rowvariance.name).searchCriteria = "";
-                    updateGrid();
-                    Get.back();
-                  },
-                ),
-                /*FormButton(
-                    onPressed: () {
 
-                    },
-                    icon: Icon(Icons.remove_circle_outline),
-                    label: Text("Clear")),*/
-                FormButton(
-                  btnText: "Cancel",
-                  callback: () {
-                    masterDialogList.value = [];
-                    checknotcheck.value = false;
-                    Get.back();
-                  },
-                )
-                /*FormButton(
+                      /*FormButton(
                     onPressed: () {
 
                     },
                     icon: Icon(Icons.clear),
                     label: Text("Cancel")),*/
-              ],
+                      FormButton(
+                          btnText: "Done",
+                          callback: () {
+                            String _searchCriteria = "";
+                            if ((grid!.type!) == "V") {
+                              for (var i = 0;
+                                  i <
+                                      masterDialogList
+                                          .where((e) => e["selected"] == true)
+                                          .length;
+                                  i++) {
+                                _searchCriteria = _searchCriteria +
+                                    (i ==
+                                            (masterDialogList
+                                                    .where((e) =>
+                                                        e["selected"] == true)
+                                                    .length -
+                                                1)
+                                        ? "'" +
+                                            masterDialogList
+                                                .where((e) =>
+                                                    e["selected"] == true)
+                                                .toList()[i]["name"] +
+                                            "'"
+                                        : "'" +
+                                            masterDialogList
+                                                .where((e) =>
+                                                    e["selected"] == true)
+                                                .toList()[i]["name"] +
+                                            "',");
+                              }
+                            } else {
+                              for (var i = 0;
+                                  i <
+                                      masterDialogList
+                                          .where((e) => e["selected"] == true)
+                                          .length;
+                                  i++) {
+                                _searchCriteria = _searchCriteria +
+                                    (i ==
+                                            (masterDialogList
+                                                    .where((e) =>
+                                                        e["selected"] == true)
+                                                    .length -
+                                                1)
+                                        ? masterDialogList
+                                            .where((e) => e["selected"] == true)
+                                            .toList()[i]["name"]
+                                        : (masterDialogList
+                                                .where((e) =>
+                                                    e["selected"] == true)
+                                                .toList()[i]["name"] +
+                                            ","));
+                              }
+                            }
+                            grid!.variances!
+                                .firstWhere((element) =>
+                                    element.name == rowvariance.name)
+                                .searchCriteria = (grid!.type!) ==
+                                    "V"
+                                ? "${checknotcheck.value ? "Not In" : "In"} ($_searchCriteria)"
+                                : _searchCriteria;
+                            updateGrid();
+                            Get.back();
+                          }),
+                      const SizedBox(
+                        width: 5,
+                      ),
+                      FormButton(
+                        btnText: "Clear",
+                        callback: () {
+                          grid!.variances!
+                              .firstWhere(
+                                  (element) => element.name == rowvariance.name)
+                              .searchCriteria = "";
+                          updateGrid();
+                          Get.back();
+                        },
+                      ),
+                      /*FormButton(
+                    onPressed: () {
+
+                    },
+                    icon: Icon(Icons.remove_circle_outline),
+                    label: Text("Clear")),*/
+                      const SizedBox(
+                        width: 5,
+                      ),
+                      FormButton(
+                        btnText: "Cancel",
+                        callback: () {
+                          masterDialogList.value = [];
+                          checknotcheck.value = false;
+                          Get.back();
+                        },
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  const Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Text(
+                      "Note: Type %% to fetch all records. Tick for Not Like",
+                      style: TextStyle(fontSize: 15),
+                    ),
+                  ),
+                ],
+              ),
               radius: 10.0)
           .then((value) {
         masterDialogList.value = [];
         checknotcheck.value = false;
       });
-    } else if (rowvariance.dataType == "time" || rowvariance.dataType == "ime(0)") {
+    } else if (rowvariance.dataType == "time" ||
+        rowvariance.dataType == "ime(0)") {
       // var timenow = DateTime.now();
 
       TextEditingController fromctrl = TextEditingController();
@@ -1096,7 +1290,10 @@ class SearchController extends GetxController {
             FormButton(
                 callback: () {
                   try {
-                    grid!.variances!.firstWhere((element) => element.name == rowvariance.name).searchCriteria =
+                    grid!.variances!
+                            .firstWhere(
+                                (element) => element.name == rowvariance.name)
+                            .searchCriteria =
                         "between '${DateFormat("dd-MMM-yyyy").format(DateFormat('dd-MM-yyyy').parse(fromctrl.text))}' and '${DateFormat("dd-MMM-yyyy").format(DateFormat('dd-MM-yyyy').parse(toctrl.text))}'";
                     updateGrid();
                     Get.back();
@@ -1108,7 +1305,9 @@ class SearchController extends GetxController {
                 btnText: "Done"),
             FormButton(
                 callback: () {
-                  grid!.variances!.firstWhere((element) => element.name == rowvariance.name).searchCriteria = "";
+                  grid!.variances!
+                      .firstWhere((element) => element.name == rowvariance.name)
+                      .searchCriteria = "";
                   updateGrid();
                   Get.back();
                 },
@@ -1158,7 +1357,10 @@ class SearchController extends GetxController {
                   try {
                     int.parse(from);
                     int.parse(to);
-                    grid!.variances!.firstWhere((element) => element.name == rowvariance.name).searchCriteria = "between '$from' and '$to'";
+                    grid!.variances!
+                        .firstWhere(
+                            (element) => element.name == rowvariance.name)
+                        .searchCriteria = "between '$from' and '$to'";
                     updateGrid();
                     Get.back();
                   } catch (e) {
@@ -1170,7 +1372,9 @@ class SearchController extends GetxController {
                 btnText: "Done"),
             FormButton(
                 callback: () {
-                  grid!.variances!.firstWhere((element) => element.name == rowvariance.name).searchCriteria = "";
+                  grid!.variances!
+                      .firstWhere((element) => element.name == rowvariance.name)
+                      .searchCriteria = "";
                   updateGrid();
                   Get.back();
                 },
@@ -1184,7 +1388,9 @@ class SearchController extends GetxController {
                 btnText: "Cancel"),
           ],
           radius: 10.0);
-    } else if ((rowvariance.dataType == "varchar" || rowvariance.dataType == "char") && rowvariance.tableName == "") {
+    } else if ((rowvariance.dataType == "varchar" ||
+            rowvariance.dataType == "char") &&
+        rowvariance.tableName == "") {
       var multiValue = RxBool(false);
       String valueText = "";
       Get.defaultDialog(
@@ -1219,8 +1425,12 @@ class SearchController extends GetxController {
           actions: [
             FormButton(
                 callback: () {
-                  grid!.variances!.firstWhere((element) => element.name == rowvariance.name).searchCriteria =
-                      multiValue.value ? "in ${valueText.split(",").map((e) => "'${e.trim()}'")}" : "like %$valueText%";
+                  grid!.variances!
+                      .firstWhere((element) => element.name == rowvariance.name)
+                      .searchCriteria = multiValue
+                          .value
+                      ? "in ${valueText.split(",").map((e) => "'${e.trim()}'")}"
+                      : "like %$valueText%";
                   updateGrid();
                   Get.back();
                 },
@@ -1228,7 +1438,9 @@ class SearchController extends GetxController {
                 btnText: "Done"),
             FormButton(
                 callback: () {
-                  grid!.variances!.firstWhere((element) => element.name == rowvariance.name).searchCriteria = "";
+                  grid!.variances!
+                      .firstWhere((element) => element.name == rowvariance.name)
+                      .searchCriteria = "";
                   updateGrid();
                   Get.back();
                 },
@@ -1242,7 +1454,8 @@ class SearchController extends GetxController {
                 btnText: "Cancel"),
           ],
           radius: 10.0);
-    } else if ((rowvariance.dataType!.toLowerCase() == "datetime") && grid!.type == "P") {
+    } else if ((rowvariance.dataType!.toLowerCase() == "datetime") &&
+        grid!.type == "P") {
       // String valueText = DateFormat('dd-MMM-yyyy').format(DateTime.now());
       var tempCtr = TextEditingController();
       Get.defaultDialog(
@@ -1263,8 +1476,11 @@ class SearchController extends GetxController {
           actions: [
             FormButton(
                 callback: () {
-                  grid!.variances!.firstWhere((element) => element.name == rowvariance.name).searchCriteria =
-                      DateFormat("dd-MMM-yyyy").format(DateFormat('dd-MM-yyyy').parse(tempCtr.text));
+                  grid!.variances!
+                      .firstWhere((element) => element.name == rowvariance.name)
+                      .searchCriteria = DateFormat(
+                          "dd-MMM-yyyy")
+                      .format(DateFormat('dd-MM-yyyy').parse(tempCtr.text));
                   updateGrid();
                   Get.back();
                 },
@@ -1274,7 +1490,9 @@ class SearchController extends GetxController {
             //
             FormButton(
                 callback: () {
-                  grid!.variances!.firstWhere((element) => element.name == rowvariance.name).searchCriteria = "";
+                  grid!.variances!
+                      .firstWhere((element) => element.name == rowvariance.name)
+                      .searchCriteria = "";
                   updateGrid();
                   Get.back();
                 },
@@ -1289,8 +1507,16 @@ class SearchController extends GetxController {
                 btnText: "Cancel"),
           ],
           radius: 10.0);
-    } else if ((rowvariance.dataType!.toLowerCase() == "date") && grid!.type == "P") {
-      List dateTypes = ["My Dates", "Today", "Tomorrow", "StartofMonth", "EndofMonth", "LastMonth"];
+    } else if ((rowvariance.dataType!.toLowerCase() == "date") &&
+        grid!.type == "P") {
+      List dateTypes = [
+        "My Dates",
+        "Today",
+        "Tomorrow",
+        "StartofMonth",
+        "EndofMonth",
+        "LastMonth"
+      ];
       var selectedType = RxString("My Dates");
       // String valueText = DateFormat('dd-MMM-yyyy').format(DateTime.now());
       TextEditingController tempCtr = TextEditingController();
@@ -1339,13 +1565,25 @@ class SearchController extends GetxController {
             FormButton(
                 callback: () {
                   if (selectedType.value == "My Dates") {
-                    grid!.variances!.firstWhere((element) => element.name == rowvariance.name).searchCriteria = DateFormat("dd-MMM-yyyy").format(
+                    grid!.variances!
+                        .firstWhere(
+                            (element) => element.name == rowvariance.name)
+                        .searchCriteria = DateFormat("dd-MMM-yyyy").format(
                       DateFormat('dd-MM-yyyy').parse(tempCtr.text),
                     );
-                    grid!.variances!.firstWhere((element) => element.name == rowvariance.name).formula = "";
+                    grid!.variances!
+                        .firstWhere(
+                            (element) => element.name == rowvariance.name)
+                        .formula = "";
                   } else {
-                    grid!.variances!.firstWhere((element) => element.name == rowvariance.name).searchCriteria = "";
-                    grid!.variances!.firstWhere((element) => element.name == rowvariance.name).formula = selectedType.value;
+                    grid!.variances!
+                        .firstWhere(
+                            (element) => element.name == rowvariance.name)
+                        .searchCriteria = "";
+                    grid!.variances!
+                        .firstWhere(
+                            (element) => element.name == rowvariance.name)
+                        .formula = selectedType.value;
                   }
                   updateGrid();
                   Get.back();
@@ -1354,9 +1592,13 @@ class SearchController extends GetxController {
                 btnText: "Done"),
             FormButton(
                 callback: () {
-                  grid!.variances!.firstWhere((element) => element.name == rowvariance.name).searchCriteria = "";
+                  grid!.variances!
+                      .firstWhere((element) => element.name == rowvariance.name)
+                      .searchCriteria = "";
 
-                  grid!.variances!.firstWhere((element) => element.name == rowvariance.name).formula = "";
+                  grid!.variances!
+                      .firstWhere((element) => element.name == rowvariance.name)
+                      .formula = "";
 
                   updateGrid();
                   Get.back();
@@ -1376,7 +1618,10 @@ class SearchController extends GetxController {
 
   getInitialData() async {
     await Get.find<ConnectorControl>().GET_METHOD_CALL_HEADER(
-      api: ApiFactory.SEARCH_VARIANCE(screenName: screenName, viewName: strViewName, loginCode: Get.find<MainController>().user?.logincode ?? ""),
+      api: ApiFactory.SEARCH_VARIANCE(
+          screenName: screenName,
+          viewName: strViewName,
+          loginCode: Get.find<MainController>().user?.logincode ?? ""),
       fun: (value) {
         varainace = value;
         log(varainace.toString());
@@ -1394,7 +1639,8 @@ class SearchController extends GetxController {
       },
     );
     await Get.find<ConnectorControl>().GET_METHOD_CALL_HEADER(
-      api: ApiFactory.SEARCH_BINDGRID(screenName: screenName, viewName: strViewName, code: "0"),
+      api: ApiFactory.SEARCH_BINDGRID(
+          screenName: screenName, viewName: strViewName, code: "0"),
       fun: (value) async {
         log(value.toString());
         print(value.toString());
@@ -1439,7 +1685,8 @@ class SearchController extends GetxController {
 
   getVaraince(id) async {
     Get.find<ConnectorControl>().GET_METHOD_CALL_HEADER(
-      api: ApiFactory.SEARCH_BINDGRID(screenName: screenName, viewName: strViewName, code: id.toString()),
+      api: ApiFactory.SEARCH_BINDGRID(
+          screenName: screenName, viewName: strViewName, code: id.toString()),
       fun: (value) async {
         grid = SearchBindGrid.fromJson(value);
         await updateGrid();

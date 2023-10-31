@@ -166,11 +166,11 @@ class ApiFactory {
     return "$BASE_URL/api/ROReceived/OnLeaveLocation?LocationCode=$locationCode";
   }
 
-  static String RO_RECEIVED_DATE_LEAVE({
-    required String date,
-  }) {
-    return "$BASE_URL/api/ROReceived/OnLeaveEffectDate?EffectiveDate=$date";
-  }
+  // static String RO_RECEIVED_DATE_LEAVE({
+  //   required String date,
+  // }) {
+  //   return "$BASE_URL/api/ROReceived/OnLeaveEffectDate?EffectiveDate=$date";
+  // }
 
   static String RO_RECEIVED_RETRIVE({
     required String receivedCode,
@@ -196,6 +196,11 @@ class ApiFactory {
 
   static String RO_RECEIVED_GET_CLIENTS =
       "$BASE_URL/api/ROReceived/GetClientList?ContainSearch=";
+
+  static String RO_RECEIVED_START_DATE_LEAVE({
+    required String date,
+  }) =>
+      "$BASE_URL/api/ROReceived/StartDateOnLeave?EffectiveDate=$date";
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 
