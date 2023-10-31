@@ -132,7 +132,7 @@ class InternationalSalesReportView
                         (controllerX.internationalSalesReportModel?.report?.internationalSalesSummary != null &&
                             (controllerX.internationalSalesReportModel?.report?.internationalSalesSummary?.length??0) >0
                         )? DataGridFromMap(
-                          showSrNo: false,
+                          showSrNo: true,
                           hideCode: false,
                           formatDate: false,
                           exportFileName: "International Saleas Report",
@@ -153,7 +153,7 @@ class InternationalSalesReportView
                         ):(controllerX.internationalSalesReportModel?.report?.internationalDetails != null &&
                             (controllerX.internationalSalesReportModel?.report?.internationalDetails?.length??0) >0)?
                         DataGridFromMap(
-                          showSrNo: false,
+                          showSrNo: true,
                           hideCode: false,
                           formatDate: false,
                           mapData: (controllerX.internationalSalesReportModel!.report?.internationalDetails
