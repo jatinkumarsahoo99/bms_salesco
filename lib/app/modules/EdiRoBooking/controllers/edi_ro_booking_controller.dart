@@ -5,6 +5,7 @@ import 'package:bms_salesco/app/modules/EdiRoBooking/bindings/edit_ro_init_data.
 import 'package:bms_salesco/widgets/LoadingDialog.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
@@ -507,10 +508,12 @@ class EdiRoBookingController extends GetxController {
 
   spotFpcStart(locationCode, channelCode, telicastDate) {
     try {
+      var date = DateFormat("MM-dd-yyyy")
+          .format(DateFormat("dd-MM-yyyy").parse(telicastDate ?? "10-01-2023"));
       LoadingDialog.call();
       Get.find<ConnectorControl>().GETMETHODCALL(
           api: ApiFactory.EDI_RO_SPOT_FPC_START(
-              locationCode ?? "", channelCode ?? "", telicastDate ?? ""),
+              locationCode ?? "", channelCode ?? "", date ?? ""),
           fun: (map) {
             Get.back();
             if (map != null &&
@@ -649,88 +652,88 @@ class EdiRoBookingController extends GetxController {
   }
 
   fpcStartDilogBox() {
-    showDialog(
-      context: Get.context!,
-      builder: (_) {
-        return Dialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: SizedBox(
-            width: Get.width * 0.60,
-            height: Get.height * 0.6,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                children: [
-                  Expanded(
-                    child: Obx(
-                      () => Container(
-                        margin: const EdgeInsets.only(bottom: 8),
-                        decoration: fpcStartTabelList.isEmpty
-                            ? BoxDecoration(
-                                border: Border.all(color: Colors.grey))
-                            : null,
-                        child: fpcStartTabelList.value.isEmpty
-                            ? null
-                            : DataGridShowOnlyKeys(
-                                mapData: fpcStartTabelList.value,
-                                hideCode: false,
-                                exportFileName: "EDI R.O. Booking",
-                                formatDate: false,
-                                onRowDoubleTap: (event) {
-                                  // print(event.cell.column.field);
-
-                                  if (event.cell.column.field.toString() ==
-                                      'telecastTime') {
-                                    if (dvgSpotGrid?.currentRow?.sortIdx ==
-                                        null) {
-                                      LoadingDialog.callInfoMessage(
-                                          "Please select row.");
-                                    } else {
-                                      lstDgvSpotsList.value[
-                                              dvgSpotGrid!.currentRow!.sortIdx]
-                                          ['fpcstart'] = event.cell.value!;
-                                      dvgSpotGrid!.changeCellValue(
-                                        dvgSpotGrid!
-                                            .currentRow!.cells['fpcstart']!,
-                                        event.cell.value!,
-                                        callOnChangedEvent: false,
-                                        force: true,
-                                      );
-                                    }
-                                    // print(
-                                    //     event.row.cells['telecastTime']?.value);
-                                  }
-                                },
-                              ),
-                      ),
-                    ),
-                  ),
-                ],
+    drgabbleDialog.value = Card(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
+      margin: EdgeInsets.zero,
+      color: Colors.white,
+      child: SizedBox(
+        width: Get.width * 0.60,
+        height: Get.height * 0.6,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              Align(
+                alignment: Alignment.topRight,
+                child: IconButton(
+                  onPressed: () {
+                    drgabbleDialog.value = null;
+                  },
+                  icon: const Icon(Icons.close),
+                ),
               ),
-            ),
+              Expanded(
+                child: Obx(
+                  () => Container(
+                    margin: const EdgeInsets.only(bottom: 8),
+                    decoration: fpcStartTabelList.isEmpty
+                        ? BoxDecoration(border: Border.all(color: Colors.grey))
+                        : null,
+                    child: fpcStartTabelList.value.isEmpty
+                        ? null
+                        : DataGridShowOnlyKeys(
+                            mapData: fpcStartTabelList.value,
+                            hideCode: false,
+                            exportFileName: "EDI R.O. Booking",
+                            formatDate: false,
+                            onRowDoubleTap: (event) {
+                              // print(event.cell.column.field);
+
+                              if (event.cell.column.field.toString() ==
+                                  'telecastTime') {
+                                if (dvgSpotGrid?.currentRow?.sortIdx == null) {
+                                  LoadingDialog.callInfoMessage(
+                                      "Please select row.");
+                                } else {
+                                  lstDgvSpotsList.value[dvgSpotGrid!.currentRow!
+                                      .sortIdx]['fpcstart'] = event.cell.value!;
+                                  dvgSpotGrid!.changeCellValue(
+                                    dvgSpotGrid!.currentRow!.cells['fpcstart']!,
+                                    event.cell.value!,
+                                    callOnChangedEvent: false,
+                                    force: true,
+                                  );
+                                }
+                                // print(
+                                //     event.row.cells['telecastTime']?.value);
+                              }
+                            },
+                          ),
+                  ),
+                ),
+              ),
+            ],
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 
   tapeIdDilogBox() {
-    showDialog(
-      context: Get.context!,
-      builder: (_) {
-        return Dialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: SizedBox(
-            width: Get.width * 0.60,
-            height: Get.height * 0.6,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+    drgabbleDialog.value = Card(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
+      margin: EdgeInsets.zero,
+      color: Colors.white,
+      child: SizedBox(
+        width: Get.width * 0.60,
+        height: Get.height * 0.6,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   InputFields.formField1(
                     hintTxt: "Search Tape ID",
@@ -740,33 +743,41 @@ class EdiRoBookingController extends GetxController {
                     },
                     width: 0.3,
                   ),
-                  const SizedBox(
-                    height: 8,
-                  ),
-                  Expanded(
-                    child: Obx(
-                      () => Container(
-                        margin: const EdgeInsets.only(bottom: 8),
-                        decoration: fpcStartTabelList.isEmpty
-                            ? BoxDecoration(
-                                border: Border.all(color: Colors.grey))
-                            : null,
-                        child: fpcStartTabelList.value.isEmpty
-                            ? null
-                            : DataGridShowOnlyKeys(
-                                mapData: fpcStartTabelList.value,
-                                hideCode: false,
-                                exportFileName: "EDI R.O. Booking",
-                              ),
-                      ),
+                  Align(
+                    alignment: Alignment.topRight,
+                    child: IconButton(
+                      onPressed: () {
+                        drgabbleDialog.value = null;
+                      },
+                      icon: const Icon(Icons.close),
                     ),
                   ),
                 ],
               ),
-            ),
+              const SizedBox(
+                height: 8,
+              ),
+              Expanded(
+                child: Obx(
+                  () => Container(
+                    margin: const EdgeInsets.only(bottom: 8),
+                    decoration: fpcStartTabelList.isEmpty
+                        ? BoxDecoration(border: Border.all(color: Colors.grey))
+                        : null,
+                    child: fpcStartTabelList.value.isEmpty
+                        ? null
+                        : DataGridShowOnlyKeys(
+                            mapData: fpcStartTabelList.value,
+                            hideCode: false,
+                            exportFileName: "EDI R.O. Booking",
+                          ),
+                  ),
+                ),
+              ),
+            ],
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 
