@@ -79,7 +79,7 @@ class Generate {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['programname'] = this.programname;
     data['scheduledate'] = (Utils.toDateFormat4(this.scheduledate));
-    data['scheduletime'] = (Utils.toDateFormat4(this.scheduletime));
+    data['scheduletime'] = (Utils.formatDateTime(this.scheduletime));
     data['zonename'] = this.zonename;
     data['bookedduration'] = this.bookedduration;
     data['commduration'] = this.commduration;
