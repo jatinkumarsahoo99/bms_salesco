@@ -117,32 +117,33 @@ class UserGroupsForDealWorkflowController extends GetxController {
   saveDealWorkFlow() {
     if ((disPlayGroupModel?.displayGroup?.employees?.length ?? 0) == 0) {
       LoadingDialog.showErrorDialog("Please add some employee");
+    }else{
+      LoadingDialog.call();
+      Map<String, dynamic> postData = {
+        "groupid": disPlayGroupModel?.displayGroup?.groupId ?? "0",
+        "groupname": groupTextController.text ?? "",
+        "listdt": disPlayGroupModel?.displayGroup?.employees
+            ?.map((e) => e.toJson1())
+            .toList()
+      };
+      // print(">>>>>postData>>>"+(postData).toString());
+      Get.find<ConnectorControl>().POSTMETHOD(
+          api: ApiFactory.USER_GROUPS_FOR_DEAL_WORKFLOW_SAVE,
+          json: postData,
+          fun: (map) {
+            Get.back();
+            print(">>>>>" + map.toString());
+            if (map is Map && map.containsKey('save') && map['save'] != null) {
+              LoadingDialog.callDataSavedMessage(
+                  map['save']['errorMessage'] ?? "",callback: (){
+                clearAll();
+              });
+            } else {
+              LoadingDialog.showErrorDialog(
+                  (map ?? "Something went wrong").toString());
+            }
+          });
     }
-    LoadingDialog.call();
-    Map<String, dynamic> postData = {
-      "groupid": disPlayGroupModel?.displayGroup?.groupId ?? "0",
-      "groupname": groupTextController.text ?? "",
-      "listdt": disPlayGroupModel?.displayGroup?.employees
-          ?.map((e) => e.toJson1())
-          .toList()
-    };
-    // print(">>>>>postData>>>"+(postData).toString());
-    Get.find<ConnectorControl>().POSTMETHOD(
-        api: ApiFactory.USER_GROUPS_FOR_DEAL_WORKFLOW_SAVE,
-        json: postData,
-        fun: (map) {
-          Get.back();
-          print(">>>>>" + map.toString());
-          if (map is Map && map.containsKey('save') && map['save'] != null) {
-            LoadingDialog.callDataSavedMessage(
-                map['save']['errorMessage'] ?? "",callback: (){
-                  clearAll();
-            });
-          } else {
-            LoadingDialog.showErrorDialog(
-                (map ?? "Something went wrong").toString());
-          }
-        });
   }
 
   @override
