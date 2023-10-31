@@ -182,7 +182,8 @@ class MarkROsFlagController extends GetxController {
             DateFormat("yyyy-MM-ddT00:00:00")
                 .format(DateFormat("dd-MM-yyyy").parse(effectiveDateTC.text))),
         fun: (resp) {
-          closeDialogIfOpen();
+          // closeDialogIfOpen();
+          Get.back();
           madeChanges = false;
           if (resp != null &&
               resp['show'] != null &&
@@ -196,7 +197,8 @@ class MarkROsFlagController extends GetxController {
           }
         },
         failed: (resp) {
-          closeDialogIfOpen();
+          // closeDialogIfOpen();
+          Get.back();
           LoadingDialog.showErrorDialog(resp.toString());
         },
       );
@@ -211,7 +213,9 @@ class MarkROsFlagController extends GetxController {
 
   formHandler(btn) {
     if (btn == "Clear") {
-      clearPage();
+      Get.delete<MarkROsFlagController>();
+      Get.find<HomeController>().clearPage1();
+      // clearPage();
     } else if (btn == "Save") {
     } else if (btn == "Exit") {
       Get.find<HomeController>().postUserGridSetting1(listStateManager: [

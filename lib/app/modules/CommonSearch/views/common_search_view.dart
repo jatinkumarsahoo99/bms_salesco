@@ -1,5 +1,6 @@
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
@@ -37,7 +38,9 @@ class SearchPage extends StatelessWidget {
     return KeyboardListener(
       focusNode: FocusNode(),
       onKeyEvent: (value) {
-        Get.back();
+        if (value.logicalKey == LogicalKeyboardKey.escape) {
+          Get.back();
+        }
       },
       child: GetBuilder<SearchController>(
           key: key,
@@ -173,7 +176,7 @@ class SearchPage extends StatelessWidget {
                                     bottomMargin: 30,
                                     showCheckboxColumn: false,
                                     sortAscending: true,
-
+                                    border: TableBorder.all(width: 0.1),
                                     columns: controller.searchGridColumns,
                                     // columns: [
                                     //   for (var column in controller
@@ -197,6 +200,7 @@ class SearchPage extends StatelessWidget {
                                     rows: controller.searchQuery == ""
                                         ? controller.searchGridRows
                                         : controller.filterSearchGridRows,
+
                                     // rows: List<DataRow2>.generate(
                                     //     controller.grid!.variances!.length,
                                     //     (index) {
