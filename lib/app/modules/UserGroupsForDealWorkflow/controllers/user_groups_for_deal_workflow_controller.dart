@@ -144,7 +144,6 @@ class UserGroupsForDealWorkflowController extends GetxController {
             }
           });
     }
-
   }
 
   @override
