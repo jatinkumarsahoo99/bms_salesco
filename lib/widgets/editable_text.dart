@@ -55,20 +55,25 @@ class _ChangableTextState extends State<ChangableText> {
                   });
                 }
               },
-              child: TextField(
-                decoration: InputDecoration(
-                    contentPadding: EdgeInsets.zero,
-                    focusColor: widget.focusColor),
-                onSubmitted: (newValue) {
-                  widget.onChange!(newValue);
-                  setState(() {
-                    _isEditingText = false;
-                    _text = newValue;
-                  });
+              child: InkWell(
+                onDoubleTap: () {
+                  widget.onDoubleTap!();
                 },
-                autofocus: true,
-                controller: _textEditingController,
-                maxLines: 1,
+                child: TextField(
+                  decoration: InputDecoration(
+                      contentPadding: EdgeInsets.zero,
+                      focusColor: widget.focusColor),
+                  onSubmitted: (newValue) {
+                    widget.onChange!(newValue);
+                    setState(() {
+                      _isEditingText = false;
+                      _text = newValue;
+                    });
+                  },
+                  autofocus: true,
+                  controller: _textEditingController,
+                  maxLines: 1,
+                ),
               ),
             ),
           )
