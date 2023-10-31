@@ -324,13 +324,9 @@ class HomeController extends GetxController {
                               if (handleAutoClear &&
                                   controller.buttons?[index]['name'] ==
                                       "Clear") {
-                                try {
-                                  Get.delete<T>(force: true);
-                                } catch (e) {
-                                  print(e.toString());
-                                } finally {
+                                Get.delete<T>().then((value) {
                                   clearPage1();
-                                }
+                                });
                               }
                             },
                 )

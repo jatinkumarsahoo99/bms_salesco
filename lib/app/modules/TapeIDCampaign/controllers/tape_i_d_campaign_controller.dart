@@ -2,6 +2,7 @@ import 'package:bms_salesco/app/controller/ConnectorControl.dart';
 import 'package:bms_salesco/app/providers/ApiFactory.dart';
 import 'package:bms_salesco/widgets/LoadingDialog.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -24,10 +25,13 @@ class TapeIDCampaignController extends GetxController {
   String selectedValuUI = "selectedValuUI";
   var activityMonth = "".obs;
   DateTime now = DateTime.now();
-  PlutoGridStateManager? locationChannelManager, historyManager;
+  PlutoGridStateManager? locationChannelManager,
+      historyManager,
+      campaignHistorySM,
+      tapeIDCampaignSM;
   int lastLocationChannelEditIdx = 0, historyEditIdx = 0;
 
-  var selectedTab = 1.obs;
+  var selectedTab = 0.obs;
   TapeIDCampaignLoadModel? loadModel;
   TapeIdCampaignHistoryModel? history;
   var tapeIdFN = FocusNode();
@@ -46,24 +50,22 @@ class TapeIDCampaignController extends GetxController {
   @override
   void onReady() {
     super.onReady();
-    tapeIdFN.addListener(() {
-      if (!tapeIdFN.hasFocus) {
+    tapeIdFN.onKey = (node, event) {
+      if (event.logicalKey == LogicalKeyboardKey.tab) {
         tapeIdLeave();
       }
-    });
-    startDateTC.addListener(() {});
+      return KeyEventResult.ignored;
+    };
 
-    getCampaignHistory();
     Future.delayed(Duration(seconds: 2)).then((value) {
       generateActivityMonth();
     });
-    // getTapeIdCampaignDetails();
+    getCampaignHistory();
   }
 
   @override
   void onInit() {
     endDate = DateTime(startDate.year, startDate.month + 1, 0);
-    print(endDate.toString());
     formPermissions =
         Utils.fetchPermissions1(Routes.TAPE_I_D_CAMPAIGN.replaceAll("/", ""));
     fetchUserSetting1();
@@ -71,20 +73,21 @@ class TapeIDCampaignController extends GetxController {
   }
 
   clearPage() {
-    // locationChannelManager = null;
-    // historyManager = null;
-    // tapeIDTC.clear();
-    // history = null;
-    // startDateTC.clear();
-    // lastLocationChannelEditIdx = 0;
-    // historyEditIdx = 0;
-    // endDateTC.clear();
-    // // activityMonth.obs = "";
-    // loadModel = null;
-    // tapeIdFN.requestFocus();
-    // updateUI();
-    Get.delete<TapeIDCampaignController>(force: true);
-    Get.find<HomeController>().clearPage1();
+    locationChannelManager = null;
+    historyManager = null;
+    tapeIDTC.clear();
+    history = null;
+    camoaignHistoryList.value = [];
+    tapeIdCampaignList.value = [];
+    startDateTC.clear();
+    lastLocationChannelEditIdx = 0;
+    historyEditIdx = 0;
+    endDateTC.clear();
+    // activityMonth.obs = "";
+    loadModel = null;
+    tapeIdFN.requestFocus();
+    updateUI();
+    // Get.find<HomeController>().clearPage1();
   }
 
   updateUI() {
@@ -116,22 +119,22 @@ class TapeIDCampaignController extends GetxController {
     );
   }
 
-  getTapeIdCampaignDetails() {
-    Get.find<ConnectorControl>().GETMETHODCALL(
-      api: ApiFactory.TAPE_ID_CAMPAIGN_TAPE_CAMPAIGN_DETAILS,
-      fun: (resp) {
-        if (resp is Map<String, dynamic> && resp['result'] != null) {
-          tapeIdCampaignList.value = resp['result'];
-          if (selectedTab.value == 2 || selectedTab.value == 3) {
-            if (tapeIdCampaignList.isNotEmpty) {
-              selectedTab.refresh();
-            }
-          }
-        }
-      },
-      failed: (resp) {},
-    );
-  }
+  // getTapeIdCampaignDetails() {
+  //   Get.find<ConnectorControl>().GETMETHODCALL(
+  //     api: ApiFactory.TAPE_ID_CAMPAIGN_TAPE_CAMPAIGN_DETAILS,
+  //     fun: (resp) {
+  //       if (resp is Map<String, dynamic> && resp['result'] != null) {
+  //         tapeIdCampaignList.value = resp['result'];
+  //         if (selectedTab.value == 2 || selectedTab.value == 3) {
+  //           if (tapeIdCampaignList.isNotEmpty) {
+  //             selectedTab.refresh();
+  //           }
+  //         }
+  //       }
+  //     },
+  //     failed: (resp) {},
+  //   );
+  // }
 
   tapeIdLeave() {
     if (tapeIDTC.text.trim().isNotEmpty) {
@@ -264,24 +267,32 @@ class TapeIDCampaignController extends GetxController {
     }
   }
 
-  // formHandler(btn) {
-  //   if (btn == "Clear") {
-  //     clearPage();
-  //   } else if (btn == "Save") {
-  //     saveRecord();
-  //   } else if (btn == "Exit") {
-  //     Get.find<HomeController>().postUserGridSetting1(
-  //         listStateManager: [historyManager, locationChannelManager],
-  //         tableNamesList: ['tbl1', 'tbl2']);
-  //   } else if (btn == "Search") {
-  //     Get.to(SearchPage(
-  //         key: Key("Tape ID Campaign"),
-  //         screenName: "Tape ID Campaign",
-  //         appBarName: "Tape ID Campaign",
-  //         strViewName: "BMS_vListTapeIDCampaign",
-  //         isAppBarReq: true));
-  //   }
-  // }
+  formHandler(btn) {
+    if (btn == "Clear") {
+      clearPage();
+    } else if (btn == "Save") {
+      saveRecord();
+    } else if (btn == "Exit") {
+      Get.find<HomeController>().postUserGridSetting1(listStateManager: [
+        locationChannelManager,
+        historyManager,
+        campaignHistorySM,
+        tapeIDCampaignSM,
+      ], tableNamesList: [
+        'tbl1',
+        'tbl2',
+        'tbl3',
+        'tbl4'
+      ]);
+    } else if (btn == "Search") {
+      Get.to(SearchPage(
+          key: Key("Tape ID Campaign"),
+          screenName: "Tape ID Campaign",
+          appBarName: "Tape ID Campaign",
+          strViewName: "BMS_vListTapeIDCampaign",
+          isAppBarReq: true));
+    }
+  }
 
   Future<void> handleImportTap() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
@@ -314,10 +325,9 @@ class TapeIDCampaignController extends GetxController {
               resp['result']['message'].toString().contains('Successfully')) {
             camoaignHistoryList.value = resp['result']['campaignHistory'];
             tapeIdCampaignList.value = resp['result']['tapeIDCampaignDetail'];
-            if (selectedTab.value == 2 || selectedTab.value == 3) {
-              selectedTab.refresh();
-            }
-            LoadingDialog.callInfoMessage(resp['result']['message'].toString());
+            selectedTab.refresh();
+            LoadingDialog.callDataSaved(
+                msg: resp['result']['message'].toString());
           } else {
             if (resp['result']['message'] != null) {
               LoadingDialog.showErrorDialog(
