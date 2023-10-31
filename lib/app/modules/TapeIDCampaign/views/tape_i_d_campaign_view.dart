@@ -189,14 +189,14 @@ class TapeIDCampaignView extends GetView<TapeIDCampaignController> {
                             controller.selectedTab.value = value ?? 0;
                           },
                           children: <int, Widget>{
-                            1: Text(
+                            0: Text(
                               'Location & Channel',
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontSize: SizeDefine.fontSizeTab,
                               ),
                             ),
-                            0: Text(
+                            1: Text(
                               'History',
                               textAlign: TextAlign.center,
                               style: TextStyle(
@@ -224,71 +224,13 @@ class TapeIDCampaignView extends GetView<TapeIDCampaignController> {
                       SizedBox(height: 10),
                       Expanded(
                         child: Obx(() {
-                          controller.selectedTab.value;
+                          /// 0 => Location & Channel
+                          /// 1 => History
+                          /// 2 => Campaign History
+                          /// 3 => Tape ID Campaign
                           if (controller.selectedTab.value == 0) {
                             return DataGridFromMap3(
-                              hideCode: false,
                               columnAutoResize: false,
-                              exportFileName: "Tape ID Campaign",
-                              checkBoxColumnKey: ["isActive"],
-                              actionIconKey: ["isActive"],
-                              checkBoxStrComparison: "true",
-                              uncheckCheckBoxStr: "false",
-                              mode: PlutoGridMode.selectWithOneTap,
-                              colorCallback: (row) => (row.row.cells
-                                      .containsValue(controller
-                                          .historyManager?.currentCell))
-                                  ? Colors.deepPurple.shade200
-                                  : Colors.white,
-                              onload: (event) {
-                                controller.historyManager = event.stateManager;
-                                event.stateManager.setSelectingMode(
-                                    PlutoGridSelectingMode.row);
-
-                                event.stateManager.setCurrentCell(
-                                  event.stateManager
-                                      .getRowByIdx(controller.historyEditIdx)
-                                      ?.cells['isActive'],
-                                  controller.historyEditIdx,
-                                );
-                                event.stateManager.moveScrollByRow(
-                                    PlutoMoveDirection.down,
-                                    controller.historyEditIdx);
-                              },
-                              onEdit: (event) {
-                                controller.historyEditIdx = event.rowIdx;
-                                controller.history?.historyDetails[event.rowIdx]
-                                    .isActive = (event.value == "true");
-                              },
-                              actionOnPress: (position, isSpaceCalled) {
-                                if (isSpaceCalled) {
-                                  controller.historyEditIdx =
-                                      position.rowIdx ?? 0;
-                                  controller.historyManager!.changeCellValue(
-                                    controller.historyManager!.currentCell!,
-                                    controller.historyManager!.currentCell!
-                                                .value ==
-                                            "true"
-                                        ? "false"
-                                        : "true",
-                                    force: true,
-                                    callOnChangedEvent: true,
-                                    notify: true,
-                                  );
-                                }
-                              },
-                              mapData: controller.history?.historyDetails
-                                      .map((e) => e.toJson())
-                                      .toList() ??
-                                  [],
-                              widthSpecificColumn: Get.find<HomeController>()
-                                  .getGridWidthByKey(
-                                      userGridSettingList:
-                                          controller.userGridSetting1,
-                                      key: "tbl1"),
-                            );
-                          } else if (controller.selectedTab.value == 1) {
-                            return DataGridFromMap3(
                               exportFileName: "Tape ID Campaign",
                               colorCallback: (row) => (row.row.cells
                                       .containsValue(controller
@@ -299,12 +241,6 @@ class TapeIDCampaignView extends GetView<TapeIDCampaignController> {
                               onload: (event) {
                                 controller.locationChannelManager =
                                     event.stateManager;
-                                // event.stateManager
-                                //     .setSelectingMode(
-                                //         PlutoGridSelectingMode
-                                //             .row);
-                                // event.stateManager
-                                //     .setSelecting(true);
 
                                 event.stateManager.setCurrentCell(
                                     event.stateManager
@@ -402,60 +338,142 @@ class TapeIDCampaignView extends GetView<TapeIDCampaignController> {
                                   .getGridWidthByKey(
                                       userGridSettingList:
                                           controller.userGridSetting1,
+                                      key: "tbl1"),
+                            );
+                          } else if (controller.selectedTab.value == 1) {
+                            return DataGridFromMap3(
+                              hideCode: false,
+                              columnAutoResize: false,
+                              exportFileName: "Tape ID Campaign",
+                              checkBoxColumnKey: ["isActive"],
+                              actionIconKey: ["isActive"],
+                              checkBoxStrComparison: "true",
+                              uncheckCheckBoxStr: "false",
+                              mode: PlutoGridMode.selectWithOneTap,
+                              colorCallback: (row) => (row.row.cells
+                                      .containsValue(controller
+                                          .historyManager?.currentCell))
+                                  ? Colors.deepPurple.shade200
+                                  : Colors.white,
+                              onload: (event) {
+                                controller.historyManager = event.stateManager;
+                                event.stateManager.setSelectingMode(
+                                    PlutoGridSelectingMode.row);
+
+                                event.stateManager.setCurrentCell(
+                                  event.stateManager
+                                      .getRowByIdx(controller.historyEditIdx)
+                                      ?.cells['isActive'],
+                                  controller.historyEditIdx,
+                                );
+                                event.stateManager.moveScrollByRow(
+                                    PlutoMoveDirection.down,
+                                    controller.historyEditIdx);
+                              },
+                              onEdit: (event) {
+                                controller.historyEditIdx = event.rowIdx;
+                                controller.history?.historyDetails[event.rowIdx]
+                                    .isActive = (event.value == "true");
+                              },
+                              actionOnPress: (position, isSpaceCalled) {
+                                if (isSpaceCalled) {
+                                  controller.historyEditIdx =
+                                      position.rowIdx ?? 0;
+                                  controller.historyManager!.changeCellValue(
+                                    controller.historyManager!.currentCell!,
+                                    controller.historyManager!.currentCell!
+                                                .value ==
+                                            "true"
+                                        ? "false"
+                                        : "true",
+                                    force: true,
+                                    callOnChangedEvent: true,
+                                    notify: true,
+                                  );
+                                }
+                              },
+                              mapData: controller.history?.historyDetails
+                                      .map((e) => e.toJson())
+                                      .toList() ??
+                                  [],
+                              widthSpecificColumn: Get.find<HomeController>()
+                                  .getGridWidthByKey(
+                                      userGridSettingList:
+                                          controller.userGridSetting1,
                                       key: "tbl2"),
                             );
                           } else if (controller.selectedTab.value == 2) {
                             return DataGridFromMap3(
-                                mapData: controller.camoaignHistoryList.value
-                                    .map((e) {
-                                  if (e['startDate'] != null) {
-                                    e['startDate'] = DateFormat('dd-MM-yyyy')
-                                        .format(
-                                            DateFormat('yyyy-MM-ddThh:mm:ss')
-                                                .parse(e['startDate']));
-                                  }
-                                  if (e['endDate'] != null) {
-                                    e['endDate'] = DateFormat('dd-MM-yyyy')
-                                        .format(
-                                            DateFormat('yyyy-MM-ddThh:mm:ss')
-                                                .parse(e['endDate']));
-                                  }
-                                  if (e['createdDate'] != null) {
-                                    e['createdDate'] = DateFormat('dd-MM-yyyy')
-                                        .format(
-                                            DateFormat('yyyy-MM-ddThh:mm:ss')
-                                                .parse(e['createdDate']));
-                                  }
-                                  return e;
-                                }).toList(),
-                                formatDate: false,
-                                hideCode: false);
+                              mapData:
+                                  controller.camoaignHistoryList.value.map((e) {
+                                if (e['startDate'] != null &&
+                                    e['startDate'].toString().contains("T")) {
+                                  e['startDate'] = DateFormat('dd-MM-yyyy')
+                                      .format(DateFormat('yyyy-MM-ddThh:mm:ss')
+                                          .parse(e['startDate']));
+                                }
+                                if (e['endDate'] != null &&
+                                    e['endDate'].toString().contains("T")) {
+                                  e['endDate'] = DateFormat('dd-MM-yyyy')
+                                      .format(DateFormat('yyyy-MM-ddThh:mm:ss')
+                                          .parse(e['endDate']));
+                                }
+                                if (e['createdDate'] != null &&
+                                    e['createdDate'].toString().contains("T")) {
+                                  e['createdDate'] = DateFormat('dd-MM-yyyy')
+                                      .format(DateFormat('yyyy-MM-ddThh:mm:ss')
+                                          .parse(e['createdDate']));
+                                }
+                                return e;
+                              }).toList(),
+                              formatDate: false,
+                              columnAutoResize: false,
+                              hideCode: false,
+                              onload: (sm) {
+                                controller.campaignHistorySM = sm.stateManager;
+                              },
+                              widthSpecificColumn: Get.find<HomeController>()
+                                  .getGridWidthByKey(
+                                      userGridSettingList:
+                                          controller.userGridSetting1,
+                                      key: "tbl3"),
+                            );
                           } else if (controller.selectedTab.value == 3) {
                             return DataGridFromMap3(
-                                mapData: controller.tapeIdCampaignList.value
-                                    .map((e) {
-                                  if (e['startDate'] != null) {
-                                    e['startDate'] = DateFormat('dd-MM-yyyy')
-                                        .format(
-                                            DateFormat('yyyy-MM-ddThh:mm:ss')
-                                                .parse(e['startDate']));
-                                  }
-                                  if (e['endDate'] != null) {
-                                    e['endDate'] = DateFormat('dd-MM-yyyy')
-                                        .format(
-                                            DateFormat('yyyy-MM-ddThh:mm:ss')
-                                                .parse(e['endDate']));
-                                  }
-                                  if (e['createdDate'] != null) {
-                                    e['createdDate'] = DateFormat('dd-MM-yyyy')
-                                        .format(
-                                            DateFormat('yyyy-MM-ddThh:mm:ss')
-                                                .parse(e['createdDate']));
-                                  }
-                                  return e;
-                                }).toList(),
-                                formatDate: false,
-                                hideCode: false);
+                              columnAutoResize: false,
+                              mapData:
+                                  controller.tapeIdCampaignList.value.map((e) {
+                                if (e['startDate'] != null &&
+                                    e['startDate'].toString().contains("T")) {
+                                  e['startDate'] = DateFormat('dd-MM-yyyy')
+                                      .format(DateFormat('yyyy-MM-ddThh:mm:ss')
+                                          .parse(e['startDate']));
+                                }
+                                if (e['endDate'] != null &&
+                                    e['endDate'].toString().contains("T")) {
+                                  e['endDate'] = DateFormat('dd-MM-yyyy')
+                                      .format(DateFormat('yyyy-MM-ddThh:mm:ss')
+                                          .parse(e['endDate']));
+                                }
+                                if (e['createdDate'] != null &&
+                                    e['createdDate'].toString().contains("T")) {
+                                  e['createdDate'] = DateFormat('dd-MM-yyyy')
+                                      .format(DateFormat('yyyy-MM-ddThh:mm:ss')
+                                          .parse(e['createdDate']));
+                                }
+                                return e;
+                              }).toList(),
+                              formatDate: false,
+                              hideCode: false,
+                              onload: (sm) {
+                                controller.tapeIDCampaignSM = sm.stateManager;
+                              },
+                              widthSpecificColumn: Get.find<HomeController>()
+                                  .getGridWidthByKey(
+                                      userGridSettingList:
+                                          controller.userGridSetting1,
+                                      key: "tbl4"),
+                            );
                           } else {
                             return Container(
                               width: double.infinity,
