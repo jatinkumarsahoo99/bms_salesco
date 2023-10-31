@@ -58,27 +58,23 @@ class AppPages {
 
   static const INITIAL = kReleaseMode
       ? Routes.HOME
-      : (Routes.TAPE_I_D_CAMPAIGN +
+      : (Routes.BOOKINGS_AGAINST_P_D_C +
           "?personalNo=R9vVPL7er1Os/usemWG/Iw==&loginCode=0iGe3vK5h2KGjfSKZTpmsQ==&formName=OI8ukDpPPVN0I2BEXu2h4nuFu%2BZm1ZRpvP8NL4XCXzQ%3D");
 
   static final routes = [
     GetPage(
       name: _Paths.ASRUN_DETAILS_REPORT,
-      page: () =>
-          // AsrunDetailsReportView(),
-          AuthGuard(childName: _Paths.ASRUN_DETAILS_REPORT),
+      page: () => AuthGuard(childName: _Paths.ASRUN_DETAILS_REPORT),
       binding: AsrunDetailsReportBinding(),
     ),
     GetPage(
       name: _Paths.AUDIT_STATUS_REPORT,
       page: () => AuthGuard(childName: _Paths.AUDIT_STATUS_REPORT),
-      // AuditStatusReportView(),
       binding: AuditStatusReportBinding(),
     ),
     GetPage(
       name: _Paths.DEAL_RECO_SUMMARY,
       page: () => AuthGuard(childName: _Paths.DEAL_RECO_SUMMARY),
-      // DealRecoSummaryView(),
       binding: DealRecoSummaryBinding(),
     ),
     GetPage(
@@ -133,16 +129,11 @@ class AppPages {
     GetPage(
       name: _Paths.WORKFLOW_DEFINITION,
       page: () => AuthGuard(childName: _Paths.WORKFLOW_DEFINITION),
-      // WorkflowDefinitionView(),
       binding: WorkflowDefinitionBinding(),
     ),
     GetPage(
       name: _Paths.E_D_I_MAPPING,
       page: () => AuthGuard(childName: _Paths.E_D_I_MAPPING),
-      /* transition: Transition.zoom,
-      transitionDuration: Duration(seconds: 1),*/
-
-      // EDIMappingView(),
       binding: EDIMappingBinding(),
     ),
     GetPage(
@@ -157,26 +148,22 @@ class AppPages {
     GetPage(
       name: _Paths.ONE_SPOT_BOOKING_SKY_MEDIA,
       page: () => AuthGuard(childName: _Paths.ONE_SPOT_BOOKING_SKY_MEDIA),
-      // OnSpotBookingSkyMediaView(),
       binding: OneSpotBookingSkyMediaBinding(),
     ),
     GetPage(
       name: _Paths.PERIODIC_DEAL_UTILISATION_FORMAT2,
       page: () =>
           AuthGuard(childName: _Paths.PERIODIC_DEAL_UTILISATION_FORMAT2),
-      // PeriodicDealUtilisationFormat2View(),
       binding: PeriodicDealUtilisationFormat2Binding(),
     ),
     GetPage(
       name: _Paths.UPDATE_EXECUTIVE,
       page: () => AuthGuard(childName: _Paths.UPDATE_EXECUTIVE),
-      // UpdateExecutiveView(),
       binding: UpdateExecutiveBinding(),
     ),
     GetPage(
       name: _Paths.USER_GROUPS_FOR_DEAL_WORKFLOW,
       page: () => AuthGuard(childName: _Paths.USER_GROUPS_FOR_DEAL_WORKFLOW),
-      // UserGroupsForDealWorkflowView(),
       binding: UserGroupsForDealWorkflowBinding(),
     ),
     GetPage(
@@ -187,73 +174,61 @@ class AppPages {
     GetPage(
       name: _Paths.VIEW_OLD_DEAL,
       page: () => AuthGuard(childName: _Paths.VIEW_OLD_DEAL),
-      // ViewOldDealView(),
       binding: ViewOldDealBinding(),
     ),
     GetPage(
       name: _Paths.RATE_CARDFROM_DEAL_WORKFLOW,
       page: () => AuthGuard(childName: _Paths.RATE_CARDFROM_DEAL_WORKFLOW),
-      // page: () => const RateCardfromDealWorkflowView(),
       binding: RateCardfromDealWorkflowBinding(),
     ),
     GetPage(
       name: _Paths.ZONE_WISE_INVENTORY_UTILIZATION,
-      // page: () => const ZoneWiseInventoryUtilizationView(),
       page: () => AuthGuard(childName: _Paths.ZONE_WISE_INVENTORY_UTILIZATION),
       binding: ZoneWiseInventoryUtilizationBinding(),
     ),
     GetPage(
       name: _Paths.RESCHEDULE_IMPORT,
       page: () => AuthGuard(childName: _Paths.RESCHEDULE_IMPORT),
-      // page: () => const RescheduleImportView(),
       binding: RescheduleImportBinding(),
     ),
     GetPage(
       name: _Paths.AMAGI_SPOT_PLANNING,
       page: () => AuthGuard(childName: _Paths.AMAGI_SPOT_PLANNING),
-      // AmagiSpotPlanningView(),
       binding: AmagiSpotPlanningBinding(),
     ),
     GetPage(
       name: _Paths.AMAGI_SPOTS_REPLACEMENT,
       page: () => AuthGuard(childName: _Paths.AMAGI_SPOTS_REPLACEMENT),
-      // AmagiSpotsReplacementView(),
       binding: AmagiSpotsReplacementBinding(),
     ),
     GetPage(
       name: _Paths.AMAGI_STATUS_REPORT,
       page: () => AuthGuard(childName: _Paths.AMAGI_STATUS_REPORT),
-      // AmagiStatusReportView(),
       binding: AmagiStatusReportBinding(),
     ),
     GetPage(
       name: _Paths.INTERNATIONAL_SALES_REPORT,
       page: () => AuthGuard(childName: _Paths.INTERNATIONAL_SALES_REPORT),
-      // InternationalSalesReportView(),
       binding: InternationalSalesReportBinding(),
     ),
     GetPage(
       name: _Paths.PRODUCT_LEVEL1,
       page: () => AuthGuard(childName: _Paths.PRODUCT_LEVEL1),
-      // ProductLevel1View(),
       binding: ProductLevel1Binding(),
     ),
     GetPage(
       name: _Paths.PRODUCT_LEVEL2,
       page: () => AuthGuard(childName: _Paths.PRODUCT_LEVEL2),
-      // ProductLevel2View(),
       binding: ProductLevel2Binding(),
     ),
     GetPage(
       name: _Paths.PRODUCT_LEVEL3,
       page: () => AuthGuard(childName: _Paths.PRODUCT_LEVEL3),
-      // ProductLevel3View(),
       binding: ProductLevel3Binding(),
     ),
     GetPage(
       name: _Paths.PRODUCT_MASTER,
       page: () => AuthGuard(childName: _Paths.PRODUCT_MASTER),
-      // ProductMasterView(),
       binding: ProductMasterBinding(),
     ),
     GetPage(
@@ -281,6 +256,10 @@ class AppPages {
     GetPage(
       name: _Paths.PROGRAM_WISE_REVENUE_REPORT,
       page: () => AuthGuard(childName: _Paths.PROGRAM_WISE_REVENUE_REPORT),
+    ),
+    GetPage(
+      name: _Paths.BOOKINGS_AGAINST_P_D_C,
+      page: () => AuthGuard(childName: _Paths.BOOKINGS_AGAINST_P_D_C),
     ),
     GetPage(
       name: _Paths.DEALVS_R_O_DATA_REPORT,
