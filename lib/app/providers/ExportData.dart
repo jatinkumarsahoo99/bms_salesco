@@ -58,6 +58,18 @@ class ExportData {
     }
   }
 
+  printFromGridData1(fileName,Uint8List data) async {
+    await Printing.layoutPdf(
+        format: PdfPageFormat.a4.landscape,
+        name: fileName,
+        onLayout: (PdfPageFormat format) async {
+          // Update format onLayout
+          return data;
+        }).then((value) {
+      // stateManager.setShowLoading(false);
+    });
+  }
+
   exportFilefromString(String data, String fileName) async {
     try {
       await FlutterFileSaver()

@@ -146,7 +146,7 @@ class InternationalDetails {
     bonusDuration = json['bonusDuration'];
     paidDuration = json['paidDuration'];
     totalDuration = json['totalDuration'];
-    amount = (json['amount']??"").toString();
+    amount = (json['AMOUNT']??"").toString();
     currencyType = json['currencyType'];
     zonename = json['zonename'];
     brandname = json['brandname'];
@@ -174,22 +174,34 @@ class InternationalDetails {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['channelName'] = this.channelName;
+    data['zonename'] = this.zonename;
+    data['clientname'] = this.clientname;
+    data['agencyname'] = this.agencyname;
+    data['brandname'] = this.brandname;
+    data['month'] = this.month;
+    data['paidDuration'] = this.paidDuration;
+    data['bonusDuration'] = this.bonusDuration;
+    data['totalDuration'] = this.totalDuration;
+    data['executivname'] = this.executivname;
+    data['currencyType'] = this.currencyType;
+    data['amount'] = this.amount;
+
     data['bookingnumber'] = this.bookingnumber;
     data['bookingDetailCode'] = this.bookingDetailCode;
     data['scheduledate'] = Utils.formatDateTime(this.scheduledate);
     data['scheduletime'] = this.scheduletime;
-    data['clientname'] = this.clientname;
-    data['agencyname'] = this.agencyname;
+
+
     data['programname'] = this.programname;
     data['commercialcaption'] = this.commercialcaption;
     data['exporttapecode'] = this.exporttapecode;
-    data['bonusDuration'] = this.bonusDuration;
-    data['paidDuration'] = this.paidDuration;
-    data['totalDuration'] = this.totalDuration;
-    data['amount'] = this.amount;
-    data['currencyType'] = this.currencyType;
-    data['zonename'] = this.zonename;
-    data['brandname'] = this.brandname;
+
+
+
+
+
+
+
     data['telecasttime'] = this.telecasttime;
     data['telecastduration'] = this.telecastduration;
     data['telecastprogram'] = this.telecastprogram;
@@ -199,7 +211,7 @@ class InternationalDetails {
     data['dealno'] = this.dealno;
     data['recordnumber'] = this.recordnumber;
     data['yearname'] = this.yearname;
-    data['month'] = this.month;
+
     data['dayname'] = this.dayname;
     data['producttype'] = this.producttype;
     data['producttype_1'] = this.producttype1;
@@ -207,7 +219,7 @@ class InternationalDetails {
     data['producttype_3'] = this.producttype3;
     data['productname'] = this.productname;
     data['revenueType'] = this.revenueType;
-    data['executivname'] = this.executivname;
+
     // data['networknonetwork'] = this.networknonetwork;
     return data;
   }

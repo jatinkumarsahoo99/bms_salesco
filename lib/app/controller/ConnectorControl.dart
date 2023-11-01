@@ -492,6 +492,76 @@ class ConnectorControl extends GetConnect {
     }
   }
 
+  POSTMETHOD_FORMDATAWITHTYPE1(
+      {required String api,
+        required dynamic json,
+        int? timeout = 36000,
+        required Function fun,
+        Function? failed}) async {
+    try {
+      service.Response response = await dio.post(api,
+          data: json,
+          options: Options(
+              receiveTimeout: Duration(milliseconds: timeout!),
+              sendTimeout: Duration(milliseconds: timeout!),
+              headers: {
+                // "accept-language": (AppData.selectedLanguage=="English")?"en":"ar",
+                'Content-Type': 'application/json',
+                "Authorization": "Bearer " +
+                    ((Get.find<MainController>().user != null)
+                        ? Get.find<MainController>().user?.token ?? ""
+                        : ""),
+
+                "PersonnelNo": ((Get.find<MainController>().user != null)
+                    ? Aes.encrypt(
+                    Get.find<MainController>().user?.personnelNo ?? "")
+                    : ""),
+                "Userid": ((Get.find<MainController>().user != null)
+                    ? Get.find<MainController>().user?.logincode ?? ""
+                    : "")
+              },
+              responseType: ResponseType.json));
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        try {
+          // print("RESPONSE CALL>>>>" + JsonEncoder().convert(response.data).toString());
+          fun(response.data);
+        } catch (e) {
+          if (failed != null) {
+            failed();
+          }
+          print("Message is: " + e.toString());
+        }
+      } else if (response.statusCode == 417) {
+        fun(response.data);
+      } else {
+        print("Message is: >>1");
+        fun(failedMap);
+      }
+    } on DioError catch (e) {
+      if (failed != null) {
+        failed();
+      }
+      if (e.response?.statusCode == 401) {
+        updateToken(() {
+          POSTMETHOD_FORMDATAWITHTYPE(
+              api: api, json: json, fun: fun, timeout: timeout);
+        });
+      } else {
+        switch (e.type) {
+          case DioErrorType.connectionTimeout:
+          case DioErrorType.cancel:
+          case DioErrorType.sendTimeout:
+          case DioErrorType.receiveTimeout:
+          case DioErrorType.unknown:
+            fun(failedMap);
+            break;
+          case DioErrorType.badResponse:
+            fun(e.response?.data);
+        }
+      }
+    }
+  }
+
   POSTMETHOD_FORMDATA_HEADER({required String api, required dynamic json, int? timeout = 36000, required Function fun}) async {
     try {
       service.Response response = await dio.post(api,
