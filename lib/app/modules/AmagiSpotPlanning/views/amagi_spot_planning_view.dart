@@ -54,7 +54,7 @@ class AmagiSpotPlanningView extends GetView<AmagiSpotPlanningController> {
                     controllerX.channelList.value??[],
                         (value) {
                           controllerX.selectedChannel = value;
-                    }, "channel", .17,
+                    }, "Channel", .17,
                     isEnable: controllerX.isEnable.value,
                     selected: controllerX.selectedChannel,
                     dialogHeight: Get.height * .35,
@@ -123,6 +123,11 @@ class AmagiSpotPlanningView extends GetView<AmagiSpotPlanningController> {
                             hideCode: false,
                             formatDate: false,
                             columnAutoResize:false ,
+                            colorCallback: (row) => (row.row.cells
+                                .containsValue(
+                                controller.stateManager?.currentCell))
+                                ? Colors.deepPurple.shade200
+                                : Colors.white,
                             widthSpecificColumn:  Get.find<HomeController>().getGridWidthByKey(key: controllerX.getTableNo(controllerX.selectValue.value)?? "tbl1",userGridSettingList: controllerX.userGridSetting1),
                             exportFileName: "Amagi Spot Planning",
                             mode: PlutoGridMode.selectWithOneTap,

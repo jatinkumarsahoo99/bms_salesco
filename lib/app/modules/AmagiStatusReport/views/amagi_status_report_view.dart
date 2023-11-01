@@ -130,6 +130,11 @@ class AmagiStatusReportView extends GetView<AmagiStatusReportController> {
                             showSrNo: false,
                             hideCode: false,
                             formatDate: false,
+                           colorCallback: (row) => (row.row.cells
+                               .containsValue(
+                               controller.stateManager?.currentCell))
+                               ? Colors.deepPurple.shade200
+                               : Colors.white,
                             exportFileName: "Amagi Status Report",
                             widthSpecificColumn:  Get.find<HomeController>().getGridWidthByKey(
                                 userGridSettingList: controllerX.userGridSetting1,key:controllerX.getTableNo(controllerX.selectValue.value) ??"tbl1"),
