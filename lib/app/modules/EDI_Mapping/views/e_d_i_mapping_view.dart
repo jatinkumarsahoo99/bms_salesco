@@ -165,27 +165,32 @@ class EDIMappingView extends StatelessWidget {
                                                         controllerX.populateEntityModel?.
                                                         populateEntity?.clientMaster != null &&
                                                         (controllerX.populateEntityModel?.populateEntity?.clientMaster?.length??0) >0
-                                                    )? ListView.builder(
-                                                        itemCount:controllerX.populateEntityModel?.
-                                                        populateEntity?.clientMaster?.length ,
-                                                        itemBuilder: (BuildContext context,int index){
-                                                          return Padding(
-                                                            padding: const EdgeInsets.all(3.0),
-                                                            child: InkWell(
-                                                                onTap: (){
-                                                                  controllerX.selectedIndex = index;
-                                                                  controllerX.update(['grid']);
-                                                                },
-                                                                child: Container(
-                                                                    color:(controllerX.selectedIndex == index)? Colors.deepPurpleAccent:Colors.white,
-                                                                    child: Text(controllerX.populateEntityModel?.populateEntity?.clientMaster?[index].softClient??"",
-                                                                        style: TextStyle(
-                                                                          fontSize: SizeDefine.labelSize1,
-                                                                          fontWeight: FontWeight.w500,
-                                                                        ),))),
-                                                          );
+                                                    )? Focus(
+                                                      skipTraversal: true,
+                                                      descendantsAreFocusable: false,
+                                                      descendantsAreTraversable: false,
+                                                      child: ListView.builder(
+                                                          itemCount:controllerX.populateEntityModel?.
+                                                          populateEntity?.clientMaster?.length ,
+                                                          itemBuilder: (BuildContext context,int index){
+                                                            return Padding(
+                                                              padding: const EdgeInsets.all(3.0),
+                                                              child: GestureDetector(
+                                                                  onTap: (){
+                                                                    controllerX.selectedIndex = index;
+                                                                    controllerX.update(['grid']);
+                                                                  },
+                                                                  child: Container(
+                                                                      color:(controllerX.selectedIndex == index)? Colors.deepPurpleAccent:Colors.white,
+                                                                      child: Text(controllerX.populateEntityModel?.populateEntity?.clientMaster?[index].softClient??"",
+                                                                          style: TextStyle(
+                                                                            fontSize: SizeDefine.labelSize1,
+                                                                            fontWeight: FontWeight.w500,
+                                                                          ),))),
+                                                            );
 
-                                                        }):Container()
+                                                          }),
+                                                    ):Container()
                                                   );
                                                   break;
                                                 case "Agency":
@@ -197,24 +202,29 @@ class EDIMappingView extends StatelessWidget {
                                                           controllerX.populateEntityModel?.
                                                           populateEntity?.agencyMaster != null &&
                                                           (controllerX.populateEntityModel?.populateEntity?.agencyMaster?.length??0) >0
-                                                      )? ListView.builder(
-                                                          itemCount:controllerX.populateEntityModel?.
-                                                          populateEntity?.agencyMaster?.length ,
-                                                          itemBuilder: (BuildContext context,int index){
-                                                            return Padding(
-                                                              padding: const EdgeInsets.all(3.0),
-                                                              child: InkWell(
-                                                                  onTap: (){
-                                                                    controllerX.selectedIndex = index;
-                                                                    controllerX.update(['grid']);
-                                                                  },
-                                                                  child: Container(
-                                                                      color:(controllerX.selectedIndex == index)? Colors.deepPurpleAccent:Colors.white,
-                                                                      child: Text(controllerX.populateEntityModel?.populateEntity?.agencyMaster?[index].softAgency??"",
-                                                                        style: TextStyle(color: Colors.black,fontSize: 12),))),
-                                                            );
+                                                      )? Focus(
+                                                        skipTraversal: true,
+                                                        descendantsAreFocusable: false,
+                                                        descendantsAreTraversable: false,
+                                                        child: ListView.builder(
+                                                            itemCount:controllerX.populateEntityModel?.
+                                                            populateEntity?.agencyMaster?.length ,
+                                                            itemBuilder: (BuildContext context,int index){
+                                                              return Padding(
+                                                                padding: const EdgeInsets.all(3.0),
+                                                                child: GestureDetector(
+                                                                    onTap: (){
+                                                                      controllerX.selectedIndex = index;
+                                                                      controllerX.update(['grid']);
+                                                                    },
+                                                                    child: Container(
+                                                                        color:(controllerX.selectedIndex == index)? Colors.deepPurpleAccent:Colors.white,
+                                                                        child: Text(controllerX.populateEntityModel?.populateEntity?.agencyMaster?[index].softAgency??"",
+                                                                          style: TextStyle(color: Colors.black,fontSize: 12),))),
+                                                              );
 
-                                                          }):Container()
+                                                            }),
+                                                      ):Container()
                                                   );
                                                   break;
                                                 case "Channel":
@@ -226,24 +236,29 @@ class EDIMappingView extends StatelessWidget {
                                                           controllerX.populateEntityModel?.
                                                           populateEntity?.channelMaster != null &&
                                                           (controllerX.populateEntityModel?.populateEntity?.channelMaster?.length??0) >0
-                                                      )? ListView.builder(
-                                                          itemCount:controllerX.populateEntityModel?.
-                                                          populateEntity?.channelMaster?.length ,
-                                                          itemBuilder: (BuildContext context,int index){
-                                                            return Padding(
-                                                              padding: const EdgeInsets.all(3.0),
-                                                              child: InkWell(
-                                                                  onTap: (){
-                                                                    controllerX.selectedIndex = index;
-                                                                    controllerX.update(['grid']);
-                                                                  },
-                                                                  child: Container(
-                                                                      color:(controllerX.selectedIndex == index)? Colors.deepPurpleAccent:Colors.white,
-                                                                      child: Text(controllerX.populateEntityModel?.populateEntity?.channelMaster?[index].SoftChannel??"",
-                                                                        style: TextStyle(color: Colors.black,fontSize: 12),))),
-                                                            );
+                                                      )? Focus(
+                                                        skipTraversal: true,
+                                                        descendantsAreFocusable: false,
+                                                        descendantsAreTraversable: false,
+                                                        child: ListView.builder(
+                                                            itemCount:controllerX.populateEntityModel?.
+                                                            populateEntity?.channelMaster?.length ,
+                                                            itemBuilder: (BuildContext context,int index){
+                                                              return Padding(
+                                                                padding: const EdgeInsets.all(3.0),
+                                                                child: GestureDetector(
+                                                                    onTap: (){
+                                                                      controllerX.selectedIndex = index;
+                                                                      controllerX.update(['grid']);
+                                                                    },
+                                                                    child: Container(
+                                                                        color:(controllerX.selectedIndex == index)? Colors.deepPurpleAccent:Colors.white,
+                                                                        child: Text(controllerX.populateEntityModel?.populateEntity?.channelMaster?[index].SoftChannel??"",
+                                                                          style: TextStyle(color: Colors.black,fontSize: 12),))),
+                                                              );
 
-                                                          }):Container()
+                                                            }),
+                                                      ):Container()
                                                   );
                                                   break;
                                                 default:
