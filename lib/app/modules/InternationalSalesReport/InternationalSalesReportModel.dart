@@ -1,3 +1,5 @@
+import 'package:bms_salesco/app/providers/Utils.dart';
+
 class InternationalSalesReportModel {
   Report? report;
 
@@ -174,7 +176,7 @@ class InternationalDetails {
     data['channelName'] = this.channelName;
     data['bookingnumber'] = this.bookingnumber;
     data['bookingDetailCode'] = this.bookingDetailCode;
-    data['scheduledate'] = this.scheduledate;
+    data['scheduledate'] = Utils.formatDateTime(this.scheduledate);
     data['scheduletime'] = this.scheduletime;
     data['clientname'] = this.clientname;
     data['agencyname'] = this.agencyname;
@@ -193,7 +195,7 @@ class InternationalDetails {
     data['telecastprogram'] = this.telecastprogram;
     data['billnumber'] = this.billnumber;
     data['spotstatus'] = this.spotstatus;
-    data['billdate'] = this.billdate;
+    data['billdate'] = Utils.formatDateTime(this.billdate);
     data['dealno'] = this.dealno;
     data['recordnumber'] = this.recordnumber;
     data['yearname'] = this.yearname;
@@ -206,7 +208,7 @@ class InternationalDetails {
     data['productname'] = this.productname;
     data['revenueType'] = this.revenueType;
     data['executivname'] = this.executivname;
-    data['networknonetwork'] = this.networknonetwork;
+    // data['networknonetwork'] = this.networknonetwork;
     return data;
   }
 }
@@ -249,7 +251,7 @@ class InternationalSalesSummary {
     paidDur = json['paidDur'];
     bonusDur = json['bonusDur'];
     totDur = json['totDur'];
-    spotAmount = (json['spotAmount']??"").toString();
+    spotAmount = (json['SpotAmount']??"").toString();
     currencyType = json['currencyType'];
     executivname = json['executivname'];
   }

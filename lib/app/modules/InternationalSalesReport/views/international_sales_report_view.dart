@@ -135,6 +135,7 @@ class InternationalSalesReportView
                           showSrNo: true,
                           hideCode: false,
                           formatDate: false,
+                          mode: PlutoGridMode.normal,
                           exportFileName: "International Saleas Report",
                           mapData: (controllerX.internationalSalesReportModel!.report?.internationalSalesSummary
                               ?.map((e) => e.toJson())
@@ -156,6 +157,7 @@ class InternationalSalesReportView
                           showSrNo: true,
                           hideCode: false,
                           formatDate: false,
+                          mode: PlutoGridMode.normal,
                           mapData: (controllerX.internationalSalesReportModel!.report?.internationalDetails
                               ?.map((e) => e.toJson())
                               .toList())!,
@@ -176,6 +178,8 @@ class InternationalSalesReportView
 
                 ),
               ),
+
+
               /// bottom common buttons
             ],
           ),
