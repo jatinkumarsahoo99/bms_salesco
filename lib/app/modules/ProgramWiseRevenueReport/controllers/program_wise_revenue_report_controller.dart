@@ -2,6 +2,7 @@ import 'package:bms_salesco/app/data/DropDownValue.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:pluto_grid/pluto_grid.dart';
 
 import '../../../../widgets/CheckBox/multi_check_box.dart';
 import '../../../../widgets/DataGridShowOnly.dart';
@@ -44,6 +45,8 @@ class ProgramWiseRevenueReportController extends GetxController {
 
   var isDetails = true.obs;
   bool val = true;
+
+  PlutoGridStateManager? dataTableGrid;
 
   Future<void> getRadioStatus(String name) async {
     print(name);

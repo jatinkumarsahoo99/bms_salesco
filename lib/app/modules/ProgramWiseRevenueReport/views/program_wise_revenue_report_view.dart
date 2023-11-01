@@ -207,6 +207,13 @@ class ProgramWiseRevenueReportView extends StatelessWidget {
               child: controller.dataTableList.value.isEmpty
                   ? null
                   : DataGridFromMap(
+                      onload: (event) {
+                        controller.dataTableGrid = event.stateManager;
+                      },
+                      colorCallback: (row) => row.row.cells.containsValue(
+                              controller.dataTableGrid?.currentCell)
+                          ? Colors.deepPurple.shade100
+                          : Colors.white,
                       mapData: controller.dataTableList.value.map((e) {
                         /// details
                         if (controller.val && e['scheduletime'] != null) {
@@ -220,7 +227,7 @@ class ProgramWiseRevenueReportView extends StatelessWidget {
                                   .parse(e['telecasttime']));
                         }
                         if (controller.val && e['scheduledate'] != null) {
-                          e['scheduledate'] = DateFormat('dd-MM-yyyy').format(
+                          e['scheduledate'] = DateFormat('MM-dd-yyyy').format(
                               DateFormat('dd/MM/yyyy hh:mm:ss')
                                   .parse(e['scheduledate']));
                         }

@@ -778,6 +778,8 @@ class ApiFactory {
       "$BASE_URL/api/EDIMapping/GetChannelMasterSearch?TextChannelMaster=";
   static String get EDI_MAPPING_POPULATE_ENTITY =>
       "$BASE_URL/api/EDIMapping/GetPopulateEntity";
+  static String get EDI_MAPPING_UPDATE_SOFT_CLIENT =>
+      "$BASE_URL/api/EDIMapping/Updatesoftclient";
 
   ///////////////////////////////////// DealRecoSummary ////////////////////////////////////////////////////
 
