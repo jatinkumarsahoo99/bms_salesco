@@ -262,6 +262,10 @@ class AppPages {
       page: () => AuthGuard(childName: _Paths.BOOKINGS_AGAINST_P_D_C),
     ),
     GetPage(
+      name: _Paths.P_D_C_CHEQUES,
+      page: () => AuthGuard(childName: _Paths.P_D_C_CHEQUES),
+    ),
+    GetPage(
       name: _Paths.DEALVS_R_O_DATA_REPORT,
       page: () => AuthGuard(childName: _Paths.DEALVS_R_O_DATA_REPORT),
     ),

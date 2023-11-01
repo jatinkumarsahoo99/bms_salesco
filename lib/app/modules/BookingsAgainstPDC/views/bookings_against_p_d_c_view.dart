@@ -84,10 +84,30 @@ class BookingsAgainstPDCView extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 8),
+                  const Align(
+                    alignment: Alignment.center,
+                    child: Text(
+                      "Booking Details",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 20,
+                        decoration: TextDecoration.underline,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 8),
                   Expanded(
                     child: Obx(() {
                       return DataGridFromMap3(
-                          mapData: controller.dataTableList.value);
+                        mapData: controller.dataTableList.value,
+                        colorCallback: (cell) =>
+                            controller.sm?.currentRow == (cell.row)
+                                ? Colors.deepPurple.shade100
+                                : Colors.white,
+                        onload: (sm) {
+                          controller.sm = sm.stateManager;
+                        },
+                      );
                     }),
                   ),
                   Get.find<HomeController>()
