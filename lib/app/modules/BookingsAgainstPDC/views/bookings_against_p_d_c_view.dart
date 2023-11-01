@@ -1,4 +1,5 @@
 import 'package:bms_salesco/app/controller/HomeController.dart';
+import 'package:bms_salesco/app/providers/ApiFactory.dart';
 import 'package:bms_salesco/app/providers/extensions/screen_size.dart';
 import 'package:bms_salesco/app/routes/app_pages.dart';
 import 'package:bms_salesco/widgets/FormButton.dart';
@@ -16,15 +17,17 @@ class BookingsAgainstPDCView extends StatelessWidget {
   const BookingsAgainstPDCView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(BookingsAgainstPDCController());
     return Scaffold(
       body: SizedBox(
         width: context.devicewidth,
         height: context.deviceheight,
         child: Padding(
           padding: const EdgeInsets.all(10.0),
-          child: GetBuilder(
-            init: Get.put(BookingsAgainstPDCController()),
-            builder: (controller) {
+          child: GetBuilder<BookingsAgainstPDCController>(
+            init: controller,
+            id: 'rootUI',
+            builder: (_) {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -37,60 +40,60 @@ class BookingsAgainstPDCView extends StatelessWidget {
                         GlobalKey(),
                         context,
                         title: "Client",
-                        url: 'url',
-                        onchanged: (p0) {},
+                        url: ApiFactory.BOOKING_AGAINST_PDC_GET_CLIENT,
+                        onchanged: controller.handleOnChangeClient,
                         width: context.devicewidth * .2,
+                        parseKeyForKey: "ClientCode",
+                        parseKeyForValue: "ClientName",
+                        autoFocus: true,
+                        selectedValue: controller.selctedClient,
                       ),
-                      DropDownField.formDropDown1Width(
-                        context,
-                        [],
-                        (val) {},
-                        "Agency",
-                        .2,
-                        paddingLeft: 0,
-                      ),
+                      Obx(() {
+                        return DropDownField.formDropDown1WidthMap(
+                          controller.agencyList.value,
+                          (val) => controller.selctedAgency = val,
+                          "Agency",
+                          .2,
+                          selected: controller.selctedAgency,
+                        );
+                      }),
                       InputFields.numbers(
+                        focusNode: controller.activityMonthFN,
                         hintTxt: "Activity Month",
-                        controller: TextEditingController(text: '0'),
+                        controller: controller.activityMonthCTR,
                         isNegativeReq: false,
                         inputformatters: [
                           FilteringTextInputFormatter.allow(
                               RegExp(r'^\d+\.?\d{0,4}'))
                         ],
                       ),
-                      DropDownField.formDropDown1Width(
-                        context,
-                        [],
-                        (val) {},
-                        "Cheque No",
-                        .2,
-                        paddingLeft: 0,
-                      ),
+                      Obx(() {
+                        return DropDownField.formDropDown1WidthMap(
+                          controller.chequeList.value,
+                          (val) => controller.selectedCheque = val,
+                          "Cheque No",
+                          .2,
+                          selected: controller.selectedCheque,
+                          inkWellFocusNode: controller.chequeFN,
+                        );
+                      }),
                       FormButton(
                         btnText: "Get Bookings",
-                        callback: () {},
+                        callback: controller.getBookingList,
                       ),
                     ],
                   ),
+                  const SizedBox(height: 8),
                   Expanded(
                     child: Obx(() {
-                      return Container(
-                        margin: const EdgeInsets.symmetric(vertical: 16),
-                        decoration: controller.dataTableList.value.isEmpty
-                            ? BoxDecoration(
-                                border: Border.all(color: Colors.grey))
-                            : null,
-                        child: controller.dataTableList.value.isEmpty
-                            ? null
-                            : DataGridFromMap(
-                                mapData: controller.dataTableList.value),
-                      );
+                      return DataGridFromMap3(
+                          mapData: controller.dataTableList.value);
                     }),
                   ),
                   Get.find<HomeController>()
                       .getCommonButton<BookingsAgainstPDCController>(
                     Routes.BOOKINGS_AGAINST_P_D_C,
-                    (formName) {},
+                    (btnName) {},
                   )
                 ],
               );

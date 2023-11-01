@@ -1400,6 +1400,7 @@ class InputFields {
     bool isNegativeReq = true,
     int? maxchar,
     bool? isEnabled,
+    FocusNode? focusNode,
   }) {
     // var data = 0.obs;
     var fN = FocusNode();
@@ -1506,6 +1507,7 @@ class InputFields {
                             ),
                             InkWell(
                               canRequestFocus: (isEnabled ?? true),
+                              focusNode: focusNode,
                               child: Icon(
                                 Icons.arrow_drop_down_sharp,
                                 size: 25,
@@ -1562,7 +1564,7 @@ class InputFields {
     // var data = 0.obs;
     var fN = FocusNode();
     final iconColor =
-    (isEnabled ?? true) ? Colors.deepPurpleAccent : Colors.grey;
+        (isEnabled ?? true) ? Colors.deepPurpleAccent : Colors.grey;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -1590,16 +1592,16 @@ class InputFields {
                     if (int.tryParse(controller.text) != 1 &&
                         int.tryParse(controller.text) != 0) {
                       controller.text =
-                      "${(int.tryParse(controller.text) ?? 1) - 1}";
+                          "${(int.tryParse(controller.text) ?? 1) - 1}";
                     }
                   } else {
                     controller.text =
-                    "${(int.tryParse(controller.text) ?? 1) - 1}";
+                        "${(int.tryParse(controller.text) ?? 1) - 1}";
                   }
                 }
                 if (keyEvent.isKeyPressed(LogicalKeyboardKey.arrowUp)) {
                   controller.text =
-                  "${(int.tryParse(controller.text) ?? 0) + 1}";
+                      "${(int.tryParse(controller.text) ?? 0) + 1}";
                 }
               }
             },
@@ -1643,55 +1645,55 @@ class InputFields {
                   ),
                   suffixIcon: showbtn!
                       ? Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      InkWell(
-                        canRequestFocus: isEnabled ?? true,
-                        child: Icon(
-                          Icons.arrow_drop_up_sharp,
-                          size: 25,
-                          color: iconColor,
-                        ),
-                        onTap: () {
-                          if (isEnabled ?? true) {
-                            controller.text =
-                            "${(int.tryParse(controller.text) ?? 0) + 1}";
-                            onchanged!(controller.text);
-                          } else {
-                            print("Print tap");
-                          }
-                        },
-                      ),
-                      InkWell(
-                        canRequestFocus: (isEnabled ?? true),
-                        child: Icon(
-                          Icons.arrow_drop_down_sharp,
-                          size: 25,
-                          color: iconColor,
-                        ),
-                        onTap: () {
-                          if (isEnabled ?? true) {
-                            if (!isNegativeReq) {
-                              print("Click on negative>>>" +
-                                  controller.text);
-                              if (controller.text != "0") {
-                                controller.text =
-                                "${(int.tryParse(controller.text) ?? 1) - 1}";
-                                onchanged!(controller.text);
-                              }
-                            } else {
-                              controller.text =
-                              "${(int.tryParse(controller.text) ?? 1) - 1}";
-                              onchanged!(controller.text);
-                            }
-                          } else {
-                            print("Print tap");
-                          }
-                        },
-                      ),
-                    ],
-                  )
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            InkWell(
+                              canRequestFocus: isEnabled ?? true,
+                              child: Icon(
+                                Icons.arrow_drop_up_sharp,
+                                size: 25,
+                                color: iconColor,
+                              ),
+                              onTap: () {
+                                if (isEnabled ?? true) {
+                                  controller.text =
+                                      "${(int.tryParse(controller.text) ?? 0) + 1}";
+                                  onchanged!(controller.text);
+                                } else {
+                                  print("Print tap");
+                                }
+                              },
+                            ),
+                            InkWell(
+                              canRequestFocus: (isEnabled ?? true),
+                              child: Icon(
+                                Icons.arrow_drop_down_sharp,
+                                size: 25,
+                                color: iconColor,
+                              ),
+                              onTap: () {
+                                if (isEnabled ?? true) {
+                                  if (!isNegativeReq) {
+                                    print("Click on negative>>>" +
+                                        controller.text);
+                                    if (controller.text != "0") {
+                                      controller.text =
+                                          "${(int.tryParse(controller.text) ?? 1) - 1}";
+                                      onchanged!(controller.text);
+                                    }
+                                  } else {
+                                    controller.text =
+                                        "${(int.tryParse(controller.text) ?? 1) - 1}";
+                                    onchanged!(controller.text);
+                                  }
+                                } else {
+                                  print("Print tap");
+                                }
+                              },
+                            ),
+                          ],
+                        )
                       : SizedBox(),
                 ),
                 controller: controller,
@@ -3085,7 +3087,6 @@ class UpperCaseTextFormatter extends TextInputFormatter {
           text: newValue.text.toUpperCase(), selection: newValue.selection);
 }
 
-
 class NumberTextInputFormatter extends TextInputFormatter {
   @override
   TextEditingValue formatEditUpdate(
@@ -3114,4 +3115,3 @@ class NumberTextInputFormatter extends TextInputFormatter {
     }
   }
 }
-

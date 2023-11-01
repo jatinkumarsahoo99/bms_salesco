@@ -62,6 +62,7 @@ class InternationalSalesReportController extends GetxController {
         json: postData,
         fun: ( map) {
           Get.back();
+          print(">>>>>>>>mapData"+map.toString());
           if(map is Map && map.containsKey('report') && map['report'] != null){
             if(map['report'].containsKey('internationalDetails') && map['report'].containsKey('internationalSalesSummary')
             ){

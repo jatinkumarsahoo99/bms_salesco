@@ -43,87 +43,82 @@ class DealRecoSummaryView extends GetView<DealRecoSummaryController> {
                 SizedBox(
                   height: 5,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 8.0),
-                      child: FocusTraversalGroup(
-                        policy: OrderedTraversalPolicy(),
-                        child: Column(
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: FocusTraversalGroup(
+                    policy: OrderedTraversalPolicy(),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Container(
-                              width: MediaQuery.of(context).size.width*0.55,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Obx(()=>DropDownField.formDropDown1WidthMap(
-                                    controllerX.locationList.value??[],
-                                        (value) {
-                                      controllerX.selectedLocation = value;
-                                      controllerX.fetchClient(value.value??"");
-                                    }, "Location", .26,
-                                    isEnable: controllerX.isEnable,
-                                    selected: controllerX.selectedLocation,
-                                    dialogHeight: Get.height * .3,
-                                    inkWellFocusNode: controllerX.locationNode,
-                                    autoFocus: true,),),
-                                  Obx(()=>DropDownField.formDropDown1WidthMap(
-                                    controllerX.channelList.value??[],
-                                        (value) {
-                                      controllerX.selectedChannel = value;
-                                    }, "Channel", .26,
-                                    isEnable: controllerX.isEnable,
-                                    selected: controllerX.selectedChannel,
-                                    dialogHeight: Get.height * .4,
-                                    inkWellFocusNode: controllerX.channelNode,
-                                    autoFocus: false,),),
-                                ],
-                              ),
-                            ),
-                            Container(
-                              width: MediaQuery.of(context).size.width*0.55,
-                              child: Obx(()=>DropDownField.formDropDown1WidthMap(
-                                controllerX.clientList.value??[],
-                                    (value) {
-                                  controllerX.selectedClient = value;
-                                  // controllerX.fetchAgency();
-                                  // controllerX.fetchADealNo();
-                                }, "Client", .55,
-                                isEnable: controllerX.isEnable,
-                                selected: controllerX.selectedClient,
-                                dialogHeight: Get.height * .4,
-                                inkWellFocusNode:controllerX.clientNode ,
-                                onFocusChange: (val){
-                                  if(!val){
-                                    if(controllerX.selectedClient?.value != null){
-                                      controllerX.selectedAgency = Rxn<DropDownValue>(null);
-                                      controllerX.selectedDealNo  = null;
-                                      controllerX.selectedAgency?.refresh();
-                                      controllerX.fetchAgency();
-                                      controllerX.fetchADealNo();
-                                    }
+                            Obx(()=>DropDownField.formDropDown1WidthMap(
+                              controllerX.locationList.value??[],
+                                  (value) {
+                                controllerX.selectedLocation = value;
+                                controllerX.fetchClient(value.value??"");
+                              }, "Location", .22,
+                              isEnable: controllerX.isEnable,
+                              selected: controllerX.selectedLocation,
+                              dialogHeight: Get.height * .3,
+                              inkWellFocusNode: controllerX.locationNode,
+                              autoFocus: true,),),
+                            Obx(()=>DropDownField.formDropDown1WidthMap(
+                              controllerX.channelList.value??[],
+                                  (value) {
+                                controllerX.selectedChannel = value;
+                              }, "Channel", .22,
+                              isEnable: controllerX.isEnable,
+                              selected: controllerX.selectedChannel,
+                              dialogHeight: Get.height * .4,
+                              inkWellFocusNode: controllerX.channelNode,
+                              autoFocus: false,),),
+                            Obx(()=>DropDownField.formDropDown1WidthMap(
+                              controllerX.clientList.value??[],
+                                  (value) {
+                                controllerX.selectedClient = value;
+                                // controllerX.fetchAgency();
+                                // controllerX.fetchADealNo();
+                              }, "Client", .22,
+                              isEnable: controllerX.isEnable,
+                              selected: controllerX.selectedClient,
+                              dialogHeight: Get.height * .4,
+                              inkWellFocusNode:controllerX.clientNode ,
+                              onFocusChange: (val){
+                                if(!val){
+                                  if(controllerX.selectedClient?.value != null){
+                                    controllerX.selectedAgency = Rxn<DropDownValue>(null);
+                                    controllerX.selectedDealNo  = null;
+                                    controllerX.selectedAgency?.refresh();
+                                    controllerX.fetchAgency();
+                                    controllerX.fetchADealNo();
                                   }
-                                },
-                                autoFocus: false,),),
-                            ),
-                            Container(
-                              width: MediaQuery.of(context).size.width*0.55,
-                              child: Obx(()=>DropDownField.formDropDown1WidthMap(
-                                controllerX.agencyList.value??[],
-                                    (value) {
-                                  controllerX.selectedAgency?.value = value;
+                                }
+                              },
+                              autoFocus: false,),),
+                            Obx(()=>DropDownField.formDropDown1WidthMap(
+                              controllerX.agencyList.value??[],
+                                  (value) {
+                                controllerX.selectedAgency?.value = value;
 
-                                }, "Agency", .55,
-                                isEnable: controllerX.isEnable,
-                                selected: controllerX.selectedAgency?.value,
-                                dialogHeight: Get.height * .3,
-                                inkWellFocusNode: controllerX.agencyNode,
-                                autoFocus: false,),),
-                            ),
-                            Container(
-                              width:MediaQuery.of(context).size.width*0.55,
+                              }, "Agency", .22,
+                              isEnable: controllerX.isEnable,
+                              selected: controllerX.selectedAgency?.value,
+                              dialogHeight: Get.height * .3,
+                              inkWellFocusNode: controllerX.agencyNode,
+                              autoFocus: false,),),
+
+                          ],
+                        ),
+                        SizedBox(
+                          height: 6,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            SizedBox(
+                              width: Get.width*0.22,
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
@@ -150,6 +145,15 @@ class DealRecoSummaryView extends GetView<DealRecoSummaryController> {
                                     widthRation: .1,
                                     isEnable: controllerX.isEnable,
                                   ),
+                                ],
+                              ),
+                            ),
+
+                            SizedBox(
+                              width: Get.width*0.22,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
                                   DateWithThreeTextField(
                                     title: "From Date",
                                     mainTextController: controllerX.fromDateController,
@@ -162,71 +166,78 @@ class DealRecoSummaryView extends GetView<DealRecoSummaryController> {
                                     widthRation: .1,
                                     isEnable: controllerX.isEnable,
                                   ),
-                                ],),
+                                ],
+                              ),
                             ),
 
-                          ],
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      width: size.width*0.017 ,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 8.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width*0.09,
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                  top: 14.0, left: 10, right: 10),
-                              child: FormButtonWrapper(
-                                btnText: "Generate",
-                                callback: () {
-                                  controllerX.callGenerate();
-                                },
-                                showIcon: false,
+                            SizedBox(
+                              width: Get.width*0.22,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  SizedBox(
+                                    width: Get.width*0.1,
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                          top: 14.0, left: 0, right: 0),
+                                      child: FormButtonWrapper(
+                                        btnText: "Generate",
+                                        callback: () {
+                                          controllerX.callGenerate();
+                                        },
+                                        showIcon: false,
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: Get.width*0.1,
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                          top: 14.0, left: 0, right: 0),
+                                      child: FormButtonWrapper(
+                                        btnText: "Clear",
+                                        callback: () {
+                                          Get.delete<DealRecoSummaryController>();
+                                          Get.find<HomeController>().clearPage1();
+                                        },
+                                        showIcon: false,
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                          ),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width*0.09,
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                  top: 14.0, left: 10, right: 10),
-                              child: FormButtonWrapper(
-                                btnText: "Clear",
-                                callback: () {
-                                  Get.delete<DealRecoSummaryController>();
-                                  Get.find<HomeController>().clearPage1();
-                                },
-                                showIcon: false,
+
+                            SizedBox(
+                              width: Get.width*0.22,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  SizedBox(
+                                    width: Get.width*0.1,
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                          top: 14.0, left: 0, right: 0),
+                                      child: FormButtonWrapper(
+                                        btnText: "Exit",
+                                        callback: () {
+                                          Get.delete<DealRecoSummaryController>();
+                                        },
+                                        showIcon: false,
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: Get.width*0.1,
+                                  )
+                                ],
                               ),
                             ),
-                          ),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width*0.09,
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                  top: 14.0, left: 10, right: 10),
-                              child: FormButtonWrapper(
-                                btnText: "Exit",
-                                callback: () {
-                                  Get.delete<DealRecoSummaryController>();
-                                },
-                                showIcon: false,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            width: MediaQuery.of(context).size.width*0.1,
-                          ),
-                        ],
-                      ),
+                          ],),
+
+                      ],
                     ),
-                  ],
+                  ),
                 ),
                 Expanded(
                   flex: 9,
