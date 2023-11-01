@@ -228,6 +228,9 @@ class ApiFactory {
           locationCode, channelCode, telecastDate) =>
       "$BASE_URL/api/EDIRoBooking/SpotFPCStart?LocationCode=$locationCode&ChannelCode=$channelCode&TelecastDate=$telecastDate";
 
+  static String EDI_RO_LEAVE_BRAND(brandCode) =>
+      "$BASE_URL/api/EDIRoBooking/OnLeaveBrandName?BrandCode=$brandCode";
+
 ///////////////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////// Create Break Pattern ///////////////////////////////////////////
@@ -775,6 +778,8 @@ class ApiFactory {
       "$BASE_URL/api/EDIMapping/GetChannelMasterSearch?TextChannelMaster=";
   static String get EDI_MAPPING_POPULATE_ENTITY =>
       "$BASE_URL/api/EDIMapping/GetPopulateEntity";
+  static String get EDI_MAPPING_UPDATE_SOFT_CLIENT =>
+      "$BASE_URL/api/EDIMapping/Updatesoftclient";
 
   ///////////////////////////////////// DealRecoSummary ////////////////////////////////////////////////////
 
