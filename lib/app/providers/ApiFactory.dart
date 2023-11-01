@@ -1224,6 +1224,19 @@ class ApiFactory {
   ///
   ///
   ///
+  /////////////////////////////// PDC Cheques Start//////////////////////
+  static String PDC_CHEQUES_ON_LOAD(int chequeID) =>
+      "$BASE_URL/api/ClientPDC/OnLoadData?ChequeId=$chequeID";
+  static String PDC_CHEQUES_GET_AGENCY(String client) =>
+      "$BASE_URL/api/ClientPDC/GetAgencyCode?ClientCode=$client";
+  static String get PDC_CHEQUES_CLIENT =>
+      "$BASE_URL/api/ClientPDC/GetClientCode?clientName=";
+  /////////////////////////////// PDC Cheques PDC End//////////////////////
+  ///
+  ///
+  ///
+  ///
+  ///
 ////////////////////////// Amagi Spots Replacement ////////////////////////////////////
   static String AMAGI_SPOT_REPLACEMENT_GET_LOCATION() =>
       "$BASE_URL/api/AmagiSpotsReplacement/GetLocation";

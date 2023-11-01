@@ -324,9 +324,14 @@ class HomeController extends GetxController {
                               if (handleAutoClear &&
                                   controller.buttons?[index]['name'] ==
                                       "Clear") {
-                                Get.delete<T>().then((value) {
-                                  clearPage1();
-                                });
+                                if (RoutesList.listRoutes.contains(frmName)) {
+                                  Get.delete<T>().then((value) {
+                                    clearPage1();
+                                  });
+                                } else {
+                                  print(
+                                      "Please add your route in RoutesList Class");
+                                }
                               }
                             },
                 )

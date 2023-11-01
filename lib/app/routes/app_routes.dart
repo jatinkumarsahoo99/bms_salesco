@@ -66,6 +66,7 @@ abstract class RoutesList {
   static List<String> listRoutes = [
     _Paths.HOME,
     _Paths.BOOKINGS_AGAINST_P_D_C,
+    _Paths.P_D_C_CHEQUES,
     _Paths.CHANGE_R_O_NUMBER,
     _Paths.SAME_DAY_COLLECTION,
     _Paths.ASRUN_DETAILS_REPORT,
