@@ -228,6 +228,9 @@ class ApiFactory {
           locationCode, channelCode, telecastDate) =>
       "$BASE_URL/api/EDIRoBooking/SpotFPCStart?LocationCode=$locationCode&ChannelCode=$channelCode&TelecastDate=$telecastDate";
 
+  static String EDI_RO_LEAVE_BRAND(brandCode) =>
+      "$BASE_URL/api/EDIRoBooking/OnLeaveBrandName?BrandCode=$brandCode";
+
 ///////////////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////// Create Break Pattern ///////////////////////////////////////////
@@ -775,6 +778,8 @@ class ApiFactory {
       "$BASE_URL/api/EDIMapping/GetChannelMasterSearch?TextChannelMaster=";
   static String get EDI_MAPPING_POPULATE_ENTITY =>
       "$BASE_URL/api/EDIMapping/GetPopulateEntity";
+  static String get EDI_MAPPING_UPDATE_SOFT_CLIENT =>
+      "$BASE_URL/api/EDIMapping/Updatesoftclient";
 
   ///////////////////////////////////// DealRecoSummary ////////////////////////////////////////////////////
 
@@ -1214,6 +1219,19 @@ class ApiFactory {
           String agency, String activityMonth, String chequeNo) =>
       "$BASE_URL/api/BookingsAgainstPDC/BookingList?ClientCode=$client&AgencyCode=$agency&ActivityMonth=$activityMonth&ChequeNo=$chequeNo";
   /////////////////////////////// Booking against PDC End//////////////////////
+  ///
+  ///
+  ///
+  ///
+  ///
+  /////////////////////////////// PDC Cheques Start//////////////////////
+  static String PDC_CHEQUES_ON_LOAD(int chequeID) =>
+      "$BASE_URL/api/ClientPDC/OnLoadData?ChequeId=$chequeID";
+  static String PDC_CHEQUES_GET_AGENCY(String client) =>
+      "$BASE_URL/api/ClientPDC/GetAgencyCode?ClientCode=$client";
+  static String get PDC_CHEQUES_CLIENT =>
+      "$BASE_URL/api/ClientPDC/GetClientCode?clientName=";
+  /////////////////////////////// PDC Cheques PDC End//////////////////////
   ///
   ///
   ///

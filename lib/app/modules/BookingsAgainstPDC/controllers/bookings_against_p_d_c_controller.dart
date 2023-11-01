@@ -6,6 +6,7 @@ import 'package:bms_salesco/widgets/LoadingDialog.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:pluto_grid/pluto_grid.dart';
 
 class BookingsAgainstPDCController extends GetxController {
   var dataTableList = [].obs;
@@ -13,11 +14,7 @@ class BookingsAgainstPDCController extends GetxController {
   var agencyList = <DropDownValue>[].obs, chequeList = <DropDownValue>[].obs;
   var activityMonthCTR = TextEditingController(text: '0');
   var activityMonthFN = FocusNode(), chequeFN = FocusNode();
-
-  @override
-  void onInit() {
-    super.onInit();
-  }
+  PlutoGridStateManager? sm;
 
   @override
   void onReady() {
@@ -115,6 +112,7 @@ class BookingsAgainstPDCController extends GetxController {
           fun: (resp) {
             Get.back();
             if (resp != null && resp['pdcList'] != null) {
+              selectedCheque = null;
               chequeList.clear();
               chequeList.addAll((resp['pdcList'] as List<dynamic>)
                   .map((e) => DropDownValue(

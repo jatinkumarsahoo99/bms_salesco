@@ -2,6 +2,7 @@ import 'package:bms_salesco/app/controller/HomeController.dart';
 import 'package:bms_salesco/app/controller/MainController.dart';
 import 'package:bms_salesco/app/data/DropDownValue.dart';
 import 'package:bms_salesco/app/data/PermissionModel.dart';
+import 'package:bms_salesco/app/providers/DataGridMenu.dart';
 import 'package:bms_salesco/app/providers/SizeDefine.dart';
 import 'package:bms_salesco/widgets/DateTime/DateWithThreeTextField.dart';
 import 'package:bms_salesco/widgets/FormButton.dart';
@@ -12,9 +13,11 @@ import 'package:bms_salesco/widgets/input_fields.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:pluto_grid/pluto_grid.dart';
 
 import '../../../../widgets/DataGridShowOnly.dart';
 import '../../../../widgets/floating_dialog.dart';
+import '../../../data/rowfilter.dart';
 import '../../../providers/Utils.dart';
 import '../controllers/edi_ro_booking_controller.dart';
 
@@ -123,7 +126,7 @@ class EdiRoBookingView extends StatelessWidget {
                               DropDownField.formDropDown1WidthMap(
                                 controller.agency.value,
                                 (data) {
-                                  controller.agencyLeave();
+                                  // controller.agencyLeave();
                                 },
                                 "Agency",
                                 .22,
@@ -145,6 +148,7 @@ class EdiRoBookingView extends StatelessWidget {
                               DropDownField.formDropDown1WidthMap(
                                   controller.brand.value, (data) {
                                 controller.selectedBrand = data;
+                                controller.brandLeave(data.key);
                               }, "Brand", .22,
                                   autoFocus: true,
                                   selected: controller.selectedBrand),
@@ -472,6 +476,9 @@ class EdiRoBookingView extends StatelessWidget {
                             mapData: controller.lstDgvDealEntriesList.value,
                             hideCode: false,
                             exportFileName: "EDI R.O. Booking",
+                            onload: (load) {
+                              controller.dgvDealEntriesGrid = load.stateManager;
+                            },
                           ),
                   ),
                 ),
@@ -480,7 +487,7 @@ class EdiRoBookingView extends StatelessWidget {
                     child: Container(
                       child: controller.lstDgvSpotsList.value.isEmpty
                           ? null
-                          : DataGridFromMap(
+                          : DataGridShowOnlyKeys(
                               mapData: controller.lstDgvSpotsList.value,
                               hideCode: false,
                               formatDate: false,
@@ -508,7 +515,7 @@ class EdiRoBookingView extends StatelessWidget {
                                   print(event.cell.column.field);
                                 } else if (event.cell.column.field.toString() ==
                                     'spoT_RATE') {
-                                  print(event.cell.column.field);
+                                  controller.doubleClickFilterGrid();
                                 } else if (event.cell.column.field.toString() ==
                                     'tapE_ID') {
                                   controller.tapeIdDilogBox();
