@@ -150,57 +150,68 @@ class AmagiStatusReportController extends GetxController {
         .format(DateFormat('dd-MM-yyyy').parse(date)));
   }
   retrieveData() {
-    LoadingDialog.call();
-    Map<String, dynamic> postData = {
-      "locationCode": selectedLocation?.key ?? "",
-      "channelcode": selectedChannel?.key ?? "",
-      "fromDate": convertDate(fromDateController.text)?? "",
-      "toDate": convertDate(toDateController.text)?? "",
-      "optDayWise": isDailyWise,
-      "optTimeBand": isTimeBand,
-      "optServiced": isServiced,
-      "optyield": isYield,
-      "optData": isData
-    };
-    Get.find<ConnectorControl>().POSTMETHOD(
-        api: ApiFactory.Amagi_Status_Report_RetrieveData,
-        json: postData,
-        fun: (map) {
-          closeDialogIfOpen();
-          if (map is Map &&
-              map.containsKey('response') &&
-              map['response'] != null &&  map['response'].length >0) {
-            responseData = {};
-            // responseData = map as Map<String, dynamic>;
-            List<Map<String, dynamic>> mapData = [];
-            for (Map<String, dynamic> element in map['response']) {
-              Map<String, dynamic> mapDa = {};
-              element.forEach((key, value) {
-                String k = key.toString().trim().replaceAll("\n", " ");
-                mapDa[k.capitalizeFirst!] = value;
-              });
-              mapData.add(mapDa);
-            }
-            responseData={'response': mapData??[]};
-
-            for(int j=0;j<responseData['response'].length ;j++){
-              List<String> keys = responseData['response'][j].keys.toList();
-              // print(">>>keys"+keys.toString());
-              for(int i=0;i<keys.length;i++){
-                if(
-                    responseData['response'][j][(keys[i]??"")].toString().trim() == "{}"){
-                  // print(">>>>>>>>map${responseData['response'][j][keys[i]]}");
-                  responseData['response'][j][(keys[i]??"")] = "";
+    if(selectedLocation == null){
+      LoadingDialog.showErrorDialog("Please select location");
+    }else if(selectedChannel == null){
+      LoadingDialog.showErrorDialog("Please select channel");
+    }else{
+      try{
+        LoadingDialog.call();
+        Map<String, dynamic> postData = {
+          "locationCode": selectedLocation?.key ?? "",
+          "channelcode": selectedChannel?.key ?? "",
+          "fromDate": convertDate(fromDateController.text)?? "",
+          "toDate": convertDate(toDateController.text)?? "",
+          "optDayWise": isDailyWise,
+          "optTimeBand": isTimeBand,
+          "optServiced": isServiced,
+          "optyield": isYield,
+          "optData": isData
+        };
+        Get.find<ConnectorControl>().POSTMETHOD(
+            api: ApiFactory.Amagi_Status_Report_RetrieveData,
+            json: postData,
+            fun: (map) {
+              closeDialogIfOpen();
+              if (map is Map &&
+                  map.containsKey('response') &&
+                  map['response'] != null &&  map['response'].length >0) {
+                responseData = {};
+                // responseData = map as Map<String, dynamic>;
+                List<Map<String, dynamic>> mapData = [];
+                for (Map<String, dynamic> element in map['response']) {
+                  Map<String, dynamic> mapDa = {};
+                  element.forEach((key, value) {
+                    String k = key.toString().trim().replaceAll("\n", " ");
+                    mapDa[k.capitalizeFirst!] = value;
+                  });
+                  mapData.add(mapDa);
                 }
-              }
-            }
+                responseData={'response': mapData??[]};
 
-            update(['grid']);
-          } else {
-            responseData = {'response': []};
-            update(['grid']);
-          }
-        });
+                for(int j=0;j<responseData['response'].length ;j++){
+                  List<String> keys = responseData['response'][j].keys.toList();
+                  // print(">>>keys"+keys.toString());
+                  for(int i=0;i<keys.length;i++){
+                    if(
+                    responseData['response'][j][(keys[i]??"")].toString().trim() == "{}"){
+                      // print(">>>>>>>>map${responseData['response'][j][keys[i]]}");
+                      responseData['response'][j][(keys[i]??"")] = "";
+                    }
+                  }
+                }
+
+                update(['grid']);
+              } else {
+                responseData = {'response': []};
+                update(['grid']);
+              }
+            });
+      }catch(e){
+        closeDialogIfOpen();
+      }
+    }
+
   }
 
 

@@ -90,7 +90,7 @@ class DataGridFromMap extends StatelessWidget {
     List<PlutoRow> segRows = [];
     if (showSrNo!) {
       segColumn.add(PlutoColumn(
-          title: "No.",
+          title: "Sr. No.",
           enableRowChecked: false,
           readOnly: true,
           enableSorting: enableSort,

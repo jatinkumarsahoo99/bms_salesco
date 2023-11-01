@@ -95,7 +95,7 @@ PlutoGridConfiguration plutoGridConfiguration({
         enterKeyAction: PlutoGridEnterKeyAction.none,
         tabKeyAction: PlutoGridTabKeyAction.moveToNextOnEdge,
         scrollbar: const PlutoGridScrollbarConfig(
-            draggableScrollbar: true, isAlwaysShown: true, hoverWidth: 15));
+            draggableScrollbar: true, isAlwaysShown: true, hoverWidth: 15,scrollbarThickness: 10,scrollbarRadius: Radius.circular(5)));
 
 PlutoGridConfiguration plutoGridConfiguration2({
   Function(PlutoGridCellPosition index, bool isSpace)? actionOnPress,

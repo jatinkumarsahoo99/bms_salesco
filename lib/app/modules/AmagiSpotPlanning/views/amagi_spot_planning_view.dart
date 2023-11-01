@@ -119,9 +119,10 @@ class AmagiSpotPlanningView extends GetView<AmagiSpotPlanningController> {
                         return (controllerX.responseData['report'].length > 0)?
                         Container(
                           child: DataGridFromMap(
-                            showSrNo: false,
+                            showSrNo: true,
                             hideCode: false,
                             formatDate: false,
+                            columnAutoResize:false ,
                             widthSpecificColumn:  Get.find<HomeController>().getGridWidthByKey(key: controllerX.getTableNo(controllerX.selectValue.value)?? "tbl1",userGridSettingList: controllerX.userGridSetting1),
                             exportFileName: "Amagi Spot Planning",
                             mode: PlutoGridMode.selectWithOneTap,
