@@ -139,7 +139,7 @@ class InternationalSalesReportView
                           mode: PlutoGridMode.normal,
                           colorCallback: (PlutoRowColorContext colorData){
                             Color color = Colors.white;
-                            if(controller.stateManager1?.currentRowIdx == colorData.rowIdx){
+                            if(controllerX.stateManager1?.currentRowIdx == colorData.rowIdx){
                               color = Color(0xFFD1C4E9);
                             }
                             else{
@@ -171,7 +171,7 @@ class InternationalSalesReportView
                           csvFormat: true,
                           colorCallback: (PlutoRowColorContext colorData){
                             Color color = Colors.white;
-                            if(controller.stateManager2?.currentRowIdx == colorData.rowIdx){
+                            if(controllerX.stateManager2?.currentRowIdx == colorData.rowIdx){
                               color = Color(0xFFD1C4E9);
                             }
                             else{

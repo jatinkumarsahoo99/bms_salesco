@@ -190,8 +190,6 @@ class AmagiSpotPlanningController extends GetxController {
                 }else{
                   mapDa[k] = value;
                 }
-
-
               });
               mapData.add(mapDa);
             }
