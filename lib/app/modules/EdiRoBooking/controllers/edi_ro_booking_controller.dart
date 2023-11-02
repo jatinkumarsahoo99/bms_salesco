@@ -60,12 +60,16 @@ class EdiRoBookingController extends GetxController {
   var linkDealNO = "".obs;
   var linkDealName = "".obs;
   bool showGstPopUp = true;
+  bool pdcDetailsPopUP = true;
+
   var isShowLink = false.obs;
   var lstXmlDtList = [].obs;
   var lstDgvSpotsList = [].obs;
   var fpcStartTabelList = [].obs;
   var brandTabelList = [].obs;
   var tempList = [].obs;
+  var filtterValue = '';
+  var selectedIndex = 0.obs;
 
   PlutoGridStateManager? dvgSpotGrid;
 
@@ -402,15 +406,7 @@ class EdiRoBookingController extends GetxController {
               lstDgvLinkedDealsList.value = map['infoLeaveOnDealNumber']
                       ['displayDealDetails']['lstDgvLinkedDeals'] ??
                   "";
-//LD Button
-              lDButton.value = true;
 
-              linkDealNO.value = map['infoLeaveOnDealNumber']['showLinkDeal']
-                      ['linkDealNo'] ??
-                  "";
-              linkDealName.value = map['infoLeaveOnDealNumber']['showLinkDeal']
-                      ['linkDealName'] ??
-                  "";
               //GST Plants
               gstNoTEC.text = map["infoLeaveOnDealNumber"]['gstRegNo'] ?? "";
               map["infoLeaveOnDealNumber"]['gstPlantList'].forEach((e) {
@@ -459,6 +455,26 @@ class EdiRoBookingController extends GetxController {
                     ));
               }
               isShowLink.value = true;
+              //LD Button
+              linkDealNO.value = map['infoLeaveOnDealNumber']['showLinkDeal']
+                      ['linkDealNo'] ??
+                  "";
+              linkDealName.value = map['infoLeaveOnDealNumber']['showLinkDeal']
+                      ['linkDealName'] ??
+                  "";
+              if (linkDealName.value == null) {
+                lDButton.value = true;
+              }
+              //PDC
+              if (map['infoLeaveOnDealNumber']['displayDealDetails']
+                  ['grpPDC']) {
+                if (pdcDetailsPopUP) {
+                  pdcDetailsPopUP = false;
+                  LoadingDialog.callInfoMessage(map['infoLeaveOnDealNumber']
+                          ['displayDealDetails']['message'] ??
+                      "");
+                }
+              }
             }
           });
     } catch (e) {
@@ -872,29 +888,15 @@ class EdiRoBookingController extends GetxController {
     );
   }
 
-  doubleClickFilterGrid() {
-    print("Hashcode======================> ${dvgSpotGrid!.hashCode}");
-    if (Get.find<MainController>()
-        .filters1
-        .containsKey(dvgSpotGrid!.hashCode.toString())) {
-    } else {
-      Get.find<MainController>().filters1[dvgSpotGrid!.hashCode.toString()] =
-          RxList([]);
-    }
-    if (dvgSpotGrid!.currentCell != null) {
-      Get.find<MainController>()
-          .filters1[dvgSpotGrid!.hashCode.toString()]!
-          .add(RowFilter(
-              field: dvgSpotGrid!.currentCell!.column.field,
-              operator: "equal",
-              value: dvgSpotGrid!.currentCell!.value));
-    }
-
+  Future<void> clearFirstDataTableFilter(
+      PlutoGridStateManager stateManager) async {
+    Get.find<MainController>().filters1[stateManager.hashCode.toString()] =
+        RxList([]);
     var _filters =
-        Get.find<MainController>().filters1[dvgSpotGrid.hashCode.toString()] ??
+        Get.find<MainController>().filters1[stateManager.hashCode.toString()] ??
             [];
-    dvgSpotGrid!.setFilter((element) => true);
-    List<PlutoRow> _filterRows = dvgSpotGrid!.rows;
+    stateManager.setFilter((element) => true);
+    List<PlutoRow> _filterRows = stateManager.rows;
     for (var filter in _filters) {
       if (filter.operator == "equal") {
         _filterRows = _filterRows
@@ -908,7 +910,83 @@ class EdiRoBookingController extends GetxController {
             .toList();
       }
     }
-    dvgSpotGrid!.setFilter((element) => _filterRows.contains(element));
+    stateManager.setFilter((element) => _filterRows.contains(element));
+  }
+
+  Future<void> doubleClickFilterGrid(gridController) async {
+    print("Hashcode======================> ${gridController!.hashCode}");
+    if (Get.find<MainController>()
+        .filters1
+        .containsKey(gridController!.hashCode.toString())) {
+    } else {
+      Get.find<MainController>().filters1[gridController!.hashCode.toString()] =
+          RxList([]);
+    }
+    filtterValue = dvgSpotGrid!.currentCell!.value;
+    if (gridController!.currentCell != null) {
+      Get.find<MainController>()
+          .filters1[gridController!.hashCode.toString()]!
+          .add(RowFilter(
+              field: gridController!.currentCell!.column.field,
+              operator: "equal",
+              value: gridController!.currentCell!.value));
+    }
+
+    var _filters = Get.find<MainController>()
+            .filters1[gridController.hashCode.toString()] ??
+        [];
+    gridController!.setFilter((element) => true);
+    List<PlutoRow> _filterRows = gridController!.rows;
+    for (var filter in _filters) {
+      if (filter.operator == "equal") {
+        _filterRows = _filterRows
+            .where(
+                (element) => element.cells[filter.field]!.value == filter.value)
+            .toList();
+      } else {
+        _filterRows = _filterRows
+            .where(
+                (element) => element.cells[filter.field]!.value != filter.value)
+            .toList();
+      }
+    }
+    gridController!.setFilter((element) => _filterRows.contains(element));
+  }
+
+  Future<void> doubleClickFilterGrid1(gridController) async {
+    print("Hashcode======================> ${gridController!.hashCode}");
+    if (Get.find<MainController>()
+        .filters1
+        .containsKey(gridController!.hashCode.toString())) {
+    } else {
+      Get.find<MainController>().filters1[gridController!.hashCode.toString()] =
+          RxList([]);
+    }
+
+    if (gridController!.currentCell != null) {
+      Get.find<MainController>()
+          .filters1[gridController!.hashCode.toString()]!
+          .add(RowFilter(
+              field: "costPer10Sec", operator: "equal", value: filtterValue));
+    }
+
+    var _filters = Get.find<MainController>()
+            .filters1[gridController.hashCode.toString()] ??
+        [];
+    gridController!.setFilter((element) => true);
+    List<PlutoRow> _filterRows = gridController!.rows;
+    for (var filter in _filters) {
+      if (filter.operator == "equal") {
+        _filterRows = _filterRows.where((element) {
+          return element.cells[filter.field]!.value == filter.value;
+        }).toList();
+      } else {
+        _filterRows = _filterRows.where((element) {
+          return element.cells[filter.field]!.value == filter.value;
+        }).toList();
+      }
+    }
+    gridController!.setFilter((element) => _filterRows.contains(element));
   }
 
   @override

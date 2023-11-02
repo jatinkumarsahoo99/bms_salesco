@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:bms_salesco/app/controller/HomeController.dart';
 import 'package:bms_salesco/app/controller/MainController.dart';
 import 'package:bms_salesco/app/data/DropDownValue.dart';
@@ -479,8 +481,20 @@ class EdiRoBookingView extends StatelessWidget {
                             onload: (load) {
                               controller.dgvDealEntriesGrid = load.stateManager;
                             },
+                            colorCallback: (row) => row.row.cells.containsValue(
+                                    controller.dgvDealEntriesGrid?.currentCell)
+                                ? Colors.deepPurple.shade100
+                                : Colors.white,
+                            onRowDoubleTap: (event) {
+                              controller.dgvDealEntriesGrid
+                                  ?.setCurrentCell(event.cell, event.rowIdx);
+                              print(event.cell.column.field);
+                            },
                           ),
                   ),
+                ),
+                const SizedBox(
+                  height: 1,
                 ),
                 Obx(
                   () => Expanded(
@@ -488,6 +502,7 @@ class EdiRoBookingView extends StatelessWidget {
                       child: controller.lstDgvSpotsList.value.isEmpty
                           ? null
                           : DataGridShowOnlyKeys(
+                              editKeys: ['noProgram'],
                               mapData: controller.lstDgvSpotsList.value,
                               hideCode: false,
                               formatDate: false,
@@ -495,16 +510,44 @@ class EdiRoBookingView extends StatelessWidget {
                               onload: (load) {
                                 controller.dvgSpotGrid = load.stateManager;
                               },
-                              onRowDoubleTap: (event) {
+                              colorCallback: (row) => row.row.cells
+                                      .containsValue(
+                                          controller.dvgSpotGrid?.currentCell)
+                                  ? Colors.deepPurple.shade100
+                                  : Colors.white,
+                              onRowDoubleTap: (event) async {
+                                //Clear
+                                if (Get.find<MainController>()
+                                    .filters1
+                                    .containsKey(controller
+                                        .dgvDealEntriesGrid.hashCode
+                                        .toString())) {
+                                  await controller.clearFirstDataTableFilter(
+                                      controller.dgvDealEntriesGrid!);
+                                }
+                                //Up Grid Set
+                                for (var element
+                                    in controller.dgvDealEntriesGrid!.rows) {
+                                  if (element.cells['costPer10Sec']?.value ==
+                                      event.cell.value) {
+                                    print(element.cells['costPer10Sec']?.value);
+                                    controller.dgvDealEntriesGrid
+                                        ?.setCurrentCell(
+                                            element.cells['costPer10Sec'],
+                                            element.sortIdx);
+                                    break;
+                                  }
+                                }
+                                //Down Grid Set
                                 controller.dvgSpotGrid
                                     ?.setCurrentCell(event.cell, event.rowIdx);
                                 // print(event.cell.row.sortIdx);
                                 // print(event.cell.value);
                                 // print(event.cell.column.field);
+                                // print(event.row.cells['acT_DT']?.value);
+
                                 if (event.cell.column.field.toString() ==
                                     'fpcstart') {
-                                  // print(event.row.cells['acT_DT']?.value);
-                                  // print(event.cell.column.field);
                                   controller.spotFpcStart(
                                       controller.selectedLoactions?.key,
                                       controller.selectedChannel?.key,
@@ -515,7 +558,10 @@ class EdiRoBookingView extends StatelessWidget {
                                   print(event.cell.column.field);
                                 } else if (event.cell.column.field.toString() ==
                                     'spoT_RATE') {
-                                  controller.doubleClickFilterGrid();
+                                  await controller.doubleClickFilterGrid(
+                                      controller.dvgSpotGrid);
+                                  await controller.doubleClickFilterGrid1(
+                                      controller.dgvDealEntriesGrid);
                                 } else if (event.cell.column.field.toString() ==
                                     'tapE_ID') {
                                   controller.tapeIdDilogBox();
@@ -698,10 +744,26 @@ class EdiRoBookingView extends StatelessWidget {
                     itemBuilder: (context, index) {
                       return Padding(
                         padding: EdgeInsets.all(8),
-                        child: Text(
-                          maincontroller.programList[index].toString(),
-                          style:
-                              TextStyle(fontSize: SizeDefine.dropDownFontSize),
+                        child: Obx(
+                          () => GestureDetector(
+                            onTap: () {
+                              maincontroller.selectedIndex.value = index;
+                            },
+                            onDoubleTap: () {
+                              print("Double Print===========");
+                            },
+                            child: Container(
+                              color:
+                                  (maincontroller.selectedIndex.value == index)
+                                      ? Colors.deepPurpleAccent
+                                      : Colors.white,
+                              child: Text(
+                                maincontroller.programList[index].toString(),
+                                style: TextStyle(
+                                    fontSize: SizeDefine.dropDownFontSize),
+                              ),
+                            ),
+                          ),
                         ),
                       );
                     },
