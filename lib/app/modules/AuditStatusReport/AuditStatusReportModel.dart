@@ -120,7 +120,7 @@ class Audit {
     data['zonename'] = this.zonename;
     data['clientname'] = this.clientname;
     data['agencyName'] = this.agencyName;
-    data['bookedAMount'] = this.bookedAMount;
+    data['bookedAmount'] = this.bookedAMount;
     data['payRouteName'] = this.payRouteName;
     data['bookingno'] = this.bookingno;
     data['reveuneType'] = this.reveuneType;
