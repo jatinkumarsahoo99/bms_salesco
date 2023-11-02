@@ -130,9 +130,10 @@ class AmagiStatusReportView extends GetView<AmagiStatusReportController> {
                       builder: (controllerX) {
                         return  (controllerX.responseData['response'].length > 0)?
                          DataGridFromMap(
-                            showSrNo: false,
+                            showSrNo: true,
                             hideCode: false,
                             formatDate: false,
+                           // headerHeight: 80,
                            colorCallback: (row) => (row.row.cells
                                .containsValue(
                                controllerX.stateManager?.currentCell))
@@ -141,7 +142,7 @@ class AmagiStatusReportView extends GetView<AmagiStatusReportController> {
                             exportFileName: "Amagi Status Report",
                             widthSpecificColumn:  Get.find<HomeController>().getGridWidthByKey(
                                 userGridSettingList: controllerX.userGridSetting1,key:controllerX.getTableNo(controllerX.selectValue.value) ??"tbl1"),
-                            mode: PlutoGridMode.selectWithOneTap,
+                            mode: PlutoGridMode.normal,
                             mapData: (controllerX.responseData['response']),
                             // mapData: (controllerX.dataList)!,
                             widthRatio: Get.width / 9 - 1,
