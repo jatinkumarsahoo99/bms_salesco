@@ -7,6 +7,7 @@ import '../../../../widgets/DateTime/DateWithThreeTextField.dart';
 import '../../../../widgets/FormButton.dart';
 import '../../../../widgets/dropdown.dart';
 import '../../../../widgets/gridFromMap.dart';
+import '../../../../widgets/input_fields.dart';
 import '../../../controller/HomeController.dart';
 import '../../../controller/MainController.dart';
 import '../../../data/PermissionModel.dart';
@@ -56,42 +57,62 @@ class AsrunDetailsReportView extends StatelessWidget {
                           selected: controllerX.selectedLocation,
                           dialogHeight: Get.height * .35,
                           autoFocus: true,),),
-                        Padding(
-                          padding:
-                          const EdgeInsets.only(top: 3.0,left: 0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Obx(()=>Checkbox(
-                                value: controllerX.checked.value,
-                                side: const BorderSide(color: Colors.deepPurpleAccent),
-                                onChanged: (bool? value) {
-                                  controllerX.checked.value = value!;
-                                  if(value!){
-                                    for (var element in controllerX
-                                        .channelList) {
-                                      element.ischecked = true;
-                                    }
-                                    controllerX.update(['updateList']);
-                                  }else{
-                                    for (var element in controllerX
-                                        .channelList) {
-                                      element.ischecked = false;
-                                    }
-                                    controllerX.update(['updateList']);
-                                  }
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Padding(
+                              padding:
+                              const EdgeInsets.only(top: 3.0,left: 0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Obx(()=>Checkbox(
+                                    value: controllerX.checked.value,
+                                    side: const BorderSide(color: Colors.deepPurpleAccent),
+                                    onChanged: (bool? value) {
+                                      controllerX.checked.value = value!;
+                                      if(value!){
+                                        for (var element in controllerX
+                                            .channelList) {
+                                          element.ischecked = true;
+                                        }
+                                        controllerX.update(['updateList']);
+                                      }else{
+                                        for (var element in controllerX
+                                            .channelList) {
+                                          element.ischecked = false;
+                                        }
+                                        controllerX.update(['updateList']);
+                                      }
 
-                                },
-                              )) ,
-                              Text(
-                                "Channel",
-                                style: TextStyle(
-                                  fontSize: SizeDefine.labelSize1,
-                                  fontWeight: FontWeight.w500,
-                                ),
+                                    },visualDensity: VisualDensity(horizontal: -4),
+                                  )),
+                                  Text(
+                                    "Channel",
+                                    style: TextStyle(
+                                      fontSize: SizeDefine.labelSize1,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
+                            ),
+                            InputFields.formField1(
+                              hintTxt: "Level 1",
+                              controller: TextEditingController(),
+                              width:  0.12,
+                              capital: true,
+                              // focusNode: controllerX.level1Node,
+
+                              // autoFocus: true,
+                              // focusNode: controllerX.brandName,
+                              // isEnable: controllerX.isEnable,
+                              onchanged: (value) {
+
+                              },
+                              // autoFocus: true,
+                            ),
+                          ],
                         ),
                         SizedBox(height: 3),
                         Container(
@@ -168,6 +189,9 @@ class AsrunDetailsReportView extends StatelessWidget {
                         widthRation: .1,
                         isEnable: controllerX.isEnable,
                       ),
+                      SizedBox(
+                        height: 5,
+                      ),
                       DateWithThreeTextField(
                         title: "To Date",
                         mainTextController: controllerX.toDate,
@@ -177,12 +201,15 @@ class AsrunDetailsReportView extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.only(
                             top: 14.0, left: 10, right: 10),
-                        child: FormButtonWrapper(
-                          btnText: "Genrate",
-                          callback: () {
-                            controllerX.fetchGetGenerate();
-                          },
-                          showIcon: true,
+                        child: SizedBox(
+                          width: Get.width*0.1,
+                          child: FormButtonWrapper(
+                            btnText: "Genrate",
+                            callback: () {
+                              controllerX.fetchGetGenerate();
+                            },
+                            showIcon: true,
+                          ),
                         ),
                       ),
                     ],
@@ -204,9 +231,14 @@ class AsrunDetailsReportView extends StatelessWidget {
                               controllerX.asrunDetailsReportModel!.generate != null &&
                               controllerX.asrunDetailsReportModel!.generate!.isNotEmpty
                           )?DataGridFromMap(
-                            showSrNo: false,
+                            showSrNo: true,
                             hideCode: false,
                             formatDate: false,
+                            colorCallback: (row) => (row.row.cells
+                                .containsValue(
+                                controllerX.stateManager?.currentCell))
+                                ? Colors.deepPurple.shade200
+                                : Colors.white,
                             exportFileName: "Asrun Details Report",
                             widthSpecificColumn: Get.find<HomeController>().getGridWidthByKey(
                                 userGridSettingList: controllerX.userGridSetting1),

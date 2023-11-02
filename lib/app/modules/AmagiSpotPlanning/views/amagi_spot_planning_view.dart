@@ -125,7 +125,7 @@ class AmagiSpotPlanningView extends GetView<AmagiSpotPlanningController> {
                             columnAutoResize:false ,
                             colorCallback: (row) => (row.row.cells
                                 .containsValue(
-                                controller.stateManager?.currentCell))
+                                controllerX.stateManager?.currentCell))
                                 ? Colors.deepPurple.shade200
                                 : Colors.white,
                             widthSpecificColumn:  Get.find<HomeController>().getGridWidthByKey(key: controllerX.getTableNo(controllerX.selectValue.value)?? "tbl1",userGridSettingList: controllerX.userGridSetting1),
