@@ -381,6 +381,7 @@ class PDCChequesController extends GetxController {
     } else {
       documentKey = "ChequeID $chequeID";
     }
+    if (documentKey == "") return;
 
     Get.defaultDialog(
       title: "Documents",
