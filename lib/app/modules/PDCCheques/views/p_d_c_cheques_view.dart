@@ -51,21 +51,26 @@ class PDCChequesView extends StatelessWidget {
                     runSpacing: 5,
                     spacing: 10,
                     children: [
-                      DropDownField.formDropDownSearchAPI2(
-                        GlobalKey(),
-                        context,
-                        title: "Client",
-                        url: ApiFactory.PDC_CHEQUES_CLIENT,
-                        onchanged: controller.handleOnChangeClient,
-                        width: context.devicewidth * .12,
-                        selectedValue: controller.selecctedClient,
-                        customInData: 'clientModels',
-                        parseKeyForKey: 'clientcode',
-                        parseKeyForValue: 'clientname',
-                        widthofDialog: 250,
-                        inkwellFocus: controller.clientFN,
-                        autoFocus: true,
-                      ),
+                      GetBuilder(
+                          init: controller,
+                          id: "client",
+                          builder: (_) {
+                            return DropDownField.formDropDownSearchAPI2(
+                              GlobalKey(),
+                              context,
+                              title: "Client",
+                              url: ApiFactory.PDC_CHEQUES_CLIENT,
+                              onchanged: controller.handleOnChangeClient,
+                              width: context.devicewidth * .12,
+                              selectedValue: controller.selecctedClient,
+                              customInData: 'clientModels',
+                              parseKeyForKey: 'clientcode',
+                              parseKeyForValue: 'clientname',
+                              widthofDialog: 250,
+                              inkwellFocus: controller.clientFN,
+                              autoFocus: true,
+                            );
+                          }),
                       InputFields.formField1(
                         width: .12,
                         hintTxt: "Bank",

@@ -279,15 +279,91 @@ class PDCChequesController extends GetxController {
         if (resp != null && resp['retrieve'] != null) {
           PDCRetriveModel retriveData =
               PDCRetriveModel.fromJson(resp['retrieve']);
+
+          /// CLIENT
           selecctedClient = DropDownValue(
               key: retriveData.clientCode, value: retriveData.clientName);
-          selectedAgency = DropDownValue(
-              key: retriveData.agencyCode, value: retriveData.agencyName);
+          update(['client']);
+
+          /// BANK
+          bankTC.text = retriveData.bankName ?? '';
+
+          ///RECD ON (DATE)
+          if (retriveData.chequeReceivedOn != null &&
+              (retriveData.chequeReceivedOn?.contains("T") ?? false)) {
+            recdOnDateTC.text = DateFormat('dd-MM-yyyy').format(
+                DateFormat('yyyy-MM-ddThh:mm:ss')
+                    .parse(retriveData.chequeReceivedOn!));
+          }
+
+          ///RECD BY
+          recdByTC.text = retriveData.chequeReceivedBy ?? "";
+
+          ///CCD VERIFY DATE (DATE)
+          if (retriveData.ccdVerifiedOn != null &&
+              (retriveData.ccdVerifiedOn?.contains("T") ?? false)) {
+            ccdVerifyDateTC.text = DateFormat('dd-MM-yyyy').format(
+                DateFormat('yyyy-MM-ddThh:mm:ss')
+                    .parse(retriveData.ccdVerifiedOn!));
+          }
+
+          ///RECD BY
+          ccdVerifyByTC.text = retriveData.ccdVerifiedBy ?? "";
+
+          /// PDC
           selectedPdcType = DropDownValue(
               key: retriveData.pdcTypeId.toString(),
               value: retriveData.pdcTypeName);
+          pdcTypeList.refresh();
 
+          /// AGENCY
+          selectedAgency = DropDownValue(
+              key: retriveData.agencyCode, value: retriveData.agencyName);
+          agencyList.refresh();
+
+          /// CHEQUE NO
+          chequeNoTC.text = retriveData.chequeNo ?? "";
+
+          ///CHEQUE DATE (DATE)
+          if (retriveData.chequeDate != null &&
+              (retriveData.chequeDate?.contains("T") ?? false)) {
+            chequeDateTC.text = DateFormat('dd-MM-yyyy').format(
+                DateFormat('yyyy-MM-ddThh:mm:ss')
+                    .parse(retriveData.chequeDate!));
+          }
+
+          /// IS DUMMY
+          isDummy.value = retriveData.isDummy ?? false;
+
+          ///APPROVED TILL (DATE)
+          if (retriveData.approvedTill != null &&
+              (retriveData.chequeDate?.contains("T") ?? false)) {
+            approvedTillDateTC.text = DateFormat('dd-MM-yyyy').format(
+                DateFormat('yyyy-MM-ddThh:mm:ss')
+                    .parse(retriveData.approvedTill!));
+          }
+
+          /// RE-MARKS
+          remarksTC.text = retriveData.remarks ?? "";
+
+          /// CHEQUE AMT
+          checkAmtTC.text = (retriveData.chequeAmount ?? "").toString();
+
+          /// TDS AMT
+          tdsAmtTC.text = (retriveData.tdsAmount ?? "").toString();
+
+          /// SVC TAX
+          saveTaxTC.text = (retriveData.serviceTaxPercent ?? "").toString();
+
+          /// SVC TAX AMT
+
+          saveTaxAmt.value = (retriveData.serviceTaxAmount ?? "").toString();
+
+          /// NET BOOK AMT
+
+          /// 1st Tab List
           locationChannelList.value = retriveData.locationChannelModel ?? [];
+          // calculateTotal();
         } else {
           LoadingDialog.showErrorDialog(resp.toString());
         }
