@@ -41,7 +41,7 @@ class AuditStatusReportView extends StatelessWidget {
                   showSrNo: true,
                   hideCode: false,
                   formatDate: false,
-                  exportFileName: "Audit Status/ T.O.Listing",
+                  exportFileName: "AuditStatus/TOListing",
                   widthSpecificColumn: Get.find<HomeController>()
                       .getGridWidthByKey(
                           userGridSettingList: controllerX.userGridSetting1,
@@ -70,7 +70,7 @@ class AuditStatusReportView extends StatelessWidget {
                   showSrNo: true,
                   hideCode: false,
                   formatDate: false,
-                  exportFileName: "Audit Status/ T.O.Listing",
+                  exportFileName: "AuditStatus/TOListing",
                   widthSpecificColumn: Get.find<HomeController>()
                       .getGridWidthByKey(
                           userGridSettingList: controllerX.userGridSetting1,
@@ -98,7 +98,7 @@ class AuditStatusReportView extends StatelessWidget {
                   showSrNo: true,
                   hideCode: false,
                   formatDate: false,
-                  exportFileName: "Audit Status/ T.O.Listing",
+                  exportFileName: "AuditStatus/TOListing",
                   widthSpecificColumn: Get.find<HomeController>()
                       .getGridWidthByKey(
                           userGridSettingList: controllerX.userGridSetting1,
