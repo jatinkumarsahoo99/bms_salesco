@@ -142,6 +142,11 @@ class ViewOldDealView extends StatelessWidget {
                                     formatDate: false,
                                     exportFileName: "View Old Deal",
                                     mode: PlutoGridMode.normal,
+                                    colorCallback: (row) => (row.row.cells
+                                            .containsValue(controllerX
+                                                .stateManager?.currentCell))
+                                        ? Colors.deepPurple.shade200
+                                        : Colors.white,
                                     mapData: (controllerX
                                         .viewOldDealResponseModel
                                         ?.deal
