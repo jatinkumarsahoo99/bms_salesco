@@ -48,12 +48,12 @@ class ToList {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['locationname'] = this.locationname;
     data['channelname'] = this.channelname;
+    data['locationname'] = this.locationname;
+    data['bookingnumber'] = this.bookingnumber;
     data['clientname'] = this.clientname;
     data['agencyname'] = this.agencyname;
     data['zonename'] = this.zonename;
-    data['bookingnumber'] = this.bookingnumber;
     return data;
   }
 }

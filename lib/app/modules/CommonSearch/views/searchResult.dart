@@ -15,8 +15,10 @@ class SearchResultPage extends StatelessWidget {
     required this.appFormName,
     this.actionableSearch = false,
     this.actionableMap,
+    this.dialogClose,
   }) : super(key: key);
   final SearchController controller;
+  final void Function(dynamic)? dialogClose;
   final String appFormName;
   final bool actionableSearch;
   final Map<String, void Function(String value)>? actionableMap;
@@ -37,7 +39,8 @@ class SearchResultPage extends StatelessWidget {
           enableHideColumnMenuItem: false,
           enableSetColumnsMenuItem: false,
           enableFilterMenuItem: true,
-          width: Utils.getColumnSize(key: column, value: controller.searchResult![0][key]),
+          width: Utils.getColumnSize(
+              key: column, value: controller.searchResult![0][key]),
           enableAutoEditing: false,
           enableColumnDrag: false,
           field: column,
@@ -55,13 +58,22 @@ class SearchResultPage extends StatelessWidget {
 
     return Scaffold(
         appBar: AppBar(
-          title: Text(/*controller.screenName +*/ "Search Result", style: TextStyle(color: Colors.deepPurple)),
+          title: Text(/*controller.screenName +*/ "Search Result",
+              style: TextStyle(color: Colors.deepPurple)),
           backgroundColor: Colors.white,
           elevation: 4,
           leading: IconButton(
-              icon: Icon(Icons.arrow_back_ios_new_rounded, color: Colors.black),
+              icon: Icon(
+                  dialogClose != null
+                      ? Icons.close
+                      : Icons.arrow_back_ios_new_rounded,
+                  color: Colors.black),
               onPressed: () {
-                Get.back();
+                if (dialogClose != null) {
+                  dialogClose!(null);
+                } else {
+                  Get.back();
+                }
               }),
         ),
         // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -71,32 +83,48 @@ class SearchResultPage extends StatelessWidget {
             Expanded(
               child: Container(
                 width: Get.width * 2,
-                padding: const EdgeInsets.only(bottom: 8, top: 8, left: 8, right: 8),
+                padding:
+                    const EdgeInsets.only(bottom: 8, top: 8, left: 8, right: 8),
                 child: DataGridFromMap(
-                  columnAutoResize: (controller.searchResult!.length > 5) ? false : true,
-                  exportFileName: "${controller.screenName}_${controller.selectVarianceId == null ? "" : controller.varainace.firstWhere(
-                      (element) => element["id"].toString() == controller.selectVarianceId.toString(),
-                    )["varianceName"]} _Search_Result",
+                  columnAutoResize: false,
+                  // columnAutoResize:
+                  //     (controller.searchResult!.length > 5) ? false : true,
+                  exportFileName:
+                      "${controller.screenName}_${controller.selectVarianceId == null ? "" : controller.varainace.firstWhere(
+                          (element) =>
+                              element["id"].toString() ==
+                              controller.selectVarianceId.toString(),
+                        )["varianceName"]} _Search_Result",
                   hideCode: false,
                   mapData: controller.searchResult!,
                   onload: (event) {
-                    event.stateManager
-                        .setColumnSizeConfig(PlutoGridColumnSizeConfig(autoSizeMode: PlutoAutoSizeMode.none, resizeMode: PlutoResizeMode.normal));
+                    event.stateManager.setColumnSizeConfig(
+                        PlutoGridColumnSizeConfig(
+                            autoSizeMode: PlutoAutoSizeMode.none,
+                            resizeMode: PlutoResizeMode.normal));
                   },
                   mode: PlutoGridMode.select,
                   onRowDoubleTap: (plutoEvent) {
                     if (appFormName == "BMS_view_programmaster") {
-                      String val = controller.searchResult![plutoEvent.rowIdx]["ProgramName"];
-                      print("Tapped Called>> is>>" + val.toString().replaceAll("\"", ""));
+                      String val = controller.searchResult![plutoEvent.rowIdx]
+                          ["ProgramName"];
+                      print("Tapped Called>> is>>" +
+                          val.toString().replaceAll("\"", ""));
                       // Get.to(ProgramMasterPage(appBarReq: true,searchProgramName:"Meet",key: Key("ProgramMaster"),));
                       Get.toNamed("/programMaster?progName=" + val.toString());
                     }
                     if (actionableSearch) {
-                      if (actionableMap?.containsKey(plutoEvent.cell.column.field) ?? false) {
+                      if (actionableMap
+                              ?.containsKey(plutoEvent.cell.column.field) ??
+                          false) {
                         // if (actionableMap != null && actionableMap!.containsKey()) {
-                        actionableMap![plutoEvent.cell.column.field]!(plutoEvent.cell.value ?? "");
+                        actionableMap![plutoEvent.cell.column.field]!(
+                            plutoEvent.cell.value ?? "");
                         // }
                       }
+                    }
+                    if (dialogClose != null) {
+                      dialogClose!(plutoEvent.row);
                     }
                   },
                 ),
@@ -106,7 +134,10 @@ class SearchResultPage extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 8),
               margin: EdgeInsets.zero,
               width: double.infinity,
-              decoration: const BoxDecoration(color: Colors.white, border: const Border(top: BorderSide(width: 1.0, color: Colors.grey))),
+              decoration: const BoxDecoration(
+                  color: Colors.white,
+                  border: const Border(
+                      top: BorderSide(width: 1.0, color: Colors.grey))),
               child: ButtonBar(
                 buttonHeight: 30,
                 alignment: MainAxisAlignment.start,
