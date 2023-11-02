@@ -2,6 +2,7 @@ import 'package:bms_salesco/app/providers/ApiFactory.dart';
 import 'package:bms_salesco/app/providers/extensions/screen_size.dart';
 import 'package:bms_salesco/widgets/CheckBoxWidget.dart';
 import 'package:bms_salesco/widgets/DateTime/DateWithThreeTextField.dart';
+import 'package:bms_salesco/widgets/LoadingDialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -443,7 +444,14 @@ class PDCChequesView extends StatelessWidget {
                     Routes.P_D_C_CHEQUES,
                     (btnName) {
                       if (btnName == "Save") {
-                        controller.saveData();
+                        if (controller.chequeID == 0) {
+                          controller.saveData();
+                        } else {
+                          LoadingDialog.recordExists(
+                              "Do you want to modify this PDC info?", () {
+                            controller.saveData();
+                          });
+                        }
                       } else if (btnName == "Docs") {
                         controller.docs();
                       } else if (btnName == "Search") {

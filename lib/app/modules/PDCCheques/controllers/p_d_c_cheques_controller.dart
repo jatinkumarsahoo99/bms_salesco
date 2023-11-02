@@ -183,6 +183,8 @@ class PDCChequesController extends GetxController {
         fun: (resp) {
           Get.back();
           if (resp != null &&
+              resp is Map<String, dynamic> &&
+              resp.containsKey("save") &&
               resp['save'] != null &&
               resp['save'].toString().toLowerCase().contains('successfully')) {
             LoadingDialog.callDataSaved(
@@ -278,7 +280,7 @@ class PDCChequesController extends GetxController {
         Get.back();
         if (resp != null && resp['retrieve'] != null) {
           PDCRetriveModel retriveData =
-              PDCRetriveModel.fromJson(resp['retrieve']);
+              PDCRetriveModel.fromJson(resp['retrieve'][0]);
 
           /// CLIENT
           selecctedClient = DropDownValue(
@@ -347,7 +349,7 @@ class PDCChequesController extends GetxController {
           remarksTC.text = retriveData.remarks ?? "";
 
           /// CHEQUE AMT
-          checkAmtTC.text = (retriveData.chequeAmount ?? "").toString();
+          checkAmtTC.text = (retriveData.chequeAmountGross ?? "").toString();
 
           /// TDS AMT
           tdsAmtTC.text = (retriveData.tdsAmount ?? "").toString();
@@ -360,6 +362,7 @@ class PDCChequesController extends GetxController {
           saveTaxAmt.value = (retriveData.serviceTaxAmount ?? "").toString();
 
           /// NET BOOK AMT
+          newBookAmt.value = (retriveData.chequeAmount ?? "").toString();
 
           /// 1st Tab List
           locationChannelList.value = retriveData.locationChannelModel ?? [];
