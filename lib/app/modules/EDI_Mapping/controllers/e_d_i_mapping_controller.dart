@@ -97,6 +97,8 @@ class EDIMappingController extends GetxController {
                 .addAll(populateEntityModel!.populateEntity!.clientMaster!);
             agencyTempList
                 .addAll(populateEntityModel!.populateEntity!.agencyMaster!);
+            clientTempList.refresh();
+            agencyTempList.refresh();
             update(['top']);
           } else {
             update(['top']);
@@ -172,17 +174,25 @@ class EDIMappingController extends GetxController {
         fun: (map) {
           Get.back();
           if (map != null) {
-            LoadingDialog.callDataSaved(msg: map['save']);
+            LoadingDialog.callDataSaved(
+                msg: map['save'],
+                callback: () {
+                  clear();
+                });
           }
         });
   }
 
   clear() {
+    isClientTemp.value = false;
+    isAgencyTemp.value = false;
     selectValue.value = "Client";
-    checkRadio("Client");
     selectedClient = null;
     selectedAgency = null;
     selectedChannel = null;
+    clientTempList.clear();
+    agencyTempList.clear();
+    checkRadio("Client");
   }
 
   @override

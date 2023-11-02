@@ -953,7 +953,7 @@ class EdiRoBookingController extends GetxController {
     gridController!.setFilter((element) => _filterRows.contains(element));
   }
 
-  Future<void> doubleClickFilterGrid1(gridController) async {
+  Future<void> doubleClickFilterGrid1(gridController, field, value) async {
     print("Hashcode======================> ${gridController!.hashCode}");
     if (Get.find<MainController>()
         .filters1
@@ -967,7 +967,10 @@ class EdiRoBookingController extends GetxController {
       Get.find<MainController>()
           .filters1[gridController!.hashCode.toString()]!
           .add(RowFilter(
-              field: "costPer10Sec", operator: "equal", value: filtterValue));
+              // costPer10Sec
+              field: field,
+              operator: "equal",
+              value: value));
     }
 
     var _filters = Get.find<MainController>()
