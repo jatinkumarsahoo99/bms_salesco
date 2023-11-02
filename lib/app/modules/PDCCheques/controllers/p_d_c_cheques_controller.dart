@@ -373,13 +373,11 @@ class PDCChequesController extends GetxController {
 
   docs() async {
     String documentKey = "";
-    // if (selectedLocation == null || selectedChannel == null) {
-    //   documentKey = "";
-    // } else {
-    //   documentKey = "Rate card " +
-    //       (selectedLocation?.key ?? "") +
-    //       (selectedChannel?.key ?? "");
-    // }
+    if (chequeID == 0) {
+      documentKey = "";
+    } else {
+      documentKey = "ChequeID $chequeID";
+    }
 
     Get.defaultDialog(
       title: "Documents",
