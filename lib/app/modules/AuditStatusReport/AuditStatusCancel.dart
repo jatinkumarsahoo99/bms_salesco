@@ -115,9 +115,9 @@ class Cancel {
     data['time'] = this.time;
     data['totalspots'] = this.totalspots;
     data['auditedSpots'] = this.auditedSpots;
-    data['numbers'] = this.numbers;
-    data['auditedBy'] = this.auditedBy;
-    data['reportType'] = this.reportType;
+    // data['numbers'] = this.numbers;
+    // data['auditedBy'] = this.auditedBy;
+    // data['reportType'] = this.reportType;
     return data;
   }
 }

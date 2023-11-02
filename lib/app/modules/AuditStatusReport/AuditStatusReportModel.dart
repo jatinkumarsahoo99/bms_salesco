@@ -14,9 +14,9 @@ class AuditStatusReportModel {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.audit != null) {
+    /*if (this.audit != null) {
       data['audit'] = this.audit!.map((v) => v.toJson()).toList();
-    }
+    }*/
     return data;
   }
 }
@@ -28,7 +28,7 @@ class Audit {
   String? zonename;
   String? clientname;
   String? agencyName;
-  double? bookedAMount;
+  String? bookedAMount;
   String? payRouteName;
   String? bookingno;
   String? reveuneType;
@@ -82,7 +82,7 @@ class Audit {
     zonename = json['zonename'];
     clientname = json['clientname'];
     agencyName = json['agencyName'];
-    bookedAMount = json['bookedAMount'];
+    bookedAMount = (json['bookedAMount']??json["BookedAMount"]??"0").toString();
     payRouteName = json['payRouteName'];
     bookingno = json['bookingno'];
     reveuneType = json['reveuneType'];
@@ -103,8 +103,17 @@ class Audit {
     totalDuration = json['totalDuration'];
   }
 
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toJson(String? val) {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+   /* switch(val){
+      case "1":
+        break;
+      case "2":
+
+        break;
+      case "3":
+        break;
+    }*/
     data['channelName'] = this.channelName;
     data['bookingmonth'] = this.bookingmonth;
     data['bookingnumber'] = this.bookingnumber;
@@ -127,9 +136,9 @@ class Audit {
     data['auditedBy'] = this.auditedBy;
     data['auditedOn'] = this.auditedOn;
     data['auditedTime'] = this.auditedTime;
-    data['valuationAmountINR'] = this.valuationAmountINR;
+ /*   data['valuationAmountINR'] = this.valuationAmountINR;
     data['noOfSpotAudited'] = this.noOfSpotAudited;
-    data['totalDuration'] = this.totalDuration;
+    data['totalDuration'] = this.totalDuration;*/
     return data;
   }
 }

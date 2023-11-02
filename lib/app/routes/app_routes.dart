@@ -102,6 +102,7 @@ abstract class RoutesList {
     _Paths.COMMERCIAL_LANGUAGE_SPECIFICATION,
     _Paths.DEAL_UTIL_PERIODIC,
     _Paths.MARK_R_OS_FLAG,
+    _Paths.E_D_I_MAPPING,
   ];
 
   /* static final RoutesList _instance = RoutesList._();

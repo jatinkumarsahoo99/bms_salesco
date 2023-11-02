@@ -8,6 +8,7 @@ import 'package:bms_salesco/app/providers/DataGridMenu.dart';
 import 'package:bms_salesco/app/providers/SizeDefine.dart';
 import 'package:bms_salesco/widgets/DateTime/DateWithThreeTextField.dart';
 import 'package:bms_salesco/widgets/FormButton.dart';
+import 'package:bms_salesco/widgets/LoadingDialog.dart';
 import 'package:bms_salesco/widgets/LoadingScreen.dart';
 import 'package:bms_salesco/widgets/dropdown.dart';
 import 'package:bms_salesco/widgets/gridFromMap.dart';
@@ -530,7 +531,6 @@ class EdiRoBookingView extends StatelessWidget {
                                     in controller.dgvDealEntriesGrid!.rows) {
                                   if (element.cells['costPer10Sec']?.value ==
                                       event.cell.value) {
-                                    print(element.cells['costPer10Sec']?.value);
                                     controller.dgvDealEntriesGrid
                                         ?.setCurrentCell(
                                             element.cells['costPer10Sec'],
@@ -561,7 +561,9 @@ class EdiRoBookingView extends StatelessWidget {
                                   await controller.doubleClickFilterGrid(
                                       controller.dvgSpotGrid);
                                   await controller.doubleClickFilterGrid1(
-                                      controller.dgvDealEntriesGrid);
+                                      controller.dgvDealEntriesGrid,
+                                      'costPer10Sec',
+                                      event.cell.value.toString());
                                 } else if (event.cell.column.field.toString() ==
                                     'tapE_ID') {
                                   controller.tapeIdDilogBox();
@@ -749,8 +751,63 @@ class EdiRoBookingView extends StatelessWidget {
                             onTap: () {
                               maincontroller.selectedIndex.value = index;
                             },
-                            onDoubleTap: () {
-                              print("Double Print===========");
+                            onDoubleTap: () async {
+                              maincontroller.selectedIndex.value = index;
+
+                              if (maincontroller.lstDgvSpotsList.isNotEmpty) {
+                                // Down Grid
+                                if (Get.find<MainController>()
+                                    .filters1
+                                    .containsKey(maincontroller
+                                        .dvgSpotGrid.hashCode
+                                        .toString())) {
+                                  await maincontroller
+                                      .clearFirstDataTableFilter(
+                                          maincontroller.dvgSpotGrid!);
+                                }
+                                for (var element
+                                    in maincontroller.dvgSpotGrid!.rows) {
+                                  maincontroller.dvgSpotGrid?.setCurrentCell(
+                                      element.cells['spoT_RATE'],
+                                      element.sortIdx);
+                                  break;
+                                }
+
+                                await maincontroller.doubleClickFilterGrid1(
+                                    maincontroller.dvgSpotGrid,
+                                    'program',
+                                    maincontroller.programList[index]
+                                        .toString());
+
+                                // UP Grid
+                                if (Get.find<MainController>()
+                                    .filters1
+                                    .containsKey(maincontroller
+                                        .dgvDealEntriesGrid.hashCode
+                                        .toString())) {
+                                  await maincontroller
+                                      .clearFirstDataTableFilter(
+                                          maincontroller.dgvDealEntriesGrid!);
+                                }
+
+                                for (var element in maincontroller
+                                    .dgvDealEntriesGrid!.rows) {
+                                  maincontroller.dgvDealEntriesGrid
+                                      ?.setCurrentCell(
+                                          element.cells['costPer10Sec'],
+                                          element.sortIdx);
+                                  break;
+                                }
+                                await maincontroller.doubleClickFilterGrid1(
+                                    maincontroller.dgvDealEntriesGrid,
+                                    'costPer10Sec',
+                                    maincontroller.dvgSpotGrid!.rows[0]
+                                        .cells['spoT_RATE']!.value
+                                        .toString());
+                              } else {
+                                LoadingDialog.callErrorMessage(
+                                    'Spot not found.');
+                              }
                             },
                             child: Container(
                               color:
