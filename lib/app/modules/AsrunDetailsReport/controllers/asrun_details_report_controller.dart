@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
+import '../../../../widgets/CheckBox/multi_check_box.dart';
 import '../../../../widgets/LoadingDialog.dart';
 import '../../../controller/ConnectorControl.dart';
 import '../../../controller/HomeController.dart';
@@ -23,8 +24,10 @@ class AsrunDetailsReportController extends GetxController {
 
   DropDownValue? selectedLocation;
   DropDownValue? selectedChannel;
+  var channels = RxList<MultiCheckBoxModel>();
 
   List<ChannelListModel> channelList = [];
+  List<ChannelListModel> masterChannelList = [];
   RxBool checked = RxBool(false);
 
   TextEditingController frmDate = TextEditingController();
@@ -49,6 +52,8 @@ class AsrunDetailsReportController extends GetxController {
           if(map is Map && map.containsKey('pageload') && map['pageload'] != null){
             locationList.clear();
             channelList.clear();
+            masterChannelList.clear();
+            var i = 0;
             if( map['pageload'].containsKey('locations') &&
                 map['pageload'] ['locations'] != null &&
                 map['pageload'] ['locations'].length >0  ){
@@ -56,15 +61,22 @@ class AsrunDetailsReportController extends GetxController {
                 locationList.add(DropDownValue.fromJsonDynamic(e, "locationCode", "locationName"));
               });
             }
+
             if( map['pageload'].containsKey('channels') &&
                 map['pageload'] ['channels'] != null &&
                 map['pageload'] ['channels'].length >0  ){
               map['pageload']['channels'].forEach((e){
-                channelList.add(new ChannelListModel(ischecked:false ,
+                /*channelList.add(new ChannelListModel(ischecked:false ,
                     channelName:e['channelName'] ,
-                    channelCode:e['channelCode'] ));
+                    channelCode:e['channelCode'] ));*/
+                channels.add(MultiCheckBoxModel(
+                    DropDownValue(key: e["channelCode"], value: e["channelName"]),
+                    false,
+                    i));
+                i++;
               });
-              update(['updateList']);
+              // masterChannelList = channelList;
+              // update(['updateList']);
             }
           }
           else{
@@ -72,6 +84,19 @@ class AsrunDetailsReportController extends GetxController {
           }
         });
   }
+
+  search(String? val){
+    if(val != null && val != ""){
+      channelList = masterChannelList.where((element) => element.channelName.toString().
+      toLowerCase().contains(val.toString().toLowerCase())).toList();
+      update(['updateList']);
+    }else{
+      channelList = masterChannelList;
+      update(['updateList']);
+    }
+  }
+
+
   clearAll(){
     Get.delete<AsrunDetailsReportController>();
     Get.find<HomeController>().clearPage1();
@@ -84,8 +109,15 @@ class AsrunDetailsReportController extends GetxController {
 
   fetchGetGenerate(){
     List<ChannelListModel> channelListFilter=[];
-    channelListFilter = channelList.where((element) =>
-    element.ischecked == true).toList();
+    /*channelListFilter = channelList.where((element) =>
+    element.ischecked == true).toList();*/
+    for (var element in channels) {
+      if (element.isSelected ?? false) {
+        channelListFilter.add(ChannelListModel(channelCode:element.val?.key??"" ,
+            channelName:element.val?.value??"" ,ischecked: element.isSelected));
+      }
+    }
+
     if(selectedLocation == null){
       LoadingDialog.showErrorDialog("Please select location");
     }else if(channelListFilter.isEmpty){

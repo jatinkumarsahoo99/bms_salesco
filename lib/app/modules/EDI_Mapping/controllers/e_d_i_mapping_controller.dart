@@ -21,6 +21,13 @@ class EDIMappingController extends GetxController {
   DropDownValue? selectedAgency;
   DropDownValue? selectedChannel;
 
+  var clientTempList = [].obs;
+  var agencyTempList = [].obs;
+  var channelTempList = [].obs;
+  var isClientTemp = false.obs;
+  var isAgencyTemp = false.obs;
+  var isChannelTemp = false.obs;
+
   bool isClient = true;
   bool isAgency = false;
   bool isChannel = false;
@@ -86,6 +93,10 @@ class EDIMappingController extends GetxController {
               map['populateEntity'] != null) {
             populateEntityModel =
                 PopulateEntityModel.fromJson(map as Map<String, dynamic>);
+            clientTempList
+                .addAll(populateEntityModel!.populateEntity!.clientMaster!);
+            agencyTempList
+                .addAll(populateEntityModel!.populateEntity!.agencyMaster!);
             update(['top']);
           } else {
             update(['top']);
@@ -112,6 +123,12 @@ class EDIMappingController extends GetxController {
               map['populateEntity'] != null) {
             populateEntityModel =
                 PopulateEntityModel.fromJson(map as Map<String, dynamic>);
+            clientTempList
+                .addAll(populateEntityModel!.populateEntity!.clientMaster!);
+            agencyTempList
+                .addAll(populateEntityModel!.populateEntity!.agencyMaster!);
+            print("============");
+            print(agencyTempList);
             update(['grid']);
           } else {
             update(['grid']);
@@ -127,17 +144,17 @@ class EDIMappingController extends GetxController {
       postData = {
         "entityName": selectValue.value,
         "bmsclientcode": selectedClient!.key,
-        "softclient": populateEntityModel
-                ?.populateEntity?.clientMaster?[selectedIndex].softClient ??
-            "",
+        "softclient": isClientTemp.value
+            ? clientTempList[selectedIndex].toString() ?? ""
+            : clientTempList[selectedIndex].softClient.toString() ?? "",
       };
     } else if (selectValue.value == "Agency") {
       postData = {
         "entityName": selectValue.value,
         "bmsclientcode": selectedAgency!.key,
-        "softclient": populateEntityModel
-                ?.populateEntity?.agencyMaster?[selectedIndex].softAgency ??
-            "",
+        "softclient": isAgencyTemp.value
+            ? agencyTempList[selectedIndex].toString() ?? ""
+            : agencyTempList[selectedIndex].softAgency.toString() ?? "",
       };
     } else {
       postData = {
