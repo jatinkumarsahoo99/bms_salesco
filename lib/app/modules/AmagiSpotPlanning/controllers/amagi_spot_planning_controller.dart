@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:bms_salesco/app/providers/Utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -185,8 +186,11 @@ class AmagiSpotPlanningController extends GetxController {
               element.forEach((key, value) {
                 String k = key.toString().trim().replaceAll("\n", " ");
                 if((value == 0 || value == "0") && ((key.toString().toLowerCase().contains("rate")) == false) &&
-                    ((key.toString().contains("SpotAmount")) == false ) ){
+                    (key != "SpotAmount" ) &&
+                    (key != "ValueAmount") ){
                   mapDa[k] = "";
+                }else if(key.toString().trim().toLowerCase().contains(("ScheduleDate").toLowerCase().trim()) == true){
+                  mapDa[k] = Utils.formatDateTime3(value);
                 }else{
                   mapDa[k] = value;
                 }

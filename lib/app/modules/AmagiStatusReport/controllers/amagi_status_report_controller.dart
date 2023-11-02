@@ -182,12 +182,12 @@ class AmagiStatusReportController extends GetxController {
                 for (Map<String, dynamic> element in map['response']) {
                   Map<String, dynamic> mapDa = {};
                   element.forEach((key, value) {
-                    // String k = key.toString().trim().replaceAll("\n", " ");
-                    String k = key.toString().trim().replaceAll("", " ");
+                    String k = key.toString().trim().replaceAll("\n", " ");
+                    // String k = key.toString().trim().replaceAll("", " ");
                     if(value == 0 || value.toString().trim() == "0"){
-                      mapDa[k.capitalizeFirst!] = "";
+                      mapDa[k] = "";
                     }else{
-                      mapDa[k.capitalizeFirst!] = value;
+                      mapDa[k] = value;
                     }
 
                   });

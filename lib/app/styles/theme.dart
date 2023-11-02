@@ -48,7 +48,7 @@ PlutoGridConfiguration plutoGridConfiguration({
   Color? checkColor = const Color(0xFFD1C4E9),
   required FocusNode focusNode,
   FocusNode? previousWidgetFN,
-  double rowHeight = 25,
+  double rowHeight = 25,double headerHeight = 30
 }) =>
     PlutoGridConfiguration.dark(
         shortcut: PlutoGridShortcut(
@@ -73,7 +73,7 @@ PlutoGridConfiguration plutoGridConfiguration({
         ),
         style: PlutoGridStyleConfig(
             rowHeight: rowHeight,
-            columnHeight: 30,
+            columnHeight: headerHeight??30,
             defaultCellPadding: const EdgeInsets.all(2),
             enableCellBorderHorizontal: true,
             gridBorderColor: Colors.deepPurpleAccent,
