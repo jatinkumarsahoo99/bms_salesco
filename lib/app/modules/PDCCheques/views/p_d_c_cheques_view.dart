@@ -11,25 +11,37 @@ import 'package:pluto_grid/pluto_grid.dart';
 
 import '../../../../widgets/FormButton.dart';
 import '../../../../widgets/dropdown.dart';
+import '../../../../widgets/floating_dialog.dart';
 import '../../../../widgets/gridFromMap.dart';
 import '../../../../widgets/input_fields.dart';
 import '../../../controller/HomeController.dart';
 import '../../../providers/SizeDefine.dart';
 import '../../../routes/app_pages.dart';
+import '../../CommonSearch/views/common_search_view.dart';
+import '../../CommonSearch/views/pivotPage.dart';
+import '../../CommonSearch/views/searchResult.dart';
 import '../controllers/p_d_c_cheques_controller.dart';
 
 class PDCChequesView extends StatelessWidget {
   const PDCChequesView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(PDCChequesController());
     return Scaffold(
+      floatingActionButton: Obx(() {
+        return controller.dialogWidget.value != null
+            ? DraggableFab(
+                child: controller.dialogWidget.value!,
+              )
+            : const SizedBox();
+      }),
       body: SizedBox(
         width: context.devicewidth,
         height: context.deviceheight,
         child: Padding(
           padding: const EdgeInsets.all(10.0),
           child: GetBuilder(
-            init: Get.put(PDCChequesController()),
+            init: controller,
             builder: (controller) {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -268,6 +280,7 @@ class PDCChequesView extends StatelessWidget {
                               controller.locationChannelLastSelectedIdx =
                                   event.rowIdx!;
                             },
+                            exportFileName: 'PDC Cheque',
                             onload: (sm) {
                               sm.stateManager.setCurrentCell(
                                   sm.stateManager
@@ -351,6 +364,7 @@ class PDCChequesView extends StatelessWidget {
                             Expanded(
                               child: Obx(() {
                                 return DataGridFromMap3(
+                                  exportFileName: 'PDC Cheque',
                                   onload: (sm) {
                                     sm.stateManager.setCurrentCell(
                                         sm.stateManager
@@ -425,6 +439,40 @@ class PDCChequesView extends StatelessWidget {
                     (btnName) {
                       if (btnName == "Save") {
                         controller.saveData();
+                      } else if (btnName == "Docs") {
+                        controller.docs();
+                      } else if (btnName == "Search") {
+                        controller.dialogWidget.value = SizedBox(
+                          width: MediaQuery.of(context).size.width * .9,
+                          height: MediaQuery.of(context).size.height * .7,
+                          child: SearchPage(
+                            // key: Key("PDC Cheque"),
+                            screenName: "PDC Cheque",
+                            appBarName: "PDC Cheque",
+                            strViewName: "bms_search_ClientPDc",
+                            isAppBarReq: true,
+                            dialogClose: (val) {
+                              if (val is SearchPivotPage ||
+                                  val is SearchResultPage) {
+                                controller.dialogWidget.value = SizedBox(
+                                  width: MediaQuery.of(context).size.width * .9,
+                                  height:
+                                      MediaQuery.of(context).size.height * .7,
+                                  child: val,
+                                );
+                              } else if (val is PlutoRow) {
+                                controller.getRetriveData(
+                                    chequeId: int.tryParse(
+                                            val.cells['ChequeId']!.value) ??
+                                        0);
+                                controller.dialogWidget.value = null;
+                              } else {
+                                controller.dialogWidget.value = null;
+                              }
+                              controller.dialogWidget.refresh();
+                            },
+                          ),
+                        );
                       }
                     },
                   ),

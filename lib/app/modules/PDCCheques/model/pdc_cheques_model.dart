@@ -23,7 +23,7 @@ class LocationChannelModel {
   }
 
   Map<String, dynamic> toJson({bool fromSave = false}) {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     if (fromSave) {
       // data['selectRow'] = selectRow;
       // data['locationName'] = locationName;
@@ -100,7 +100,7 @@ class ChequeGroupingModel {
   }
 
   Map<String, dynamic> toJson({bool fromSave = false}) {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     if (fromSave) {
       // data['selectRow'] = selectRow;
       // data['chequeNo'] = chequeNo;
@@ -118,7 +118,7 @@ class ChequeGroupingModel {
       // data['clientName'] = clientName;
       // data['agencyName'] = agencyName;
       // data['activityPeriod'] = activityPeriod;
-      data['chequeId'] = chequeId;
+      data['chequeId'] = chequeId.toString();
     } else {
       data['selectRow'] = (selectRow ?? false).toString();
       data['chequeNo'] = chequeNo;
@@ -169,6 +169,10 @@ class PDCRetriveModel {
   int? serviceTaxPercent;
   int? serviceTaxAmount;
   int? tdsAmount;
+  String? agencyName;
+  String? clientName;
+  String? pdcTypeName;
+  List<LocationChannelModel>? locationChannelModel;
 
   PDCRetriveModel(
       {this.chequeId,
@@ -192,7 +196,11 @@ class PDCRetriveModel {
       this.chequeAmountGross,
       this.serviceTaxPercent,
       this.serviceTaxAmount,
-      this.tdsAmount});
+      this.tdsAmount,
+      this.agencyName,
+      this.clientName,
+      this.pdcTypeName,
+      this.locationChannelModel});
 
   PDCRetriveModel.fromJson(Map<String, dynamic> json) {
     chequeId = json['chequeId'];
@@ -217,32 +225,48 @@ class PDCRetriveModel {
     serviceTaxPercent = json['serviceTaxPercent'];
     serviceTaxAmount = json['serviceTaxAmount'];
     tdsAmount = json['tdsAmount'];
+    agencyName = json['agencyName'];
+    clientName = json['clientName'];
+    pdcTypeName = json['pdcTypeName'];
+    if (json['locationChannelModel'] != null) {
+      locationChannelModel = <LocationChannelModel>[];
+      json['locationChannelModel'].forEach((v) {
+        locationChannelModel!.add(LocationChannelModel.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['chequeId'] = this.chequeId;
-    data['clientCode'] = this.clientCode;
-    data['activityPeriod'] = this.activityPeriod;
-    data['chequeNo'] = this.chequeNo;
-    data['chequeDate'] = this.chequeDate;
-    data['chequeAmount'] = this.chequeAmount;
-    data['bankName'] = this.bankName;
-    data['chequeReceivedBy'] = this.chequeReceivedBy;
-    data['chequeReceivedOn'] = this.chequeReceivedOn;
-    data['ccdVerifiedBy'] = this.ccdVerifiedBy;
-    data['ccdVerifiedOn'] = this.ccdVerifiedOn;
-    data['pdcTypeId'] = this.pdcTypeId;
-    data['remarks'] = this.remarks;
-    data['modifiedBy'] = this.modifiedBy;
-    data['modifiedOn'] = this.modifiedOn;
-    data['isDummy'] = this.isDummy;
-    data['approvedTill'] = this.approvedTill;
-    data['agencyCode'] = this.agencyCode;
-    data['chequeAmountGross'] = this.chequeAmountGross;
-    data['serviceTaxPercent'] = this.serviceTaxPercent;
-    data['serviceTaxAmount'] = this.serviceTaxAmount;
-    data['tdsAmount'] = this.tdsAmount;
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['chequeId'] = chequeId;
+    data['clientCode'] = clientCode;
+    data['activityPeriod'] = activityPeriod;
+    data['chequeNo'] = chequeNo;
+    data['chequeDate'] = chequeDate;
+    data['chequeAmount'] = chequeAmount;
+    data['bankName'] = bankName;
+    data['chequeReceivedBy'] = chequeReceivedBy;
+    data['chequeReceivedOn'] = chequeReceivedOn;
+    data['ccdVerifiedBy'] = ccdVerifiedBy;
+    data['ccdVerifiedOn'] = ccdVerifiedOn;
+    data['pdcTypeId'] = pdcTypeId;
+    data['remarks'] = remarks;
+    data['modifiedBy'] = modifiedBy;
+    data['modifiedOn'] = modifiedOn;
+    data['isDummy'] = isDummy;
+    data['approvedTill'] = approvedTill;
+    data['agencyCode'] = agencyCode;
+    data['chequeAmountGross'] = chequeAmountGross;
+    data['serviceTaxPercent'] = serviceTaxPercent;
+    data['serviceTaxAmount'] = serviceTaxAmount;
+    data['tdsAmount'] = tdsAmount;
+    data['agencyName'] = agencyName;
+    data['clientName'] = clientName;
+    data['pdcTypeName'] = pdcTypeName;
+    if (locationChannelModel != null) {
+      data['locationChannelModel'] =
+          locationChannelModel!.map((v) => v.toJson()).toList();
+    }
     return data;
   }
 }

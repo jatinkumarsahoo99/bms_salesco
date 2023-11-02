@@ -1240,6 +1240,8 @@ class ApiFactory {
 
   static String get PDC_CHEQUES_GET_CHEQUE_GROUPING =>
       "$BASE_URL/api/ClientPDC/GetPDCGroup";
+  static String get PDC_CHEQUES_SAVE_CHEQUE_GROUPING =>
+      "$BASE_URL/api/ClientPDC/SaveGroupCheques";
   /////////////////////////////// PDC Cheques PDC End//////////////////////
   ///
   ///

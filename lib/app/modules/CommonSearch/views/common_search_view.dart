@@ -24,8 +24,10 @@ class SearchPage extends StatelessWidget {
     this.isPopup = false,
     this.actionableSearch = false,
     this.actionableMap,
+    this.dialogClose,
   }) : super(key: key);
   final String screenName;
+  final void Function(dynamic)? dialogClose;
   final String strViewName;
   final bool? isAppBarReq;
   final bool? isPopup;
@@ -39,38 +41,49 @@ class SearchPage extends StatelessWidget {
       focusNode: FocusNode(),
       onKeyEvent: (value) {
         if (value.logicalKey == LogicalKeyboardKey.escape) {
-          Get.back();
+          if (dialogClose != null) {
+            dialogClose!(null);
+          } else {
+            Get.back();
+          }
         }
       },
       child: GetBuilder<SearchController>(
           key: key,
           id: "initialData",
-          init: SearchController(strViewName, screenName,
-              isPopUp: isPopup,
-              actionableSearch: actionableSearch,
-              actionableMap: actionableMap),
+          init: SearchController(
+            strViewName,
+            screenName,
+            isPopUp: isPopup,
+            actionableSearch: actionableSearch,
+            actionableMap: actionableMap,
+            dialogClose: dialogClose,
+          ),
           builder: (controller) {
             if (controller.grid != null &&
                 controller.grid!.variances!.isNotEmpty) {
               return Scaffold(
-
-                  // floatingActionButtonLocation:
-                  // FloatingActionButtonLocation.centerDocked,
-                  // floatingActionButton:
                   appBar: (isAppBarReq != null && isAppBarReq == true)
                       ? AppBar(
                           title: Text(
                               appBarName != null
-                                  ? (appBarName ?? "") + " - " + "Search"
+                                  ? "${appBarName ?? ""} - Search"
                                   : "Search",
                               style: const TextStyle(color: Colors.deepPurple)),
                           backgroundColor: Colors.white,
                           elevation: 2,
                           leading: IconButton(
-                              icon: const Icon(Icons.arrow_back_ios_new_rounded,
+                              icon: Icon(
+                                  (dialogClose != null)
+                                      ? Icons.close
+                                      : Icons.arrow_back_ios_new_rounded,
                                   color: Colors.black),
                               onPressed: () {
-                                Get.back();
+                                if (dialogClose != null) {
+                                  dialogClose!(null);
+                                } else {
+                                  Get.back();
+                                }
                               }),
                         )
                       : null,
@@ -243,6 +256,7 @@ class SearchPage extends StatelessWidget {
                               ),
                             ),
                           ),
+
                           Align(
                             alignment: Alignment.bottomCenter,
                             child: Container(

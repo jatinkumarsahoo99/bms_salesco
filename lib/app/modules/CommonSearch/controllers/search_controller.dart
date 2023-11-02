@@ -28,12 +28,17 @@ import '../views/pivotPage.dart';
 import '../views/searchResult.dart';
 
 class SearchController extends GetxController {
-  SearchController(this.strViewName, this.screenName,
-      {this.isPopUp = false,
-      this.actionableSearch = false,
-      this.actionableMap});
+  SearchController(
+    this.strViewName,
+    this.screenName, {
+    this.isPopUp = false,
+    this.actionableSearch = false,
+    this.actionableMap,
+    this.dialogClose,
+  });
 
   final String screenName;
+  final void Function(dynamic)? dialogClose;
   final String strViewName;
   final bool? isPopUp;
   final bool actionableSearch;
@@ -752,11 +757,21 @@ class SearchController extends GetxController {
                 LoadingDialog.showErrorDialog(json);
               } else {
                 searchPivotResult = json;
-                Get.to(() => SearchPivotPage(
-                      directPivot: true,
-                      controller: this,
-                      searchForm: strViewName,
-                    ));
+                if (dialogClose != null) {
+                  dialogClose!(null);
+                  dialogClose!(SearchPivotPage(
+                    directPivot: true,
+                    controller: this,
+                    searchForm: strViewName,
+                    dialogClose: dialogClose,
+                  ));
+                } else {
+                  Get.to(() => SearchPivotPage(
+                        directPivot: true,
+                        controller: this,
+                        searchForm: strViewName,
+                      ));
+                }
               }
             },
           );
@@ -802,12 +817,23 @@ class SearchController extends GetxController {
                   // Snack.callError("NO Data");
                   LoadingDialog.showErrorDialog("NO Data");
                 } else {
-                  Get.to(() => SearchResultPage(
-                        controller: this,
-                        appFormName: this.strViewName,
-                        actionableMap: this.actionableMap,
-                        actionableSearch: this.actionableSearch,
-                      ));
+                  if (dialogClose != null) {
+                    // dialogClose!(null);
+                    dialogClose!(SearchResultPage(
+                      controller: this,
+                      appFormName: this.strViewName,
+                      actionableMap: this.actionableMap,
+                      actionableSearch: this.actionableSearch,
+                      dialogClose: dialogClose,
+                    ));
+                  } else {
+                    Get.to(() => SearchResultPage(
+                          controller: this,
+                          appFormName: this.strViewName,
+                          actionableMap: this.actionableMap,
+                          actionableSearch: this.actionableSearch,
+                        ));
+                  }
                 }
               }
             });

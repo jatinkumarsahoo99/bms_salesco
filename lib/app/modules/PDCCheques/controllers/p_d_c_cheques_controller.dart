@@ -11,10 +11,13 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
+import '../../CommonDocs/controllers/common_docs_controller.dart';
+import '../../CommonDocs/views/common_docs_view.dart';
 import '../model/pdc_cheques_model.dart';
 
 class PDCChequesController extends GetxController {
   var selectedTab = 0.obs;
+  Rxn<Widget?> dialogWidget = Rxn();
   var locationChannelList = <LocationChannelModel>[].obs,
       chequeGroupingList = <ChequeGroupingModel>[].obs;
   var pdcTypeList = <DropDownValue>[].obs, agencyList = <DropDownValue>[].obs;
@@ -40,26 +43,25 @@ class PDCChequesController extends GetxController {
   var saveTaxAmt = "".obs, newBookAmt = "".obs;
   var isDummy = false.obs;
   var clientFN = FocusNode(), activityMonthFN = FocusNode();
-  @override
-  void onInit() {
-    activityMonthTC.text = "${DateTime.now().year}${DateTime.now().month}";
-    super.onInit();
-  }
+  int chequeID = 0;
 
   @override
   void onReady() {
     super.onReady();
-    getOnLoadData();
-    activityMonthFN.onKey = (node, event) {
-      if (!event.isShiftPressed &&
-          !event.isAltPressed &&
-          event.logicalKey == LogicalKeyboardKey.tab) {
-        Get.focusScope?.nextFocus();
-        getChequeBookingData();
-        return KeyEventResult.handled;
-      }
-      return KeyEventResult.ignored;
-    };
+    Future.delayed(const Duration(seconds: 2)).then((value) {
+      activityMonthTC.text = "${DateTime.now().year}${DateTime.now().month}";
+      activityMonthFN.onKey = (node, event) {
+        if (!event.isShiftPressed &&
+            !event.isAltPressed &&
+            event.logicalKey == LogicalKeyboardKey.tab) {
+          Get.focusScope?.nextFocus();
+          getChequeBookingData(chequeId: chequeID);
+          return KeyEventResult.handled;
+        }
+        return KeyEventResult.ignored;
+      };
+      getOnLoadData();
+    });
   }
 
   handleOnChangeClient(DropDownValue client) {
@@ -143,7 +145,7 @@ class PDCChequesController extends GetxController {
     } else {
       LoadingDialog.call();
       var payload = {
-        "chequeId": 0,
+        "chequeId": chequeID,
         "clientCode": selecctedClient?.key,
         "chequeNo": chequeNoTC.text,
         "chequeDate": DateFormat('yyyy-MM-dd')
@@ -238,9 +240,9 @@ class PDCChequesController extends GetxController {
     } else {
       LoadingDialog.call();
       Get.find<ConnectorControl>().POSTMETHOD(
-        api: ApiFactory.ASRUN_DETAILS_REPORT_GENERATE,
+        api: ApiFactory.PDC_CHEQUES_SAVE_CHEQUE_GROUPING,
         json: {
-          "LstChannelList": chequeGroupingList
+          "chequeIds": chequeGroupingList
               .where((e) => e.selectRow ?? false)
               .toList()
               .map((e2) => e2.toJson(fromSave: true))
@@ -268,6 +270,7 @@ class PDCChequesController extends GetxController {
   }
 
   getRetriveData({int chequeId = 0}) {
+    chequeID = chequeId;
     LoadingDialog.call();
     Get.find<ConnectorControl>().GETMETHODCALL(
       api: ApiFactory.PDC_CHEQUES_GET_RETRIVE_DATA(chequeId.toString()),
@@ -276,11 +279,37 @@ class PDCChequesController extends GetxController {
         if (resp != null && resp['retrieve'] != null) {
           PDCRetriveModel retriveData =
               PDCRetriveModel.fromJson(resp['retrieve']);
+          selecctedClient = DropDownValue(
+              key: retriveData.clientCode, value: retriveData.clientName);
+          selectedAgency = DropDownValue(
+              key: retriveData.agencyCode, value: retriveData.agencyName);
+          selectedPdcType = DropDownValue(
+              key: retriveData.pdcTypeId.toString(),
+              value: retriveData.pdcTypeName);
+
+          locationChannelList.value = retriveData.locationChannelModel ?? [];
         } else {
           LoadingDialog.showErrorDialog(resp.toString());
         }
       },
     );
-    getOnLoadData(chequeId: chequeId);
+  }
+
+  docs() async {
+    String documentKey = "";
+    // if (selectedLocation == null || selectedChannel == null) {
+    //   documentKey = "";
+    // } else {
+    //   documentKey = "Rate card " +
+    //       (selectedLocation?.key ?? "") +
+    //       (selectedChannel?.key ?? "");
+    // }
+
+    Get.defaultDialog(
+      title: "Documents",
+      content: CommonDocsView(documentKey: documentKey),
+    ).then((value) {
+      Get.delete<CommonDocsController>(tag: "commonDocs");
+    });
   }
 }
