@@ -54,7 +54,7 @@ class AmagiStatusReportView extends GetView<AmagiStatusReportController> {
                     controllerX.channelList.value??[],
                         (value) {
                           controllerX.selectedChannel = value;
-                    }, "channel", .15,
+                    }, "Channel", .15,
                     isEnable: controllerX.isEnable.value,
                     selected: controllerX.selectedChannel,
                     dialogHeight: Get.height * .35,
@@ -81,6 +81,28 @@ class AmagiStatusReportView extends GetView<AmagiStatusReportController> {
                     width: 5,
                   ),
                   Padding(
+                    padding: const EdgeInsets.only(top: 14.0),
+                    child: Obx(()=>RadioRow(
+                      items: [
+                        "Day Wise",
+                        "Time Band",
+                        "Serviced",
+                        "Yield",
+                        "Data"
+                      ],
+                      groupValue:
+                      controllerX.selectValue.value ?? "",
+                      onchange: (String v) {
+                        print(">>>>"+v);
+                        controllerX.selectValue.value=v;
+                        controllerX.selectValue.refresh();
+                        controllerX.getRadioStatus(v).then((value) {
+                          controllerX.retrieveData();
+                        });
+                      },
+                    ),),
+                  ),
+                  Padding(
                     padding: const EdgeInsets.only(
                         top: 14.0, left: 10, right: 10),
                     child: FormButtonWrapper(
@@ -94,29 +116,10 @@ class AmagiStatusReportView extends GetView<AmagiStatusReportController> {
 
                 ],
               ),
-              Row(
-                children: [
-                  Obx(()=>RadioRow(
-                    items: [
-                      "Day Wise",
-                      "Time Band",
-                      "Serviced",
-                      "Yield",
-                      "Data"
-                    ],
-                    groupValue:
-                    controllerX.selectValue.value ?? "",
-                    onchange: (String v) {
-                      print(">>>>"+v);
-                      controllerX.selectValue.value=v;
-                      controllerX.selectValue.refresh();
-                      controllerX.getRadioStatus(v).then((value) {
-                        controllerX.retrieveData();
-                      });
-                    },
-                  ),),
-                ],
+              SizedBox(
+                height: 8,
               ),
+
               Expanded(
                 // flex: 9,
                 child: Container(
@@ -130,6 +133,11 @@ class AmagiStatusReportView extends GetView<AmagiStatusReportController> {
                             showSrNo: false,
                             hideCode: false,
                             formatDate: false,
+                           colorCallback: (row) => (row.row.cells
+                               .containsValue(
+                               controllerX.stateManager?.currentCell))
+                               ? Colors.deepPurple.shade200
+                               : Colors.white,
                             exportFileName: "Amagi Status Report",
                             widthSpecificColumn:  Get.find<HomeController>().getGridWidthByKey(
                                 userGridSettingList: controllerX.userGridSetting1,key:controllerX.getTableNo(controllerX.selectValue.value) ??"tbl1"),

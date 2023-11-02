@@ -14,7 +14,10 @@ import '../controllers/view_old_deal_controller.dart';
 class ViewOldDealView extends GetView<ViewOldDealController> {
   ViewOldDealView({Key? key}) : super(key: key);
 
-  ViewOldDealController controllerX = Get.find<ViewOldDealController>();
+  // ViewOldDealController controllerX = Get.find<ViewOldDealController>();
+
+  ViewOldDealController controllerX =
+  Get.put<ViewOldDealController>(ViewOldDealController());
 
   @override
   Widget build(BuildContext context) {
@@ -83,6 +86,12 @@ class ViewOldDealView extends GetView<ViewOldDealController> {
                             }, "Agency", .23,
                                 autoFocus: true,
                                 selected: controllerX.selectedAgencyList.value,
+                            onFocusChange: (val){
+                                  if(!val){
+                                    controllerX.selectedDealNoList.value = null;
+                                    controllerX.selectedDealNoList.refresh();
+                                  }
+                            },
                                 inkWellFocusNode: controllerX.agencyNode)),
                         Obx(() => DropDownField.formDropDown1WidthMap(
                                 controllerX.dealNoList.value ?? [], (valeu) {
@@ -125,7 +134,7 @@ class ViewOldDealView extends GetView<ViewOldDealController> {
                               id: "grid",
                               builder: (controllerX) {
                                 return DataGridFromMap(
-                                  showSrNo: false,
+                                  showSrNo: true,
                                   hideCode: false,
                                   formatDate: false,
                                   exportFileName: "View Old Deal",

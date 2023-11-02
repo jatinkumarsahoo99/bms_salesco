@@ -26,7 +26,7 @@ class AmagiSpotPlanningController extends GetxController {
   RxString selectValue = RxString("Master Spots");
 
   TextEditingController scheduleDateController = TextEditingController();
-  bool isMasterSpots = false;
+  bool isMasterSpots = true;
   bool isChannel = false;
   bool isClient = false;
   bool isData = false;
@@ -184,7 +184,12 @@ class AmagiSpotPlanningController extends GetxController {
               Map<String, dynamic> mapDa = {};
               element.forEach((key, value) {
                 String k = key.toString().trim().replaceAll("\n", " ");
-                mapDa[k] = value;
+                if((value == 0 || value == "0") && ((key.toString().toLowerCase().contains("rate")) == false) &&
+                    ((key.toString().contains("SpotAmount")) == false ) ){
+                  mapDa[k] = "";
+                }else{
+                  mapDa[k] = value;
+                }
               });
               mapData.add(mapDa);
             }

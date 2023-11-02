@@ -417,13 +417,13 @@ class Utils {
       } else if (value is num || (value is String && num.tryParse(value) != null)) {
         return 45;
       } else if (key.toLowerCase().contains("date")) {
-        return 45;
+        return 250;
       }
     } catch (e) {
       print("problem in setting width $e");
     }
 
-    return 120;
+    return 250;
   }
 
   static double getColumnSize1({required String key, dynamic value, double? widthRatio = 120}) {
