@@ -53,6 +53,14 @@ class AuditStatusReportView extends StatelessWidget {
                   widthRatio: Get.width / 9 - 1,
                   onload: (PlutoGridOnLoadedEvent load) {
                     controllerX.stateManager1 = load.stateManager;
+                    // controllerX.stateManager1?.setSelectingMode(PlutoGridSelectingMode.row);
+                  },
+                  colorCallback: (PlutoRowColorContext color) {
+                    if (color.stateManager.currentRow == color.row) {
+                      return Colors.deepPurple[100]!;
+                    } else {
+                      return Colors.white;
+                    }
                   },
                 ),
               ),
@@ -82,6 +90,15 @@ class AuditStatusReportView extends StatelessWidget {
                   widthRatio: Get.width / 9 - 1,
                   onload: (PlutoGridOnLoadedEvent load) {
                     controllerX.stateManager2 = load.stateManager;
+                    // controllerX.stateManager2
+                    //     ?.setSelectingMode(PlutoGridSelectingMode.row);
+                  },
+                  colorCallback: (PlutoRowColorContext color) {
+                    if (color.stateManager.currentRow == color.row) {
+                      return Colors.deepPurple[100]!;
+                    } else {
+                      return Colors.white;
+                    }
                   },
                 ),
               ),
@@ -110,6 +127,15 @@ class AuditStatusReportView extends StatelessWidget {
                   widthRatio: Get.width / 9 - 1,
                   onload: (PlutoGridOnLoadedEvent load) {
                     controllerX.stateManager3 = load.stateManager;
+                    controllerX.stateManager3
+                        ?.setSelectingMode(PlutoGridSelectingMode.row);
+                  },
+                  colorCallback: (PlutoRowColorContext color) {
+                    if (color.stateManager.currentRow == color.row) {
+                      return Colors.deepPurple[100]!;
+                    } else {
+                      return Colors.white;
+                    }
                   },
                 ),
               ),
@@ -380,9 +406,11 @@ class AuditStatusReportView extends StatelessWidget {
                                                 title: "Date",
                                                 splitType: "-",
                                                 widthRation: 0.09,
-                                                isEnable: controllerX.isEnable.value,
+                                                isEnable:
+                                                    controllerX.isEnable.value,
                                                 onFocusChange: (data) {},
-                                                mainTextController: controllerX.dateController,
+                                                mainTextController:
+                                                    controllerX.dateController,
                                               ),
                                               Padding(
                                                 padding: const EdgeInsets.only(
@@ -392,9 +420,11 @@ class AuditStatusReportView extends StatelessWidget {
                                                 child: SizedBox(
                                                   width: size.width * 0.11,
                                                   child: FormButtonWrapper(
-                                                    btnText: "Generate Audit Status",
+                                                    btnText:
+                                                        "Generate Audit Status",
                                                     callback: () {
-                                                      controllerX.fetchGetGenerateAuditStatus();
+                                                      controllerX
+                                                          .fetchGetGenerateAuditStatus();
                                                     },
                                                     showIcon: true,
                                                   ),
