@@ -349,7 +349,7 @@ class PDCChequesController extends GetxController {
           remarksTC.text = retriveData.remarks ?? "";
 
           /// CHEQUE AMT
-          checkAmtTC.text = (retriveData.chequeAmount ?? "").toString();
+          checkAmtTC.text = (retriveData.chequeAmountGross ?? "").toString();
 
           /// TDS AMT
           tdsAmtTC.text = (retriveData.tdsAmount ?? "").toString();
@@ -362,10 +362,11 @@ class PDCChequesController extends GetxController {
           saveTaxAmt.value = (retriveData.serviceTaxAmount ?? "").toString();
 
           /// NET BOOK AMT
+          newBookAmt.value = (retriveData.chequeAmount ?? "").toString();
 
           /// 1st Tab List
           locationChannelList.value = retriveData.locationChannelModel ?? [];
-          calculateTotal();
+          // calculateTotal();
         } else {
           LoadingDialog.showErrorDialog(resp.toString());
         }
