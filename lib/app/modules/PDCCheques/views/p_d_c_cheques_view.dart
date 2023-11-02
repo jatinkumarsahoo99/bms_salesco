@@ -11,25 +11,37 @@ import 'package:pluto_grid/pluto_grid.dart';
 
 import '../../../../widgets/FormButton.dart';
 import '../../../../widgets/dropdown.dart';
+import '../../../../widgets/floating_dialog.dart';
 import '../../../../widgets/gridFromMap.dart';
 import '../../../../widgets/input_fields.dart';
 import '../../../controller/HomeController.dart';
 import '../../../providers/SizeDefine.dart';
 import '../../../routes/app_pages.dart';
+import '../../CommonSearch/views/common_search_view.dart';
+import '../../CommonSearch/views/pivotPage.dart';
+import '../../CommonSearch/views/searchResult.dart';
 import '../controllers/p_d_c_cheques_controller.dart';
 
 class PDCChequesView extends StatelessWidget {
   const PDCChequesView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(PDCChequesController());
     return Scaffold(
+      floatingActionButton: Obx(() {
+        return controller.dialogWidget.value != null
+            ? DraggableFab(
+                child: controller.dialogWidget.value!,
+              )
+            : const SizedBox();
+      }),
       body: SizedBox(
         width: context.devicewidth,
         height: context.deviceheight,
         child: Padding(
           padding: const EdgeInsets.all(10.0),
           child: GetBuilder(
-            init: Get.put(PDCChequesController()),
+            init: controller,
             builder: (controller) {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -39,52 +51,52 @@ class PDCChequesView extends StatelessWidget {
                     runSpacing: 5,
                     spacing: 10,
                     children: [
-                      DropDownField.formDropDownSearchAPI2(
-                        GlobalKey(),
-                        context,
-                        title: "Client",
-                        url: ApiFactory.PDC_CHEQUES_CLIENT,
-                        onchanged: controller.handleOnChangeClient,
-                        width: context.devicewidth * .12,
-                        selectedValue: controller.selecctedClient,
-                        customInData: 'clientModels',
-                        parseKeyForKey: 'clientcode',
-                        parseKeyForValue: 'clientname',
-                      ),
-                      DropDownField.formDropDown1Width(
-                        context,
-                        [],
-                        (val) {},
-                        "Agency",
-                        .12,
-                        paddingLeft: 0,
-                      ),
+                      GetBuilder(
+                          init: controller,
+                          id: "client",
+                          builder: (_) {
+                            return DropDownField.formDropDownSearchAPI2(
+                              GlobalKey(),
+                              context,
+                              title: "Client",
+                              url: ApiFactory.PDC_CHEQUES_CLIENT,
+                              onchanged: controller.handleOnChangeClient,
+                              width: context.devicewidth * .12,
+                              selectedValue: controller.selecctedClient,
+                              customInData: 'clientModels',
+                              parseKeyForKey: 'clientcode',
+                              parseKeyForValue: 'clientname',
+                              widthofDialog: 250,
+                              inkwellFocus: controller.clientFN,
+                              autoFocus: true,
+                            );
+                          }),
                       InputFields.formField1(
                         width: .12,
                         hintTxt: "Bank",
-                        controller: TextEditingController(text: ''),
+                        controller: controller.bankTC,
                         padLeft: 0,
                       ),
                       DateWithThreeTextField(
                         title: "Recd on",
-                        mainTextController: TextEditingController(),
+                        mainTextController: controller.recdOnDateTC,
                         widthRation: .12,
                       ),
                       InputFields.formField1(
                         width: .12,
                         hintTxt: "Recd By",
-                        controller: TextEditingController(text: ''),
+                        controller: controller.recdByTC,
                         padLeft: 0,
                       ),
                       DateWithThreeTextField(
                         title: "CCD Verify Dt",
-                        mainTextController: TextEditingController(),
+                        mainTextController: controller.ccdVerifyDateTC,
                         widthRation: .12,
                       ),
                       InputFields.formField1(
                         width: .12,
                         hintTxt: "CCD Verify By",
-                        controller: TextEditingController(text: ''),
+                        controller: controller.ccdVerifyByTC,
                         padLeft: 0,
                       ),
                       Obx(() {
@@ -105,48 +117,46 @@ class PDCChequesView extends StatelessWidget {
                           ),
                         ),
                       ),
-                      // DropDownField.formDropDownSearchAPI2(
-                      //   GlobalKey(),
-                      //   context,
-                      //   title: "Client",
-                      //   url: 'url',
-                      //   onchanged: (p0) {},
-                      //   width: context.devicewidth * .12,
-                      // ),
-                      DropDownField.formDropDown1Width(
-                        context,
-                        [],
-                        (val) {},
-                        "Agency",
-                        .12,
-                        paddingLeft: 0,
-                      ),
+                      Obx(() {
+                        return DropDownField.formDropDown1WidthMap(
+                          controller.agencyList.value,
+                          (val) => controller.selectedAgency = val,
+                          "Agency",
+                          .12,
+                          dialogWidth: 250,
+                        );
+                      }),
                       InputFields.formField1(
                         padLeft: 0,
                         width: .12,
                         hintTxt: "Cheque No",
-                        controller: TextEditingController(text: ''),
+                        controller: controller.chequeNoTC,
                       ),
                       DateWithThreeTextField(
                         title: "Cheque Dt",
-                        mainTextController: TextEditingController(),
+                        mainTextController: controller.chequeDateTC,
                         widthRation: .12,
                       ),
                       DateWithThreeTextField(
                         title: "Approved Till",
-                        mainTextController: TextEditingController(),
+                        mainTextController: controller.approvedTillDateTC,
                         widthRation: .12,
-                      ),
-                      CheckBoxWidget1(
-                        title: 'Is Dummy',
-                        value: true,
                       ),
                       InputFields.formField1(
                         padLeft: 0,
-                        width: .12,
+                        width: .25,
                         hintTxt: "Remarks",
-                        controller: TextEditingController(text: ''),
+                        controller: controller.remarksTC,
                       ),
+                      Obx(() {
+                        return CheckBoxWidget1(
+                          title: 'Is Dummy',
+                          value: controller.isDummy.value,
+                          onChanged: (newVal) {
+                            controller.isDummy.value = newVal ?? false;
+                          },
+                        );
+                      }),
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 8),
                         child: DecoratedBox(
@@ -161,59 +171,72 @@ class PDCChequesView extends StatelessWidget {
                         width: .12,
                         padLeft: 0,
                         hintTxt: "Chq Amt",
-                        controller: TextEditingController(text: '0'),
+                        controller: controller.checkAmtTC,
                         isNegativeReq: false,
                         inputformatters: [
                           FilteringTextInputFormatter.allow(
                               RegExp(r'^\d+\.?\d{0,4}'))
                         ],
+                        onchanged: (p0) {
+                          controller.calculateTotal();
+                        },
                       ),
                       InputFields.numbers(
                         width: .12,
                         padLeft: 0,
                         hintTxt: "TDS Amt",
-                        controller: TextEditingController(text: '0'),
+                        controller: controller.tdsAmtTC,
                         isNegativeReq: false,
                         inputformatters: [
                           FilteringTextInputFormatter.allow(
                               RegExp(r'^\d+\.?\d{0,4}'))
                         ],
+                        onchanged: (p0) {
+                          controller.calculateTotal();
+                        },
                       ),
                       InputFields.numbers(
                         padLeft: 0,
                         width: .12,
                         hintTxt: "Save Tax %",
-                        controller: TextEditingController(text: '0'),
+                        controller: controller.saveTaxTC,
                         isNegativeReq: false,
                         inputformatters: [
                           FilteringTextInputFormatter.allow(
                               RegExp(r'^\d+\.?\d{0,4}'))
                         ],
+                        onchanged: (p0) {
+                          controller.calculateTotal();
+                        },
                       ),
-                      InputFields.formFieldDisable1(
-                        leftPad: 0,
-                        hintTxt: "Svc Tax Amt",
-                        value: "",
-                        widthRatio: .12,
-                      ),
-                      InputFields.formFieldDisable1(
-                        leftPad: 0,
-                        hintTxt: "Net Book Amt",
-                        value: "",
-                        widthRatio: .12,
-                      ),
+                      Obx(() {
+                        return InputFields.formFieldDisable1(
+                          leftPad: 0,
+                          hintTxt: "Svc Tax Amt",
+                          value: controller.saveTaxAmt.value,
+                          widthRatio: .12,
+                        );
+                      }),
+                      Obx(() {
+                        return InputFields.formFieldDisable1(
+                          leftPad: 0,
+                          hintTxt: "Net Book Amt",
+                          value: controller.newBookAmt.value,
+                          widthRatio: .25,
+                        );
+                      }),
                       Row(),
                       InputFields.formField1(
                         padLeft: 0,
-                        width: .12,
+                        width: .248,
                         hintTxt: "Rev Chq No",
-                        controller: TextEditingController(text: ''),
+                        controller: controller.revChqNoTC,
                       ),
                       InputFields.numbers(
                         padLeft: 0,
                         width: .12,
                         hintTxt: "Rev Chq Amt",
-                        controller: TextEditingController(text: '0'),
+                        controller: controller.revChqAmtTC,
                         isNegativeReq: false,
                         inputformatters: [
                           FilteringTextInputFormatter.allow(
@@ -222,9 +245,9 @@ class PDCChequesView extends StatelessWidget {
                       ),
                       InputFields.formField1(
                         padLeft: 0,
-                        width: .12,
+                        width: .378,
                         hintTxt: "Rev Bank",
-                        controller: TextEditingController(text: ''),
+                        controller: controller.revBankTC,
                       ),
                     ],
                   ),
@@ -262,6 +285,7 @@ class PDCChequesView extends StatelessWidget {
                               controller.locationChannelLastSelectedIdx =
                                   event.rowIdx!;
                             },
+                            exportFileName: 'PDC Cheque',
                             onload: (sm) {
                               sm.stateManager.setCurrentCell(
                                   sm.stateManager
@@ -274,6 +298,11 @@ class PDCChequesView extends StatelessWidget {
                                   controller.locationChannelLastSelectedIdx);
                               controller.locationChannelSM = sm.stateManager;
                             },
+                            colorCallback: (cell) =>
+                                controller.locationChannelSM?.currentRow ==
+                                        cell.row
+                                    ? Colors.deepPurple.shade100
+                                    : Colors.white,
                             mode: PlutoGridMode.selectWithOneTap,
                             mapData: controller.locationChannelList.value
                                 .map((e) => e.toJson())
@@ -320,19 +349,19 @@ class PDCChequesView extends StatelessWidget {
                                   InputFields.numbers(
                                     padLeft: 0,
                                     width: .12,
-                                    hintTxt: "Rev Chq Amt",
-                                    controller:
-                                        TextEditingController(text: '0'),
+                                    hintTxt: "Activity Month",
+                                    controller: controller.activityMonthTC,
                                     isNegativeReq: false,
                                     inputformatters: [
                                       FilteringTextInputFormatter.allow(
                                           RegExp(r'^\d+\.?\d{0,4}'))
                                     ],
+                                    focusNode: controller.activityMonthFN,
                                   ),
                                   SizedBox(width: 15),
                                   FormButton(
                                     btnText: "Save Cheque Grouping",
-                                    callback: () {},
+                                    callback: controller.saveChequeBookingData,
                                   ),
                                 ],
                               ),
@@ -340,18 +369,63 @@ class PDCChequesView extends StatelessWidget {
                             Expanded(
                               child: Obx(() {
                                 return DataGridFromMap3(
-                                  mapData: controller.chequeGroupingList.value
-                                      .map((e) {
-                                    if (e['selectRow'] != null) {
-                                      e['selectRow'] =
-                                          e['selectRow'].toString();
+                                  exportFileName: 'PDC Cheque',
+                                  onload: (sm) {
+                                    sm.stateManager.setCurrentCell(
+                                        sm.stateManager
+                                            .getRowByIdx(controller
+                                                .chequeGroupingLastSelectedIdx)
+                                            ?.cells['selectRow'],
+                                        controller
+                                            .chequeGroupingLastSelectedIdx);
+                                    sm.stateManager.moveScrollByRow(
+                                        PlutoMoveDirection.down,
+                                        controller
+                                            .chequeGroupingLastSelectedIdx);
+                                    controller.chequeGroupingSM =
+                                        sm.stateManager;
+                                  },
+                                  mode: PlutoGridMode.selectWithOneTap,
+                                  onSelected: (event) {
+                                    controller.chequeGroupingLastSelectedIdx =
+                                        event.rowIdx!;
+                                  },
+                                  onEdit: (event) {
+                                    controller
+                                        .chequeGroupingList
+                                        .value[event.row.sortIdx]
+                                        .selectRow = (event.value == "true");
+                                  },
+                                  actionOnPress: (position, isSpaceCalled) {
+                                    if (isSpaceCalled) {
+                                      controller.chequeGroupingSM!
+                                          .changeCellValue(
+                                        controller
+                                            .chequeGroupingSM!.currentCell!,
+                                        (!(controller
+                                                    .chequeGroupingList[
+                                                        controller
+                                                            .chequeGroupingSM!
+                                                            .currentRow!
+                                                            .sortIdx]
+                                                    .selectRow ??
+                                                false))
+                                            .toString(),
+                                        callOnChangedEvent: true,
+                                        force: true,
+                                      );
                                     }
-                                    return e;
-                                  }).toList(),
+                                  },
+                                  mapData: controller.chequeGroupingList
+                                      .map((element) => element.toJson())
+                                      .toList(),
                                   actionIconKey: ['selectRow'],
                                   checkBoxColumnKey: ['selectRow'],
-
-                                  // actionOnPress: (position, isSpaceCalled) {},
+                                  colorCallback: (cell) =>
+                                      controller.chequeGroupingSM?.currentRow ==
+                                              cell.row
+                                          ? Colors.deepPurple.shade100
+                                          : Colors.white,
                                   checkBoxStrComparison: "true",
                                   uncheckCheckBoxStr: "false",
                                 );
@@ -367,7 +441,45 @@ class PDCChequesView extends StatelessWidget {
                   Get.find<HomeController>()
                       .getCommonButton<PDCChequesController>(
                     Routes.P_D_C_CHEQUES,
-                    (formName) {},
+                    (btnName) {
+                      if (btnName == "Save") {
+                        controller.saveData();
+                      } else if (btnName == "Docs") {
+                        controller.docs();
+                      } else if (btnName == "Search") {
+                        controller.dialogWidget.value = SizedBox(
+                          width: MediaQuery.of(context).size.width * .9,
+                          height: MediaQuery.of(context).size.height * .7,
+                          child: SearchPage(
+                            // key: Key("PDC Cheque"),
+                            screenName: "PDC Cheque",
+                            appBarName: "PDC Cheque",
+                            strViewName: "bms_search_ClientPDc",
+                            isAppBarReq: true,
+                            dialogClose: (val) {
+                              if (val is SearchPivotPage ||
+                                  val is SearchResultPage) {
+                                controller.dialogWidget.value = SizedBox(
+                                  width: MediaQuery.of(context).size.width * .9,
+                                  height:
+                                      MediaQuery.of(context).size.height * .7,
+                                  child: val,
+                                );
+                              } else if (val is PlutoRow) {
+                                controller.getRetriveData(
+                                    chequeId: int.tryParse(
+                                            val.cells['ChequeId']!.value) ??
+                                        0);
+                                controller.dialogWidget.value = null;
+                              } else {
+                                controller.dialogWidget.value = null;
+                              }
+                              controller.dialogWidget.refresh();
+                            },
+                          ),
+                        );
+                      }
+                    },
                   ),
                 ],
               );

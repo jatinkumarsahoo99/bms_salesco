@@ -262,7 +262,7 @@ class HomeController extends GetxController {
 
   Widget getCommonButton<T>(
     String frmName,
-    void Function(String btnName) formhandler, {
+    void Function(String btnName) btnName, {
     bool handleAutoClear = true,
     List<String>? disableBtns,
   }) {
@@ -320,7 +320,7 @@ class HomeController extends GetxController {
                               null
                           ? null
                           : () {
-                              formhandler(controller.buttons?[index]['name']);
+                              btnName(controller.buttons?[index]['name']);
                               if (handleAutoClear &&
                                   controller.buttons?[index]['name'] ==
                                       "Clear") {
