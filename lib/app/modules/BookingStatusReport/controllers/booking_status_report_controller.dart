@@ -134,6 +134,10 @@ class BookingStatusReportController extends GetxController {
                 i));
             i++;
           });
+        },
+        failed: (resp) {
+          Get.back();
+          LoadingDialog.showErrorDialog(resp.toString());
         });
   }
 
@@ -219,21 +223,22 @@ class BookingStatusReportController extends GetxController {
       "rType": isRType.toString(),
     };
     Get.find<ConnectorControl>().POSTMETHOD(
-        api: ApiFactory.BOOKING_STATUS_REPORT_GET_REPORT,
-        json: payload,
-        fun: (map) {
-          Get.back();
-          print(map);
-          if (map != null &&
-              map['loadData'] != null &&
-              map.containsKey('loadData') &&
-              (map['loadData'] as List<dynamic>).isNotEmpty) {
-            dataTableList.clear();
-            dataTableList.value.addAll((map['loadData']));
-          } else {
-            LoadingDialog.showErrorDialog('No data found.');
-          }
-        });
+      api: ApiFactory.BOOKING_STATUS_REPORT_GET_REPORT,
+      json: payload,
+      fun: (map) {
+        Get.back();
+        print(map);
+        if (map != null &&
+            map['loadData'] != null &&
+            map.containsKey('loadData') &&
+            (map['loadData'] as List<dynamic>).isNotEmpty) {
+          dataTableList.clear();
+          dataTableList.value.addAll((map['loadData']));
+        } else {
+          LoadingDialog.showErrorDialog('No data found.');
+        }
+      },
+    );
   }
 
   clearPage() {

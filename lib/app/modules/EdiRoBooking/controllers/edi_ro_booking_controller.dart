@@ -16,6 +16,8 @@ import '../../../../widgets/dropdown.dart';
 import '../../../../widgets/input_fields.dart';
 import '../../../controller/ConnectorControl.dart';
 import '../../../controller/HomeController.dart';
+import '../../../controller/MainController.dart';
+import '../../../data/rowfilter.dart';
 import '../../../providers/ApiFactory.dart';
 
 class EdiRoBookingController extends GetxController {
@@ -62,8 +64,12 @@ class EdiRoBookingController extends GetxController {
   var lstXmlDtList = [].obs;
   var lstDgvSpotsList = [].obs;
   var fpcStartTabelList = [].obs;
+  var brandTabelList = [].obs;
+  var tempList = [].obs;
 
   PlutoGridStateManager? dvgSpotGrid;
+
+  PlutoGridStateManager? dgvDealEntriesGrid;
 
   EdiRoInitData? initData;
   var fileNames = RxList<DropDownValue>();
@@ -567,6 +573,26 @@ class EdiRoBookingController extends GetxController {
     }
   }
 
+  brandLeave(brandCode) {
+    try {
+      LoadingDialog.call();
+      Get.find<ConnectorControl>().GETMETHODCALL(
+          api: ApiFactory.EDI_RO_LEAVE_BRAND(brandCode ?? ""),
+          fun: (map) {
+            Get.back();
+            if (map != null &&
+                map['infoBrandList'] != null &&
+                map.containsKey('infoBrandList')) {
+              brandTabelList.clear();
+              brandTabelList.value = map['infoBrandList'];
+              tempList.addAll(brandTabelList.value);
+            }
+          });
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
   onMarkAsDone() {
     try {
       LoadingDialog.call();
@@ -738,8 +764,17 @@ class EdiRoBookingController extends GetxController {
                   InputFields.formField1(
                     hintTxt: "Search Tape ID",
                     controller: TextEditingController(),
-                    onchanged: (value) {
-                      print(value);
+                    onFieldSubmitted: (value) {
+                      tempList.clear();
+                      if (value.isNotEmpty) {
+                        for (var i = 0; i < brandTabelList.length; i++) {
+                          if (value == brandTabelList[i]['exportTapeCode']) {
+                            tempList.add(brandTabelList[i]);
+                          }
+                        }
+                      } else {
+                        tempList.addAll(brandTabelList.value);
+                      }
                     },
                     width: 0.3,
                   ),
@@ -761,15 +796,71 @@ class EdiRoBookingController extends GetxController {
                 child: Obx(
                   () => Container(
                     margin: const EdgeInsets.only(bottom: 8),
-                    decoration: fpcStartTabelList.isEmpty
+                    decoration: tempList.isEmpty
                         ? BoxDecoration(border: Border.all(color: Colors.grey))
                         : null,
-                    child: fpcStartTabelList.value.isEmpty
+                    child: tempList.value.isEmpty
                         ? null
                         : DataGridShowOnlyKeys(
-                            mapData: fpcStartTabelList.value,
+                            mapData: tempList.value,
                             hideCode: false,
                             exportFileName: "EDI R.O. Booking",
+                            formatDate: false,
+                            onRowDoubleTap: (event) {
+                              if (event.cell.column.field.toString() ==
+                                  'exportTapeCode') {
+                                if (dvgSpotGrid?.currentRow?.sortIdx == null) {
+                                  LoadingDialog.callInfoMessage(
+                                      "Please select row.");
+                                } else if (dvgSpotGrid!.currentRow!
+                                        .cells['commercialduration']!.value
+                                        .toString() !=
+                                    event.row.cells['commercialDuration']?.value
+                                        .toString()) {
+                                  LoadingDialog.callErrorMessage1(
+                                      msg: "Duration mismatch!");
+                                } else {
+                                  for (int i = 0;
+                                      i < dvgSpotGrid!.refRows.length;
+                                      i++) {
+                                    if (dvgSpotGrid!.refRows[i]
+                                            .cells['commercialduration']!.value
+                                            .toString() ==
+                                        event.row.cells['commercialDuration']
+                                            ?.value
+                                            .toString()) {
+                                      //Tape Id
+                                      lstDgvSpotsList.value[
+                                              dvgSpotGrid!.refRows[i].sortIdx]
+                                          ['tapE_ID'] = event.cell.value!;
+                                      dvgSpotGrid!.changeCellValue(
+                                        dvgSpotGrid!
+                                            .refRows[i].cells['tapE_ID']!,
+                                        event.cell.value!.toString(),
+                                        callOnChangedEvent: false,
+                                        force: true,
+                                      );
+                                      //Commercial Caption
+                                      lstDgvSpotsList.value[dvgSpotGrid!
+                                              .refRows[i]
+                                              .sortIdx]['commercialcaption'] =
+                                          event.row.cells['commercialCaption']
+                                              ?.value
+                                              .toString();
+                                      dvgSpotGrid!.changeCellValue(
+                                        dvgSpotGrid!.refRows[i]
+                                            .cells['commercialcaption']!,
+                                        event.row.cells['commercialCaption']
+                                            ?.value
+                                            .toString(),
+                                        callOnChangedEvent: false,
+                                        force: true,
+                                      );
+                                    }
+                                  }
+                                }
+                              }
+                            },
                           ),
                   ),
                 ),
@@ -779,6 +870,45 @@ class EdiRoBookingController extends GetxController {
         ),
       ),
     );
+  }
+
+  doubleClickFilterGrid() {
+    print("Hashcode======================> ${dvgSpotGrid!.hashCode}");
+    if (Get.find<MainController>()
+        .filters1
+        .containsKey(dvgSpotGrid!.hashCode.toString())) {
+    } else {
+      Get.find<MainController>().filters1[dvgSpotGrid!.hashCode.toString()] =
+          RxList([]);
+    }
+    if (dvgSpotGrid!.currentCell != null) {
+      Get.find<MainController>()
+          .filters1[dvgSpotGrid!.hashCode.toString()]!
+          .add(RowFilter(
+              field: dvgSpotGrid!.currentCell!.column.field,
+              operator: "equal",
+              value: dvgSpotGrid!.currentCell!.value));
+    }
+
+    var _filters =
+        Get.find<MainController>().filters1[dvgSpotGrid.hashCode.toString()] ??
+            [];
+    dvgSpotGrid!.setFilter((element) => true);
+    List<PlutoRow> _filterRows = dvgSpotGrid!.rows;
+    for (var filter in _filters) {
+      if (filter.operator == "equal") {
+        _filterRows = _filterRows
+            .where(
+                (element) => element.cells[filter.field]!.value == filter.value)
+            .toList();
+      } else {
+        _filterRows = _filterRows
+            .where(
+                (element) => element.cells[filter.field]!.value != filter.value)
+            .toList();
+      }
+    }
+    dvgSpotGrid!.setFilter((element) => _filterRows.contains(element));
   }
 
   @override

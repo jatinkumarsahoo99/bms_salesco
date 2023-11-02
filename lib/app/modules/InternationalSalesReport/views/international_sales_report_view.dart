@@ -91,7 +91,7 @@ class InternationalSalesReportView
                         padding: const EdgeInsets.only(
                             top: 14.0, left: 10, right: 10),
                         child: FormButtonWrapper(
-                          btnText: "clear",
+                          btnText: "Clear",
                           callback: () {
                             Get.delete<InternationalSalesReportController>();
                             Get.find<HomeController>().clearPage1();
@@ -131,17 +131,29 @@ class InternationalSalesReportView
                         return (controllerX.isSummary)?
                         (controllerX.internationalSalesReportModel?.report?.internationalSalesSummary != null &&
                             (controllerX.internationalSalesReportModel?.report?.internationalSalesSummary?.length??0) >0
-                        )? DataGridFromMap(
+                        )? DataGridFromMap4(
                           showSrNo: true,
                           hideCode: false,
                           formatDate: false,
+                          csvFormat: true,
+                          mode: PlutoGridMode.normal,
+                          colorCallback: (PlutoRowColorContext colorData){
+                            Color color = Colors.white;
+                            if(controller.stateManager1?.currentRowIdx == colorData.rowIdx){
+                              color = Color(0xFFD1C4E9);
+                            }
+                            else{
+                              color = Colors.white;
+                            }
+                            return color;
+                          },
                           exportFileName: "International Saleas Report",
                           mapData: (controllerX.internationalSalesReportModel!.report?.internationalSalesSummary
                               ?.map((e) => e.toJson())
                               .toList())!,
                           // mapData: (controllerX.dataList)!,
                           widthRatio: Get.width / 9 - 1,
-                          widthSpecificColumn: Get.find<HomeController>().getGridWidthByKey(
+                          witdthSpecificColumn: Get.find<HomeController>().getGridWidthByKey(
                               userGridSettingList: controllerX.userGridSetting1,key: "tbl1"),
                           onload: (PlutoGridOnLoadedEvent load){
                             controllerX.stateManager1 = load.stateManager;
@@ -152,17 +164,29 @@ class InternationalSalesReportView
 
                         ):(controllerX.internationalSalesReportModel?.report?.internationalDetails != null &&
                             (controllerX.internationalSalesReportModel?.report?.internationalDetails?.length??0) >0)?
-                        DataGridFromMap(
+                        DataGridFromMap4(
                           showSrNo: true,
                           hideCode: false,
                           formatDate: false,
+                          csvFormat: true,
+                          colorCallback: (PlutoRowColorContext colorData){
+                            Color color = Colors.white;
+                            if(controller.stateManager2?.currentRowIdx == colorData.rowIdx){
+                              color = Color(0xFFD1C4E9);
+                            }
+                            else{
+                              color = Colors.white;
+                            }
+                            return color;
+                          },
+                          mode: PlutoGridMode.normal,
                           mapData: (controllerX.internationalSalesReportModel!.report?.internationalDetails
                               ?.map((e) => e.toJson())
                               .toList())!,
                           // mapData: (controllerX.dataList)!,
                           widthRatio: Get.width / 9 - 1,
                           exportFileName: "International Saleas Report",
-                          widthSpecificColumn: Get.find<HomeController>().getGridWidthByKey(
+                          witdthSpecificColumn: Get.find<HomeController>().getGridWidthByKey(
                               userGridSettingList: controllerX.userGridSetting1,key: "tbl2"),
                           onload: (PlutoGridOnLoadedEvent load){
                             controllerX.stateManager2 = load.stateManager;
@@ -176,6 +200,8 @@ class InternationalSalesReportView
 
                 ),
               ),
+
+
               /// bottom common buttons
             ],
           ),

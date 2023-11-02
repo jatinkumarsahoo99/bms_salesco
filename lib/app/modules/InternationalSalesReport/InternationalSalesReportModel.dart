@@ -1,3 +1,5 @@
+import 'package:bms_salesco/app/providers/Utils.dart';
+
 class InternationalSalesReportModel {
   Report? report;
 
@@ -144,7 +146,7 @@ class InternationalDetails {
     bonusDuration = json['bonusDuration'];
     paidDuration = json['paidDuration'];
     totalDuration = json['totalDuration'];
-    amount = (json['amount']??"").toString();
+    amount = (json['AMOUNT']??"").toString();
     currencyType = json['currencyType'];
     zonename = json['zonename'];
     brandname = json['brandname'];
@@ -172,32 +174,44 @@ class InternationalDetails {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['channelName'] = this.channelName;
-    data['bookingnumber'] = this.bookingnumber;
-    data['bookingDetailCode'] = this.bookingDetailCode;
-    data['scheduledate'] = this.scheduledate;
-    data['scheduletime'] = this.scheduletime;
+    data['zonename'] = this.zonename;
     data['clientname'] = this.clientname;
     data['agencyname'] = this.agencyname;
+    data['brandname'] = this.brandname;
+    data['month'] = this.month;
+    data['paidDuration'] = this.paidDuration;
+    data['bonusDuration'] = this.bonusDuration;
+    data['totalDuration'] = this.totalDuration;
+    data['executivname'] = this.executivname;
+    data['currencyType'] = this.currencyType;
+    data['amount'] = this.amount;
+
+    data['bookingnumber'] = this.bookingnumber;
+    data['bookingDetailCode'] = this.bookingDetailCode;
+    data['scheduledate'] = Utils.formatDateTime(this.scheduledate);
+    data['scheduletime'] = this.scheduletime;
+
+
     data['programname'] = this.programname;
     data['commercialcaption'] = this.commercialcaption;
     data['exporttapecode'] = this.exporttapecode;
-    data['bonusDuration'] = this.bonusDuration;
-    data['paidDuration'] = this.paidDuration;
-    data['totalDuration'] = this.totalDuration;
-    data['amount'] = this.amount;
-    data['currencyType'] = this.currencyType;
-    data['zonename'] = this.zonename;
-    data['brandname'] = this.brandname;
+
+
+
+
+
+
+
     data['telecasttime'] = this.telecasttime;
     data['telecastduration'] = this.telecastduration;
     data['telecastprogram'] = this.telecastprogram;
     data['billnumber'] = this.billnumber;
     data['spotstatus'] = this.spotstatus;
-    data['billdate'] = this.billdate;
+    data['billdate'] = Utils.formatDateTime(this.billdate);
     data['dealno'] = this.dealno;
     data['recordnumber'] = this.recordnumber;
     data['yearname'] = this.yearname;
-    data['month'] = this.month;
+
     data['dayname'] = this.dayname;
     data['producttype'] = this.producttype;
     data['producttype_1'] = this.producttype1;
@@ -205,8 +219,8 @@ class InternationalDetails {
     data['producttype_3'] = this.producttype3;
     data['productname'] = this.productname;
     data['revenueType'] = this.revenueType;
-    data['executivname'] = this.executivname;
-    data['networknonetwork'] = this.networknonetwork;
+
+    // data['networknonetwork'] = this.networknonetwork;
     return data;
   }
 }
@@ -249,7 +263,7 @@ class InternationalSalesSummary {
     paidDur = json['paidDur'];
     bonusDur = json['bonusDur'];
     totDur = json['totDur'];
-    spotAmount = (json['spotAmount']??"").toString();
+    spotAmount = (json['SpotAmount']??"").toString();
     currencyType = json['currencyType'];
     executivname = json['executivname'];
   }
