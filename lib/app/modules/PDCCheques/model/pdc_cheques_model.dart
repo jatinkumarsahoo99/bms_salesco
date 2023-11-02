@@ -23,9 +23,9 @@ class LocationChannelModel {
   Map<String, dynamic> toJson({bool fromSave = false}) {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     if (fromSave) {
-      data['selectRow'] = selectRow;
-      data['locationName'] = locationName;
-      data['channelName'] = channelName;
+      // data['selectRow'] = selectRow;
+      // data['locationName'] = locationName;
+      // data['channelName'] = channelName;
       data['locationCode'] = locationCode;
       data['channelCode'] = channelCode;
     } else {

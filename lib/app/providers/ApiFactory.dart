@@ -1226,6 +1226,7 @@ class ApiFactory {
       "$BASE_URL/api/ClientPDC/GetAgencyCode?ClientCode=$client";
   static String get PDC_CHEQUES_CLIENT =>
       "$BASE_URL/api/ClientPDC/GetClientCode?clientName=";
+  static String get PDC_CHEQUES_SAVE => "$BASE_URL/api/ClientPDC/SavePDC";
   /////////////////////////////// PDC Cheques PDC End//////////////////////
   ///
   ///

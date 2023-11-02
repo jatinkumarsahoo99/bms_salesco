@@ -1439,10 +1439,16 @@ class InputFields {
                     controller.text =
                         "${(int.tryParse(controller.text) ?? 1) - 1}";
                   }
+                  if (onchanged != null) {
+                    onchanged(controller.text);
+                  }
                 }
                 if (keyEvent.isKeyPressed(LogicalKeyboardKey.arrowUp)) {
                   controller.text =
                       "${(int.tryParse(controller.text) ?? 0) + 1}";
+                  if (onchanged != null) {
+                    onchanged(controller.text);
+                  }
                 }
               }
             },
