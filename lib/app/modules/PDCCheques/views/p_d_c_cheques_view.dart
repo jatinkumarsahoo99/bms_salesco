@@ -228,7 +228,7 @@ class PDCChequesView extends StatelessWidget {
                       ),
                       InputFields.formField1(
                         padLeft: 0,
-                        width: .38,
+                        width: .378,
                         hintTxt: "Rev Bank",
                         controller: controller.revBankTC,
                       ),
@@ -331,18 +331,19 @@ class PDCChequesView extends StatelessWidget {
                                   InputFields.numbers(
                                     padLeft: 0,
                                     width: .12,
-                                    hintTxt: "Rev Chq Amt",
+                                    hintTxt: "Activity Month",
                                     controller: controller.activityMonthTC,
                                     isNegativeReq: false,
                                     inputformatters: [
                                       FilteringTextInputFormatter.allow(
                                           RegExp(r'^\d+\.?\d{0,4}'))
                                     ],
+                                    focusNode: controller.activityMonthFN,
                                   ),
                                   SizedBox(width: 15),
                                   FormButton(
                                     btnText: "Save Cheque Grouping",
-                                    callback: () {},
+                                    callback: controller.saveChequeBookingData,
                                   ),
                                 ],
                               ),
@@ -350,21 +351,62 @@ class PDCChequesView extends StatelessWidget {
                             Expanded(
                               child: Obx(() {
                                 return DataGridFromMap3(
-                                  mapData: controller.chequeGroupingList.value
-                                      .map((e) {
-                                    if (e['selectRow'] != null) {
-                                      e['selectRow'] =
-                                          e['selectRow'].toString();
+                                  onload: (sm) {
+                                    sm.stateManager.setCurrentCell(
+                                        sm.stateManager
+                                            .getRowByIdx(controller
+                                                .chequeGroupingLastSelectedIdx)
+                                            ?.cells['selectRow'],
+                                        controller
+                                            .chequeGroupingLastSelectedIdx);
+                                    sm.stateManager.moveScrollByRow(
+                                        PlutoMoveDirection.down,
+                                        controller
+                                            .chequeGroupingLastSelectedIdx);
+                                    controller.chequeGroupingSM =
+                                        sm.stateManager;
+                                  },
+                                  mode: PlutoGridMode.selectWithOneTap,
+                                  onSelected: (event) {
+                                    controller.chequeGroupingLastSelectedIdx =
+                                        event.rowIdx!;
+                                  },
+                                  onEdit: (event) {
+                                    controller
+                                        .chequeGroupingList
+                                        .value[event.row.sortIdx]
+                                        .selectRow = (event.value == "true");
+                                  },
+                                  actionOnPress: (position, isSpaceCalled) {
+                                    if (isSpaceCalled) {
+                                      controller.chequeGroupingSM!
+                                          .changeCellValue(
+                                        controller
+                                            .chequeGroupingSM!.currentCell!,
+                                        (!(controller
+                                                    .chequeGroupingList[
+                                                        controller
+                                                            .chequeGroupingSM!
+                                                            .currentRow!
+                                                            .sortIdx]
+                                                    .selectRow ??
+                                                false))
+                                            .toString(),
+                                        callOnChangedEvent: true,
+                                        force: true,
+                                      );
                                     }
-                                    return e;
-                                  }).toList(),
+                                  },
+                                  mapData: controller.chequeGroupingList
+                                      .map((element) => element.toJson())
+                                      .toList(),
                                   actionIconKey: ['selectRow'],
                                   checkBoxColumnKey: ['selectRow'],
-                                  // colorCallback: (cell) => controller
-                                  //             .locationChannelSM?.currentRow ==
-                                  //         cell.row
-                                  //     ? Colors.deepPurple.shade100
-                                  //     : Colors.white,
+                                  colorCallback: (cell) =>
+                                      controller.chequeGroupingSM?.currentRow ==
+                                              cell.row
+                                          ? Colors.deepPurple.shade100
+                                          : Colors.white,
                                   checkBoxStrComparison: "true",
                                   uncheckCheckBoxStr: "false",
                                 );

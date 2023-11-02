@@ -1,9 +1,11 @@
 import 'dart:math';
 
 import 'package:bms_salesco/app/controller/ConnectorControl.dart';
+import 'package:bms_salesco/app/controller/HomeController.dart';
 import 'package:bms_salesco/app/data/DropDownValue.dart';
 import 'package:bms_salesco/app/providers/ApiFactory.dart';
 import 'package:bms_salesco/widgets/LoadingDialog.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -14,11 +16,11 @@ import '../model/pdc_cheques_model.dart';
 class PDCChequesController extends GetxController {
   var selectedTab = 0.obs;
   var locationChannelList = <LocationChannelModel>[].obs,
-      chequeGroupingList = [].obs;
+      chequeGroupingList = <ChequeGroupingModel>[].obs;
   var pdcTypeList = <DropDownValue>[].obs, agencyList = <DropDownValue>[].obs;
-  int locationChannelLastSelectedIdx = 0;
+  int locationChannelLastSelectedIdx = 0, chequeGroupingLastSelectedIdx = 0;
   DropDownValue? selectedPdcType, selecctedClient, selectedAgency;
-  PlutoGridStateManager? locationChannelSM;
+  PlutoGridStateManager? locationChannelSM, chequeGroupingSM;
   var bankTC = TextEditingController(),
       recdOnDateTC = TextEditingController(),
       recdByTC = TextEditingController(),
@@ -37,7 +39,7 @@ class PDCChequesController extends GetxController {
       activityMonthTC = TextEditingController();
   var saveTaxAmt = "".obs, newBookAmt = "".obs;
   var isDummy = false.obs;
-  var clientFN = FocusNode();
+  var clientFN = FocusNode(), activityMonthFN = FocusNode();
   @override
   void onInit() {
     activityMonthTC.text = "${DateTime.now().year}${DateTime.now().month}";
@@ -48,6 +50,16 @@ class PDCChequesController extends GetxController {
   void onReady() {
     super.onReady();
     getOnLoadData();
+    activityMonthFN.onKey = (node, event) {
+      if (!event.isShiftPressed &&
+          !event.isAltPressed &&
+          event.logicalKey == LogicalKeyboardKey.tab) {
+        Get.focusScope?.nextFocus();
+        getChequeBookingData();
+        return KeyEventResult.handled;
+      }
+      return KeyEventResult.ignored;
+    };
   }
 
   handleOnChangeClient(DropDownValue client) {
@@ -171,12 +183,104 @@ class PDCChequesController extends GetxController {
           if (resp != null &&
               resp['save'] != null &&
               resp['save'].toString().toLowerCase().contains('successfully')) {
-            LoadingDialog.callDataSaved(msg: resp['save'].toString());
+            LoadingDialog.callDataSaved(
+                msg: resp['save'].toString(),
+                callback: () {
+                  clearPage();
+                });
           } else {
             LoadingDialog.showErrorDialog(resp.toString());
           }
         },
       );
     }
+  }
+
+  getChequeBookingData({int chequeId = 0}) {
+    if (selecctedClient == null) {
+      LoadingDialog.callInfoMessage("Please select Client");
+    } else if (selectedAgency == null) {
+      LoadingDialog.callInfoMessage("Please select Agency");
+    } else {
+      // LoadingDialog.call();
+      Get.find<ConnectorControl>().POSTMETHOD(
+        api: ApiFactory.PDC_CHEQUES_GET_CHEQUE_GROUPING,
+        json: {
+          "clientCode": selecctedClient?.key,
+          "agencyCode": selectedAgency?.key,
+          "activityPeriod": activityMonthTC.text,
+          "chequeId": "$chequeId"
+        },
+        fun: (resp) {
+          // Get.back();
+          if (resp != null && resp['pDCGroups'] != null) {
+            chequeGroupingList.clear();
+            chequeGroupingList.addAll(
+              (resp['pDCGroups'] as List<dynamic>)
+                  .map((e) => ChequeGroupingModel.fromJson(e))
+                  .toList(),
+            );
+          } else {
+            LoadingDialog.showErrorDialog(resp.toString());
+          }
+        },
+      );
+    }
+  }
+
+  saveChequeBookingData() {
+    if (selecctedClient == null) {
+      LoadingDialog.callInfoMessage("Please select Client");
+    } else if (selectedAgency == null) {
+      LoadingDialog.callInfoMessage("Please select Agency");
+    } else if (chequeGroupingList.isEmpty) {
+      LoadingDialog.callInfoMessage("Data can't be empty.");
+    } else {
+      LoadingDialog.call();
+      Get.find<ConnectorControl>().POSTMETHOD(
+        api: ApiFactory.ASRUN_DETAILS_REPORT_GENERATE,
+        json: {
+          "LstChannelList": chequeGroupingList
+              .where((e) => e.selectRow ?? false)
+              .toList()
+              .map((e2) => e2.toJson(fromSave: true))
+              .toList(),
+        },
+        fun: (resp) {
+          Get.back();
+          if (resp != null) {
+            LoadingDialog.callDataSaved(
+                msg: resp.toString(),
+                callback: () {
+                  clearPage();
+                });
+          } else {
+            LoadingDialog.showErrorDialog(resp.toString());
+          }
+        },
+      );
+    }
+  }
+
+  clearPage() {
+    Get.delete<PDCChequesController>();
+    Get.find<HomeController>().clearPage1();
+  }
+
+  getRetriveData({int chequeId = 0}) {
+    LoadingDialog.call();
+    Get.find<ConnectorControl>().GETMETHODCALL(
+      api: ApiFactory.PDC_CHEQUES_GET_RETRIVE_DATA(chequeId.toString()),
+      fun: (resp) {
+        Get.back();
+        if (resp != null && resp['retrieve'] != null) {
+          PDCRetriveModel retriveData =
+              PDCRetriveModel.fromJson(resp['retrieve']);
+        } else {
+          LoadingDialog.showErrorDialog(resp.toString());
+        }
+      },
+    );
+    getOnLoadData(chequeId: chequeId);
   }
 }

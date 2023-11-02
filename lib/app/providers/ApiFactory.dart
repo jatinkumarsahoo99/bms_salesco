@@ -1231,9 +1231,15 @@ class ApiFactory {
       "$BASE_URL/api/ClientPDC/OnLoadData?ChequeId=$chequeID";
   static String PDC_CHEQUES_GET_AGENCY(String client) =>
       "$BASE_URL/api/ClientPDC/GetAgencyCode?ClientCode=$client";
+  static String PDC_CHEQUES_GET_RETRIVE_DATA(String client) =>
+      "$BASE_URL/api/ClientPDC/GetRetrieve?ChequeId=$client";
   static String get PDC_CHEQUES_CLIENT =>
       "$BASE_URL/api/ClientPDC/GetClientCode?clientName=";
+
   static String get PDC_CHEQUES_SAVE => "$BASE_URL/api/ClientPDC/SavePDC";
+
+  static String get PDC_CHEQUES_GET_CHEQUE_GROUPING =>
+      "$BASE_URL/api/ClientPDC/GetPDCGroup";
   /////////////////////////////// PDC Cheques PDC End//////////////////////
   ///
   ///
