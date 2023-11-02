@@ -97,7 +97,7 @@ class DataGridFromMap extends StatelessWidget {
           enableRowDrag: false,
           enableDropToResize: true,
           enableContextMenu: false,
-          minWidth: 5,
+          minWidth: 10,
           width: (widthSpecificColumn != null &&
                   widthSpecificColumn!.containsKey("no"))
               ? widthSpecificColumn!["no"]!
@@ -179,7 +179,7 @@ class DataGridFromMap extends StatelessWidget {
                   key: key,
                   value: mapData[0][key].toString(),
                 ),*/
-                minWidth: 5,
+                minWidth: 25,
                 width: (widthSpecificColumn != null &&
                         widthSpecificColumn!.containsKey(key))
                     ? widthSpecificColumn![key]!
@@ -262,7 +262,7 @@ class DataGridFromMap extends StatelessWidget {
             enableDropToResize: true,
             enableContextMenu: false,
             // width: Utils.getColumnSize(key: key, value: mapData[0][key]),
-            minWidth: 5,
+            minWidth: 25,
             width: (widthSpecificColumn != null &&
                     widthSpecificColumn!.containsKey(key))
                 ? widthSpecificColumn![key]!
@@ -614,7 +614,7 @@ class DataGridFromMap3 extends StatelessWidget {
             enableEditingMode: editKeys != null && editKeys!.contains(key),
             enableDropToResize: true,
             enableContextMenu: false,
-            minWidth: 5,
+            minWidth: 25,
             width: (widthSpecificColumn != null &&
                     widthSpecificColumn!.containsKey(key))
                 ? widthSpecificColumn![key]!
@@ -1030,7 +1030,7 @@ class DataGridFromMapForAmagiSpotReplacement extends StatelessWidget {
           enableEditingMode: editKeys != null && editKeys!.contains(key),
           enableDropToResize: true,
           enableContextMenu: false,
-          minWidth: 5,
+          minWidth: 25,
           width: (widthSpecificColumn != null &&
                   widthSpecificColumn!.containsKey(key))
               ? widthSpecificColumn![key]!
@@ -1373,7 +1373,7 @@ class DataGridFromMapAmagiDialog extends StatelessWidget {
           enableEditingMode: editKeys != null && editKeys!.contains(key),
           enableDropToResize: true,
           enableContextMenu: false,
-          minWidth: 5,
+          minWidth: 25,
           width: (widthSpecificColumn != null &&
                   widthSpecificColumn!.containsKey(key))
               ? widthSpecificColumn![key]!
@@ -1644,7 +1644,7 @@ class DataGridFromMap4 extends StatelessWidget {
       for (var key in showonly!) {
         if ((mapData[0] as Map).containsKey(key)) {
           segColumn.add(PlutoColumn(
-              minWidth: 5,
+              minWidth: 25,
               title: doPasccal
                   ? keyMapping != null
                   ? keyMapping!.containsKey(key)
@@ -1851,7 +1851,7 @@ class DataGridFromMap4 extends StatelessWidget {
             enableEditingMode: editKeys != null && editKeys!.contains(key),
             enableDropToResize: true,
             enableContextMenu: false,
-            minWidth: 5,
+            minWidth: 25,
             width: (witdthSpecificColumn != null &&
                 witdthSpecificColumn!.keys.toList().contains(key))
                 ? witdthSpecificColumn![key]!

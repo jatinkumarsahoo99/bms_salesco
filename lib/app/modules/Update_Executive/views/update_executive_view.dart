@@ -260,11 +260,11 @@ class UpdateExecutiveView extends GetView<UpdateExecutiveController> {
                                                 }),
                                             Expanded(
                                               child: Container(
-                                                  color: (controllerX
+                                                 /* color: (controllerX
                                                       .selectedIndex ==
                                                       index)
                                                       ? Colors.deepPurpleAccent
-                                                      : Colors.white,
+                                                      : Colors.white,*/
                                                   child: Text(
                                                     controllerX
                                                         .verifyDataModel
