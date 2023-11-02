@@ -183,6 +183,8 @@ class PDCChequesController extends GetxController {
         fun: (resp) {
           Get.back();
           if (resp != null &&
+              resp is Map<String, dynamic> &&
+              resp.containsKey("save") &&
               resp['save'] != null &&
               resp['save'].toString().toLowerCase().contains('successfully')) {
             LoadingDialog.callDataSaved(
@@ -278,7 +280,7 @@ class PDCChequesController extends GetxController {
         Get.back();
         if (resp != null && resp['retrieve'] != null) {
           PDCRetriveModel retriveData =
-              PDCRetriveModel.fromJson(resp['retrieve']);
+              PDCRetriveModel.fromJson(resp['retrieve'][0]);
 
           /// CLIENT
           selecctedClient = DropDownValue(
@@ -363,7 +365,7 @@ class PDCChequesController extends GetxController {
 
           /// 1st Tab List
           locationChannelList.value = retriveData.locationChannelModel ?? [];
-          // calculateTotal();
+          calculateTotal();
         } else {
           LoadingDialog.showErrorDialog(resp.toString());
         }
