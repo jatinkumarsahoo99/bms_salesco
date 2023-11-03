@@ -143,7 +143,13 @@ class SearchResultPage extends StatelessWidget {
                 alignment: MainAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  for (var btn in ["Save", "Pivot", "Refresh", "Done", "Exit"])
+                  for (var btn in [
+                    "Save",
+                    "Pivot",
+                    "Refresh",
+                    "Done",
+                    (dialogClose != null ? "Exit " : "Exit")
+                  ])
                     FormButtonWrapper(
                       btnText: btn,
                       callback: () => {controller.searchResultBtnHandler(btn)},

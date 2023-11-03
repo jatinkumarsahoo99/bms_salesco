@@ -78,7 +78,13 @@ class SearchPivotPage extends StatelessWidget {
             alignment: MainAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              for (var btn in ["Save", "Data", "Refresh", "Done", "Exit"])
+              for (var btn in [
+                "Save",
+                "Data",
+                "Refresh",
+                "Done",
+                (dialogClose != null ? "Exit " : "Exit")
+              ])
                 FormButtonWrapper(
                   btnText: btn,
                   callback: () =>

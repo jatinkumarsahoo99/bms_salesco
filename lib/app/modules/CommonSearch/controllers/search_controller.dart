@@ -136,6 +136,9 @@ class SearchController extends GetxController {
     if (btnName == "Execute") {
       await executeSearch();
     }
+    if (btnName == "Exit ") {
+      dialogClose!(null);
+    }
     if (btnName == "Clear") {
       grid = null;
       varainace = [];
@@ -309,6 +312,9 @@ class SearchController extends GetxController {
   }
 
   pivotBtnHandler(btnName, isDirect) async {
+    if (btnName == "Exit ") {
+      dialogClose!(null);
+    }
     if (btnName == "Save") {
       ExportData().exportExcelFromJsonList(searchResult, screenName);
     }
@@ -405,6 +411,9 @@ class SearchController extends GetxController {
   }
 
   searchResultBtnHandler(btnName) async {
+    if (btnName == "Exit ") {
+      dialogClose!(null);
+    }
     if (btnName == "Save") {
       ExportData().exportExcelFromJsonList(searchResult, screenName);
     }
