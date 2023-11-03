@@ -97,11 +97,15 @@ class SearchResultPage extends StatelessWidget {
                         )["varianceName"]} _Search_Result",
                   hideCode: false,
                   mapData: controller.searchResult!,
+                  doPasccal: false,
                   onload: (event) {
-                    event.stateManager.setColumnSizeConfig(
-                        PlutoGridColumnSizeConfig(
-                            autoSizeMode: PlutoAutoSizeMode.none,
-                            resizeMode: PlutoResizeMode.normal));
+                    for (var element in event.stateManager.refColumns) {
+                      event.stateManager.autoFitColumn(context, element);
+                    }
+                    // event.stateManager.setColumnSizeConfig(
+                    //     PlutoGridColumnSizeConfig(
+                    //         autoSizeMode: PlutoAutoSizeMode.none,
+                    //         resizeMode: PlutoResizeMode.normal));
                   },
                   mode: PlutoGridMode.select,
                   onRowDoubleTap: (plutoEvent) {

@@ -1401,6 +1401,7 @@ class InputFields {
     int? maxchar,
     bool? isEnabled,
     FocusNode? focusNode,
+    void Function(bool hasFocus)? onFocusChange,
   }) {
     // var data = 0.obs;
     var fN = FocusNode();
@@ -1514,6 +1515,7 @@ class InputFields {
                             InkWell(
                               canRequestFocus: (isEnabled ?? true),
                               focusNode: focusNode,
+                              onFocusChange: onFocusChange,
                               child: Icon(
                                 Icons.arrow_drop_down_sharp,
                                 size: 25,

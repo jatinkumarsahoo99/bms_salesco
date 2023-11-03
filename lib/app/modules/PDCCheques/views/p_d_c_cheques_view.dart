@@ -111,6 +111,7 @@ class PDCChequesView extends StatelessWidget {
                                 (val) => controller.selectedPdcType = val,
                                 "PDC Type",
                                 controller.widthRation,
+                                selected: controller.selectedPdcType,
                               );
                             }),
                           ],
@@ -130,6 +131,7 @@ class PDCChequesView extends StatelessWidget {
                                 "Agency",
                                 controller.widthRation,
                                 dialogWidth: 250,
+                                selected: controller.selectedAgency,
                               );
                             }),
                             InputFields.formField1(
@@ -204,8 +206,10 @@ class PDCChequesView extends StatelessWidget {
                           FilteringTextInputFormatter.allow(
                               RegExp(r'^\d+\.?\d{0,4}'))
                         ],
-                        onchanged: (p0) {
-                          controller.calculateTotal();
+                        onFocusChange: (hasFocus) {
+                          if (!hasFocus) {
+                            controller.calculateTotal();
+                          }
                         },
                       ),
                       InputFields.numbers(
@@ -218,22 +222,26 @@ class PDCChequesView extends StatelessWidget {
                           FilteringTextInputFormatter.allow(
                               RegExp(r'^\d+\.?\d{0,4}'))
                         ],
-                        onchanged: (p0) {
-                          controller.calculateTotal();
+                        onFocusChange: (hasFocus) {
+                          if (!hasFocus) {
+                            controller.calculateTotal();
+                          }
                         },
                       ),
                       InputFields.numbers(
                         padLeft: 0,
                         width: controller.widthRation,
-                        hintTxt: "Save Tax %",
+                        hintTxt: "Svc Tax %",
                         controller: controller.saveTaxTC,
                         isNegativeReq: false,
                         inputformatters: [
                           FilteringTextInputFormatter.allow(
                               RegExp(r'^\d+\.?\d{0,4}'))
                         ],
-                        onchanged: (p0) {
-                          controller.calculateTotal();
+                        onFocusChange: (hasFocus) {
+                          if (!hasFocus) {
+                            controller.calculateTotal();
+                          }
                         },
                       ),
                       Obx(() {
@@ -242,6 +250,7 @@ class PDCChequesView extends StatelessWidget {
                           hintTxt: "Svc Tax Amt",
                           value: controller.saveTaxAmt.value,
                           widthRatio: controller.widthRation,
+                          txtColor: Colors.black,
                         );
                       }),
                       Obx(() {
@@ -250,6 +259,7 @@ class PDCChequesView extends StatelessWidget {
                           hintTxt: "Net Book Amt",
                           value: controller.newBookAmt.value,
                           widthRatio: controller.widthRation,
+                          txtColor: Colors.black,
                         );
                       }),
                       Row(),
