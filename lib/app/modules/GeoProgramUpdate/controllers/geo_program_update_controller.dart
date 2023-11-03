@@ -87,7 +87,7 @@ class GeoProgramUpdateController extends GetxController {
             if (map is Map &&
                 map.containsKey("update") &&
                 map['update'] != null) {
-              // LoadingDialog.callDataSavedMessage(map['update'] ?? "");
+              LoadingDialog.callDataSavedMessage(map['update'] ?? "");
             } else {
               LoadingDialog.showErrorDialog(
                   (map ?? "Some thing went wrong").toString());

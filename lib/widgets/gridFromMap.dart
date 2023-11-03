@@ -199,14 +199,15 @@ class DataGridFromMap extends StatelessWidget {
           );
         }
       }
-    } else {
+    }
+    else {
       for (var key in mapData[0].keys) {
         segColumn.add(PlutoColumn(
             titlePadding: EdgeInsets.only(),
             title: doPasccal
                 ? key == "fpcCaption"
                     ? "FPC Caption"
-                    : key.toString().pascalCaseToNormal()
+                    :Utils.normalCaseToPascalCase(key)
                 : key,
             enableRowChecked:
                 (checkRow == true && key == checkRowKey) ? true : false,

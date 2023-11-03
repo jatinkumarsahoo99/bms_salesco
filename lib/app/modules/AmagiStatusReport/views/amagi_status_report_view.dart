@@ -133,6 +133,7 @@ class AmagiStatusReportView extends GetView<AmagiStatusReportController> {
                             showSrNo: true,
                             hideCode: false,
                             formatDate: false,
+                           doPasccal: true,
                            // headerHeight: 80,
                            colorCallback: (row) => (row.row.cells
                                .containsValue(

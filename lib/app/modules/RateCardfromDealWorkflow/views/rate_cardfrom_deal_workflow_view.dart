@@ -17,7 +17,8 @@ class RateCardfromDealWorkflowView
     extends GetView<RateCardfromDealWorkflowController> {
    RateCardfromDealWorkflowView({Key? key}) : super(key: key);
 
-   RateCardfromDealWorkflowController controller = Get.put<RateCardfromDealWorkflowController>
+   @override
+  RateCardfromDealWorkflowController controller = Get.put<RateCardfromDealWorkflowController>
      (RateCardfromDealWorkflowController());
 
   @override
@@ -93,17 +94,27 @@ class RateCardfromDealWorkflowView
                       ),
                     )
                         : null,
-                    child: controller.gridData.export!.isEmpty
+                    child: (controller.gridData.export == null ||
+                        (controller.gridData.export?.length??0) == 0)
                         ? null
                         : DataGridFromMap3(
                       mode: PlutoGridMode.selectWithOneTap,
-                      showSrNo: false,
+                      showSrNo: true,
                       hideCode: false,
                       formatDate: false,
                       exportFileName: "Rate Card Deal WorkFlow",
                       mapData: controller.gridData.export!
                           .map((e) => e.toJson())
                           .toList(),
+                      colorCallback: (row) => (row.row.cells
+                          .containsValue(controller
+                          .stateManager?.currentCell))
+                          ? Colors.deepPurple.shade200
+                          : Colors.white,
+                      onload: (PlutoGridOnLoadedEvent? event) {
+                        controller.stateManager =
+                            event?.stateManager;
+                      },
                     ),
                   )
                 );
