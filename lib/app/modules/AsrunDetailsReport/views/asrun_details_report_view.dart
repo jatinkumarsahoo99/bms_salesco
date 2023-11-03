@@ -137,6 +137,7 @@ class AsrunDetailsReportView extends StatelessWidget {
                                       ? Colors.deepPurple.shade200
                                       : Colors.white,
                                   exportFileName: "Asrun Details Report",
+                                  mode: PlutoGridMode.normal,
                                   widthSpecificColumn:
                                       Get.find<HomeController>()
                                           .getGridWidthByKey(

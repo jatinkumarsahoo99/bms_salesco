@@ -63,7 +63,7 @@ class Utils {
             ? DateFormat('h:mm a').format(dateTime)
             : '';
 
-        final String formattedDate = DateFormat('MM/dd/yyyy').format(dateTime);
+        final String formattedDate = DateFormat('dd/MM/yyyy').format(dateTime);
 
         if (time.isNotEmpty && time != '12:00 AM') {
           return formattedDate + ' $time';
@@ -78,6 +78,64 @@ class Utils {
     }
 
   }
+
+  static String normalCaseToPascalCase(String input) {
+    List<String> words = input.split(' ');
+    List<String> pascalCaseWords = [];
+
+    for (String word in words) {
+      if (word.isNotEmpty) {
+        pascalCaseWords.add(word[0].toUpperCase() + word.substring(1).toLowerCase());
+      }
+    }
+
+    return pascalCaseWords.join(' ');
+  }
+
+
+  String formatDateTime2(String? inputDateTime) {
+    if (inputDateTime != null && inputDateTime != "") {
+      try {
+        final RegExp dateRegExp = RegExp(r'(\d{2}/\d{2}/\d{4})');
+        final Match? dateMatch = dateRegExp.firstMatch(inputDateTime);
+
+        if (dateMatch != null) {
+          final String formattedDate = dateMatch.group(0)!;
+          return formattedDate;
+        } else {
+          return "";
+        }
+      } catch (e) {
+        return "";
+      }
+    } else {
+      return "";
+    }
+  }
+  static String formatDateTime3(String? inputDateTime) {
+    try {
+      if(inputDateTime != null && inputDateTime != ""){
+        // final DateTime? dateTime = DateTime.tryParse(inputDateTime);
+        final DateTime? dateTime = DateFormat("dd/MM/yyyy h:mm:ss").parse(inputDateTime);
+
+        if (dateTime != null) {
+          if (dateTime.hour == 0 && dateTime.minute == 0 && dateTime.second == 0) {
+            return DateFormat('MM-dd-yyyy').format(dateTime);
+          } else {
+            return DateFormat('MM-dd-yyyy h:mm a').format(dateTime);
+          }
+        } else {
+          return "";
+        }
+      }else{
+        return "";
+      }
+
+    } catch (e) {
+      return "";
+    }
+  }
+
 
 
   static bool isNumeric(String s) {

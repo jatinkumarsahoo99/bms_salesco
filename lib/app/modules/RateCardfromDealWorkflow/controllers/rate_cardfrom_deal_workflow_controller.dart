@@ -35,6 +35,7 @@ class RateCardfromDealWorkflowController extends GetxController {
   PlutoGridStateManager? manager;
   int lastSelctedIdx = 0;
   TextEditingController pathController = TextEditingController();
+  PlutoGridStateManager? stateManager;
   @override
   void onInit() {
     formPermissions = Utils.fetchPermissions1(

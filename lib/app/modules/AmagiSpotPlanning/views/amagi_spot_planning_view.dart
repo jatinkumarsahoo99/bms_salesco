@@ -123,6 +123,7 @@ class AmagiSpotPlanningView extends GetView<AmagiSpotPlanningController> {
                             hideCode: false,
                             formatDate: false,
                             columnAutoResize:false ,
+                            doPasccal: true,
                             colorCallback: (row) => (row.row.cells
                                 .containsValue(
                                 controllerX.stateManager?.currentCell))
@@ -130,7 +131,7 @@ class AmagiSpotPlanningView extends GetView<AmagiSpotPlanningController> {
                                 : Colors.white,
                             widthSpecificColumn:  Get.find<HomeController>().getGridWidthByKey(key: controllerX.getTableNo(controllerX.selectValue.value)?? "tbl1",userGridSettingList: controllerX.userGridSetting1),
                             exportFileName: "Amagi Spot Planning",
-                            mode: PlutoGridMode.selectWithOneTap,
+                            mode: PlutoGridMode.normal,
                             mapData: (controllerX.responseData['report']),
                             // mapData: (controllerX.dataList)!,
                             widthRatio: Get.width / 9 - 1,

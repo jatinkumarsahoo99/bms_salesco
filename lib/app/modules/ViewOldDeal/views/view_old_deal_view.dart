@@ -11,13 +11,13 @@ import 'package:pluto_grid/pluto_grid.dart';
 import '../../../controller/HomeController.dart';
 import '../controllers/view_old_deal_controller.dart';
 
-class ViewOldDealView extends GetView<ViewOldDealController> {
+class ViewOldDealView extends StatelessWidget {
   ViewOldDealView({Key? key}) : super(key: key);
 
   // ViewOldDealController controllerX = Get.find<ViewOldDealController>();
 
   ViewOldDealController controllerX =
-  Get.put<ViewOldDealController>(ViewOldDealController());
+      Get.put<ViewOldDealController>(ViewOldDealController());
 
   @override
   Widget build(BuildContext context) {
@@ -80,19 +80,22 @@ class ViewOldDealView extends GetView<ViewOldDealController> {
                                 selected:
                                     controllerX.selectedClientList.value)),
                         Obx(() => DropDownField.formDropDown1WidthMap(
-                                controllerX.agencyList.value ?? [], (valeu) {
+                            controllerX.agencyList.value ?? [],
+                            (valeu) {
                               controllerX.selectedAgencyList.value = valeu;
                               controllerX.getDeal();
-                            }, "Agency", .23,
-                                autoFocus: true,
-                                selected: controllerX.selectedAgencyList.value,
-                            onFocusChange: (val){
-                                  if(!val){
-                                    controllerX.selectedDealNoList.value = null;
-                                    controllerX.selectedDealNoList.refresh();
-                                  }
                             },
-                                inkWellFocusNode: controllerX.agencyNode)),
+                            "Agency",
+                            .23,
+                            autoFocus: true,
+                            selected: controllerX.selectedAgencyList.value,
+                            onFocusChange: (val) {
+                              if (!val) {
+                                controllerX.selectedDealNoList.value = null;
+                                controllerX.selectedDealNoList.refresh();
+                              }
+                            },
+                            inkWellFocusNode: controllerX.agencyNode)),
                         Obx(() => DropDownField.formDropDown1WidthMap(
                                 controllerX.dealNoList.value ?? [], (valeu) {
                               controllerX.selectedDealNoList.value = valeu;
@@ -119,46 +122,52 @@ class ViewOldDealView extends GetView<ViewOldDealController> {
                     height: 5,
                   ),
                   Expanded(
-                    child: Container(
-                      decoration:
-                          BoxDecoration(border: Border.all(color: Colors.grey)),
-                      child: (controllerX.viewOldDealResponseModel?.deal
-                                      ?.lstdealusage !=
-                                  null &&
-                              (controllerX.viewOldDealResponseModel?.deal
-                                          ?.lstdealusage?.length ??
-                                      0) >
-                                  0)
-                          ? GetBuilder<ViewOldDealController>(
-                              assignId: true,
-                              id: "grid",
-                              builder: (controllerX) {
-                                return DataGridFromMap(
-                                  showSrNo: true,
-                                  hideCode: false,
-                                  formatDate: false,
-                                  exportFileName: "View Old Deal",
-                                  mode: PlutoGridMode.selectWithOneTap,
-                                  mapData: (controllerX.viewOldDealResponseModel
-                                      ?.deal?.lstdealusage
-                                      ?.map((e) => e.toJson())
-                                      .toList())!,
-                                  // mapData: (controllerX.dataList)!,
-                                  widthRatio: Get.width / 9 - 1,
-                                  widthSpecificColumn:
-                                      Get.find<HomeController>()
-                                          .getGridWidthByKey(
-                                              userGridSettingList:
-                                                  controller.userGridSetting1),
-                                  onload: (PlutoGridOnLoadedEvent event) {
-                                    controllerX.stateManager =
-                                        event.stateManager;
-                                  },
-                                );
-                              },
-                            )
-                          : Container(),
-                    ),
+                    child: GetBuilder<ViewOldDealController>(
+                        assignId: true,
+                        id: "grid",
+                        builder: (controllerX) {
+                          return Container(
+                            decoration: BoxDecoration(
+                                border: Border.all(color: Colors.grey)),
+                            child: (controllerX.viewOldDealResponseModel?.deal
+                                            ?.lstdealusage !=
+                                        null &&
+                                    (controllerX.viewOldDealResponseModel?.deal
+                                                ?.lstdealusage?.length ??
+                                            0) >
+                                        0)
+                                ? DataGridFromMap3(
+                                    showSrNo: true,
+                                    hideCode: false,
+                                    formatDate: false,
+                                    exportFileName: "View Old Deal",
+                                    mode: PlutoGridMode.normal,
+                                    colorCallback: (row) => (row.row.cells
+                                            .containsValue(controllerX
+                                                .stateManager?.currentCell))
+                                        ? Colors.deepPurple.shade200
+                                        : Colors.white,
+                                    mapData: (controllerX
+                                        .viewOldDealResponseModel
+                                        ?.deal
+                                        ?.lstdealusage
+                                        ?.map((e) => e.toJson())
+                                        .toList())!,
+                                    // mapData: (controllerX.dataList)!,
+                                    widthRatio: Get.width / 9 - 1,
+                                    widthSpecificColumn:
+                                        Get.find<HomeController>()
+                                            .getGridWidthByKey(
+                                                userGridSettingList: controllerX
+                                                    .userGridSetting1),
+                                    onload: (PlutoGridOnLoadedEvent? event) {
+                                      controllerX.stateManager =
+                                          event?.stateManager;
+                                    },
+                                  )
+                                : Container(),
+                          );
+                        }),
                   ),
                   SizedBox(
                     height: 5,

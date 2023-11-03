@@ -81,7 +81,7 @@ class Lstdealusage {
   String? dealnumber;
   int? recordnumber;
   String? sponsorTypeName;
-  Null? programCategoryName;
+  String? programCategoryName;
   String? programname;
   String? starttime;
   String? endTime;
@@ -99,8 +99,8 @@ class Lstdealusage {
   int? maxspend;
   String? paymentmodecaption;
   int? ispdcenterd;
-  Null? startdate;
-  Null? enddate;
+  String? startdate;
+  String? enddate;
   String? bandcode;
   int? sun;
   int? mon;
@@ -153,7 +153,7 @@ class Lstdealusage {
     dealnumber = json['dealnumber'];
     recordnumber = json['recordnumber'];
     sponsorTypeName = json['sponsorTypeName'];
-    programCategoryName = json['programCategoryName'];
+    programCategoryName = (json['programCategoryName']??"").toString();
     programname = json['programname'];
     starttime = json['starttime'];
     endTime = json['endTime'];
@@ -171,8 +171,8 @@ class Lstdealusage {
     maxspend = json['maxspend'];
     paymentmodecaption = json['paymentmodecaption'];
     ispdcenterd = json['ispdcenterd'];
-    startdate = json['startdate'];
-    enddate = json['enddate'];
+    startdate = (json['startdate']??"").toString();
+    enddate = (json['enddate']??"").toString();
     bandcode = json['bandcode'];
     sun = json['sun'];
     mon = json['mon'];

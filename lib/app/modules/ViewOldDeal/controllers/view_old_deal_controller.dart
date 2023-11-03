@@ -209,6 +209,7 @@ class ViewOldDealController extends GetxController {
           if (map is Map && map.containsKey('deal') && map['deal'] != null) {
             viewOldDealResponseModel =
                 ViewOldDealResponseModel.fromJson(map as Map<String, dynamic>);
+            print(">>>>>>>map"+(viewOldDealResponseModel?.toJson()).toString());
             if (viewOldDealResponseModel?.deal?.lstdealmaster != null &&
                 (viewOldDealResponseModel?.deal?.lstdealmaster?.length ?? 0) >
                     0) {
@@ -238,24 +239,24 @@ class ViewOldDealController extends GetxController {
                           "0")
                       .toString();
             }
-            update(['ref']);
+            update(['grid']);
           } else {
             viewOldDealResponseModel = ViewOldDealResponseModel(
                 deal: Deal(lstdealmaster: [], lstdealusage: []));
-            update(['ref']);
+            update(['grid']);
           }
         });
   }
 
   @override
   void onInit() {
-    fetchUserSetting1();
     super.onInit();
   }
 
   @override
   void onReady() {
     fetchAllLoaderData();
+    fetchUserSetting1();
     super.onReady();
   }
 
