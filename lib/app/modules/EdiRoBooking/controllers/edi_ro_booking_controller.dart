@@ -66,7 +66,7 @@ class EdiRoBookingController extends GetxController {
   var lstXmlDtList = [].obs;
   var lstDgvSpotsList = [].obs;
   var fpcStartTabelList = [].obs;
-  var brandTabelList = [].obs;
+  var tapIdTabelList = [].obs;
   var tempList = [].obs;
   var filtterValue = '';
   var selectedIndex = 0.obs;
@@ -74,6 +74,8 @@ class EdiRoBookingController extends GetxController {
   PlutoGridStateManager? dvgSpotGrid;
 
   PlutoGridStateManager? dgvDealEntriesGrid;
+  PlutoGridStateManager? fpcStartTabelGrid;
+  PlutoGridStateManager? tapeIdTabelGrid;
 
   EdiRoInitData? initData;
   var fileNames = RxList<DropDownValue>();
@@ -421,39 +423,7 @@ class EdiRoBookingController extends GetxController {
                   return result;
                 },
               );
-              if (showGstPopUp) {
-                showGstPopUp = false;
-                Get.defaultDialog(
-                    radius: 05,
-                    title: "GST Plant",
-                    confirm: FormButtonWrapper(
-                      btnText: "Done",
-                      callback: () {
-                        Get.back();
-                      },
-                    ),
-                    content: SizedBox(
-                      height: Get.height / 6,
-                      width: Get.width / 4,
-                      child: Column(
-                        children: [
-                          DropDownField.formDropDown1WidthMap(
-                            gstPlant.value,
-                            (value) => {selectedGstPlant = value},
-                            "GST Plant",
-                            0.20,
-                            selected: selectedGstPlant,
-                            autoFocus: true,
-                          ),
-                          InputFields.formField1(
-                            hintTxt: "GST Reg#",
-                            controller: gstNoTEC,
-                            width: 0.20,
-                          )
-                        ],
-                      ),
-                    ));
-              }
+
               isShowLink.value = true;
               //LD Button
               linkDealNO.value = map['infoLeaveOnDealNumber']['showLinkDeal']
@@ -470,15 +440,56 @@ class EdiRoBookingController extends GetxController {
                   ['grpPDC']) {
                 if (pdcDetailsPopUP) {
                   pdcDetailsPopUP = false;
-                  LoadingDialog.callInfoMessage(map['infoLeaveOnDealNumber']
-                          ['displayDealDetails']['message'] ??
-                      "");
+                  LoadingDialog.showErrorDialog(
+                      map['infoLeaveOnDealNumber']['displayDealDetails']
+                              ['message'] ??
+                          "", callback: () {
+                    gstDilogBox();
+                  });
                 }
+              } else {
+                gstDilogBox();
               }
             }
           });
     } catch (e) {
       print(e.toString());
+    }
+  }
+
+  gstDilogBox() {
+    if (showGstPopUp) {
+      showGstPopUp = false;
+      Get.defaultDialog(
+          radius: 05,
+          title: "GST Plant",
+          confirm: FormButtonWrapper(
+            btnText: "Done",
+            callback: () {
+              Get.back();
+            },
+          ),
+          content: SizedBox(
+            height: Get.height / 6,
+            width: Get.width / 4,
+            child: Column(
+              children: [
+                DropDownField.formDropDown1WidthMap(
+                  gstPlant.value,
+                  (value) => {selectedGstPlant = value},
+                  "GST Plant",
+                  0.20,
+                  selected: selectedGstPlant,
+                  autoFocus: true,
+                ),
+                InputFields.formField1(
+                  hintTxt: "GST Reg#",
+                  controller: gstNoTEC,
+                  width: 0.20,
+                )
+              ],
+            ),
+          ));
     }
   }
 
@@ -599,9 +610,9 @@ class EdiRoBookingController extends GetxController {
             if (map != null &&
                 map['infoBrandList'] != null &&
                 map.containsKey('infoBrandList')) {
-              brandTabelList.clear();
-              brandTabelList.value = map['infoBrandList'];
-              tempList.addAll(brandTabelList.value);
+              tapIdTabelList.clear();
+              tapIdTabelList.value = map['infoBrandList'];
+              tempList.addAll(tapIdTabelList.value);
             }
           });
     } catch (e) {
@@ -728,6 +739,15 @@ class EdiRoBookingController extends GetxController {
                             hideCode: false,
                             exportFileName: "EDI R.O. Booking",
                             formatDate: false,
+                            onload: (event) {
+                              fpcStartTabelGrid = event.stateManager;
+                            },
+                            colorCallback: (colorEvent) {
+                              return colorEvent.row.cells.containsValue(
+                                      fpcStartTabelGrid?.currentCell)
+                                  ? Colors.deepPurple.shade100
+                                  : Colors.white;
+                            },
                             onRowDoubleTap: (event) {
                               // print(event.cell.column.field);
 
@@ -783,13 +803,13 @@ class EdiRoBookingController extends GetxController {
                     onFieldSubmitted: (value) {
                       tempList.clear();
                       if (value.isNotEmpty) {
-                        for (var i = 0; i < brandTabelList.length; i++) {
-                          if (value == brandTabelList[i]['exportTapeCode']) {
-                            tempList.add(brandTabelList[i]);
+                        for (var i = 0; i < tapIdTabelList.length; i++) {
+                          if (value == tapIdTabelList[i]['exportTapeCode']) {
+                            tempList.add(tapIdTabelList[i]);
                           }
                         }
                       } else {
-                        tempList.addAll(brandTabelList.value);
+                        tempList.addAll(tapIdTabelList.value);
                       }
                     },
                     width: 0.3,
@@ -822,6 +842,15 @@ class EdiRoBookingController extends GetxController {
                             hideCode: false,
                             exportFileName: "EDI R.O. Booking",
                             formatDate: false,
+                            onload: (event) {
+                              tapeIdTabelGrid = event.stateManager;
+                            },
+                            colorCallback: (colorEvent) {
+                              return colorEvent.row.cells.containsValue(
+                                      tapeIdTabelGrid?.currentCell)
+                                  ? Colors.deepPurple.shade100
+                                  : Colors.white;
+                            },
                             onRowDoubleTap: (event) {
                               if (event.cell.column.field.toString() ==
                                   'exportTapeCode') {
@@ -990,6 +1019,19 @@ class EdiRoBookingController extends GetxController {
       }
     }
     gridController!.setFilter((element) => _filterRows.contains(element));
+  }
+
+  Color getColor(Map<String, dynamic> dr, int index) {
+    if (dr.containsKey("noProgram") && dr["noProgram"].toString() == "1") {
+      return const Color.fromRGBO(255, 230, 230, 1);
+    } else if (dr.containsKey("auditedSpots") && dr['auditedSpots'] == 0) {
+      return const Color.fromRGBO(255, 150, 150, 1);
+    } else if (dr["bookingno"] == "Unaudited") {
+      return const Color.fromRGBO(255, 230, 230, 1);
+    } else if ((dr['auditedSpots'] ?? 0) < (dr["totalspots"] ?? 0)) {
+      return const Color.fromRGBO(255, 150, 150, 1);
+    }
+    return Colors.white; // Return null if no color conditions are met.
   }
 
   @override
