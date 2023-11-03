@@ -44,10 +44,12 @@ class PDCChequesController extends GetxController {
   var isDummy = false.obs;
   var clientFN = FocusNode(), activityMonthFN = FocusNode();
   int chequeID = 0;
+  double widthRation = .15;
 
   @override
   void onReady() {
     super.onReady();
+    LoadingDialog.call();
     Future.delayed(const Duration(seconds: 2)).then((value) {
       activityMonthTC.text = "${DateTime.now().year}${DateTime.now().month}";
       activityMonthFN.onKey = (node, event) {
@@ -98,6 +100,7 @@ class PDCChequesController extends GetxController {
     Get.find<ConnectorControl>().GETMETHODCALL(
       api: ApiFactory.PDC_CHEQUES_ON_LOAD(chequeId),
       fun: (resp) {
+        Get.back();
         if (resp != null && resp['onLoad'] != null) {
           if (resp['onLoad']['locationChannelModel'] != null) {
             locationChannelList.value = [];

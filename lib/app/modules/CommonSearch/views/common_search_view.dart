@@ -279,7 +279,7 @@ class SearchPage extends StatelessWidget {
                                     "Clear",
                                     "Add Variance",
                                     "Delete Variance",
-                                    "Exit"
+                                    (dialogClose != null ? "Exit " : "Exit")
                                   ])
                                     FormButtonWrapper(
                                       btnText: btn,
