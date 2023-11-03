@@ -556,10 +556,6 @@ class EdiRoBookingController extends GetxController {
               fpcStartTabelList.clear();
               fpcStartTabelList.value = map['spotFPCStart'];
               fpcStartDilogBox();
-              // map["infoChannelList"].forEach((e) {
-              //   channel.add(DropDownValue(
-              //       key: e['channelCode'], value: e['channelName']));
-              // });
             }
           });
     } catch (e) {
@@ -681,20 +677,6 @@ class EdiRoBookingController extends GetxController {
                       ),
                     ),
                   ),
-                  // Padding(
-                  //   padding: const EdgeInsets.symmetric(vertical: 8),
-                  //   child: Align(
-                  //     alignment: Alignment.topRight,
-                  //     child: FormButton(
-                  //       btnText: "Return",
-                  //       callback: () {
-                  //         programSummaryTableList.clear();
-                  //         Get.back();
-                  //       },
-                  //       showIcon: false,
-                  //     ),
-                  //   ),
-                  // ),
                 ],
               ),
             ),
