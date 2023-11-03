@@ -79,6 +79,20 @@ class Utils {
 
   }
 
+  static String normalCaseToPascalCase(String input) {
+    List<String> words = input.split(' ');
+    List<String> pascalCaseWords = [];
+
+    for (String word in words) {
+      if (word.isNotEmpty) {
+        pascalCaseWords.add(word[0].toUpperCase() + word.substring(1).toLowerCase());
+      }
+    }
+
+    return pascalCaseWords.join(' ');
+  }
+
+
   String formatDateTime2(String? inputDateTime) {
     if (inputDateTime != null && inputDateTime != "") {
       try {

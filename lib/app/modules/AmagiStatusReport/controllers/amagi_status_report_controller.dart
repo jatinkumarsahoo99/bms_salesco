@@ -185,9 +185,9 @@ class AmagiStatusReportController extends GetxController {
                     String k = key.toString().trim().replaceAll("\n", " ");
                     // String k = key.toString().trim().replaceAll("", " ");
                     if(value == 0 || value.toString().trim() == "0"){
-                      mapDa[k] = "";
+                      mapDa[k.toLowerCase()] = "";
                     }else{
-                      mapDa[k] = value;
+                      mapDa[k.toLowerCase()] = value;
                     }
 
                   });

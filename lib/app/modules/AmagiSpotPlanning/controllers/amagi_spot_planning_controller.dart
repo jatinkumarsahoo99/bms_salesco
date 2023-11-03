@@ -188,11 +188,11 @@ class AmagiSpotPlanningController extends GetxController {
                 if((value == 0 || value == "0") && ((key.toString().toLowerCase().contains("rate")) == false) &&
                     (key != "SpotAmount" ) &&
                     (key != "ValueAmount") ){
-                  mapDa[k] = "";
+                  mapDa[k.toLowerCase()] = "";
                 }else if(key.toString().trim().toLowerCase().contains(("ScheduleDate").toLowerCase().trim()) == true){
-                  mapDa[k] = Utils.formatDateTime3(value);
+                  mapDa[k.toLowerCase()] = Utils.formatDateTime3(value);
                 }else{
-                  mapDa[k] = value;
+                  mapDa[k.toLowerCase()] = value;
                 }
               });
               mapData.add(mapDa);
