@@ -2767,39 +2767,41 @@ class DropDownField {
                                         Expanded(
                                           child: Obx(
                                             () {
-                                              return ListView(
-                                                shrinkWrap: true,
-                                                children: tempList
-                                                    .map(
-                                                      (element) => InkWell(
-                                                        onTap: () {
-                                                          Navigator.pop(
-                                                              context);
-                                                          selected = element;
-                                                          re(() {});
-                                                          callback(element);
-                                                          FocusScope.of(context)
-                                                              .requestFocus(
-                                                                  inkWellFocusNode);
-                                                        },
-                                                        child: Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                      .symmetric(
-                                                                  vertical: 8),
-                                                          child: Text(
-                                                            element.value ??
-                                                                "null",
-                                                            style: TextStyle(
-                                                              fontSize: SizeDefine
-                                                                      .dropDownFontSize -
-                                                                  1,
+                                              return Material(
+                                                child: ListView(
+                                                  shrinkWrap: true,
+                                                  children: tempList
+                                                      .map(
+                                                        (element) => InkWell(
+                                                          onTap: () {
+                                                            Navigator.pop(
+                                                                context);
+                                                            selected = element;
+                                                            re(() {});
+                                                            callback(element);
+                                                            FocusScope.of(context)
+                                                                .requestFocus(
+                                                                    inkWellFocusNode);
+                                                          },
+                                                          child: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .symmetric(
+                                                                    vertical: 8),
+                                                            child: Text(
+                                                              element.value ??
+                                                                  "null",
+                                                              style: TextStyle(
+                                                                fontSize: SizeDefine
+                                                                        .dropDownFontSize -
+                                                                    1,
+                                                              ),
                                                             ),
                                                           ),
                                                         ),
-                                                      ),
-                                                    )
-                                                    .toList(),
+                                                      )
+                                                      .toList(),
+                                                ),
                                               );
                                             },
                                           ),
