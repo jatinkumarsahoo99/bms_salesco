@@ -123,6 +123,7 @@ class AmagiSpotPlanningView extends GetView<AmagiSpotPlanningController> {
                             hideCode: false,
                             formatDate: false,
                             columnAutoResize:false ,
+                            doPasccal: true,
                             colorCallback: (row) => (row.row.cells
                                 .containsValue(
                                 controllerX.stateManager?.currentCell))
