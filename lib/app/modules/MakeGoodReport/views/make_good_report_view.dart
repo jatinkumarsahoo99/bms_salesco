@@ -155,12 +155,12 @@ class MakeGoodReportView extends GetView<MakeGoodReportController> {
                                           controller.userGridSetting1?.value),
                               mapData: controller.dataTableList.value.map((e) {
                                 if (e['cancelDate'] != null) {
-                                  e['cancelDate'] = DateFormat('MM-dd-yyyy')
+                                  e['cancelDate'] = DateFormat('dd-MM-yyyy')
                                       .format(DateFormat('yyyy-MM-ddThh:mm:ss')
                                           .parse(e['cancelDate']));
                                 }
                                 if (e['bookingDate'] != null) {
-                                  e['bookingDate'] = DateFormat('MM-dd-yyyy')
+                                  e['bookingDate'] = DateFormat('dd-MM-yyyy')
                                       .format(DateFormat('yyyy-MM-ddThh:mm:ss')
                                           .parse(e['bookingDate']));
                                 }
