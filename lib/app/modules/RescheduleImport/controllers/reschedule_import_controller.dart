@@ -163,14 +163,14 @@ class RescheduleImportController extends GetxController {
   }
 
   Future<void> selectFile() async {
-    LoadingDialog.call();
+    // LoadingDialog.call();
     result = await FilePicker.platform.pickFiles(
       allowMultiple: false,
       allowedExtensions: ['xlsx'],
       type: FileType.custom,
     );
     fileName.value = result?.files[0].name ?? "";
-    closeDialogIfOpen();
+    // closeDialogIfOpen();
   }
 
   showBtn() {
@@ -199,7 +199,7 @@ class RescheduleImportController extends GetxController {
           "channelCode": selectedChannel?.key ?? ""
         };
         rescheduleImportModel = RescheduleImportModel.fromJson(postData);
-        print(">>>>>>tojson" + rescheduleImportModel!.toJson().toString());
+        // print(">>>>>>tojson" + rescheduleImportModel!.toJson().toString());
         dataTableList.value = tempList;
       } else {
         LoadingDialog.showErrorDialog("Please select file");
