@@ -21,6 +21,9 @@ import '../../../data/rowfilter.dart';
 import '../../../providers/ApiFactory.dart';
 
 class EdiRoBookingController extends GetxController {
+  int lastSelectedIdx = 0;
+  var lastSelectedOffect = 0.0;
+
   //TODO: Implement EdiRoBookingController
   var bookingNo1TEC = TextEditingController(),
       bookingNo2TEC = TextEditingController(text: "0"),
@@ -70,6 +73,9 @@ class EdiRoBookingController extends GetxController {
   var tempList = [].obs;
   var filtterValue = '';
   var selectedIndex = 0.obs;
+  var blnDurationMismatch = false.obs;
+  var intMonth = 0.obs;
+  var intYear = 0.obs;
 
   PlutoGridStateManager? dvgSpotGrid;
 
@@ -1005,15 +1011,59 @@ class EdiRoBookingController extends GetxController {
 
   Color getColor(Map<String, dynamic> dr, int index) {
     if (dr.containsKey("noProgram") && dr["noProgram"].toString() == "1") {
+      return Colors.red;
+    } else if (dr.containsKey("dur") &&
+        dr.containsKey("commercialduration") &&
+        dr["dur"].toString() != dr["commercialduration"].toString()) {
+      // blnDurationMismatch.value = true;
+      LoadingDialog.callErrorMessage(
+          "Duration mismatch!\nRequested duration is not equal to tape duration!");
       return const Color.fromRGBO(255, 230, 230, 1);
-    } else if (dr.containsKey("auditedSpots") && dr['auditedSpots'] == 0) {
-      return const Color.fromRGBO(255, 150, 150, 1);
-    } else if (dr["bookingno"] == "Unaudited") {
-      return const Color.fromRGBO(255, 230, 230, 1);
-    } else if ((dr['auditedSpots'] ?? 0) < (dr["totalspots"] ?? 0)) {
-      return const Color.fromRGBO(255, 150, 150, 1);
     }
+
+    //Month
+    if (intMonth.value != 0) {
+      var months =
+          DateFormat('MM').format(DateFormat('dd-MM-yyyy').parse(dr['acT_DT']));
+      if (dr.containsKey("acT_DT") && int.parse(months) != intMonth.value) {
+        LoadingDialog.callErrorMessage(
+            "Month / Year mismatch!\nMultiple Month / Year not allowed!");
+
+        return const Color.fromRGBO(255, 230, 230, 1);
+      }
+    } else {
+      var months =
+          DateFormat('MM').format(DateFormat('dd-MM-yyyy').parse(dr['acT_DT']));
+      intMonth.value = int.parse(months);
+    }
+
+    //Year
+    if (intYear.value != 0) {
+      var year = DateFormat('yyyy')
+          .format(DateFormat('dd-MM-yyyy').parse(dr['acT_DT']));
+      if (dr.containsKey("acT_DT") && int.parse(year) != intYear.value) {
+        LoadingDialog.callErrorMessage(
+            "Month / Year mismatch!\nMultiple Month / Year not allowed!");
+
+        return const Color.fromRGBO(255, 230, 230, 1);
+      }
+    } else {
+      var year = DateFormat('yyyy')
+          .format(DateFormat('dd-MM-yyyy').parse(dr['acT_DT']));
+      intYear.value = int.parse(year);
+    }
+
     return Colors.white; // Return null if no color conditions are met.
+  }
+
+  gridUpdate() {
+    update(['update']);
+    //    event.stateManager.setCurrentCell(
+    // event.stateManager
+    //     .getRowByIdx(
+    //         controller.lastSelectedIdx)
+    //     ?.cells['telecastDate'],
+    // controller.lastSelectedIdx);
   }
 
   @override
