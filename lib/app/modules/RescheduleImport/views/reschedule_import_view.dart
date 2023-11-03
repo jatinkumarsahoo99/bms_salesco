@@ -86,10 +86,11 @@ class RescheduleImportView extends GetView<RescheduleImportController> {
                     child: controller.dataTableList.isEmpty
                         ? null
                         : DataGridFromMap(
+                            doPasccal: false,
                             formatDate: false,
                             mode: PlutoGridMode.selectWithOneTap,
                             mapData: controller.dataTableList.value.map((e) {
-                              print(e);
+                              // print(e);
                               if (e['Sch Date'].toString().contains('T')) {
                                 e['Sch Date'] = DateFormat('dd-MM-yyyy').format(
                                     DateFormat('yyyy-MM-ddThh:mm:ss')

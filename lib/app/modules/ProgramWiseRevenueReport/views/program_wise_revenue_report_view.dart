@@ -94,7 +94,7 @@ class ProgramWiseRevenueReportView extends StatelessWidget {
                   (value) {
                     print(value);
                   },
-                  "Revune",
+                  "Revenue",
                   0.16,
                   onChanged: (index, selectValue) {
                     controller.revnue[index].isSelected = selectValue;

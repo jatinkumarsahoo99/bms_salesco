@@ -511,11 +511,17 @@ class EdiRoBookingView extends StatelessWidget {
                               onload: (load) {
                                 controller.dvgSpotGrid = load.stateManager;
                               },
-                              colorCallback: (row) => row.row.cells
-                                      .containsValue(
-                                          controller.dvgSpotGrid?.currentCell)
-                                  ? Colors.deepPurple.shade100
-                                  : Colors.white,
+                              colorCallback: (colorEvent) {
+                                colorEvent.row.cells.containsValue(
+                                        controller.dvgSpotGrid?.currentCell)
+                                    ? Colors.deepPurple.shade100
+                                    : Colors.white;
+
+                                return controller.getColor(
+                                    controller
+                                        .lstDgvSpotsList[colorEvent.rowIdx],
+                                    colorEvent.rowIdx);
+                              },
                               onRowDoubleTap: (event) async {
                                 //Clear
                                 if (Get.find<MainController>()
@@ -805,7 +811,7 @@ class EdiRoBookingView extends StatelessWidget {
                                         .cells['spoT_RATE']!.value
                                         .toString());
                               } else {
-                                LoadingDialog.callErrorMessage(
+                                LoadingDialog.showErrorDialog(
                                     'Spot not found.');
                               }
                             },

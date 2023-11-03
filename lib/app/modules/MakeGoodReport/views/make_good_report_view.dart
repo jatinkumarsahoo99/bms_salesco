@@ -1,6 +1,7 @@
 import 'package:bms_salesco/widgets/CheckBoxWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
 import '../../../../widgets/DateTime/DateWithThreeTextField.dart';
@@ -152,7 +153,19 @@ class MakeGoodReportView extends GetView<MakeGoodReportController> {
                                   .getGridWidthByKey(
                                       userGridSettingList:
                                           controller.userGridSetting1?.value),
-                              mapData: controller.dataTableList.value,
+                              mapData: controller.dataTableList.value.map((e) {
+                                if (e['cancelDate'] != null) {
+                                  e['cancelDate'] = DateFormat('MM-dd-yyyy')
+                                      .format(DateFormat('yyyy-MM-ddThh:mm:ss')
+                                          .parse(e['cancelDate']));
+                                }
+                                if (e['bookingDate'] != null) {
+                                  e['bookingDate'] = DateFormat('MM-dd-yyyy')
+                                      .format(DateFormat('yyyy-MM-ddThh:mm:ss')
+                                          .parse(e['bookingDate']));
+                                }
+                                return e;
+                              }).toList(),
                               formatDate: false,
                             ),
                     );
