@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:get/get.dart';
 
@@ -226,6 +227,9 @@ class OneSpotBookingSkyMediaView extends StatelessWidget {
                           isEnable: controllerX.isEnable,
                           focusNode: controllerX.amountNode,
                           onchanged: (value) {},
+                          inputformatters: [
+                            FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                          ],
                           // autoFocus: true,
                         ),
                       ],
