@@ -1361,6 +1361,8 @@ class DataGridMenu {
       {String? exportFileName,
       List<SecondaryShowDialogModel>? extraList,
       Function? onPressedClick,
+        List<String>? removeKeysFromFile,
+        bool csvFormat = false,
       required PlutoColumnRendererContext plutoContext}) async {
     clearFilterList() {
       Get.find<MainController>().filters1[stateManager.hashCode.toString()] =
@@ -1702,22 +1704,35 @@ class DataGridMenu {
         break;
       case DataGridMenuItem.exportToCSv:
         String title = "csv_export";
-        var exportCSV =
-            pluto_grid_export.PlutoGridExport.exportCSV(stateManager);
+        var exportCSV;
+
+        if (!csvFormat) {
+          exportCSV = pluto_grid_export.PlutoGridExport.exportCSV(stateManager);
+        } else if (removeKeysFromFile != null &&
+            removeKeysFromFile.isNotEmpty) {
+          // PlutoGridExport2 bookingNumber
+          // print(">>>>>>>>>>>>>>>>>>>>>>>removeKeysFromFile" + removeKeysFromFile.toString());
+          exportCSV = PlutoGridExport2.exportCSV(stateManager,
+              removeKeysFromFile: removeKeysFromFile);
+        } else {
+          exportCSV = PlutoGridExport1.exportCSV(stateManager);
+        }
         var exported = const Utf8Encoder().convert(
-            // FIX Add starting \u{FEFF} / 0xEF, 0xBB, 0xBF
-            // This allows open the file in Excel with proper character interpretation
-            // See https://stackoverflow.com/a/155176
+          // FIX Add starting \u{FEFF} / 0xEF, 0xBB, 0xBF
+          // This allows open the file in Excel with proper character interpretation
+          // See https://stackoverflow.com/a/155176
             '\u{FEFF}$exportCSV');
 
         FlutterFileSaver()
             .writeFileAsBytes(
-              fileName:
-                  (exportFileName ?? 'export${DateTime.now().toString()}') +
-                      '.csv',
-              bytes: exported,
-            )
-            .then((value) => Snack.callSuccess("File save to $value"));
+          fileName:
+          (exportFileName ?? 'export${DateTime.now().toString()}') + '.csv',
+          bytes: exported,
+        )
+            .catchError((error) {
+          // This code will be executed if there is an error while saving the file.
+          Snack.callError("Error saving file: $error");
+        });
         // await FileSaver.instance.saveFile("$title.csv", exported, ".csv");
         break;
       case DataGridMenuItem.exportToXml:

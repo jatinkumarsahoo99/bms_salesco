@@ -83,12 +83,13 @@ class AmagiSpotsReplacementView
                         showSrNo: true,
                         hideCode: false,
                         formatDate: false,
+                        columnAutoResize: false,
                         widthSpecificColumn: {
-                          "0": 150,
-                          "1": 150,
-                          "clientname": 150,
-                          "starttime": 150,
-                          "endtime": 150
+                          "0": 250,
+                          "1": 250,
+                          "clientname": 250,
+                          "starttime": 250,
+                          "endtime": 250
                         },
                         colorCallback: (row) => (row.row.cells
                             .containsValue(
@@ -98,7 +99,7 @@ class AmagiSpotsReplacementView
                         csvFormat: true,
                         summary: controller.isSummary.value,
                         exportFileName: "Amagi Spot Replacement",
-                        mode: PlutoGridMode.selectWithOneTap,
+                        mode: PlutoGridMode.normal,
                         mapData: controller.mapList.value,
                         // mapData: (controller.dataList)!,
                         widthRatio: Get.width / 9 - 1,
@@ -206,7 +207,7 @@ class AmagiSpotsReplacementView
                             : Colors.white,
                         summary: controller.isSummary.value,
                         exportFileName: "Amagi Spot Replacement",
-                        mode: PlutoGridMode.selectWithOneTap,
+                        mode: PlutoGridMode.normal,
                         mapData: (controller.mapList.value),
                         // mapData: (controller.dataList)!,
                         widthRatio: Get.width / 9 - 1,
@@ -284,18 +285,20 @@ class AmagiSpotsReplacementView
                         columnAutoResize: false,
                         csvFormat: true,
                         doPasccal: true,
+                        summaryCase: true,
+
                         widthSpecificColumn: const {
-                          "ParentID": 150,
-                          "ASIA  ZEETV-Rajasthan": 150,
-                          "ASIA  ZEETV-RoMaha": 150,
-                          "ASIA  ZEETV-BIHAR": 150,
-                          "ASIA  ZEETV-DelhiNCR": 150,
-                          "ASIA  ZEETV-Gujarat": 150,
-                          "ASIA  ZEETV-Mumbai": 150
+                          "ParentID": 250,
+                          "ASIA  ZEETV-Rajasthan": 250,
+                          "ASIA  ZEETV-RoMaha": 250,
+                          "ASIA  ZEETV-BIHAR": 250,
+                          "ASIA  ZEETV-DelhiNCR": 250,
+                          "ASIA  ZEETV-Gujarat": 250,
+                          "ASIA  ZEETV-Mumbai": 250
                         },
                         summary: controller.isSummary.value,
                         exportFileName: "Amagi Spot Replacement",
-                        mode: PlutoGridMode.selectWithOneTap,
+                        mode: PlutoGridMode.normal,
                         mapData: controller.mapList.value,
                         // mapData: (controller.dataList)!,
                         widthRatio: Get.width / 9 - 1,
@@ -382,7 +385,7 @@ class AmagiSpotsReplacementView
                             : Colors.white,
                         summary: controller.isSummary.value,
                         exportFileName: "Amagi Spot Replacement",
-                        mode: PlutoGridMode.selectWithOneTap,
+                        mode: PlutoGridMode.normal,
                         mapData: controller.mapList.value,
                         widthSpecificColumn: const {
                           "BookingDetailCode": 150,
@@ -616,10 +619,13 @@ class AmagiSpotsReplacementView
                     hideCode: false,
                     formatDate: false,
                     csvFormat: true,
+                    doPasccal: true,columnAutoResize: false,
                     summary: controller.isSummary.value,
                     exportFileName: "Amagi Spot Replacement",
-                    mode: PlutoGridMode.selectWithOneTap,
+                    mode: PlutoGridMode.normal,
                     mapData: controller.mapList.value,
+                    widthSpecificColumn: {"eventtype":120,"caption":120,"txCaption":120,"txId":120,"duration":120,"som":120,
+                      "segmentNumber":120,"promoTypeCode":120,"eventCode":120},
                     colorCallback: (row) => (row.row.cells
                         .containsValue(
                         controller.dialogStateManager4?.currentCell))
@@ -1203,7 +1209,44 @@ class AmagiSpotsReplacementView
                                                                   'scheduleDate']
                                                                       ?.value,
                                                                   merge:
-                                                                  1);
+                                                                  1).then((value) {
+                                                                controller
+                                                                    .getSpots(reProcess: true)
+                                                                    .then((value) {
+                                                                  if ((controller
+                                                                      .amagiSpotReplacementModel
+                                                                      ?.lstSpots
+                                                                      ?.fastInserts
+                                                                      ?.promoResponse
+                                                                      ?.length ??
+                                                                      0) >
+                                                                      0) {
+                                                                    if (controller.canDialogShow.value ==
+                                                                        true) {
+                                                                      controller.title?.value = "";
+                                                                      controller.mapList.value = value;
+                                                                      controller.mapList.refresh();
+                                                                      controller.isSummary.value = false;
+                                                                      controller.isSummary.refresh();
+                                                                      // dragableDialog(mapList: value);
+                                                                      controller.title?.refresh();
+                                                                      // controller.bindData();
+                                                                    } else {
+                                                                      controller.title?.value = "";
+                                                                      controller.isSummary.value = false;
+                                                                      // print(">>>>>>>>>valueMapData" + value.toString());
+                                                                      controller.mapList.value = value;
+                                                                      dragAbleDialogGet();
+                                                                    }
+                                                                  }
+                                                                  Future.delayed(
+                                                                    Duration(seconds: 2),
+                                                                        () {
+                                                                      controller.bindData();
+                                                                    },
+                                                                  );
+                                                                });
+                                                              });
                                                               print(
                                                                   renderContext
                                                                       .row
@@ -1234,7 +1277,44 @@ class AmagiSpotsReplacementView
                                                                   'scheduleDate']
                                                                       ?.value,
                                                                   merge:
-                                                                  0);
+                                                                  0).then((value) {
+                                                                controller
+                                                                    .getSpots(reProcess: true)
+                                                                    .then((value) {
+                                                                  if ((controller
+                                                                      .amagiSpotReplacementModel
+                                                                      ?.lstSpots
+                                                                      ?.fastInserts
+                                                                      ?.promoResponse
+                                                                      ?.length ??
+                                                                      0) >
+                                                                      0) {
+                                                                    if (controller.canDialogShow.value ==
+                                                                        true) {
+                                                                      controller.title?.value = "";
+                                                                      controller.mapList.value = value;
+                                                                      controller.mapList.refresh();
+                                                                      controller.isSummary.value = false;
+                                                                      controller.isSummary.refresh();
+                                                                      // dragableDialog(mapList: value);
+                                                                      controller.title?.refresh();
+                                                                      // controller.bindData();
+                                                                    } else {
+                                                                      controller.title?.value = "";
+                                                                      controller.isSummary.value = false;
+                                                                      // print(">>>>>>>>>valueMapData" + value.toString());
+                                                                      controller.mapList.value = value;
+                                                                      dragAbleDialogGet();
+                                                                    }
+                                                                  }
+                                                                  Future.delayed(
+                                                                    Duration(seconds: 2),
+                                                                        () {
+                                                                      controller.bindData();
+                                                                    },
+                                                                  );
+                                                                });
+                                                              });
                                                               print(
                                                                   renderContext
                                                                       .row

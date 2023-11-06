@@ -1276,6 +1276,7 @@ class DataGridFromMapForAmagiSpotReplacement extends StatelessWidget {
                         rendererContext.stateManager, detail, context,
                         exportFileName: exportFileName,
                         onPressedClick: onContextMenuClick,
+                        csvFormat: csvFormat??false,
                         plutoContext: rendererContext);
                   }
                 },
@@ -1303,6 +1304,7 @@ class DataGridFromMapForAmagiSpotReplacement extends StatelessWidget {
                         rendererContext.stateManager, detail, context,
                         exportFileName: exportFileName,
                         onPressedClick: onContextMenuClick,
+                        csvFormat: csvFormat??false,
                         plutoContext: rendererContext);
                   }
                 },
@@ -1328,6 +1330,7 @@ class DataGridFromMapForAmagiSpotReplacement extends StatelessWidget {
                         rendererContext.stateManager, detail, context,
                         exportFileName: exportFileName,
                         onPressedClick: onContextMenuClick,
+                        csvFormat: csvFormat??false,
                         plutoContext: rendererContext);
                   }
                 },
@@ -1353,6 +1356,7 @@ class DataGridFromMapForAmagiSpotReplacement extends StatelessWidget {
                         rendererContext.stateManager, detail, context,
                         exportFileName: exportFileName,
                         onPressedClick: onContextMenuClick,
+                        csvFormat: csvFormat??false,
                         plutoContext: rendererContext);
                   }
                 },
@@ -1497,7 +1501,7 @@ class DataGridFromMapAmagiDialog extends StatelessWidget {
       this.specificWidth,
       this.numTypeKeyList,
       this.widthSpecificColumn,
-      this.summary = false,this.csvFormat = false})
+      this.summary = false,this.csvFormat = false,this.summaryCase = false})
       : super(key: key);
   final FocusNode? previousWidgetFN;
   final Map<String, double>? widthSpecificColumn;
@@ -1535,6 +1539,7 @@ class DataGridFromMapAmagiDialog extends StatelessWidget {
       actionOnPress;
   final bool doPasccal;
   final bool ?csvFormat;
+  final bool ?summaryCase;
   Color Function(PlutoRowColorContext)? colorCallback;
   Function(PlutoGridOnLoadedEvent)? onload;
   final GlobalKey rebuildKey = GlobalKey();
@@ -1600,7 +1605,7 @@ class DataGridFromMapAmagiDialog extends StatelessWidget {
           title: doPasccal
               ? key == "fpcCaption"
                   ? "FPC Caption"
-                  : key
+                  :((summaryCase == true)? key : Utils.normalCaseToPascalCase(key))
               : key,
           enableRowChecked: false,
           renderer: ((rendererContext) {
@@ -1722,7 +1727,7 @@ class DataGridFromMapAmagiDialog extends StatelessWidget {
           width: (widthSpecificColumn != null &&
                   widthSpecificColumn!.containsKey(key))
               ? widthSpecificColumn![key]!
-              : 150,
+              : 250,
           // width: Utils.getColumnSize(key: key, value: mapData[0][key]),
           enableAutoEditing: false,
           hide: showonly == null
@@ -2289,7 +2294,10 @@ Color getColors(PlutoColumnRendererContext plutoCon) {
           .toString()
           .split("-");
       // print(">>>>>>>>>splitList$data");
-      if (data != null && data.isEmpty) {
+      if(plutoCon.stateManager.currentCell == plutoCon.cell){
+        color = Colors.deepPurple.shade200;
+      }
+      else if (data != null && data.isEmpty) {
         color = Colors.white;
       } else if (plutoCon.cell.value == null ||
           plutoCon.cell.value.toString().trim() == "null" ||
@@ -2299,11 +2307,17 @@ Color getColors(PlutoColumnRendererContext plutoCon) {
           double.parse(data![1] ?? "0")) {
         color = Colors.lightBlue;
       }
+    }else if(plutoCon.stateManager.currentCell == plutoCon.cell){
+      color = Colors.deepPurple.shade200;
     } else {
       color = Colors.white;
     }
   } catch (e) {
-    color = Colors.white;
+    if(plutoCon.stateManager.currentCell == plutoCon.cell){
+      color = Colors.deepPurple.shade200;
+    }else{
+      color = Colors.white;
+    }
   }
 
   return color;
