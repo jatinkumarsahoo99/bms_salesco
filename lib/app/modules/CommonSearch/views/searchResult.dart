@@ -46,6 +46,7 @@ class SearchResultPage extends StatelessWidget {
           field: column,
           type: PlutoColumnType.text()));
     }
+    PlutoGridStateManager? sm;
 
     List<PlutoRow> rows = [];
     for (var row in controller.searchResult!) {
@@ -99,6 +100,7 @@ class SearchResultPage extends StatelessWidget {
                   mapData: controller.searchResult!,
                   doPasccal: false,
                   onload: (event) {
+                    sm = event.stateManager;
                     for (var element in event.stateManager.refColumns) {
                       event.stateManager.autoFitColumn(context, element);
                     }
@@ -108,6 +110,9 @@ class SearchResultPage extends StatelessWidget {
                     //         resizeMode: PlutoResizeMode.normal));
                   },
                   mode: PlutoGridMode.select,
+                  colorCallback: (row) => sm?.currentRow == row.row
+                      ? Colors.deepPurple.shade100
+                      : Colors.white,
                   onRowDoubleTap: (plutoEvent) {
                     if (appFormName == "BMS_view_programmaster") {
                       String val = controller.searchResult![plutoEvent.rowIdx]
@@ -128,6 +133,7 @@ class SearchResultPage extends StatelessWidget {
                       }
                     }
                     if (dialogClose != null) {
+                      sm?.setCurrentCell(plutoEvent.cell, plutoEvent.rowIdx);
                       dialogClose!(plutoEvent.row);
                     }
                   },
