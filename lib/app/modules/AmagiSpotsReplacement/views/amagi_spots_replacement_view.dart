@@ -98,7 +98,7 @@ class AmagiSpotsReplacementView
                         csvFormat: true,
                         summary: controller.isSummary.value,
                         exportFileName: "Amagi Spot Replacement",
-                        mode: PlutoGridMode.selectWithOneTap,
+                        mode: PlutoGridMode.normal,
                         mapData: controller.mapList.value,
                         // mapData: (controller.dataList)!,
                         widthRatio: Get.width / 9 - 1,
@@ -206,7 +206,7 @@ class AmagiSpotsReplacementView
                             : Colors.white,
                         summary: controller.isSummary.value,
                         exportFileName: "Amagi Spot Replacement",
-                        mode: PlutoGridMode.selectWithOneTap,
+                        mode: PlutoGridMode.normal,
                         mapData: (controller.mapList.value),
                         // mapData: (controller.dataList)!,
                         widthRatio: Get.width / 9 - 1,
@@ -284,18 +284,19 @@ class AmagiSpotsReplacementView
                         columnAutoResize: false,
                         csvFormat: true,
                         doPasccal: true,
+
                         widthSpecificColumn: const {
-                          "ParentID": 150,
-                          "ASIA  ZEETV-Rajasthan": 150,
-                          "ASIA  ZEETV-RoMaha": 150,
-                          "ASIA  ZEETV-BIHAR": 150,
-                          "ASIA  ZEETV-DelhiNCR": 150,
-                          "ASIA  ZEETV-Gujarat": 150,
-                          "ASIA  ZEETV-Mumbai": 150
+                          "ParentID": 250,
+                          "ASIA  ZEETV-Rajasthan": 250,
+                          "ASIA  ZEETV-RoMaha": 250,
+                          "ASIA  ZEETV-BIHAR": 250,
+                          "ASIA  ZEETV-DelhiNCR": 250,
+                          "ASIA  ZEETV-Gujarat": 250,
+                          "ASIA  ZEETV-Mumbai": 250
                         },
                         summary: controller.isSummary.value,
                         exportFileName: "Amagi Spot Replacement",
-                        mode: PlutoGridMode.selectWithOneTap,
+                        mode: PlutoGridMode.normal,
                         mapData: controller.mapList.value,
                         // mapData: (controller.dataList)!,
                         widthRatio: Get.width / 9 - 1,
@@ -382,7 +383,7 @@ class AmagiSpotsReplacementView
                             : Colors.white,
                         summary: controller.isSummary.value,
                         exportFileName: "Amagi Spot Replacement",
-                        mode: PlutoGridMode.selectWithOneTap,
+                        mode: PlutoGridMode.normal,
                         mapData: controller.mapList.value,
                         widthSpecificColumn: const {
                           "BookingDetailCode": 150,
@@ -616,9 +617,10 @@ class AmagiSpotsReplacementView
                     hideCode: false,
                     formatDate: false,
                     csvFormat: true,
+                    doPasccal: true,
                     summary: controller.isSummary.value,
                     exportFileName: "Amagi Spot Replacement",
-                    mode: PlutoGridMode.selectWithOneTap,
+                    mode: PlutoGridMode.normal,
                     mapData: controller.mapList.value,
                     colorCallback: (row) => (row.row.cells
                         .containsValue(
@@ -1203,7 +1205,9 @@ class AmagiSpotsReplacementView
                                                                   'scheduleDate']
                                                                       ?.value,
                                                                   merge:
-                                                                  1);
+                                                                  1).then((value) {
+                                                                dragAbleDialogGet();
+                                                              });
                                                               print(
                                                                   renderContext
                                                                       .row
@@ -1234,7 +1238,9 @@ class AmagiSpotsReplacementView
                                                                   'scheduleDate']
                                                                       ?.value,
                                                                   merge:
-                                                                  0);
+                                                                  0).then((value) {
+                                                                dragAbleDialogGet();
+                                                              });
                                                               print(
                                                                   renderContext
                                                                       .row

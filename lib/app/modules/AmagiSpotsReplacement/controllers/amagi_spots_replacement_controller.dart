@@ -1107,25 +1107,32 @@ class AmagiSpotsReplacementController extends GetxController {
 
   Rx<String>? title = Rx<String>("");
 
-  mergeOrDoNotMerge(
+  Future<String> mergeOrDoNotMerge(
       {int merge = 0,
       String? bookingNo = "",
       String? date = "",
       int? bookingDetCode = 0}) {
-    Map<String, dynamic> postData = {
-      "locationcode": selectedLocation?.key ?? "",
-      "channelcode": selectedChannel?.key ?? "",
-      "scheduledate": date,
-      "bookingnumber": bookingNo,
-      "bookingdetailcode": bookingDetCode,
-      "dontMerge": merge
-    };
-    Get.find<ConnectorControl>().POSTMETHOD(
-        api: ApiFactory.AMAGI_SPOT_REPLACEMENT_GET_MERGESPOT(),
-        fun: (map) {
-          print(">>>>>>>>>>>>mergeOrDoNotMerge$map");
-        },
-        json: postData);
+    Completer<String> completer = Completer<String>();
+    try{
+      Map<String, dynamic> postData = {
+        "locationcode": selectedLocation?.key ?? "",
+        "channelcode": selectedChannel?.key ?? "",
+        "scheduledate": date,
+        "bookingnumber": bookingNo,
+        "bookingdetailcode": bookingDetCode,
+        "dontMerge": merge
+      };
+      Get.find<ConnectorControl>().POSTMETHOD(
+          api: ApiFactory.AMAGI_SPOT_REPLACEMENT_GET_MERGESPOT(),
+          fun: (map) {
+            print(">>>>>>>>>>>>mergeOrDoNotMerge$map");
+            completer.complete("");
+          },
+          json: postData);
+    }catch(e){
+      completer.complete("");
+    }
+    return completer.future;
   }
 
   callExcel() {
