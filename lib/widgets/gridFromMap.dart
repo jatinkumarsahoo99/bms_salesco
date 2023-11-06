@@ -1501,7 +1501,7 @@ class DataGridFromMapAmagiDialog extends StatelessWidget {
       this.specificWidth,
       this.numTypeKeyList,
       this.widthSpecificColumn,
-      this.summary = false,this.csvFormat = false})
+      this.summary = false,this.csvFormat = false,this.summaryCase = false})
       : super(key: key);
   final FocusNode? previousWidgetFN;
   final Map<String, double>? widthSpecificColumn;
@@ -1539,6 +1539,7 @@ class DataGridFromMapAmagiDialog extends StatelessWidget {
       actionOnPress;
   final bool doPasccal;
   final bool ?csvFormat;
+  final bool ?summaryCase;
   Color Function(PlutoRowColorContext)? colorCallback;
   Function(PlutoGridOnLoadedEvent)? onload;
   final GlobalKey rebuildKey = GlobalKey();
@@ -1604,7 +1605,7 @@ class DataGridFromMapAmagiDialog extends StatelessWidget {
           title: doPasccal
               ? key == "fpcCaption"
                   ? "FPC Caption"
-                  : Utils.normalCaseToPascalCase(key)
+                  :((summaryCase == true)? key : Utils.normalCaseToPascalCase(key))
               : key,
           enableRowChecked: false,
           renderer: ((rendererContext) {

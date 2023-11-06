@@ -83,12 +83,13 @@ class AmagiSpotsReplacementView
                         showSrNo: true,
                         hideCode: false,
                         formatDate: false,
+                        columnAutoResize: false,
                         widthSpecificColumn: {
-                          "0": 150,
-                          "1": 150,
-                          "clientname": 150,
-                          "starttime": 150,
-                          "endtime": 150
+                          "0": 250,
+                          "1": 250,
+                          "clientname": 250,
+                          "starttime": 250,
+                          "endtime": 250
                         },
                         colorCallback: (row) => (row.row.cells
                             .containsValue(
@@ -284,6 +285,7 @@ class AmagiSpotsReplacementView
                         columnAutoResize: false,
                         csvFormat: true,
                         doPasccal: true,
+                        summaryCase: true,
 
                         widthSpecificColumn: const {
                           "ParentID": 250,
@@ -617,11 +619,13 @@ class AmagiSpotsReplacementView
                     hideCode: false,
                     formatDate: false,
                     csvFormat: true,
-                    doPasccal: true,
+                    doPasccal: true,columnAutoResize: false,
                     summary: controller.isSummary.value,
                     exportFileName: "Amagi Spot Replacement",
                     mode: PlutoGridMode.normal,
                     mapData: controller.mapList.value,
+                    widthSpecificColumn: {"eventtype":120,"caption":120,"txCaption":120,"txId":120,"duration":120,"som":120,
+                      "segmentNumber":120,"promoTypeCode":120,"eventCode":120},
                     colorCallback: (row) => (row.row.cells
                         .containsValue(
                         controller.dialogStateManager4?.currentCell))
@@ -1206,7 +1210,42 @@ class AmagiSpotsReplacementView
                                                                       ?.value,
                                                                   merge:
                                                                   1).then((value) {
-                                                                dragAbleDialogGet();
+                                                                controller
+                                                                    .getSpots(reProcess: true)
+                                                                    .then((value) {
+                                                                  if ((controller
+                                                                      .amagiSpotReplacementModel
+                                                                      ?.lstSpots
+                                                                      ?.fastInserts
+                                                                      ?.promoResponse
+                                                                      ?.length ??
+                                                                      0) >
+                                                                      0) {
+                                                                    if (controller.canDialogShow.value ==
+                                                                        true) {
+                                                                      controller.title?.value = "";
+                                                                      controller.mapList.value = value;
+                                                                      controller.mapList.refresh();
+                                                                      controller.isSummary.value = false;
+                                                                      controller.isSummary.refresh();
+                                                                      // dragableDialog(mapList: value);
+                                                                      controller.title?.refresh();
+                                                                      // controller.bindData();
+                                                                    } else {
+                                                                      controller.title?.value = "";
+                                                                      controller.isSummary.value = false;
+                                                                      // print(">>>>>>>>>valueMapData" + value.toString());
+                                                                      controller.mapList.value = value;
+                                                                      dragAbleDialogGet();
+                                                                    }
+                                                                  }
+                                                                  Future.delayed(
+                                                                    Duration(seconds: 2),
+                                                                        () {
+                                                                      controller.bindData();
+                                                                    },
+                                                                  );
+                                                                });
                                                               });
                                                               print(
                                                                   renderContext
@@ -1239,7 +1278,42 @@ class AmagiSpotsReplacementView
                                                                       ?.value,
                                                                   merge:
                                                                   0).then((value) {
-                                                                dragAbleDialogGet();
+                                                                controller
+                                                                    .getSpots(reProcess: true)
+                                                                    .then((value) {
+                                                                  if ((controller
+                                                                      .amagiSpotReplacementModel
+                                                                      ?.lstSpots
+                                                                      ?.fastInserts
+                                                                      ?.promoResponse
+                                                                      ?.length ??
+                                                                      0) >
+                                                                      0) {
+                                                                    if (controller.canDialogShow.value ==
+                                                                        true) {
+                                                                      controller.title?.value = "";
+                                                                      controller.mapList.value = value;
+                                                                      controller.mapList.refresh();
+                                                                      controller.isSummary.value = false;
+                                                                      controller.isSummary.refresh();
+                                                                      // dragableDialog(mapList: value);
+                                                                      controller.title?.refresh();
+                                                                      // controller.bindData();
+                                                                    } else {
+                                                                      controller.title?.value = "";
+                                                                      controller.isSummary.value = false;
+                                                                      // print(">>>>>>>>>valueMapData" + value.toString());
+                                                                      controller.mapList.value = value;
+                                                                      dragAbleDialogGet();
+                                                                    }
+                                                                  }
+                                                                  Future.delayed(
+                                                                    Duration(seconds: 2),
+                                                                        () {
+                                                                      controller.bindData();
+                                                                    },
+                                                                  );
+                                                                });
                                                               });
                                                               print(
                                                                   renderContext
