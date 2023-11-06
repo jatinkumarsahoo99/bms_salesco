@@ -80,7 +80,7 @@ class AmagiSpotsReplacementView
                 child: Obx(() {
                   return Container(
                       child: DataGridFromMapAmagiDialog(
-                        showSrNo: false,
+                        showSrNo: true,
                         hideCode: false,
                         formatDate: false,
                         widthSpecificColumn: {
@@ -90,6 +90,12 @@ class AmagiSpotsReplacementView
                           "starttime": 150,
                           "endtime": 150
                         },
+                        colorCallback: (row) => (row.row.cells
+                            .containsValue(
+                            controller.dialogStateManager?.currentCell))
+                            ? Colors.deepPurple.shade200
+                            : Colors.white,
+                        csvFormat: true,
                         summary: controller.isSummary.value,
                         exportFileName: "Amagi Spot Replacement",
                         mode: PlutoGridMode.selectWithOneTap,
@@ -164,10 +170,11 @@ class AmagiSpotsReplacementView
                 child: Obx(() {
                   return Container(
                       child: DataGridFromMapAmagiDialog(
-                        showSrNo: false,
+                        showSrNo: true,
                         hideCode: false,
                         formatDate: false,
                         columnAutoResize: false,
+                        csvFormat: true,
                         widthSpecificColumn: const {
                           "BookingDetailCode": 150,
                           "BookingNumber": 150,
@@ -192,10 +199,15 @@ class AmagiSpotsReplacementView
                           "ZoneName": 150,
                           "channelid": 150
                         },
+                        colorCallback: (row) => (row.row.cells
+                            .containsValue(
+                            controller.dialogStateManager?.currentCell))
+                            ? Colors.deepPurple.shade200
+                            : Colors.white,
                         summary: controller.isSummary.value,
                         exportFileName: "Amagi Spot Replacement",
                         mode: PlutoGridMode.selectWithOneTap,
-                        mapData: controller.mapList.value,
+                        mapData: (controller.mapList.value),
                         // mapData: (controller.dataList)!,
                         widthRatio: Get.width / 9 - 1,
 
@@ -266,10 +278,12 @@ class AmagiSpotsReplacementView
                 child: Obx(() {
                   return Container(
                       child: DataGridFromMapAmagiDialog(
-                        showSrNo: false,
+                        showSrNo: true,
                         hideCode: false,
                         formatDate: false,
                         columnAutoResize: false,
+                        csvFormat: true,
+                        doPasccal: true,
                         widthSpecificColumn: const {
                           "ParentID": 150,
                           "ASIA  ZEETV-Rajasthan": 150,
@@ -285,7 +299,11 @@ class AmagiSpotsReplacementView
                         mapData: controller.mapList.value,
                         // mapData: (controller.dataList)!,
                         widthRatio: Get.width / 9 - 1,
-
+                        colorCallback: (row) => (row.row.cells
+                            .containsValue(
+                            controller.dialogStateManager3?.currentCell))
+                            ? Colors.deepPurple.shade200
+                            : Colors.white,
                         onload: (PlutoGridOnLoadedEvent load) {
                           controller.dialogStateManager3 = load.stateManager;
                           // controller.stateManager = load.stateManager;
@@ -352,10 +370,16 @@ class AmagiSpotsReplacementView
                 child: Obx(() {
                   return Container(
                       child: DataGridFromMapAmagiDialog(
-                        showSrNo: false,
+                        showSrNo: true,
                         hideCode: false,
                         formatDate: false,
                         columnAutoResize: false,
+                        csvFormat: true,
+                        colorCallback: (row) => (row.row.cells
+                            .containsValue(
+                            controller.dialogStateManager1?.currentCell))
+                            ? Colors.deepPurple.shade200
+                            : Colors.white,
                         summary: controller.isSummary.value,
                         exportFileName: "Amagi Spot Replacement",
                         mode: PlutoGridMode.selectWithOneTap,
@@ -588,13 +612,19 @@ class AmagiSpotsReplacementView
               Expanded(child: Obx(() {
                 return Container(
                   child: DataGridFromMapAmagiDialog(
-                    showSrNo: false,
+                    showSrNo: true,
                     hideCode: false,
                     formatDate: false,
+                    csvFormat: true,
                     summary: controller.isSummary.value,
                     exportFileName: "Amagi Spot Replacement",
                     mode: PlutoGridMode.selectWithOneTap,
                     mapData: controller.mapList.value,
+                    colorCallback: (row) => (row.row.cells
+                        .containsValue(
+                        controller.dialogStateManager4?.currentCell))
+                        ? Colors.deepPurple.shade200
+                        : Colors.white,
                     // mapData: (controller.dataList)!,
                     widthRatio: Get.width / 9 - 1,
                     onload: (PlutoGridOnLoadedEvent load) {
@@ -658,6 +688,7 @@ class AmagiSpotsReplacementView
                                     controller.locationList.value ?? [],
                                         (value) {
                                       controller.selectedLocation = value;
+                                      controller.getChannel(controller.selectedLocation?.key ?? "");
                                     },
                                     "Location",
                                     .13,
@@ -808,7 +839,7 @@ class AmagiSpotsReplacementView
                                             controller.isSummary.value = false;
                                             // print(">>>>>>>>>valueMapData" + value.toString());
                                             controller.mapList.value = value;
-                                            // dragAbleDialogGet();
+                                            dragAbleDialogGet();
                                           }
                                         }
                                         Future.delayed(
@@ -918,6 +949,8 @@ class AmagiSpotsReplacementView
                                                         showSrNo: true,
                                                         hideCode: false,
                                                         formatDate: false,
+                                                        csvFormat: true,
+
                                                         columnAutoResize:
                                                         false,
                                                         isChannelGrid:
@@ -1090,6 +1123,8 @@ class AmagiSpotsReplacementView
                                                         showSrNo: true,
                                                         hideCode: false,
                                                         formatDate: false,
+                                                        csvFormat: true,
+                                                        doPasccal: true,
                                                         columnAutoResize:
                                                         false,
                                                         isMasterGrid:
@@ -1219,7 +1254,7 @@ class AmagiSpotsReplacementView
                                                             ?.masterSpots
                                                             ?.map((e) =>
                                                             e
-                                                                .toJson())
+                                                                .toJson1())
                                                             .toList() as List<
                                                             dynamic>,
                                                         // mapData: (controller.dataList)!,
@@ -1698,7 +1733,7 @@ class AmagiSpotsReplacementView
                                                                       controller
                                                                           .title
                                                                           ?.value =
-                                                                      "Client";
+                                                                      "Un Alloc";
                                                                       print(
                                                                           ">>>>>>>>>valueMapData" +
                                                                               value
@@ -2068,6 +2103,7 @@ class AmagiSpotsReplacementView
                                                         showSrNo: true,
                                                         hideCode: false,
                                                         formatDate: false,
+                                                        csvFormat: true,
                                                         isLocalSpotGrid:
                                                         true,
                                                         columnAutoResize:
@@ -2108,7 +2144,7 @@ class AmagiSpotsReplacementView
                                                         ],
                                                         mode:
                                                         PlutoGridMode
-                                                            .selectWithOneTap,
+                                                            .normal,
                                                         exportFileName:
                                                         "Amagi Spot Replacement",
                                                         mapData: controller
@@ -2117,7 +2153,7 @@ class AmagiSpotsReplacementView
                                                             ?.localSpots
                                                             ?.map((e) =>
                                                             e
-                                                                .toJson())
+                                                                .toJson1())
                                                             .toList() as List<
                                                             dynamic>,
                                                         // mapData: (controller.dataList)!,

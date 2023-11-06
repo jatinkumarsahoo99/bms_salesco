@@ -41,11 +41,11 @@ class ClientName {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['clientname'] = this.clientname;
-    data['starttime'] = this.starttime;
-    data['endtime'] = this.endtime;
-    data['0'] = this.s0;
-    data['1'] = this.s1;
+    data['clientname'] = this.clientname??"";
+    data['starttime'] = this.starttime??"";
+    data['endtime'] = this.endtime??"";
+    data['0'] = this.s0??"";
+    data['1'] = this.s1??"";
 
     return data;
   }
