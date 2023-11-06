@@ -10,10 +10,12 @@ class CheckBoxWidget1 extends StatelessWidget {
   final double? verticalPadding;
   final IconData iconData;
   final FocusNode? fn;
+  final bool titleRightSide;
   CheckBoxWidget1({
     Key? key,
     required this.title,
     this.value = false,
+    this.titleRightSide = false,
     this.onChanged,
     this.isEnable = true,
     this.horizontalPadding,
@@ -26,7 +28,8 @@ class CheckBoxWidget1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: horizontalPadding ?? 5, vertical: verticalPadding ?? 0),
+      padding: EdgeInsets.symmetric(
+          horizontal: horizontalPadding ?? 5, vertical: verticalPadding ?? 0),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -39,8 +42,7 @@ class CheckBoxWidget1 extends StatelessWidget {
                 size: 18,
               ),
             ),
-          }
-          else ...{
+          } else if (!titleRightSide) ...{
             Text(
               title,
               style: TextStyle(
@@ -62,6 +64,15 @@ class CheckBoxWidget1 extends StatelessWidget {
               },
             );
           }),
+          if (titleRightSide) ...{
+            Text(
+              title,
+              style: TextStyle(
+                color: isEnable ? Colors.black : Colors.grey,
+                fontSize: 13,
+              ),
+            )
+          }
         ],
       ),
     );

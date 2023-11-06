@@ -63,7 +63,7 @@ class PDCChequesController extends GetxController {
         }
         return KeyEventResult.ignored;
       };
-      getOnLoadData();
+      // getOnLoadData();
     });
   }
 
@@ -256,9 +256,10 @@ class PDCChequesController extends GetxController {
         },
         fun: (resp) {
           Get.back();
-          if (resp != null) {
+          if (resp != null &&
+              resp.toString().toLowerCase().contains("successfully")) {
             LoadingDialog.callDataSaved(
-                msg: resp.toString(),
+                msg: resp['pDCGroups'].toString(),
                 callback: () {
                   clearPage();
                 });
