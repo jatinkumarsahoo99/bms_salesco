@@ -32,6 +32,7 @@ class PDCChequesView extends StatelessWidget {
       floatingActionButton: Obx(() {
         return controller.dialogWidget.value != null
             ? DraggableFab(
+                initPosition: controller.initPosition,
                 child: controller.dialogWidget.value!,
               )
             : const SizedBox();
@@ -515,7 +516,13 @@ class PDCChequesView extends StatelessWidget {
                                     chequeId: int.tryParse(
                                             val.cells['ChequeId']!.value) ??
                                         0);
-                                controller.dialogWidget.value = null;
+
+                                controller.initPosition = Offset(
+                                  context.devicewidth * .8,
+                                  context.deviceheight * .8,
+                                );
+                                controller.dialogWidget.refresh();
+                                // controller.dialogWidget.value = null;
                               } else {
                                 controller.dialogWidget.value = null;
                               }
