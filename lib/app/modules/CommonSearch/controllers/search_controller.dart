@@ -690,6 +690,7 @@ class SearchController extends GetxController {
                                       .searchCriteria = value;
                                 },
                                 onDoubleTap: () {
+                                  print("onDoubleTap===>>>>>>>>>>>>");
                                   doubleClickHandler(variance);
                                 },
                               )
@@ -1036,12 +1037,18 @@ class SearchController extends GetxController {
         rowvariance.tableName != "") {
       var allselect = RxBool(false);
       if (rowvariance.searchCriteria != "") {
-        var tempser = rowvariance.searchCriteria!
-            .replaceAll("In ('", "")
-            .replaceAll("Not In('", "")
-            .replaceAll(")", "")
-            .replaceAll("'", "")
-            .split(",");
+        List<String> tempser = [];
+        try {
+          tempser = rowvariance.searchCriteria
+                  ?.replaceAll("In ('", "")
+                  .replaceAll("Not In('", "")
+                  .replaceAll(")", "")
+                  .replaceAll("'", "")
+                  .split(",") ??
+              [];
+        } catch (e) {
+          print(e.toString());
+        }
         List tempmaster = [];
         for (var element in tempser) {
           tempmaster.add({"name": element, "selected": true});
