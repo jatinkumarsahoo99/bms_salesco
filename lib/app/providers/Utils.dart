@@ -136,6 +136,30 @@ class Utils {
     }
   }
 
+  static String formatDateTime4(String? inputDateTime) {
+    try {
+      if(inputDateTime != null && inputDateTime != ""){
+        // final DateTime? dateTime = DateTime.tryParse(inputDateTime);
+        final DateTime? dateTime = DateFormat("yyyy-MM-ddTHH:mm:ss").parse(inputDateTime);
+
+        if (dateTime != null) {
+          if (dateTime.hour == 0 && dateTime.minute == 0 && dateTime.second == 0) {
+            return DateFormat('dd/MM/yyyy').format(dateTime);
+          } else {
+            return DateFormat('dd/MM/yyyy h:mm a').format(dateTime);
+          }
+        } else {
+          return "";
+        }
+      }else{
+        return "";
+      }
+
+    } catch (e) {
+      return "";
+    }
+  }
+
 
 
   static bool isNumeric(String s) {
