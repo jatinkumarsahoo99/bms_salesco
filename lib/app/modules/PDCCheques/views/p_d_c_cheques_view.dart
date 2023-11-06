@@ -30,8 +30,10 @@ class PDCChequesView extends StatelessWidget {
     final controller = Get.put(PDCChequesController());
     return Scaffold(
       floatingActionButton: Obx(() {
+        print("FAB Building....");
         return controller.dialogWidget.value != null
             ? DraggableFab(
+                initPosition: controller.initPosition,
                 child: controller.dialogWidget.value!,
               )
             : const SizedBox();
@@ -41,9 +43,9 @@ class PDCChequesView extends StatelessWidget {
         height: context.deviceheight,
         child: Padding(
           padding: const EdgeInsets.all(10.0),
-          child: GetBuilder(
+          child: GetBuilder<PDCChequesController>(
             init: controller,
-            builder: (controller) {
+            builder: (_) {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -515,8 +517,13 @@ class PDCChequesView extends StatelessWidget {
                                     chequeId: int.tryParse(
                                             val.cells['ChequeId']!.value) ??
                                         0);
-                                controller.dialogWidget.value = null;
+
+                                controller.initPosition = Offset(
+                                  context.devicewidth * .6,
+                                  (context.deviceheight * .7),
+                                );
                               } else {
+                                controller.initPosition = null;
                                 controller.dialogWidget.value = null;
                               }
                               controller.dialogWidget.refresh();

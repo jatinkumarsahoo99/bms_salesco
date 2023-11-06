@@ -1082,6 +1082,7 @@ class SearchController extends GetxController {
                       ),
                       InputFields.formField1(
                           hintTxt: "",
+                          autoFocus: true,
                           controller: TextEditingController(),
                           inputformatters: [
                             FilteringTextInputFormatter.deny("  "),
