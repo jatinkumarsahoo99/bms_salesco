@@ -63,7 +63,7 @@ class PDCChequesController extends GetxController {
         }
         return KeyEventResult.ignored;
       };
-      getOnLoadData();
+      // getOnLoadData();
     });
   }
 
