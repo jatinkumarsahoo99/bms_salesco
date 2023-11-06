@@ -1,3 +1,5 @@
+import 'package:bms_salesco/app/providers/Utils.dart';
+
 class AmagiSpotReplacementModel {
   LstSpots? lstSpots;
 
@@ -158,6 +160,36 @@ class MasterSpots {
     tapeid = json['tapeid']??"";
   }
 
+  Map<String, dynamic> toJson1() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['locationCode'] = this.locationCode;
+    data['channelCode'] = this.channelCode;
+    data['bookingNumber'] = this.bookingNumber;
+
+    data['bookingDetailCode'] = this.bookingDetailCode;
+    data['tapeCode'] = this.tapeCode;
+    data['tapeDuration'] = this.tapeDuration;
+    data['rate'] = this.rate;
+    data['spotAmount'] = this.spotAmount;
+    data['starttime'] = this.starttime;
+    data['endTime'] = this.endTime;
+    data['scheduleTime'] = this.scheduleTime;
+    data['id'] = this.id;
+    data['scheduleDate'] = Utils.formatDateTime4(scheduleDate);
+    data['clientName'] = this.clientName;
+    data['valuationrate'] = this.valuationrate;
+    data['valuationAmount'] = this.valuationAmount;
+    data['brandName'] = this.brandName;
+    data['hold'] = this.hold;
+    data['scheduleEndTime'] = this.scheduleEndTime;
+    data['combineSpots'] = this.combineSpots;
+    data['neW_ID'] = this.neWID;
+    data['tapeDuration1'] = this.tapeDuration1;
+    data['tapeid'] = this.tapeid;
+    data['bookingNumberIsBold'] = this.bookingNumberIsBold;
+    return data;
+  }
+
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['locationCode'] = this.locationCode;
@@ -308,6 +340,41 @@ class LocalSpots {
     data['clientPriority'] = this.clientPriority;
     data['priority'] = this.priority;
     data['scheduleDate'] = this.scheduleDate;
+    // data['scheduleDate'] = Utils.formatDateTime4(scheduleDate);
+    data['brandCode'] = this.brandCode;
+    data['productName'] = this.productName;
+    data['dealno'] = this.dealno;
+    data['dealRownumber'] = this.dealRownumber;
+    data['commercialCaption'] = this.commercialCaption;
+    data['channel'] = this.channel;
+    data['zoneName'] = this.zoneName;
+    return data;
+  }
+
+  Map<String, dynamic> toJson1() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['colNo'] = this.colNo;
+    data['channelid'] = this.channelid;
+    data['locationCode'] = this.locationCode;
+    data['channelCode'] = this.channelCode;
+    data['bookingNumber'] = this.bookingNumber;
+    data['bookingNumberIsBold'] = this.bookingNumberIsBold;
+    data['bookingDetailCode'] = this.bookingDetailCode;
+    data['clientName'] = this.clientName;
+    data['tapeCode'] = this.tapeCode;
+    data['tapeDuration'] = this.tapeDuration;
+    data['rate'] = this.rate;
+    data['spotAmount'] = this.spotAmount;
+    data['valuationrate'] = this.valuationrate;
+    data['valuationAmount'] = this.valuationAmount;
+    data['starttime'] = this.starttime;
+    data['endTime'] = this.endTime;
+    data['parentID'] = this.parentID;
+    data['id'] = this.id;
+    data['clientPriority'] = this.clientPriority;
+    data['priority'] = this.priority;
+    // data['scheduleDate'] = this.scheduleDate;
+    data['scheduleDate'] = Utils.formatDateTime4(scheduleDate);
     data['brandCode'] = this.brandCode;
     data['productName'] = this.productName;
     data['dealno'] = this.dealno;

@@ -1080,6 +1080,7 @@ class DataGridFromMapForAmagiSpotReplacement extends StatelessWidget {
       this.isChannelGrid = false,
       this.isLocalSpotGrid = false,
       this.isMasterGrid = false,
+        this.csvFormat = false,
       this.onContextMenuClick})
       : super(key: key);
   final FocusNode? previousWidgetFN;
@@ -1102,6 +1103,7 @@ class DataGridFromMapForAmagiSpotReplacement extends StatelessWidget {
   final bool? hideCode;
   final PlutoGridMode? mode;
   final bool? formatDate;
+  final bool ?csvFormat;
   final bool? checkRow;
   final String? checkRowKey;
   final Map? keyMapping;
@@ -1173,9 +1175,9 @@ class DataGridFromMapForAmagiSpotReplacement extends StatelessWidget {
                   enableColumnDoubleTap!.contains(key)
               ? TextSpan(
                   text: doPasccal
-                      ? key == "fpcCaption"
-                          ? "FPC Caption"
-                          : key.toString().pascalCaseToNormal()
+                      ? key == "neW_ID"
+                          ? "NEW_ID"
+                          : Utils.normalCaseToPascalCase(key)
                       : key,
                   recognizer: DoubleTapGestureRecognizer()
                     ..onDoubleTap = () {
@@ -1186,8 +1188,8 @@ class DataGridFromMapForAmagiSpotReplacement extends StatelessWidget {
                 )
               : null,
           title: doPasccal
-              ? key == "fpcCaption"
-                  ? "FPC Caption"
+              ? key == "neW_ID"
+                  ? "NEW_ID"
                   : key.toString().pascalCaseToNormal()
               : key,
           enableRowChecked: false,
@@ -1267,6 +1269,7 @@ class DataGridFromMapForAmagiSpotReplacement extends StatelessWidget {
                   if (onContextMenuClick == null) {
                     DataGridMenu().showGridMenu(
                         rendererContext.stateManager, detail, context,
+                        csvFormat: csvFormat??false,
                         exportFileName: exportFileName);
                   } else {
                     DataGridMenu().showGridMenuForAmagiSpotReplacement(
@@ -1277,7 +1280,7 @@ class DataGridFromMapForAmagiSpotReplacement extends StatelessWidget {
                   }
                 },
                 child: Text(
-                  rendererContext.cell.value.toString(),
+                  (rendererContext.cell.value??" ").toString(),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
@@ -1293,6 +1296,7 @@ class DataGridFromMapForAmagiSpotReplacement extends StatelessWidget {
                   if (onContextMenuClick == null) {
                     DataGridMenu().showGridMenu(
                         rendererContext.stateManager, detail, context,
+                        csvFormat: csvFormat??false,
                         exportFileName: exportFileName);
                   } else {
                     DataGridMenu().showGridMenuForAmagiSpotReplacement(
@@ -1303,7 +1307,7 @@ class DataGridFromMapForAmagiSpotReplacement extends StatelessWidget {
                   }
                 },
                 child: Text(
-                  rendererContext.cell.value.toString(),
+                  (rendererContext.cell.value??" ").toString(),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
@@ -1317,6 +1321,7 @@ class DataGridFromMapForAmagiSpotReplacement extends StatelessWidget {
                   if (onContextMenuClick == null) {
                     DataGridMenu().showGridMenu(
                         rendererContext.stateManager, detail, context,
+                        csvFormat: csvFormat??false,
                         exportFileName: exportFileName);
                   } else {
                     DataGridMenu().showGridMenuForAmagiSpotReplacement(
@@ -1327,7 +1332,7 @@ class DataGridFromMapForAmagiSpotReplacement extends StatelessWidget {
                   }
                 },
                 child: Text(
-                  rendererContext.cell.value.toString(),
+                  (rendererContext.cell.value??" ").toString(),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
@@ -1341,6 +1346,7 @@ class DataGridFromMapForAmagiSpotReplacement extends StatelessWidget {
                   if (onContextMenuClick == null) {
                     DataGridMenu().showGridMenu(
                         rendererContext.stateManager, detail, context,
+                        csvFormat: csvFormat??false,
                         exportFileName: exportFileName);
                   } else {
                     DataGridMenu().showGridMenuForAmagiSpotReplacement(
@@ -1351,7 +1357,7 @@ class DataGridFromMapForAmagiSpotReplacement extends StatelessWidget {
                   }
                 },
                 child: Text(
-                  rendererContext.cell.value.toString(),
+                  (rendererContext.cell.value??" ").toString(),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
@@ -1491,7 +1497,7 @@ class DataGridFromMapAmagiDialog extends StatelessWidget {
       this.specificWidth,
       this.numTypeKeyList,
       this.widthSpecificColumn,
-      this.summary = false})
+      this.summary = false,this.csvFormat = false})
       : super(key: key);
   final FocusNode? previousWidgetFN;
   final Map<String, double>? widthSpecificColumn;
@@ -1528,6 +1534,7 @@ class DataGridFromMapAmagiDialog extends StatelessWidget {
   final Function(PlutoGridCellPosition position, bool isSpaceCalled)?
       actionOnPress;
   final bool doPasccal;
+  final bool ?csvFormat;
   Color Function(PlutoRowColorContext)? colorCallback;
   Function(PlutoGridOnLoadedEvent)? onload;
   final GlobalKey rebuildKey = GlobalKey();
@@ -1580,7 +1587,7 @@ class DataGridFromMapAmagiDialog extends StatelessWidget {
                   text: doPasccal
                       ? key == "fpcCaption"
                           ? "FPC Caption"
-                          : key.toString().pascalCaseToNormal()
+                          : Utils.normalCaseToPascalCase(key)
                       : key,
                   recognizer: DoubleTapGestureRecognizer()
                     ..onDoubleTap = () {
@@ -1593,7 +1600,7 @@ class DataGridFromMapAmagiDialog extends StatelessWidget {
           title: doPasccal
               ? key == "fpcCaption"
                   ? "FPC Caption"
-                  : key.toString().pascalCaseToNormal()
+                  : key
               : key,
           enableRowChecked: false,
           renderer: ((rendererContext) {
@@ -1671,6 +1678,7 @@ class DataGridFromMapAmagiDialog extends StatelessWidget {
                 onSecondaryTapDown: (detail) {
                   DataGridMenu().showGridMenu(
                       rendererContext.stateManager, detail, context,
+                      csvFormat: csvFormat??false,
                       exportFileName: exportFileName);
                 },
                 child: Container(
@@ -1691,6 +1699,7 @@ class DataGridFromMapAmagiDialog extends StatelessWidget {
                 onSecondaryTapDown: (detail) {
                   DataGridMenu().showGridMenu(
                       rendererContext.stateManager, detail, context,
+                      csvFormat: csvFormat??false,
                       exportFileName: exportFileName);
                 },
                 child: Text(
