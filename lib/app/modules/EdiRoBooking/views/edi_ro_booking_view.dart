@@ -6,6 +6,7 @@ import 'package:bms_salesco/app/data/DropDownValue.dart';
 import 'package:bms_salesco/app/data/PermissionModel.dart';
 import 'package:bms_salesco/app/providers/DataGridMenu.dart';
 import 'package:bms_salesco/app/providers/SizeDefine.dart';
+import 'package:bms_salesco/app/providers/extensions/datagrid.dart';
 import 'package:bms_salesco/widgets/DateTime/DateWithThreeTextField.dart';
 import 'package:bms_salesco/widgets/FormButton.dart';
 import 'package:bms_salesco/widgets/LoadingDialog.dart';
@@ -497,88 +498,129 @@ class EdiRoBookingView extends StatelessWidget {
                 const SizedBox(
                   height: 1,
                 ),
-                Obx(
-                  () => Expanded(
-                    child: Container(
-                      child: controller.lstDgvSpotsList.value.isEmpty
-                          ? null
-                          : DataGridShowOnlyKeys(
-                              editKeys: ['noProgram'],
-                              mapData: controller.lstDgvSpotsList.value,
-                              hideCode: false,
-                              formatDate: false,
-                              exportFileName: "EDI R.O. Booking",
-                              onload: (load) {
-                                controller.dvgSpotGrid = load.stateManager;
-                              },
-                              colorCallback: (colorEvent) {
-                                colorEvent.row.cells.containsValue(
-                                        controller.dvgSpotGrid?.currentCell)
-                                    ? Colors.deepPurple.shade100
-                                    : Colors.white;
+                Obx(() => Expanded(
+                      child: Container(
+                        child: controller.lstDgvSpotsList.value.isEmpty
+                            ? null
+                            : DataGridShowOnlyKeys(
+                                editKeys: ['noProgram'],
+                                mapData: controller.lstDgvSpotsList.value,
+                                hideCode: false,
+                                formatDate: false,
+                                exportFileName: "EDI R.O. Booking",
+                                onload: (load) {
+                                  load.stateManager.setCurrentCell(
+                                      load.stateManager
+                                          .getRowByIdx(
+                                              controller.lastSelectedIdx)!
+                                          .cells['program'],
+                                      controller.lastSelectedIdx);
+                                  // load.stateManager.moveCurrentCellByRowIdx(
+                                  //     controller.lastSelectedIdx,
+                                  //     PlutoMoveDirection.down);
+                                  load.stateManager.scroll.vertical!.animateTo(
+                                      controller.lastSelectedOffect,
+                                      curve: Curves.ease,
+                                      duration: Duration(milliseconds: 2));
+                                  controller.dvgSpotGrid = load.stateManager;
+                                },
+                                colorCallback: (colorEvent) {
+                                  colorEvent.row.cells.containsValue(
+                                          controller.dvgSpotGrid?.currentCell)
+                                      ? Colors.deepPurple.shade100
+                                      : Colors.white;
 
-                                return controller.getColor(
-                                    controller
-                                        .lstDgvSpotsList[colorEvent.rowIdx],
-                                    colorEvent.rowIdx);
-                              },
-                              onRowDoubleTap: (event) async {
-                                //Clear
-                                if (Get.find<MainController>()
-                                    .filters1
-                                    .containsKey(controller
-                                        .dgvDealEntriesGrid.hashCode
-                                        .toString())) {
-                                  await controller.clearFirstDataTableFilter(
-                                      controller.dgvDealEntriesGrid!);
-                                }
-                                //Up Grid Set
-                                for (var element
-                                    in controller.dgvDealEntriesGrid!.rows) {
-                                  if (element.cells['costPer10Sec']?.value ==
-                                      event.cell.value) {
-                                    controller.dgvDealEntriesGrid
-                                        ?.setCurrentCell(
-                                            element.cells['costPer10Sec'],
-                                            element.sortIdx);
-                                    break;
+                                  return controller.getColor(
+                                      controller
+                                          .lstDgvSpotsList[colorEvent.rowIdx],
+                                      colorEvent.rowIdx);
+                                },
+                                onRowDoubleTap: (event) async {
+                                  controller.lastSelectedOffect = controller
+                                      .dvgSpotGrid!.scroll.verticalOffset;
+                                  controller.lastSelectedIdx = event.rowIdx;
+//Down Grid Set
+                                  controller.dvgSpotGrid?.setCurrentCell(
+                                      event.cell, event.rowIdx);
+                                  //Clear
+                                  if (Get.find<MainController>()
+                                      .filters1
+                                      .containsKey(controller
+                                          .dgvDealEntriesGrid.hashCode
+                                          .toString())) {
+                                    await controller.clearFirstDataTableFilter(
+                                        controller.dgvDealEntriesGrid!);
                                   }
-                                }
-                                //Down Grid Set
-                                controller.dvgSpotGrid
-                                    ?.setCurrentCell(event.cell, event.rowIdx);
-                                // print(event.cell.row.sortIdx);
-                                // print(event.cell.value);
-                                // print(event.cell.column.field);
-                                // print(event.row.cells['acT_DT']?.value);
+                                  //Up Grid Set
+                                  for (var element
+                                      in controller.dgvDealEntriesGrid!.rows) {
+                                    if (element.cells['costPer10Sec']?.value ==
+                                        event.cell.value) {
+                                      controller.dgvDealEntriesGrid
+                                          ?.setCurrentCell(
+                                              element.cells['costPer10Sec'],
+                                              element.sortIdx);
+                                      break;
+                                    }
+                                  }
 
-                                if (event.cell.column.field.toString() ==
-                                    'fpcstart') {
-                                  controller.spotFpcStart(
-                                      controller.selectedLoactions?.key,
-                                      controller.selectedChannel?.key,
-                                      event.row.cells['acT_DT']?.value
-                                          .toString());
-                                } else if (event.cell.column.field.toString() ==
-                                    'program') {
-                                  print(event.cell.column.field);
-                                } else if (event.cell.column.field.toString() ==
-                                    'spoT_RATE') {
-                                  await controller.doubleClickFilterGrid(
-                                      controller.dvgSpotGrid);
-                                  await controller.doubleClickFilterGrid1(
-                                      controller.dgvDealEntriesGrid,
-                                      'costPer10Sec',
-                                      event.cell.value.toString());
-                                } else if (event.cell.column.field.toString() ==
-                                    'tapE_ID') {
-                                  controller.tapeIdDilogBox();
-                                }
-                              },
-                            ),
-                    ),
-                  ),
-                ),
+                                  // print(event.cell.row.sortIdx);
+                                  // print(event.cell.value);
+                                  // print(event.cell.column.field);
+                                  // print(event.row.cells['acT_DT']?.value);
+
+                                  if (event.cell.column.field.toString() ==
+                                      'fpcstart') {
+                                    controller.spotFpcStart(
+                                        controller.selectedLoactions?.key,
+                                        controller.selectedChannel?.key,
+                                        event.row.cells['acT_DT']?.value
+                                            .toString());
+                                  } else if (event.cell.column.field
+                                          .toString() ==
+                                      'program') {
+                                    event.row.cells['noProgram']?.value = 1;
+                                    event.row.cells['dealOK']?.value = 0;
+                                    event.row.cells['fctok']?.value = 0;
+                                    event.row.cells['okSpot']?.value = 0;
+
+                                    // var rowIdx =
+                                    //     controller.dvgSpotGrid!.currentRowIdx;
+                                    // controller.dvgSpotGrid!.insertRows(
+                                    //     event.row.sortIdx, [event.row]);
+                                    // controller.dvgSpotGrid!.removeCurrentRow();
+
+                                    controller
+                                            .lstDgvSpotsList[event.row.sortIdx]
+                                        ['noProgram'] = 1;
+                                    controller
+                                            .lstDgvSpotsList[event.row.sortIdx]
+                                        ['dealOK'] = 0;
+                                    controller
+                                            .lstDgvSpotsList[event.row.sortIdx]
+                                        ['fctok'] = 0;
+                                    controller
+                                            .lstDgvSpotsList[event.row.sortIdx]
+                                        ['okSpot'] = 0;
+                                    controller.lstDgvSpotsList.refresh();
+                                  } else if (event.cell.column.field
+                                          .toString() ==
+                                      'spoT_RATE') {
+                                    await controller.doubleClickFilterGrid(
+                                        controller.dvgSpotGrid);
+                                    await controller.doubleClickFilterGrid1(
+                                        controller.dgvDealEntriesGrid,
+                                        'costPer10Sec',
+                                        event.cell.value.toString());
+                                  } else if (event.cell.column.field
+                                          .toString() ==
+                                      'tapE_ID') {
+                                    controller.tapeIdDilogBox();
+                                  }
+                                },
+                              ),
+                      ),
+                    )),
                 // GetBuilder<HomeController>(
                 //     id: "buttons",
                 //     init: Get.find<HomeController>(),
