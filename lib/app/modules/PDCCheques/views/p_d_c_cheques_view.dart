@@ -42,7 +42,10 @@ class PDCChequesView extends StatelessWidget {
         width: context.devicewidth,
         height: context.deviceheight,
         child: Padding(
-          padding: const EdgeInsets.all(10.0),
+          padding: const EdgeInsets.only(
+            left: 10,
+            right: 10,
+          ),
           child: GetBuilder<PDCChequesController>(
             init: controller,
             builder: (_) {
@@ -84,7 +87,7 @@ class PDCChequesView extends StatelessWidget {
                       }),
                     ],
                   ),
-                  SizedBox(height: 4),
+                  SizedBox(height: 2),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -114,7 +117,7 @@ class PDCChequesView extends StatelessWidget {
                       ),
                     ],
                   ),
-                  SizedBox(height: 4),
+                  SizedBox(height: 2),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -168,7 +171,7 @@ class PDCChequesView extends StatelessWidget {
                       ),
                     ],
                   ),
-                  SizedBox(height: 4),
+                  SizedBox(height: 2),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -218,7 +221,7 @@ class PDCChequesView extends StatelessWidget {
                   ////////////////////////////////////////////
                   Wrap(
                     // crossAxisAlignment: WrapCrossAlignment.end,
-                    runSpacing: 5,
+                    // runSpacing: 5,
                     spacing: 10,
                     children: [
                       Padding(
@@ -244,6 +247,10 @@ class PDCChequesView extends StatelessWidget {
                         onFocusChange: (hasFocus) {
                           if (!hasFocus) {
                             controller.calculateTotal();
+                            if (!controller.checkAmtTC.text.contains(".")) {
+                              controller.checkAmtTC.text =
+                                  "${controller.checkAmtTC.text}.00";
+                            }
                           }
                         },
                       ),
@@ -261,6 +268,10 @@ class PDCChequesView extends StatelessWidget {
                           if (!hasFocus) {
                             controller.calculateTotal();
                           }
+                          if (!controller.tdsAmtTC.text.contains(".")) {
+                            controller.tdsAmtTC.text =
+                                "${controller.tdsAmtTC.text}.00";
+                          }
                         },
                       ),
                       InputFields.numbers(
@@ -276,6 +287,10 @@ class PDCChequesView extends StatelessWidget {
                         onFocusChange: (hasFocus) {
                           if (!hasFocus) {
                             controller.calculateTotal();
+                          }
+                          if (!controller.saveTaxTC.text.contains(".")) {
+                            controller.saveTaxTC.text =
+                                "${controller.saveTaxTC.text}.00";
                           }
                         },
                       ),
@@ -323,7 +338,7 @@ class PDCChequesView extends StatelessWidget {
                       ),
                     ],
                   ),
-                  SizedBox(height: 8),
+                  SizedBox(height: 2),
                   Obx(() {
                     controller.selectedTab.value;
                     return Row(
@@ -438,6 +453,7 @@ class PDCChequesView extends StatelessWidget {
                             },
                             checkBoxStrComparison: "true",
                             uncheckCheckBoxStr: "false",
+                            rowHeight: 20,
                           );
                         });
                       } else if (controller.selectedTab.value == 1) {
