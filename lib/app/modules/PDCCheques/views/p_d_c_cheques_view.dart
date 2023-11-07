@@ -325,27 +325,59 @@ class PDCChequesView extends StatelessWidget {
                   ),
                   SizedBox(height: 8),
                   Obx(() {
-                    return CupertinoSlidingSegmentedControl(
-                      onValueChanged: (value) {
-                        controller.selectedTab.value = value ?? 0;
-                      },
-                      children: <int, Widget>{
-                        0: Text(
-                          'Location & Channel',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: SizeDefine.fontSizeTab,
-                          ),
+                    controller.selectedTab.value;
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        CupertinoSlidingSegmentedControl(
+                          onValueChanged: (value) {
+                            controller.selectedTab.value = value ?? 0;
+                          },
+                          children: <int, Widget>{
+                            0: Text(
+                              'Location & Channel',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: SizeDefine.fontSizeTab,
+                              ),
+                            ),
+                            1: Text(
+                              'Cheque Grouping',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: SizeDefine.fontSizeTab,
+                              ),
+                            ),
+                          },
+                          groupValue: controller.selectedTab.value,
                         ),
-                        1: Text(
-                          'Cheque Grouping',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: SizeDefine.fontSizeTab,
+                        Visibility(
+                          visible: controller.selectedTab.value == 1,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              InputFields.numbers(
+                                padLeft: 0,
+                                width: .12,
+                                hintTxt: "Activity Month",
+                                controller: controller.activityMonthTC,
+                                isNegativeReq: false,
+                                inputformatters: [
+                                  FilteringTextInputFormatter.allow(
+                                      RegExp(r'^\d+\.?\d{0,4}'))
+                                ],
+                                focusNode: controller.activityMonthFN,
+                              ),
+                              SizedBox(width: 15),
+                              FormButton(
+                                btnText: "Save Cheque Grouping",
+                                callback: controller.saveChequeBookingData,
+                              ),
+                            ],
                           ),
-                        ),
-                      },
-                      groupValue: controller.selectedTab.value,
+                        )
+                      ],
                     );
                   }),
                   Expanded(
@@ -412,32 +444,32 @@ class PDCChequesView extends StatelessWidget {
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  InputFields.numbers(
-                                    padLeft: 0,
-                                    width: .12,
-                                    hintTxt: "Activity Month",
-                                    controller: controller.activityMonthTC,
-                                    isNegativeReq: false,
-                                    inputformatters: [
-                                      FilteringTextInputFormatter.allow(
-                                          RegExp(r'^\d+\.?\d{0,4}'))
-                                    ],
-                                    focusNode: controller.activityMonthFN,
-                                  ),
-                                  SizedBox(width: 15),
-                                  FormButton(
-                                    btnText: "Save Cheque Grouping",
-                                    callback: controller.saveChequeBookingData,
-                                  ),
-                                ],
-                              ),
-                            ),
+                            // Padding(
+                            //   padding: const EdgeInsets.all(8.0),
+                            //   child: Row(
+                            //     mainAxisAlignment: MainAxisAlignment.start,
+                            //     crossAxisAlignment: CrossAxisAlignment.end,
+                            //     children: [
+                            //       InputFields.numbers(
+                            //         padLeft: 0,
+                            //         width: .12,
+                            //         hintTxt: "Activity Month",
+                            //         controller: controller.activityMonthTC,
+                            //         isNegativeReq: false,
+                            //         inputformatters: [
+                            //           FilteringTextInputFormatter.allow(
+                            //               RegExp(r'^\d+\.?\d{0,4}'))
+                            //         ],
+                            //         focusNode: controller.activityMonthFN,
+                            //       ),
+                            //       SizedBox(width: 15),
+                            //       FormButton(
+                            //         btnText: "Save Cheque Grouping",
+                            //         callback: controller.saveChequeBookingData,
+                            //       ),
+                            //     ],
+                            //   ),
+                            // ),
                             Expanded(
                               child: Obx(() {
                                 return DataGridFromMap3(
