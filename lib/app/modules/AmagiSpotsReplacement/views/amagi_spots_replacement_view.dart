@@ -80,19 +80,26 @@ class AmagiSpotsReplacementView
                 child: Obx(() {
                   return Container(
                       child: DataGridFromMapAmagiDialog(
-                        showSrNo: false,
+                        showSrNo: true,
                         hideCode: false,
                         formatDate: false,
+                        columnAutoResize: false,
                         widthSpecificColumn: {
-                          "0": 150,
-                          "1": 150,
-                          "clientname": 150,
-                          "starttime": 150,
-                          "endtime": 150
+                          "0": 270,
+                          "1": 270,
+                          "clientname": 270,
+                          "starttime": 270,
+                          "endtime": 270
                         },
+                        colorCallback: (row) => (row.row.cells
+                            .containsValue(
+                            controller.dialogStateManager?.currentCell))
+                            ? Colors.deepPurple.shade200
+                            : Colors.white,
+                        csvFormat: true,
                         summary: controller.isSummary.value,
                         exportFileName: "Amagi Spot Replacement",
-                        mode: PlutoGridMode.selectWithOneTap,
+                        mode: PlutoGridMode.normal,
                         mapData: controller.mapList.value,
                         // mapData: (controller.dataList)!,
                         widthRatio: Get.width / 9 - 1,
@@ -164,10 +171,11 @@ class AmagiSpotsReplacementView
                 child: Obx(() {
                   return Container(
                       child: DataGridFromMapAmagiDialog(
-                        showSrNo: false,
+                        showSrNo: true,
                         hideCode: false,
                         formatDate: false,
                         columnAutoResize: false,
+                        csvFormat: true,
                         widthSpecificColumn: const {
                           "BookingDetailCode": 150,
                           "BookingNumber": 150,
@@ -192,10 +200,15 @@ class AmagiSpotsReplacementView
                           "ZoneName": 150,
                           "channelid": 150
                         },
+                        colorCallback: (row) => (row.row.cells
+                            .containsValue(
+                            controller.dialogStateManager?.currentCell))
+                            ? Colors.deepPurple.shade200
+                            : Colors.white,
                         summary: controller.isSummary.value,
                         exportFileName: "Amagi Spot Replacement",
-                        mode: PlutoGridMode.selectWithOneTap,
-                        mapData: controller.mapList.value,
+                        mode: PlutoGridMode.normal,
+                        mapData: (controller.mapList.value),
                         // mapData: (controller.dataList)!,
                         widthRatio: Get.width / 9 - 1,
 
@@ -266,26 +279,34 @@ class AmagiSpotsReplacementView
                 child: Obx(() {
                   return Container(
                       child: DataGridFromMapAmagiDialog(
-                        showSrNo: false,
+                        showSrNo: true,
                         hideCode: false,
                         formatDate: false,
                         columnAutoResize: false,
+                        csvFormat: true,
+                        doPasccal: true,
+                        summaryCase: true,
+
                         widthSpecificColumn: const {
-                          "ParentID": 150,
-                          "ASIA  ZEETV-Rajasthan": 150,
-                          "ASIA  ZEETV-RoMaha": 150,
-                          "ASIA  ZEETV-BIHAR": 150,
-                          "ASIA  ZEETV-DelhiNCR": 150,
-                          "ASIA  ZEETV-Gujarat": 150,
-                          "ASIA  ZEETV-Mumbai": 150
+                          "ParentID": 250,
+                          "ASIA  ZEETV-Rajasthan": 250,
+                          "ASIA  ZEETV-RoMaha": 250,
+                          "ASIA  ZEETV-BIHAR": 250,
+                          "ASIA  ZEETV-DelhiNCR": 250,
+                          "ASIA  ZEETV-Gujarat": 250,
+                          "ASIA  ZEETV-Mumbai": 250
                         },
                         summary: controller.isSummary.value,
                         exportFileName: "Amagi Spot Replacement",
-                        mode: PlutoGridMode.selectWithOneTap,
+                        mode: PlutoGridMode.normal,
                         mapData: controller.mapList.value,
                         // mapData: (controller.dataList)!,
                         widthRatio: Get.width / 9 - 1,
-
+                        colorCallback: (row) => (row.row.cells
+                            .containsValue(
+                            controller.dialogStateManager3?.currentCell))
+                            ? Colors.deepPurple.shade200
+                            : Colors.white,
                         onload: (PlutoGridOnLoadedEvent load) {
                           controller.dialogStateManager3 = load.stateManager;
                           // controller.stateManager = load.stateManager;
@@ -352,13 +373,19 @@ class AmagiSpotsReplacementView
                 child: Obx(() {
                   return Container(
                       child: DataGridFromMapAmagiDialog(
-                        showSrNo: false,
+                        showSrNo: true,
                         hideCode: false,
                         formatDate: false,
                         columnAutoResize: false,
+                        csvFormat: true,
+                        colorCallback: (row) => (row.row.cells
+                            .containsValue(
+                            controller.dialogStateManager1?.currentCell))
+                            ? Colors.deepPurple.shade200
+                            : Colors.white,
                         summary: controller.isSummary.value,
                         exportFileName: "Amagi Spot Replacement",
-                        mode: PlutoGridMode.selectWithOneTap,
+                        mode: PlutoGridMode.normal,
                         mapData: controller.mapList.value,
                         widthSpecificColumn: const {
                           "BookingDetailCode": 150,
@@ -588,13 +615,22 @@ class AmagiSpotsReplacementView
               Expanded(child: Obx(() {
                 return Container(
                   child: DataGridFromMapAmagiDialog(
-                    showSrNo: false,
+                    showSrNo: true,
                     hideCode: false,
                     formatDate: false,
+                    csvFormat: true,
+                    doPasccal: true,columnAutoResize: false,
                     summary: controller.isSummary.value,
                     exportFileName: "Amagi Spot Replacement",
-                    mode: PlutoGridMode.selectWithOneTap,
+                    mode: PlutoGridMode.normal,
                     mapData: controller.mapList.value,
+                    widthSpecificColumn: {"eventtype":120,"caption":120,"txCaption":120,"txId":120,"duration":120,"som":120,
+                      "segmentNumber":120,"promoTypeCode":120,"eventCode":120},
+                    colorCallback: (row) => (row.row.cells
+                        .containsValue(
+                        controller.dialogStateManager4?.currentCell))
+                        ? Colors.deepPurple.shade200
+                        : Colors.white,
                     // mapData: (controller.dataList)!,
                     widthRatio: Get.width / 9 - 1,
                     onload: (PlutoGridOnLoadedEvent load) {
@@ -658,6 +694,7 @@ class AmagiSpotsReplacementView
                                     controller.locationList.value ?? [],
                                         (value) {
                                       controller.selectedLocation = value;
+                                      controller.getChannel(controller.selectedLocation?.key ?? "");
                                     },
                                     "Location",
                                     .13,
@@ -808,7 +845,7 @@ class AmagiSpotsReplacementView
                                             controller.isSummary.value = false;
                                             // print(">>>>>>>>>valueMapData" + value.toString());
                                             controller.mapList.value = value;
-                                            // dragAbleDialogGet();
+                                            dragAbleDialogGet();
                                           }
                                         }
                                         Future.delayed(
@@ -918,6 +955,8 @@ class AmagiSpotsReplacementView
                                                         showSrNo: true,
                                                         hideCode: false,
                                                         formatDate: false,
+                                                        csvFormat: true,
+
                                                         columnAutoResize:
                                                         false,
                                                         isChannelGrid:
@@ -1090,6 +1129,8 @@ class AmagiSpotsReplacementView
                                                         showSrNo: true,
                                                         hideCode: false,
                                                         formatDate: false,
+                                                        csvFormat: true,
+                                                        doPasccal: true,
                                                         columnAutoResize:
                                                         false,
                                                         isMasterGrid:
@@ -1168,7 +1209,44 @@ class AmagiSpotsReplacementView
                                                                   'scheduleDate']
                                                                       ?.value,
                                                                   merge:
-                                                                  1);
+                                                                  1).then((value) {
+                                                                controller
+                                                                    .getSpots(reProcess: true)
+                                                                    .then((value) {
+                                                                  if ((controller
+                                                                      .amagiSpotReplacementModel
+                                                                      ?.lstSpots
+                                                                      ?.fastInserts
+                                                                      ?.promoResponse
+                                                                      ?.length ??
+                                                                      0) >
+                                                                      0) {
+                                                                    if (controller.canDialogShow.value ==
+                                                                        true) {
+                                                                      controller.title?.value = "";
+                                                                      controller.mapList.value = value;
+                                                                      controller.mapList.refresh();
+                                                                      controller.isSummary.value = false;
+                                                                      controller.isSummary.refresh();
+                                                                      // dragableDialog(mapList: value);
+                                                                      controller.title?.refresh();
+                                                                      // controller.bindData();
+                                                                    } else {
+                                                                      controller.title?.value = "";
+                                                                      controller.isSummary.value = false;
+                                                                      // print(">>>>>>>>>valueMapData" + value.toString());
+                                                                      controller.mapList.value = value;
+                                                                      dragAbleDialogGet();
+                                                                    }
+                                                                  }
+                                                                  Future.delayed(
+                                                                    Duration(seconds: 2),
+                                                                        () {
+                                                                      controller.bindData();
+                                                                    },
+                                                                  );
+                                                                });
+                                                              });
                                                               print(
                                                                   renderContext
                                                                       .row
@@ -1199,7 +1277,44 @@ class AmagiSpotsReplacementView
                                                                   'scheduleDate']
                                                                       ?.value,
                                                                   merge:
-                                                                  0);
+                                                                  0).then((value) {
+                                                                controller
+                                                                    .getSpots(reProcess: true)
+                                                                    .then((value) {
+                                                                  if ((controller
+                                                                      .amagiSpotReplacementModel
+                                                                      ?.lstSpots
+                                                                      ?.fastInserts
+                                                                      ?.promoResponse
+                                                                      ?.length ??
+                                                                      0) >
+                                                                      0) {
+                                                                    if (controller.canDialogShow.value ==
+                                                                        true) {
+                                                                      controller.title?.value = "";
+                                                                      controller.mapList.value = value;
+                                                                      controller.mapList.refresh();
+                                                                      controller.isSummary.value = false;
+                                                                      controller.isSummary.refresh();
+                                                                      // dragableDialog(mapList: value);
+                                                                      controller.title?.refresh();
+                                                                      // controller.bindData();
+                                                                    } else {
+                                                                      controller.title?.value = "";
+                                                                      controller.isSummary.value = false;
+                                                                      // print(">>>>>>>>>valueMapData" + value.toString());
+                                                                      controller.mapList.value = value;
+                                                                      dragAbleDialogGet();
+                                                                    }
+                                                                  }
+                                                                  Future.delayed(
+                                                                    Duration(seconds: 2),
+                                                                        () {
+                                                                      controller.bindData();
+                                                                    },
+                                                                  );
+                                                                });
+                                                              });
                                                               print(
                                                                   renderContext
                                                                       .row
@@ -1219,7 +1334,7 @@ class AmagiSpotsReplacementView
                                                             ?.masterSpots
                                                             ?.map((e) =>
                                                             e
-                                                                .toJson())
+                                                                .toJson1())
                                                             .toList() as List<
                                                             dynamic>,
                                                         // mapData: (controller.dataList)!,
@@ -1698,7 +1813,7 @@ class AmagiSpotsReplacementView
                                                                       controller
                                                                           .title
                                                                           ?.value =
-                                                                      "Client";
+                                                                      "Un Alloc";
                                                                       print(
                                                                           ">>>>>>>>>valueMapData" +
                                                                               value
@@ -2068,6 +2183,7 @@ class AmagiSpotsReplacementView
                                                         showSrNo: true,
                                                         hideCode: false,
                                                         formatDate: false,
+                                                        csvFormat: true,
                                                         isLocalSpotGrid:
                                                         true,
                                                         columnAutoResize:
@@ -2108,7 +2224,7 @@ class AmagiSpotsReplacementView
                                                         ],
                                                         mode:
                                                         PlutoGridMode
-                                                            .selectWithOneTap,
+                                                            .normal,
                                                         exportFileName:
                                                         "Amagi Spot Replacement",
                                                         mapData: controller
@@ -2117,7 +2233,7 @@ class AmagiSpotsReplacementView
                                                             ?.localSpots
                                                             ?.map((e) =>
                                                             e
-                                                                .toJson())
+                                                                .toJson1())
                                                             .toList() as List<
                                                             dynamic>,
                                                         // mapData: (controller.dataList)!,

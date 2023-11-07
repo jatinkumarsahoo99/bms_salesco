@@ -17,6 +17,7 @@ import '../model/pdc_cheques_model.dart';
 
 class PDCChequesController extends GetxController {
   var selectedTab = 0.obs;
+  Offset? initPosition;
   Rxn<Widget?> dialogWidget = Rxn();
   var locationChannelList = <LocationChannelModel>[].obs,
       chequeGroupingList = <ChequeGroupingModel>[].obs;
@@ -255,9 +256,10 @@ class PDCChequesController extends GetxController {
         },
         fun: (resp) {
           Get.back();
-          if (resp != null) {
+          if (resp != null &&
+              resp.toString().toLowerCase().contains("successfully")) {
             LoadingDialog.callDataSaved(
-                msg: resp.toString(),
+                msg: resp['pDCGroups'].toString(),
                 callback: () {
                   clearPage();
                 });
@@ -370,6 +372,7 @@ class PDCChequesController extends GetxController {
           /// 1st Tab List
           locationChannelList.value = retriveData.locationChannelModel ?? [];
           // calculateTotal();
+          getChequeBookingData(chequeId: chequeId);
         } else {
           LoadingDialog.showErrorDialog(resp.toString());
         }

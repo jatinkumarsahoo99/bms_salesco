@@ -94,12 +94,12 @@ class AmagiSpotsReplacementController extends GetxController {
   }
 
   getChannel(String locationCode) {
-    LoadingDialog.call();
+    // LoadingDialog.call();
     Get.find<ConnectorControl>().GETMETHODCALL(
         api:
             "${ApiFactory.AMAGI_SPOT_REPLACEMENT_GET_CHANNEL()}?LocationCode=$locationCode",
         fun: (map) {
-          Get.back();
+          // Get.back();
           if (map is Map &&
               map.containsKey('channel') &&
               map['channel'] != null) {
@@ -200,6 +200,8 @@ class AmagiSpotsReplacementController extends GetxController {
               amagiSpotReplacementModel = AmagiSpotReplacementModel.fromJson(
                   map as Map<String, dynamic>);
 
+              amagiSpotReplacementModel?.lstSpots?.childChannel?.sort((a,b)=>(b.totalSpots??0).compareTo((a.totalSpots??0)));
+
               update(['localSpots', 'masterSpots', 'childChannel']);
               // mapList = ;
               Future.delayed(
@@ -210,7 +212,7 @@ class AmagiSpotsReplacementController extends GetxController {
               );
               completer.complete(amagiSpotReplacementModel
                   ?.lstSpots?.fastInserts?.promoResponse
-                  ?.map((e) => e.toJson())
+                  ?.map((e) => e.toJson1())
                   .toList());
             } else {
               amagiSpotReplacementModel = null;
@@ -278,9 +280,18 @@ class AmagiSpotsReplacementController extends GetxController {
                 update(['childChannel']);
                 print(">>>>>>>>>>>>>>>>>mapDataCon$clientNameList");
                 // print(">>>>>>>>>>>>>>>>>mapData${clientNameList.value}");
-                completer.complete(clientNameModel?.clientName
-                    ?.map((e) => e.toJson())
-                    .toList());
+                if(clientNameModel != null && clientNameModel?.clientName != null && (clientNameModel?.clientName?.length??0) >0){
+                  completer.complete(clientNameModel?.clientName
+                      ?.map((e) => e.toJson())
+                      .toList());
+                }else{
+                  clientNameList.clear();
+                  clientNameList = [
+                    {"Data": "Data Not Found"}
+                  ];
+                  completer.complete(clientNameList);
+                }
+
               } else {
                 clientNameList.clear();
                 clientNameList = [
@@ -342,15 +353,24 @@ class AmagiSpotsReplacementController extends GetxController {
                 for (Map<String, dynamic> element in clientNameList) {
                   Map<String, dynamic> mapDa = {};
                   element.forEach((key, value) {
-                    String k = key.toString().trim().replaceAll("\n", " ");
-                    String keyNew = k.toLowerCase();
+                    String k = key.toString().trim().replaceAll("\n ", "");
+                    // String keyNew = k.toLowerCase();
                     // print("key from testing${keyNew.toLowerCase()} >>>>val  $value");
-                    mapDa[keyNew] = value;
+                    mapDa[k] = value;
                   });
                   mapData.add(mapDa);
                 }
-                // print(">>>>>>>>>>>mapSummary$mapData");
-                completer.complete(mapData);
+                print(">>>>>>>>>>>mapSummary$mapData");
+
+                if(mapData.isNotEmpty){
+                  completer.complete(mapData);
+                }else{
+                  clientNameList.clear();
+                  clientNameList = [
+                    {"Data": "Data Not Found"}
+                  ];
+                  completer.complete(clientNameList);
+                }
               } else {
                 clientNameList.clear();
                 clientNameList = [
@@ -402,7 +422,34 @@ class AmagiSpotsReplacementController extends GetxController {
                 clientNameList.clear();
                 // String data = map.toString().replaceAll('\n', " ");
                 clientNameList = json.decode(map);
-                completer.complete(clientNameList);
+                List<Map<String, dynamic>> mapData = [];
+                for (Map<String, dynamic> element in clientNameList) {
+                  Map<String, dynamic> mapDa = {};
+                  element.forEach((key, value) {
+                    // String k = key.toString().trim().replaceAll("\n ", "");
+                    // String keyNew = k.toLowerCase();
+                    // print("key from testing${keyNew.toLowerCase()} >>>>val  $value");
+                    if(value == "" && (key == "LocalRevenue" || key == "LocalValue")){
+                      mapDa[key] = "0";
+                    }else if(value == null || value.toString().trim() == "null"){
+                      mapDa[key] = "";
+                    }else{
+                      mapDa[key] = value;
+                    }
+
+                  });
+                  mapData.add(mapDa);
+                }
+                if(clientNameList.isNotEmpty){
+                  completer.complete(mapData);
+                }else{
+                  clientNameList.clear();
+                  clientNameList = [
+                    {"Data": "Data Not Found"}
+                  ];
+                  completer.complete(clientNameList);
+                }
+
               } else {
                 clientNameList.clear();
                 clientNameList = [
@@ -619,7 +666,7 @@ class AmagiSpotsReplacementController extends GetxController {
       if (rowFilter) {
         localSpotsStateManager?.setFilter((element) => true);
         localSpotsStateManager?.setFilter((element) =>
-            (element.cells['parentID']?.value == null ||
+            (element.cells['parentID']?.value == null || element.cells['parentID']?.value == " " ||
                 element.cells['parentID']?.value.toString().trim() ==
                     Parentid.toString().trim()) &&
             element.cells['colNo']?.value.toString().trim() ==
@@ -671,7 +718,7 @@ class AmagiSpotsReplacementController extends GetxController {
       } else {
         localSpotsStateManager?.setFilter((element) => true);
         localSpotsStateManager?.setFilter((element) =>
-            (element.cells['parentID']?.value == null ||
+            (element.cells['parentID']?.value == null || element.cells['parentID']?.value == " " ||
                 element.cells['parentID']?.value.toString().trim() ==
                     Parentid.toString().trim()) &&
             element.cells['colNo']?.value.toString().trim() ==
@@ -679,7 +726,7 @@ class AmagiSpotsReplacementController extends GetxController {
             (element.cells['tapeDuration']?.value ?? 0) <= Tapeduration);
         try{
           localSpotsFil = amagiSpotReplacementModel?.lstSpots?.localSpots?.where((element) {
-            if ((element.parentID == null ||
+            if ((element.parentID == null || element.parentID == " " ||
                 element.parentID.toString().trim() ==
                     Parentid.toString().trim()) &&
                 element.colNo.toString().trim() ==
@@ -729,12 +776,12 @@ class AmagiSpotsReplacementController extends GetxController {
       localSpotsFil?.sort((a,b)=> double.parse((b.rate??0).toString()).compareTo(double.parse((a.rate??0).toString())) );
       localSpotsFil?.sort((a,b)=> double.parse((b.spotAmount??0).toString()).compareTo(double.parse((a.spotAmount??0).toString())) );
 
-      localSpotsStateManager?.rows.forEach((element) {
+      /*localSpotsStateManager?.rows.forEach((element) {
         print(">>>>>>>>>>afterFilter X "+element.toJson().toString());
       });
       localSpotsFil?.forEach((element) {
         print(">>>>>>>>>>afterFilter Y "+element.toJson().toString());
-      });
+      });*/
 
 
       // (tblLocal.DataSource as DataTable).DefaultView.sort = "Parentid desc , Rate desc , spotamount desc";
@@ -742,7 +789,7 @@ class AmagiSpotsReplacementController extends GetxController {
 
       // Displaying allocated and unallocate duration
       for (PlutoRow Dr in (localSpotsStateManager?.rows) ?? []) {
-        if (Dr.cells["parentID"]?.value == null) {
+        if (Dr.cells["parentID"]?.value == null || Dr.cells["parentID"]?.value == " " ) {
           //Dr.DefaultCellStyle.BackColor = Color.Red
           //           For I = 0 To tblLocal.ColumnCount - 1
           // Dr.cells["BookingNumber"].style.font = new Font(Control.DefaultFont, FontStyle.bold);
@@ -877,11 +924,11 @@ class AmagiSpotsReplacementController extends GetxController {
 
         pivotLocalSpotModel?.localSpot?.localColData?.forEach((element) {
           for (PlutoRow Dr in childChannelStateManager?.rows ?? []) {
-            if (element.colNo.toString().trim() ==
-                Dr.cells['colNo']?.value.toString().trim()) {
-              Dr.cells['unallocatedSpots']?.value = (element.parentid == null)
+            if (element.colNo.toString() ==
+                Dr.cells['colNo']?.value.toString()) {
+              Dr.cells['unallocatedSpots']?.value = (element.parentid == " ")
                   ? 0
-                  : int.parse((element.parentid.toString().trim() != "")
+                  : int.parse((element.parentid != null  && element.parentid.toString().trim() != "" )
                       ? element.parentid.toString().trim()
                       : "0");
             }
@@ -933,7 +980,7 @@ class AmagiSpotsReplacementController extends GetxController {
 
   btnDeallocateClick() {
     for (PlutoRow element in localSpotsStateManager?.rows ?? []) {
-      element.cells['parentID']?.value = null;
+      element.cells['parentID']?.value = " ";
     }
     localSpotsFil?.forEach((element) {
       element.parentID = null;
@@ -1028,7 +1075,15 @@ class AmagiSpotsReplacementController extends GetxController {
                   mapData.add(mapDa);
                 }
                 print(">>>>>>>>>>>mapSummary$mapData");
-                completer.complete(mapData);
+                if(mapData.isNotEmpty){
+                  completer.complete(mapData);
+                }else{
+                  clientNameList = [
+                    {"Data": "Data Not Found"}
+                  ];
+                  completer.complete(clientNameList);
+                }
+
               } else {
                 clientNameList.clear();
                 clientNameList = [
@@ -1052,25 +1107,32 @@ class AmagiSpotsReplacementController extends GetxController {
 
   Rx<String>? title = Rx<String>("");
 
-  mergeOrDoNotMerge(
+  Future<String> mergeOrDoNotMerge(
       {int merge = 0,
       String? bookingNo = "",
       String? date = "",
       int? bookingDetCode = 0}) {
-    Map<String, dynamic> postData = {
-      "locationcode": selectedLocation?.key ?? "",
-      "channelcode": selectedChannel?.key ?? "",
-      "scheduledate": date,
-      "bookingnumber": bookingNo,
-      "bookingdetailcode": bookingDetCode,
-      "dontMerge": merge
-    };
-    Get.find<ConnectorControl>().POSTMETHOD(
-        api: ApiFactory.AMAGI_SPOT_REPLACEMENT_GET_MERGESPOT(),
-        fun: (map) {
-          print(">>>>>>>>>>>>mergeOrDoNotMerge$map");
-        },
-        json: postData);
+    Completer<String> completer = Completer<String>();
+    try{
+      Map<String, dynamic> postData = {
+        "locationcode": selectedLocation?.key ?? "",
+        "channelcode": selectedChannel?.key ?? "",
+        "scheduledate": date,
+        "bookingnumber": bookingNo,
+        "bookingdetailcode": bookingDetCode,
+        "dontMerge": merge
+      };
+      Get.find<ConnectorControl>().POSTMETHOD(
+          api: ApiFactory.AMAGI_SPOT_REPLACEMENT_GET_MERGESPOT(),
+          fun: (map) {
+            print(">>>>>>>>>>>>mergeOrDoNotMerge$map");
+            completer.complete("");
+          },
+          json: postData);
+    }catch(e){
+      completer.complete("");
+    }
+    return completer.future;
   }
 
   callExcel() {
@@ -1198,12 +1260,21 @@ class AmagiSpotsReplacementController extends GetxController {
   saveApiCall(){
     LoadingDialog.modify("Proceed with Save?\n This action will trigger all media workflows!",cancelTitle: "Yes",
         deleteTitle: "No",(){
-          callSave(true);
+          callSave(true).then((value) {
+            if(value == "true"){
+              dragAbleDialogGet();
+            }
+          });
         },(){
-          callSave(false);
+          callSave(false).then((value) {
+            if(value == "true"){
+              dragAbleDialogGet();
+            }
+          });
         });
   }
-  callSave(bool allDone){
+  Future<String> callSave(bool allDone){
+    Completer<String> completer = Completer<String>();
     try{
       LoadingDialog.call();
       Map<String, dynamic> postData = {
@@ -1252,11 +1323,226 @@ class AmagiSpotsReplacementController extends GetxController {
               );
             });
             print(">>>>>>>>>>>>savemap"+map.toString());
+            completer.complete("true");
 
       },);
     }catch(e){
       clearAll();
+      completer.complete("false");
     }
+    return completer.future;
+  }
+
+
+  dragAbleDialogGet() {
+    initialOffset.value = 2;
+    TextEditingController txCaptionController = TextEditingController();
+    TextEditingController txIdController = TextEditingController(
+        text: amagiSpotReplacementModel?.lstSpots?.fastInsertText ??
+            "");
+    Rx<DropDownValue>? selectEventType =
+    Rx<DropDownValue>(DropDownValue(value: "Promo", key: "Promo"));
+    List<DropDownValue> selectEventTypeList = [
+      DropDownValue(value: "Promo", key: "Promo")
+    ];
+    Rx<bool> mySta = Rx<bool>(false);
+
+    dialogWidget = Material(
+      color: Colors.white,
+      borderOnForeground: false,
+      child: Padding(
+        padding: const EdgeInsets.all(5.0),
+        child: SizedBox(
+          width: Get.width * 0.5,
+          height: Get.height * 0.8,
+          child: Column(
+            children: [
+              SizedBox(
+                height: 30,
+                // color: Colors.grey[200],
+                child: Stack(
+                  fit: StackFit.expand,
+                  // alignment: Alignment.center,
+                  children: [
+                    Align(
+                      alignment: Alignment.center,
+                      child: Obx(() {
+                        return Text(
+                          title?.value ?? '',
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black,
+                            fontSize: 20,
+                          ),
+                        );
+                      }),
+                    ),
+                    Align(
+                      alignment: Alignment.topRight,
+                      child: IconButton(
+                        splashRadius: 20,
+                        onPressed: () {
+                          dialogWidget = null;
+                          canDialogShow.value = false;
+                        },
+                        icon: const Icon(Icons.close),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Wrap(
+                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                // crossAxisAlignment: CrossAxisAlignment.center,
+                crossAxisAlignment: WrapCrossAlignment.center,
+                runSpacing: 3,
+                spacing: 10,
+                children: [
+                  SizedBox(
+                    width: Get.width * 0.24,
+                    height: Get.height * 0.07,
+                    child: Obx(() {
+                      return DropDownField.formDropDown1WidthMap(
+                        selectEventTypeList,
+                            (value) {
+                          // selectedObjective = value;
+                          selectEventType.value = value;
+                        },
+                        "Event",
+                        .24,
+                        // isEnable: isEnable,
+                        selected: selectEventType.value,
+                        dialogHeight: Get.height * .3,
+                        onFocusChange: (val) {},
+                        height: Get.height * 0.067,
+                        // widgetKey: GlobalKey(),
+                        // inkWellFocusNode: objectiveNode,
+                        autoFocus: true,
+                      );
+                    }),
+                  ),
+                  InputFields.formField1(
+                    hintTxt: "Tx Caption",
+                    controller: txCaptionController,
+                    width: 0.24,
+                    maxLen: 40,
+
+                    // autoFocus: true,
+                    // focusNode: controllerX.brandName,
+                    // isEnable: controllerX.isEnable,
+                    onchanged: (value) {},
+                    autoFocus: false,
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 6,
+              ),
+              Row(
+                children: [
+                  InputFields.formField1(
+                    hintTxt: "Tx Id",
+                    controller: txIdController,
+                    width: 0.5,
+                    // maxLines: ,
+                    // autoFocus: true,
+                    // focusNode: controllerX.brandName,
+                    // isEnable: controllerX.isEnable,
+                    onchanged: (value) {},
+                    maxLen: 500,
+                    autoFocus: false,
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 6,
+              ),
+              Row(
+                children: [
+                  Obx(() {
+                    return Checkbox(
+                        value: mySta.value,
+                        onChanged: (val) {
+                          mySta.value = val!;
+                          mySta.refresh();
+                        });
+                  }),
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  const Text("My"),
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  Padding(
+                    padding:
+                    const EdgeInsets.only(top: 0.0, left: 10, right: 10),
+                    child: FormButtonWrapper(
+                      btnText: "Search",
+                      callback: () {
+                        callFastInsert(
+                            caption: txCaptionController.text,
+                            eventType: selectEventType.value.key,
+                            mine: mySta.value,
+                            txID: txIdController.text,
+                            myProperty: "")
+                            .then((value) {
+                          mapList.value = value;
+                          print(">>>>>>>>>>>" +
+                              mapList.value.toString());
+                          mapList.refresh();
+                        });
+                        // controller.fetchGetGenerate();
+                      },
+                      showIcon: true,
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 0, left: 10, right: 10),
+                    child: FormButtonWrapper(
+                      btnText: "Add",
+                      callback: () {
+                        // controller.fetchGetGenerate();
+                      },
+                      showIcon: true,
+                    ),
+                  ),
+                ],
+              ),
+              Expanded(child: Obx(() {
+                return Container(
+                  child: DataGridFromMapAmagiDialog(
+                    showSrNo: true,
+                    hideCode: false,
+                    formatDate: false,
+                    csvFormat: true,
+                    summary: isSummary.value,
+                    exportFileName: "Amagi Spot Replacement",
+                    mode: PlutoGridMode.selectWithOneTap,
+                    mapData: mapList.value,
+                    colorCallback: (row) => (row.row.cells
+                        .containsValue(
+                        dialogStateManager4?.currentCell))
+                        ? Colors.deepPurple.shade200
+                        : Colors.white,
+                    // mapData: (controller.dataList)!,
+                    widthRatio: Get.width / 9 - 1,
+                    onload: (PlutoGridOnLoadedEvent load) {
+                      dialogStateManager4 = load.stateManager;
+                      // controller.stateManager = load.stateManager;
+                    },
+                  ),
+                );
+              }))
+            ],
+          ),
+        ),
+      ),
+    );
+    canDialogShow.value = true;
   }
 
 
@@ -1266,7 +1552,7 @@ class AmagiSpotsReplacementController extends GetxController {
       onKeyEvent: (node, event) {
         if (event.logicalKey == LogicalKeyboardKey.tab) {
           if (selectedLocation != null) {
-            getChannel(selectedLocation?.key ?? "");
+            // getChannel(selectedLocation?.key ?? "");
           }
           return KeyEventResult.ignored;
         }
@@ -1275,6 +1561,8 @@ class AmagiSpotsReplacementController extends GetxController {
     );
     super.onInit();
   }
+
+
 
   @override
   void onReady() {

@@ -1,3 +1,5 @@
+import 'package:bms_salesco/app/providers/Utils.dart';
+
 class AmagiSpotReplacementModel {
   LstSpots? lstSpots;
 
@@ -86,7 +88,7 @@ class MasterSpots {
   String? tapeCode;
   int? tapeDuration;
   int? rate;
-  int? spotAmount;
+  String? spotAmount;
   String? starttime;
   String? endTime;
   String? scheduleTime;
@@ -140,7 +142,7 @@ class MasterSpots {
     tapeCode = json['tapeCode'];
     tapeDuration = json['tapeDuration'];
     rate = json['rate'];
-    spotAmount = json['spotAmount'];
+    spotAmount = json['SpotAmount'];
     starttime = json['starttime'];
     endTime = json['endTime'];
     scheduleTime = json['scheduleTime'];
@@ -156,6 +158,36 @@ class MasterSpots {
     neWID = json['neW_ID'];
     tapeDuration1 = json['tapeDuration1'];
     tapeid = json['tapeid']??"";
+  }
+
+  Map<String, dynamic> toJson1() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['locationCode'] = this.locationCode;
+    data['channelCode'] = this.channelCode;
+    data['bookingNumber'] = this.bookingNumber;
+
+    data['bookingDetailCode'] = this.bookingDetailCode;
+    data['tapeCode'] = this.tapeCode;
+    data['tapeDuration'] = this.tapeDuration;
+    data['rate'] = this.rate;
+    data['spotAmount'] = this.spotAmount;
+    data['starttime'] = this.starttime;
+    data['endTime'] = this.endTime;
+    data['scheduleTime'] = this.scheduleTime;
+    data['id'] = this.id;
+    data['scheduleDate'] = Utils.formatDateTime4(scheduleDate);
+    data['clientName'] = this.clientName;
+    data['valuationrate'] = this.valuationrate;
+    data['valuationAmount'] = this.valuationAmount;
+    data['brandName'] = this.brandName;
+    data['hold'] = this.hold;
+    data['scheduleEndTime'] = this.scheduleEndTime;
+    data['combineSpots'] = this.combineSpots;
+    data['neW_ID'] = this.neWID;
+    data['tapeDuration1'] = this.tapeDuration1;
+    data['tapeid'] = this.tapeid;
+    data['bookingNumberIsBold'] = this.bookingNumberIsBold;
+    return data;
   }
 
   Map<String, dynamic> toJson() {
@@ -204,7 +236,7 @@ class LocalSpots {
   String? tapeCode;
   int? tapeDuration;
   int? rate;
-  double? spotAmount;
+  String? spotAmount;
   int? valuationrate;
   double? valuationAmount;
   String? starttime;
@@ -265,7 +297,7 @@ class LocalSpots {
     tapeCode = json['tapeCode'];
     tapeDuration = json['tapeDuration'];
     rate = json['rate'];
-    spotAmount = json['spotAmount'];
+    spotAmount = json['SpotAmount'];
     valuationrate = json['valuationrate'];
     valuationAmount = json['valuationAmount'];
     starttime = json['starttime'];
@@ -308,6 +340,41 @@ class LocalSpots {
     data['clientPriority'] = this.clientPriority;
     data['priority'] = this.priority;
     data['scheduleDate'] = this.scheduleDate;
+    // data['scheduleDate'] = Utils.formatDateTime4(scheduleDate);
+    data['brandCode'] = this.brandCode;
+    data['productName'] = this.productName;
+    data['dealno'] = this.dealno;
+    data['dealRownumber'] = this.dealRownumber;
+    data['commercialCaption'] = this.commercialCaption;
+    data['channel'] = this.channel;
+    data['zoneName'] = this.zoneName;
+    return data;
+  }
+
+  Map<String, dynamic> toJson1() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['colNo'] = this.colNo;
+    data['channelid'] = this.channelid;
+    data['locationCode'] = this.locationCode;
+    data['channelCode'] = this.channelCode;
+    data['bookingNumber'] = this.bookingNumber;
+    data['bookingNumberIsBold'] = this.bookingNumberIsBold;
+    data['bookingDetailCode'] = this.bookingDetailCode;
+    data['clientName'] = this.clientName;
+    data['tapeCode'] = this.tapeCode;
+    data['tapeDuration'] = this.tapeDuration;
+    data['rate'] = this.rate;
+    data['spotAmount'] = this.spotAmount;
+    data['valuationrate'] = this.valuationrate;
+    data['valuationAmount'] = this.valuationAmount;
+    data['starttime'] = this.starttime;
+    data['endTime'] = this.endTime;
+    data['parentID'] = this.parentID;
+    data['id'] = this.id;
+    data['clientPriority'] = this.clientPriority;
+    data['priority'] = this.priority;
+    // data['scheduleDate'] = this.scheduleDate;
+    data['scheduleDate'] = Utils.formatDateTime4(scheduleDate);
     data['brandCode'] = this.brandCode;
     data['productName'] = this.productName;
     data['dealno'] = this.dealno;
@@ -397,7 +464,7 @@ class FastInserts {
     if (json['promoResponse'] != null) {
       promoResponse = <PromoResponse>[];
       json['promoResponse'].forEach((v) {
-        promoResponse!.add(new PromoResponse.fromJson(v));
+        promoResponse!.add( PromoResponse.fromJson(v));
       });
     }
   }
@@ -459,4 +526,19 @@ class PromoResponse {
     data['eventCode'] = this.eventCode;
     return data;
   }
+
+  Map<String, dynamic> toJson1() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['eventtype'] = this.eventtype;
+    data['caption'] = this.caption;
+    data['txCaption'] = this.txCaption;
+    data['txId'] = this.txId;
+    data['duration'] = this.duration;
+    data['som'] = this.som;
+    data['segmentNumber'] = (this.segmentNumber == 0)?"":segmentNumber;
+    data['promoTypeCode'] = this.promoTypeCode;
+    data['eventCode'] = this.eventCode;
+    return data;
+  }
+
 }
