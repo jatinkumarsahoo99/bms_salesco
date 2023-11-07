@@ -489,6 +489,7 @@ class PDCChequesView extends StatelessWidget {
                             Expanded(
                               child: Obx(() {
                                 return DataGridFromMap3(
+                                  rowHeight: 20,
                                   exportFileName: 'PDC Cheque',
                                   onload: (sm) {
                                     sm.stateManager.setCurrentCell(
