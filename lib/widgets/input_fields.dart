@@ -344,9 +344,6 @@ class InputFields {
 
     if (inputformatters.isNotEmpty) {
       inputformatters.add(FilteringTextInputFormatter.deny("  "));
-      // inputformatters.add(
-      //   FilteringTextInputFormatter.allow(RegExp(r"^(\w+ ?)*$")),
-      // );
     }
 
     return Column(
@@ -374,7 +371,7 @@ class InputFields {
                 : TextCapitalization.none,
             validator: validator,
             enabled: isEnable ?? true,
-            maxLength: maxLen,
+            // maxLength: maxLen,
             autovalidateMode: AutovalidateMode.onUserInteraction,
             // onChanged: (onchanged != null) ? onchanged : null,
             onChanged: (val) {
@@ -387,14 +384,15 @@ class InputFields {
                 controller.text = "";
               }
             },
-            textAlignVertical: TextAlignVertical.center,
-            keyboardType: TextInputType.datetime,
+            textAlignVertical: TextAlignVertical.top,
+
+            // keyboardType: TextInputType.datetime,
             textAlign: TextAlign.left,
             onFieldSubmitted: onFieldSubmitted,
             inputFormatters: inputformatters.isEmpty
                 ? [
-                    LengthLimitingTextInputFormatter(
-                        maxLen ?? (SizeDefine.maxcharlimit)),
+                    // LengthLimitingTextInputFormatter(
+                    //     maxLen ?? (SizeDefine.maxcharlimit)),
                     FilteringTextInputFormatter.deny("  "),
                     // FilteringTextInputFormatter.allow(RegExp(r"^(\w+ ?)*$")),
                   ]
@@ -404,9 +402,8 @@ class InputFields {
                 fontSize: 12,
                 color: (isEnable ?? true) ? Colors.black : Colors.grey),
             decoration: InputDecoration(
+              contentPadding: EdgeInsets.all(10),
               enabled: isEnable ?? true,
-              // prefixText: prefixText,
-
               prefixIcon: prefixText != null
                   ? SizedBox(
                       child: Center(
@@ -429,19 +426,10 @@ class InputFields {
               ),
               errorBorder: InputBorder.none,
               counterText: "",
-              // hintText: "dd/MM/yyyy",
-              contentPadding:
-                  EdgeInsets.only(left: prefixText == null ? 10 : 0),
-              // labelText: hintTxt,
               labelStyle: TextStyle(
                   fontSize: SizeDefine.labelSize,
                   color: (isEnable ?? true) ? Colors.black : Colors.grey),
               border: InputBorder.none,
-              // suffixIcon: Icon(
-              //   Icons.calendar_today,
-              //   size: 14,
-              //   color: Colors.deepPurpleAccent,
-              // ),
               enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.deepPurpleAccent),
                 borderRadius: BorderRadius.circular(0),
@@ -454,7 +442,6 @@ class InputFields {
                 borderSide: BorderSide(color: Colors.grey),
                 borderRadius: BorderRadius.circular(0),
               ),
-              floatingLabelBehavior: FloatingLabelBehavior.always,
             ),
           ),
         ),

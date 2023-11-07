@@ -131,7 +131,10 @@ class ChequeGroupingModel {
       data['bankName'] = bankName;
       data['remarks'] = remarks;
       data['isDummy'] = isDummy;
-      data['approvedTill'] = approvedTill;
+      data['approvedTill'] = (approvedTill ?? '').contains("T")
+          ? DateFormat('dd-MM-yyyy')
+              .format(DateFormat('yyyy-MM-ddThh:mm:ss').parse(approvedTill!))
+          : approvedTill;
       data['chequeAmount1'] = chequeAmount1;
       data['revisedChequeNumber'] = revisedChequeNumber;
       data['revisedChequeAmount'] = revisedChequeAmount;
