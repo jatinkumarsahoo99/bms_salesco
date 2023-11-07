@@ -212,7 +212,7 @@ class AmagiSpotsReplacementController extends GetxController {
               );
               completer.complete(amagiSpotReplacementModel
                   ?.lstSpots?.fastInserts?.promoResponse
-                  ?.map((e) => e.toJson())
+                  ?.map((e) => e.toJson1())
                   .toList());
             } else {
               amagiSpotReplacementModel = null;
@@ -776,12 +776,12 @@ class AmagiSpotsReplacementController extends GetxController {
       localSpotsFil?.sort((a,b)=> double.parse((b.rate??0).toString()).compareTo(double.parse((a.rate??0).toString())) );
       localSpotsFil?.sort((a,b)=> double.parse((b.spotAmount??0).toString()).compareTo(double.parse((a.spotAmount??0).toString())) );
 
-      localSpotsStateManager?.rows.forEach((element) {
+      /*localSpotsStateManager?.rows.forEach((element) {
         print(">>>>>>>>>>afterFilter X "+element.toJson().toString());
       });
       localSpotsFil?.forEach((element) {
         print(">>>>>>>>>>afterFilter Y "+element.toJson().toString());
-      });
+      });*/
 
 
       // (tblLocal.DataSource as DataTable).DefaultView.sort = "Parentid desc , Rate desc , spotamount desc";

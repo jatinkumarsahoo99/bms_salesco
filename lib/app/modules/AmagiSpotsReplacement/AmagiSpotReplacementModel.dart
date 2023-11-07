@@ -88,7 +88,7 @@ class MasterSpots {
   String? tapeCode;
   int? tapeDuration;
   int? rate;
-  int? spotAmount;
+  String? spotAmount;
   String? starttime;
   String? endTime;
   String? scheduleTime;
@@ -142,7 +142,7 @@ class MasterSpots {
     tapeCode = json['tapeCode'];
     tapeDuration = json['tapeDuration'];
     rate = json['rate'];
-    spotAmount = json['spotAmount'];
+    spotAmount = json['SpotAmount'];
     starttime = json['starttime'];
     endTime = json['endTime'];
     scheduleTime = json['scheduleTime'];
@@ -236,7 +236,7 @@ class LocalSpots {
   String? tapeCode;
   int? tapeDuration;
   int? rate;
-  double? spotAmount;
+  String? spotAmount;
   int? valuationrate;
   double? valuationAmount;
   String? starttime;
@@ -297,7 +297,7 @@ class LocalSpots {
     tapeCode = json['tapeCode'];
     tapeDuration = json['tapeDuration'];
     rate = json['rate'];
-    spotAmount = json['spotAmount'];
+    spotAmount = json['SpotAmount'];
     valuationrate = json['valuationrate'];
     valuationAmount = json['valuationAmount'];
     starttime = json['starttime'];
@@ -464,7 +464,7 @@ class FastInserts {
     if (json['promoResponse'] != null) {
       promoResponse = <PromoResponse>[];
       json['promoResponse'].forEach((v) {
-        promoResponse!.add(new PromoResponse.fromJson(v));
+        promoResponse!.add( PromoResponse.fromJson(v));
       });
     }
   }
@@ -526,4 +526,19 @@ class PromoResponse {
     data['eventCode'] = this.eventCode;
     return data;
   }
+
+  Map<String, dynamic> toJson1() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['eventtype'] = this.eventtype;
+    data['caption'] = this.caption;
+    data['txCaption'] = this.txCaption;
+    data['txId'] = this.txId;
+    data['duration'] = this.duration;
+    data['som'] = this.som;
+    data['segmentNumber'] = (this.segmentNumber == 0)?"":segmentNumber;
+    data['promoTypeCode'] = this.promoTypeCode;
+    data['eventCode'] = this.eventCode;
+    return data;
+  }
+
 }
