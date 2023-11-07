@@ -50,144 +50,177 @@ class PDCChequesView extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Expanded(
-                        // width: context.devicewidth * .55,
-                        child: Wrap(
-                          runSpacing: 5,
-                          spacing: 10,
-                          children: [
-                            GetBuilder(
-                                init: controller,
-                                id: "client",
-                                builder: (_) {
-                                  return DropDownField.formDropDownSearchAPI2(
-                                    GlobalKey(),
-                                    context,
-                                    title: "Client",
-                                    url: ApiFactory.PDC_CHEQUES_CLIENT,
-                                    onchanged: controller.handleOnChangeClient,
-                                    width: context.devicewidth *
-                                        controller.widthRation,
-                                    selectedValue: controller.selecctedClient,
-                                    customInData: 'clientModels',
-                                    parseKeyForKey: 'clientcode',
-                                    parseKeyForValue: 'clientname',
-                                    widthofDialog: 250,
-                                    inkwellFocus: controller.clientFN,
-                                    autoFocus: true,
-                                  );
-                                }),
-                            InputFields.formField1(
-                              width: controller.widthRation,
-                              hintTxt: "Bank",
-                              controller: controller.bankTC,
-                              padLeft: 0,
-                            ),
-                            DateWithThreeTextField(
-                              title: "Recd on",
-                              mainTextController: controller.recdOnDateTC,
-                              widthRation: controller.widthRation,
-                            ),
-                            InputFields.formField1(
-                              width: controller.widthRation,
-                              hintTxt: "Recd By",
-                              controller: controller.recdByTC,
-                              padLeft: 0,
-                            ),
-                            DateWithThreeTextField(
-                              title: "CCD Verify Dt",
-                              mainTextController: controller.ccdVerifyDateTC,
-                              widthRation: controller.widthRation,
-                            ),
-                            InputFields.formField1(
-                              width: controller.widthRation,
-                              hintTxt: "CCD Verify By",
-                              controller: controller.ccdVerifyByTC,
-                              padLeft: 0,
-                            ),
-                            Obx(() {
-                              return DropDownField.formDropDown1WidthMap(
-                                controller.pdcTypeList.value,
-                                (val) => controller.selectedPdcType = val,
-                                "PDC Type",
-                                controller.widthRation,
-                                selected: controller.selectedPdcType,
-                              );
-                            }),
-                          ],
-                        ),
+                      GetBuilder(
+                          init: controller,
+                          id: "client",
+                          builder: (_) {
+                            return DropDownField.formDropDownSearchAPI2(
+                              GlobalKey(),
+                              context,
+                              title: "Client",
+                              url: ApiFactory.PDC_CHEQUES_CLIENT,
+                              onchanged: controller.handleOnChangeClient,
+                              width: context.devicewidth * .47,
+                              selectedValue: controller.selecctedClient,
+                              customInData: 'clientModels',
+                              parseKeyForKey: 'clientcode',
+                              parseKeyForValue: 'clientname',
+                              // widthofDialog: 250,
+                              inkwellFocus: controller.clientFN,
+                              autoFocus: true,
+                            );
+                          }),
+                      Obx(() {
+                        return DropDownField.formDropDown1WidthMap(
+                          controller.agencyList.value,
+                          (val) => controller.selectedAgency = val,
+                          "Agency",
+                          .47,
+                          // dialogWidth: 250,
+                          selected: controller.selectedAgency,
+                        );
+                      }),
+                    ],
+                  ),
+                  SizedBox(height: 4),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      InputFields.formField1(
+                        width: .47,
+                        hintTxt: "Bank",
+                        controller: controller.bankTC,
+                        padLeft: 0,
+                      ),
+                      Row(
+                        children: [
+                          InputFields.formField1(
+                            padLeft: 0,
+                            width: .25,
+                            hintTxt: "Cheque No",
+                            controller: controller.chequeNoTC,
+                          ),
+                          SizedBox(
+                            width: context.width * .07,
+                          ),
+                          DateWithThreeTextField(
+                            title: "Cheque Dt",
+                            mainTextController: controller.chequeDateTC,
+                            widthRation: .15,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 4),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          DateWithThreeTextField(
+                            title: "Recd on",
+                            mainTextController: controller.recdOnDateTC,
+                            widthRation: .15,
+                          ),
+                          SizedBox(
+                            width: context.width * .07,
+                          ),
+                          InputFields.formField1(
+                            width: .25,
+                            hintTxt: "Recd By",
+                            controller: controller.recdByTC,
+                            padLeft: 0,
+                          ),
+                        ],
                       ),
                       Expanded(
-                        // width: context.devicewidth * .55,
-                        child: Wrap(
-                          runSpacing: 5,
-                          spacing: 10,
-                          crossAxisAlignment: WrapCrossAlignment.end,
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
-                            Obx(() {
-                              return DropDownField.formDropDown1WidthMap(
-                                controller.agencyList.value,
-                                (val) => controller.selectedAgency = val,
-                                "Agency",
-                                controller.widthRation,
-                                dialogWidth: 250,
-                                selected: controller.selectedAgency,
-                              );
-                            }),
-                            InputFields.formField1(
-                              padLeft: 0,
-                              width: controller.widthRation,
-                              hintTxt: "Cheque No",
-                              controller: controller.chequeNoTC,
-                            ),
-                            DateWithThreeTextField(
-                              title: "Cheque Dt",
-                              mainTextController: controller.chequeDateTC,
-                              widthRation: controller.widthRation,
-                            ),
-                            DateWithThreeTextField(
-                              title: "Approved Till",
-                              mainTextController: controller.approvedTillDateTC,
-                              widthRation: controller.widthRation,
-                            ),
-                            InputFields.formField1(
-                              padLeft: 0,
-                              width: controller.widthRation,
-                              hintTxt: "Remarks",
-                              controller: controller.remarksTC,
-                            ),
+                            // SizedBox(
+                            //   width: context.width * .038,
+                            // ),
+                            Spacer(),
                             Obx(() {
                               return CheckBoxWidget1(
                                 title: 'Is Dummy',
+                                titleRightSide: true,
                                 value: controller.isDummy.value,
                                 onChanged: (newVal) {
                                   controller.isDummy.value = newVal ?? false;
                                 },
                               );
                             }),
+                            Spacer(flex: 7),
+                            // SizedBox(
+                            //   width: context.width * .25,
+                            // ),
+                            DateWithThreeTextField(
+                              title: "Approved Till",
+                              mainTextController: controller.approvedTillDateTC,
+                              widthRation: .15,
+                            ),
                           ],
                         ),
                       ),
                     ],
                   ),
+                  SizedBox(height: 4),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Column(
+                        children: [
+                          Row(
+                            children: [
+                              DateWithThreeTextField(
+                                title: "CCD Verify Dt",
+                                mainTextController: controller.ccdVerifyDateTC,
+                                widthRation: .15,
+                              ),
+                              SizedBox(
+                                width: context.width * .07,
+                              ),
+                              InputFields.formField1(
+                                width: .25,
+                                hintTxt: "CCD Verify By",
+                                controller: controller.ccdVerifyByTC,
+                                padLeft: 0,
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 4),
+                          Obx(() {
+                            return DropDownField.formDropDown1WidthMap(
+                              controller.pdcTypeList.value,
+                              (val) => controller.selectedPdcType = val,
+                              "PDC Type",
+                              .47,
+                              selected: controller.selectedPdcType,
+                            );
+                          }),
+                        ],
+                      ),
+                      InputFields.formField14(
+                        padLeft: 0,
+                        width: .47,
+                        hintTxt: "Remarks",
+                        controller: controller.remarksTC,
+                        height: 70,
+                      ),
+                    ],
+                  ),
+
+                  ////////////////////////////////////////////
                   Wrap(
                     // crossAxisAlignment: WrapCrossAlignment.end,
                     runSpacing: 5,
                     spacing: 10,
                     children: [
-                      // Padding(
-                      //   padding: const EdgeInsets.only(top: 4),
-                      //   child: DecoratedBox(
-                      //     decoration: BoxDecoration(color: Colors.grey[500]),
-                      //     child: const SizedBox(
-                      //       height: .5,
-                      //       width: double.maxFinite,
-                      //     ),
-                      //   ),
-                      // ),
-
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 8),
                         child: DecoratedBox(
@@ -292,27 +325,59 @@ class PDCChequesView extends StatelessWidget {
                   ),
                   SizedBox(height: 8),
                   Obx(() {
-                    return CupertinoSlidingSegmentedControl(
-                      onValueChanged: (value) {
-                        controller.selectedTab.value = value ?? 0;
-                      },
-                      children: <int, Widget>{
-                        0: Text(
-                          'Location & Channel',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: SizeDefine.fontSizeTab,
-                          ),
+                    controller.selectedTab.value;
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        CupertinoSlidingSegmentedControl(
+                          onValueChanged: (value) {
+                            controller.selectedTab.value = value ?? 0;
+                          },
+                          children: <int, Widget>{
+                            0: Text(
+                              'Location & Channel',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: SizeDefine.fontSizeTab,
+                              ),
+                            ),
+                            1: Text(
+                              'Cheque Grouping',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: SizeDefine.fontSizeTab,
+                              ),
+                            ),
+                          },
+                          groupValue: controller.selectedTab.value,
                         ),
-                        1: Text(
-                          'Cheque Grouping',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: SizeDefine.fontSizeTab,
+                        Visibility(
+                          visible: controller.selectedTab.value == 1,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              InputFields.numbers(
+                                padLeft: 0,
+                                width: .12,
+                                hintTxt: "Activity Month",
+                                controller: controller.activityMonthTC,
+                                isNegativeReq: false,
+                                inputformatters: [
+                                  FilteringTextInputFormatter.allow(
+                                      RegExp(r'^\d+\.?\d{0,4}'))
+                                ],
+                                focusNode: controller.activityMonthFN,
+                              ),
+                              SizedBox(width: 15),
+                              FormButton(
+                                btnText: "Save Cheque Grouping",
+                                callback: controller.saveChequeBookingData,
+                              ),
+                            ],
                           ),
-                        ),
-                      },
-                      groupValue: controller.selectedTab.value,
+                        )
+                      ],
                     );
                   }),
                   Expanded(
@@ -379,32 +444,32 @@ class PDCChequesView extends StatelessWidget {
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  InputFields.numbers(
-                                    padLeft: 0,
-                                    width: .12,
-                                    hintTxt: "Activity Month",
-                                    controller: controller.activityMonthTC,
-                                    isNegativeReq: false,
-                                    inputformatters: [
-                                      FilteringTextInputFormatter.allow(
-                                          RegExp(r'^\d+\.?\d{0,4}'))
-                                    ],
-                                    focusNode: controller.activityMonthFN,
-                                  ),
-                                  SizedBox(width: 15),
-                                  FormButton(
-                                    btnText: "Save Cheque Grouping",
-                                    callback: controller.saveChequeBookingData,
-                                  ),
-                                ],
-                              ),
-                            ),
+                            // Padding(
+                            //   padding: const EdgeInsets.all(8.0),
+                            //   child: Row(
+                            //     mainAxisAlignment: MainAxisAlignment.start,
+                            //     crossAxisAlignment: CrossAxisAlignment.end,
+                            //     children: [
+                            //       InputFields.numbers(
+                            //         padLeft: 0,
+                            //         width: .12,
+                            //         hintTxt: "Activity Month",
+                            //         controller: controller.activityMonthTC,
+                            //         isNegativeReq: false,
+                            //         inputformatters: [
+                            //           FilteringTextInputFormatter.allow(
+                            //               RegExp(r'^\d+\.?\d{0,4}'))
+                            //         ],
+                            //         focusNode: controller.activityMonthFN,
+                            //       ),
+                            //       SizedBox(width: 15),
+                            //       FormButton(
+                            //         btnText: "Save Cheque Grouping",
+                            //         callback: controller.saveChequeBookingData,
+                            //       ),
+                            //     ],
+                            //   ),
+                            // ),
                             Expanded(
                               child: Obx(() {
                                 return DataGridFromMap3(
@@ -455,6 +520,7 @@ class PDCChequesView extends StatelessWidget {
                                       );
                                     }
                                   },
+                                  columnAutoResize: false,
                                   mapData: controller.chequeGroupingList
                                       .map((element) => element.toJson())
                                       .toList(),

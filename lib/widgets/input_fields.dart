@@ -192,6 +192,7 @@ class InputFields {
     bool autoFocus = false,
     bool showTitle = true,
     int maxLines = 1,
+    bool expands = false,
     double? height,
     void Function(String)? onFieldSubmitted,
     String? prefixText,
@@ -219,6 +220,7 @@ class InputFields {
           height: height ?? SizeDefine.heightInputField,
           width: Get.width * width!,
           child: TextFormField(
+            expands: expands,
             maxLines: maxLines,
             focusNode: focusNode,
             minLines: maxLines,
@@ -310,6 +312,136 @@ class InputFields {
                 borderRadius: BorderRadius.circular(0),
               ),
               floatingLabelBehavior: FloatingLabelBehavior.always,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  static Widget formField14({
+    String? Function(String?)? validator,
+    required String hintTxt,
+    required TextEditingController controller,
+    Function(String)? onchanged,
+    double? padLeft,
+    FocusNode? focusNode,
+    Function()? onEditComplete,
+    List<TextInputFormatter> inputformatters = const [],
+    num? width = 0.12,
+    bool capital = false,
+    bool? isEnable,
+    int? maxLen,
+    bool margin = false,
+    bool autoFocus = false,
+    bool showTitle = true,
+    int maxLines = 1,
+    double? height,
+    void Function(String)? onFieldSubmitted,
+    String? prefixText,
+  }) {
+    // var data = 0.obs;
+
+    if (inputformatters.isNotEmpty) {
+      inputformatters.add(FilteringTextInputFormatter.deny("  "));
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        if (showTitle) ...{
+          LabelText.style(
+            hint: hintTxt,
+            txtColor: (isEnable ?? true) ? Colors.black : Colors.grey,
+          ),
+        },
+        SizedBox(
+          height: height ?? SizeDefine.heightInputField,
+          width: Get.width * width!,
+          child: TextFormField(
+            expands: true,
+            maxLines: null,
+            focusNode: focusNode,
+            minLines: null,
+            autofocus: autoFocus,
+            onEditingComplete: onEditComplete,
+            textCapitalization: capital
+                ? TextCapitalization.characters
+                : TextCapitalization.none,
+            validator: validator,
+            enabled: isEnable ?? true,
+            // maxLength: maxLen,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            // onChanged: (onchanged != null) ? onchanged : null,
+            onChanged: (val) {
+              if (onchanged != null) {
+                onchanged(val);
+              }
+              if (val.contains(RegExp(r'<[^>]*>')) ?? false) {
+                // return 'Please enter a valid input.';
+                LoadingDialog.showErrorDialog("Please enter a valid input");
+                controller.text = "";
+              }
+            },
+            textAlignVertical: TextAlignVertical.top,
+
+            // keyboardType: TextInputType.datetime,
+            textAlign: TextAlign.left,
+            onFieldSubmitted: onFieldSubmitted,
+            inputFormatters: inputformatters.isEmpty
+                ? [
+                    // LengthLimitingTextInputFormatter(
+                    //     maxLen ?? (SizeDefine.maxcharlimit)),
+                    FilteringTextInputFormatter.deny("  "),
+                    // FilteringTextInputFormatter.allow(RegExp(r"^(\w+ ?)*$")),
+                  ]
+                : inputformatters,
+            controller: controller,
+            style: TextStyle(
+                fontSize: 12,
+                color: (isEnable ?? true) ? Colors.black : Colors.grey),
+            decoration: InputDecoration(
+              contentPadding: EdgeInsets.all(10),
+              enabled: isEnable ?? true,
+              prefixIcon: prefixText != null
+                  ? SizedBox(
+                      child: Center(
+                        widthFactor: 0.0,
+                        child: Text(
+                          " $prefixText ",
+                          style: TextStyle(
+                            backgroundColor: Colors.grey.shade500,
+                            color: Colors.white,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ),
+                    )
+                  : null,
+              prefixStyle: TextStyle(
+                backgroundColor: Colors.grey.shade500,
+                color: Colors.white,
+                fontSize: 12,
+              ),
+              errorBorder: InputBorder.none,
+              counterText: "",
+              labelStyle: TextStyle(
+                  fontSize: SizeDefine.labelSize,
+                  color: (isEnable ?? true) ? Colors.black : Colors.grey),
+              border: InputBorder.none,
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.deepPurpleAccent),
+                borderRadius: BorderRadius.circular(0),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.deepPurpleAccent),
+                borderRadius: BorderRadius.circular(0),
+              ),
+              disabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.grey),
+                borderRadius: BorderRadius.circular(0),
+              ),
             ),
           ),
         ),
