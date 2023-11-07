@@ -520,6 +520,7 @@ class PDCChequesView extends StatelessWidget {
                                       );
                                     }
                                   },
+                                  columnAutoResize: false,
                                   mapData: controller.chequeGroupingList
                                       .map((element) => element.toJson())
                                       .toList(),
