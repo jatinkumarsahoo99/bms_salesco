@@ -1590,8 +1590,8 @@ class DataGridFromMapAmagiDialog extends StatelessWidget {
                   enableColumnDoubleTap!.contains(key)
               ? TextSpan(
                   text: doPasccal
-                      ? key == "fpcCaption"
-                          ? "FPC Caption"
+                      ? key == "som"
+                          ? "SOM"
                           : Utils.normalCaseToPascalCase(key)
                       : key,
                   recognizer: DoubleTapGestureRecognizer()
@@ -1603,8 +1603,8 @@ class DataGridFromMapAmagiDialog extends StatelessWidget {
                 )
               : null,
           title: doPasccal
-              ? key == "fpcCaption"
-                  ? "FPC Caption"
+              ? key == "som"
+                  ? "SOM"
                   :((summaryCase == true)? key : Utils.normalCaseToPascalCase(key))
               : key,
           enableRowChecked: false,

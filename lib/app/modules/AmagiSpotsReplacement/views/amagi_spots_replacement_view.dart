@@ -85,11 +85,11 @@ class AmagiSpotsReplacementView
                         formatDate: false,
                         columnAutoResize: false,
                         widthSpecificColumn: {
-                          "0": 250,
-                          "1": 250,
-                          "clientname": 250,
-                          "starttime": 250,
-                          "endtime": 250
+                          "0": 270,
+                          "1": 270,
+                          "clientname": 270,
+                          "starttime": 270,
+                          "endtime": 270
                         },
                         colorCallback: (row) => (row.row.cells
                             .containsValue(
