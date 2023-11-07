@@ -67,7 +67,7 @@ class PDCChequesView extends StatelessWidget {
                               customInData: 'clientModels',
                               parseKeyForKey: 'clientcode',
                               parseKeyForValue: 'clientname',
-                              widthofDialog: 250,
+                              // widthofDialog: 250,
                               inkwellFocus: controller.clientFN,
                               autoFocus: true,
                             );
@@ -78,7 +78,7 @@ class PDCChequesView extends StatelessWidget {
                           (val) => controller.selectedAgency = val,
                           "Agency",
                           .47,
-                          dialogWidth: 250,
+                          // dialogWidth: 250,
                           selected: controller.selectedAgency,
                         );
                       }),
