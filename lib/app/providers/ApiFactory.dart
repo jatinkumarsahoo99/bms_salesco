@@ -233,6 +233,17 @@ class ApiFactory {
   static String EDI_RO_LEAVE_BRAND(brandCode) =>
       "$BASE_URL/api/EDIRoBooking/OnLeaveBrandName?BrandCode=$brandCode";
 
+  static String EDI_RO_COMP_TATE_ID = "$BASE_URL/api/EDIRoBooking/CompTapeId";
+  static String EDI_RO_SHOW_MAKE_GOOD(locationName, channelName, brandName,
+          clientName, agencyName, dtpMGFromDate, dtpMGToDate, dealNo) =>
+      "$BASE_URL/api/EDIRoBooking/ShowMakeGood?LocationName=$locationName&ChannelName=$channelName&BrandName=$brandName&ClientName=$clientName&AgencyName=$agencyName&dtpMGFromDate=$dtpMGFromDate&dtpMGToDate=$dtpMGToDate&DealNo=$dealNo";
+
+  static String EDI_RO_GET_FILL_PDC(
+          clientCode, agencyCode, editMode, activityPeriod) =>
+      "$BASE_URL/api/EDIRoBooking/GetFillPDC?ClientCode=$clientCode&AgencyCode=$agencyCode&EditMode=$editMode&ActivityPeriod=$activityPeriod";
+  static String EDI_RO_SAVED_EDI_BOOKING =
+      "$BASE_URL/api/EDIRoBooking/OnSaveEDIBooking";
+
 ///////////////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////// Create Break Pattern ///////////////////////////////////////////

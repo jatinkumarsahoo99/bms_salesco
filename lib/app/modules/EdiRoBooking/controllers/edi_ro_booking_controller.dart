@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:bms_salesco/app/data/DropDownValue.dart';
+import 'package:bms_salesco/app/modules/CommonDocs/views/common_docs_view.dart';
 import 'package:bms_salesco/app/modules/EdiRoBooking/bindings/edit_ro_init_data.dart';
 import 'package:bms_salesco/widgets/LoadingDialog.dart';
 import 'package:file_picker/file_picker.dart';
@@ -19,11 +20,9 @@ import '../../../controller/HomeController.dart';
 import '../../../controller/MainController.dart';
 import '../../../data/rowfilter.dart';
 import '../../../providers/ApiFactory.dart';
+import '../../CommonDocs/controllers/common_docs_controller.dart';
 
 class EdiRoBookingController extends GetxController {
-  int lastSelectedIdx = 0;
-  var lastSelectedOffect = 0.0;
-
   //TODO: Implement EdiRoBookingController
   var bookingNo1TEC = TextEditingController(),
       bookingNo2TEC = TextEditingController(text: "0"),
@@ -50,7 +49,22 @@ class EdiRoBookingController extends GetxController {
       endDateTEC = TextEditingController(),
       dealTypeTEC = TextEditingController(),
       payModeTEC = TextEditingController(),
-      gstNoTEC = TextEditingController();
+      gstNoTEC = TextEditingController(),
+      pdcChqAmtTEC = TextEditingController(text: '0.00'),
+      mgStartDateTEC = TextEditingController(),
+      mgEndDateTEC = TextEditingController(),
+      pdcLoactionTEC = TextEditingController(),
+      pdcChannelTEC = TextEditingController(),
+      pdcAgencyTEC = TextEditingController(),
+      pdcClientTEC = TextEditingController(),
+      pdcActivityPeriodTEC = TextEditingController(),
+      pdcChequeNoTEC = TextEditingController(),
+      pdcChqDtTEC = TextEditingController(),
+      pdcBankTEC = TextEditingController(),
+      pdcChequeRecordByTEC = TextEditingController(),
+      pdcRecordOnTEC = TextEditingController(),
+      pdcRemarksTEC = TextEditingController(),
+      effectiveDate = TextEditingController();
 
   final count = 0.obs;
   var infoTableList = [].obs;
@@ -76,12 +90,18 @@ class EdiRoBookingController extends GetxController {
   var blnDurationMismatch = false.obs;
   var intMonth = 0.obs;
   var intYear = 0.obs;
+  int lastSelectedIdx = 0;
+  var lastSelectedOffect = 0.0;
+  var isEnterNewPDC = false.obs;
+  int chequeID = 0;
+  var fillPDCList = [].obs;
 
   PlutoGridStateManager? dvgSpotGrid;
 
   PlutoGridStateManager? dgvDealEntriesGrid;
   PlutoGridStateManager? fpcStartTabelGrid;
   PlutoGridStateManager? tapeIdTabelGrid;
+  PlutoGridStateManager? fillPDCTabelGrid;
 
   EdiRoInitData? initData;
   var fileNames = RxList<DropDownValue>();
@@ -108,8 +128,6 @@ class EdiRoBookingController extends GetxController {
   DropDownValue? selectedChannel;
   DropDownValue? selectedDealNo;
   DropDownValue? selectedGstPlant;
-
-  TextEditingController effectiveDate = TextEditingController();
 
   PlutoGridStateManager? stateManager;
   List<Map<String, Map<String, double>>>? userGridSetting1;
@@ -203,6 +221,22 @@ class EdiRoBookingController extends GetxController {
                     map['infoFileNameLeave']['headerData']['locationCode'];
                 return result;
               });
+              pdcLoactionTEC.text = selectedLoactions!.value.toString();
+
+              // Channel
+              channel.clear();
+              map["infoFileNameLeave"]['headerData']['lstChannel'].forEach((e) {
+                channel.add(DropDownValue(
+                    key: e['channelCode'], value: e['channelName']));
+              });
+              selectedChannel = channel.firstWhereOrNull(
+                (element) {
+                  var result = element.key ==
+                      map['infoFileNameLeave']['headerData']['channelCode'];
+                  return result;
+                },
+              );
+              pdcChannelTEC.text = selectedChannel!.value.toString();
               //Client
               client.clear();
               map["infoFileNameLeave"]['headerData']['lstClients'].forEach((e) {
@@ -216,6 +250,7 @@ class EdiRoBookingController extends GetxController {
                   return result;
                 },
               );
+              pdcClientTEC.text = selectedClient!.value.toString();
               //Agency
               agency.clear();
               map["infoFileNameLeave"]['headerData']['lstAgencies']
@@ -230,6 +265,7 @@ class EdiRoBookingController extends GetxController {
                   return result;
                 },
               );
+              pdcAgencyTEC.text = selectedAgency!.value.toString();
               //Brand
               brand.clear();
               map["infoFileNameLeave"]['headerData']['lstBrands'].forEach((e) {
@@ -251,19 +287,7 @@ class EdiRoBookingController extends GetxController {
                   .forEach((e) {
                 programList.add(e);
               });
-              // Channel
-              channel.clear();
-              map["infoFileNameLeave"]['headerData']['lstChannel'].forEach((e) {
-                channel.add(DropDownValue(
-                    key: e['channelCode'], value: e['channelName']));
-              });
-              selectedChannel = channel.firstWhereOrNull(
-                (element) {
-                  var result = element.key ==
-                      map['infoFileNameLeave']['headerData']['channelCode'];
-                  return result;
-                },
-              );
+
               //Deal No
               dealNo.clear();
               map["infoFileNameLeave"]['headerData']['lstDealNumbers']
@@ -365,6 +389,8 @@ class EdiRoBookingController extends GetxController {
               //Booking No.
               bookingNo1TEC.text =
                   map['infoLeaveOnDealNumber']['bookingMonth'] ?? "";
+              pdcActivityPeriodTEC.text =
+                  map['infoLeaveOnDealNumber']['bookingMonth'] ?? "";
               //Start & End Date
               startDateTEC.text = DateFormat("dd-MM-yyyy").format(
                   DateFormat("MM/dd/yyyy hh:mm:ss").parse(
@@ -450,6 +476,7 @@ class EdiRoBookingController extends GetxController {
                       map['infoLeaveOnDealNumber']['displayDealDetails']
                               ['message'] ??
                           "", callback: () {
+                    isEnterNewPDC.value = true;
                     gstDilogBox();
                   });
                 }
@@ -905,6 +932,85 @@ class EdiRoBookingController extends GetxController {
     );
   }
 
+  tapId() {
+    // if (selectedLoactions?.key == null) {
+    //   LoadingDialog.showErrorDialog('Please select location.');
+    // } else if (selectedChannel?.key == null) {
+    //   LoadingDialog.showErrorDialog('Please select channel.');
+    // } else if (selectedBrand?.key == null) {
+    //   LoadingDialog.showErrorDialog('Please select brand.');
+    // } else {
+    try {
+      LoadingDialog.call();
+      var payload = {
+        "locationCode": selectedLoactions?.key ?? "",
+        "channelCode": selectedChannel?.key ?? "",
+        "brandCode": selectedBrand?.key ?? "",
+        "lstSpots": lstDgvSpotsList.map((e) {
+          if (e['backColor'] == null) {
+            e['backColor'] = "";
+          }
+          if (e['programcategoryname'] == null) {
+            e['programcategoryname'] = "";
+          }
+          if (e['groupcode'] == null) {
+            e['groupcode'] = "";
+          }
+          if (e['pEndTime'] == null) {
+            e['pEndTime'] = "";
+          }
+          return e;
+        }).toList(),
+      };
+      Get.find<ConnectorControl>().POSTMETHOD(
+          api: ApiFactory.EDI_RO_COMP_TATE_ID,
+          json: payload,
+          fun: (map) {
+            Get.back();
+            if (map != null &&
+                map['strCompTape'] != null &&
+                map.containsKey('strCompTape')) {
+              LoadingDialog.showErrorDialog(map['strCompTape']);
+              // update(["initData"]);
+            }
+          });
+    } catch (e) {
+      print(e.toString());
+    }
+    // }
+  }
+
+  showMakeGood() {
+    try {
+      var fromDate = DateFormat("MM-dd-yyyy").format(
+          DateFormat("dd-MM-yyyy").parse(mgStartDateTEC.text ?? "10-01-2023"));
+      var toDate = DateFormat("MM-dd-yyyy").format(
+          DateFormat("dd-MM-yyyy").parse(mgEndDateTEC.text ?? "10-01-2023"));
+      LoadingDialog.call();
+      Get.find<ConnectorControl>().GETMETHODCALL(
+          api: ApiFactory.EDI_RO_SHOW_MAKE_GOOD(
+            selectedLoactions?.value ?? "",
+            selectedChannel?.value ?? "",
+            selectedBrand?.value ?? "",
+            selectedClient?.value ?? "",
+            selectedAgency?.value ?? "",
+            fromDate,
+            toDate,
+            selectedDealNo?.value ?? "",
+          ),
+          fun: (map) {
+            Get.back();
+            if (map != null &&
+                map['infoShowMakeGood'] != null &&
+                map.containsKey('infoShowMakeGood')) {
+              print(map);
+            }
+          });
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
   Future<void> clearFirstDataTableFilter(
       PlutoGridStateManager stateManager) async {
     Get.find<MainController>().filters1[stateManager.hashCode.toString()] =
@@ -1056,14 +1162,115 @@ class EdiRoBookingController extends GetxController {
     return Colors.white; // Return null if no color conditions are met.
   }
 
-  gridUpdate() {
-    update(['update']);
-    //    event.stateManager.setCurrentCell(
-    // event.stateManager
-    //     .getRowByIdx(
-    //         controller.lastSelectedIdx)
-    //     ?.cells['telecastDate'],
-    // controller.lastSelectedIdx);
+  fillGridAddData() {
+    if (pdcChequeNoTEC.text.isEmpty ||
+        pdcChqAmtTEC.text == "0.00" ||
+        pdcBankTEC.text.isEmpty ||
+        pdcChequeRecordByTEC.text.isEmpty) {
+      LoadingDialog.callInfoMessage(
+          "Cheque No cannot be blank, cheque amount hs to be greater then 0,\nbank name has to be specified and cheque received by cannot be blank.");
+    } else if (fillPDCList.any((e) => e['chqNo'] == pdcChequeNoTEC.text)) {
+      LoadingDialog.showErrorDialog("Duplicate cheque. Cannot add.");
+    } else {
+      fillPDCList.add({
+        "chqNo": pdcChequeNoTEC.text,
+        "chqDate": pdcChqDtTEC.text,
+        "chqAmount": pdcChqAmtTEC.text,
+        "bankName": pdcBankTEC.text,
+        "chequeReceviedBy": pdcChequeRecordByTEC.text,
+        "chequeReceviedOn": pdcRecordOnTEC.text,
+        "remarks": pdcRemarksTEC.text,
+        "chequeId": "",
+      });
+    }
+  }
+
+  clearFillPdc() {
+    pdcActivityPeriodTEC.clear();
+    pdcChequeNoTEC.clear();
+    pdcChqDtTEC.clear();
+    pdcChqAmtTEC.text = "0.00";
+    pdcBankTEC.clear();
+    pdcChequeRecordByTEC.clear();
+    pdcRecordOnTEC.clear();
+    pdcRemarksTEC.clear();
+    fillPDCList.clear();
+  }
+
+  getFillPDC() {
+    try {
+      LoadingDialog.call();
+      Get.find<ConnectorControl>().GETMETHODCALL(
+          api: ApiFactory.EDI_RO_GET_FILL_PDC(
+            selectedClient?.key ?? "",
+            selectedAgency?.key ?? "",
+            "0",
+            pdcActivityPeriodTEC.text ?? "",
+          ),
+          fun: (map) {
+            Get.back();
+            if (map != null &&
+                map['infoShowMakeGood'] != null &&
+                map.containsKey('infoShowMakeGood')) {
+              print(map);
+            }
+          });
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  save() {
+    try {
+      LoadingDialog.call();
+
+      var payload = {
+        "bookingNo": "",
+        "grpPDC": "",
+        "pdc": "",
+        "lstSpots": [],
+      };
+      Get.find<ConnectorControl>().POSTMETHOD(
+          api: ApiFactory.EDI_RO_SAVED_EDI_BOOKING,
+          json: payload,
+          fun: (map) {
+            Get.back();
+            if (map != null &&
+                map['infoShowMakeGood'] != null &&
+                map.containsKey('infoShowMakeGood')) {
+              print(map);
+            }
+          });
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  checkAll() {
+    //  spotsBookedTEC.text = "0";
+    // if (lstDgvSpotsList.isNotEmpty) {
+    //   var idSet = <String>{};
+    //   var distinct = [];
+    //   for (var d in lstDgvSpotsList) {
+    //     if (idSet.add(d['branD_ID'])) {
+    //       distinct.add(d);
+    //     }
+    //   }
+    //   print(distinct.length);
+
+    //   if (distinct.length == 1) {
+    //     print(distinct[0]['branD_ID']);
+    //     selectedBrand = brand.firstWhereOrNull(
+    //       (element) {
+    //         print(element.key.toString());
+    //         var result =
+    //             element.key.toString() == distinct[0]['branD_ID'].toString();
+    //         print(result);
+    //         return result;
+    //       },
+    //     );
+    //   }
+    // }
   }
 
   @override
