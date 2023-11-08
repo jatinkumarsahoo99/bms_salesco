@@ -597,8 +597,10 @@ class PDCChequesView extends StatelessWidget {
                                 );
                               } else if (val is PlutoRow) {
                                 controller.getRetriveData(
-                                    chequeId: int.tryParse(
-                                            val.cells['ChequeId']!.value) ??
+                                    chequeId: int.tryParse(val
+                                                .cells['ChequeId']?.value
+                                                .toString() ??
+                                            "0") ??
                                         0);
 
                                 controller.initPosition = Offset(
