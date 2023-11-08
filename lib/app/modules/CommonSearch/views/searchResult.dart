@@ -86,8 +86,19 @@ class SearchResultPage extends StatelessWidget {
                 width: Get.width * 2,
                 padding:
                     const EdgeInsets.only(bottom: 8, top: 8, left: 8, right: 8),
-                child: DataGridFromMap(
+                child: DataGridFromMap3(
                   columnAutoResize: false,
+                  checkBoxColumnKey: ['isDummy'],
+                  noEditcheckBoxColumnKey: ['isDummy'],
+                  checkBoxStrComparison: "true",
+                  uncheckCheckBoxStr: "false",
+                  formateDateColumn: const {
+                    "ApprovedTill": "yyyy-MM-ddThh:mm:ss",
+                    "ChequeDate": "yyyy-MM-ddThh:mm:ss",
+                    "ChequeReceivedOn": "yyyy-MM-ddThh:mm:ss",
+                    "ModifiedOn": "yyyy-MM-ddThh:mm:ss",
+                    "CCDVerifiedOn": "yyyy-MM-ddThh:mm:ss",
+                  },
                   // columnAutoResize:
                   //     (controller.searchResult!.length > 5) ? false : true,
                   exportFileName:

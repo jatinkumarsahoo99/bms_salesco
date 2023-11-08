@@ -723,6 +723,8 @@ class DataGridFromMap3 extends StatelessWidget {
       this.gridStyle,
       this.specificWidth,
       this.rowHeight = 25,
+      this.formateDateColumn,
+      this.noEditcheckBoxColumnKey,
       this.widthSpecificColumn})
       : super(key: key);
   final FocusNode? previousWidgetFN;
@@ -762,12 +764,13 @@ class DataGridFromMap3 extends StatelessWidget {
   Color Function(PlutoRowColorContext)? colorCallback;
   Function(PlutoGridOnLoadedEvent)? onload;
   final GlobalKey rebuildKey = GlobalKey();
-  final List<String>? checkBoxColumnKey;
+  final List<String>? checkBoxColumnKey, noEditcheckBoxColumnKey;
   final String? uncheckCheckBoxStr;
   final String? checkBoxStrComparison;
   final void Function(String columnName)? onColumnHeaderDoubleTap;
   PlutoColumnSort sort;
   FocusNode? focusNode;
+  Map<String, String>? formateDateColumn;
   @override
   Widget build(BuildContext context) {
     List<PlutoColumn> segColumn = [];
@@ -838,56 +841,65 @@ class DataGridFromMap3 extends StatelessWidget {
                   children: [
                     InkWell(
                       canRequestFocus: false,
-                      onTap: () {
-                        if (showTitleInCheckBox != null &&
-                            showTitleInCheckBox!.isNotEmpty) {
-                          var temp = mapData[rendererContext.rowIdx][key];
-                          temp['key'] = (temp['key'] == checkBoxStrComparison)
-                              ? uncheckCheckBoxStr
-                              : checkBoxStrComparison;
-                          rendererContext.stateManager.changeCellValue(
-                            rendererContext.cell,
-                            temp,
-                            force: true,
-                            callOnChangedEvent: true,
-                            notify: true,
-                          );
-                          rendererContext.stateManager.setCurrentCell(
-                              rendererContext.cell, rendererContext.rowIdx);
-                          if (rendererContext.stateManager.onSelected != null) {
-                            rendererContext.stateManager
-                                .onSelected!(PlutoGridOnSelectedEvent(
-                              cell: rendererContext.cell,
-                              row: rendererContext.row,
-                              rowIdx: rendererContext.rowIdx,
-                              selectedRows: rendererContext
-                                  .stateManager.currentSelectingRows,
-                            ));
-                          }
-                        } else {
-                          rendererContext.stateManager.changeCellValue(
-                            rendererContext.cell,
-                            rendererContext.cell.value == checkBoxStrComparison
-                                ? uncheckCheckBoxStr
-                                : checkBoxStrComparison,
-                            force: true,
-                            callOnChangedEvent: true,
-                            notify: true,
-                          );
-                          rendererContext.stateManager.setCurrentCell(
-                              rendererContext.cell, rendererContext.rowIdx);
-                          if (rendererContext.stateManager.onSelected != null) {
-                            rendererContext.stateManager
-                                .onSelected!(PlutoGridOnSelectedEvent(
-                              cell: rendererContext.cell,
-                              row: rendererContext.row,
-                              rowIdx: rendererContext.rowIdx,
-                              selectedRows: rendererContext
-                                  .stateManager.currentSelectingRows,
-                            ));
-                          }
-                        }
-                      },
+                      onTap: (noEditcheckBoxColumnKey != null &&
+                              noEditcheckBoxColumnKey!.contains(key))
+                          ? null
+                          : () {
+                              if (showTitleInCheckBox != null &&
+                                  showTitleInCheckBox!.isNotEmpty) {
+                                var temp = mapData[rendererContext.rowIdx][key];
+                                temp['key'] =
+                                    (temp['key'] == checkBoxStrComparison)
+                                        ? uncheckCheckBoxStr
+                                        : checkBoxStrComparison;
+                                rendererContext.stateManager.changeCellValue(
+                                  rendererContext.cell,
+                                  temp,
+                                  force: true,
+                                  callOnChangedEvent: true,
+                                  notify: true,
+                                );
+                                rendererContext.stateManager.setCurrentCell(
+                                    rendererContext.cell,
+                                    rendererContext.rowIdx);
+                                if (rendererContext.stateManager.onSelected !=
+                                    null) {
+                                  rendererContext.stateManager
+                                      .onSelected!(PlutoGridOnSelectedEvent(
+                                    cell: rendererContext.cell,
+                                    row: rendererContext.row,
+                                    rowIdx: rendererContext.rowIdx,
+                                    selectedRows: rendererContext
+                                        .stateManager.currentSelectingRows,
+                                  ));
+                                }
+                              } else {
+                                rendererContext.stateManager.changeCellValue(
+                                  rendererContext.cell,
+                                  rendererContext.cell.value ==
+                                          checkBoxStrComparison
+                                      ? uncheckCheckBoxStr
+                                      : checkBoxStrComparison,
+                                  force: true,
+                                  callOnChangedEvent: true,
+                                  notify: true,
+                                );
+                                rendererContext.stateManager.setCurrentCell(
+                                    rendererContext.cell,
+                                    rendererContext.rowIdx);
+                                if (rendererContext.stateManager.onSelected !=
+                                    null) {
+                                  rendererContext.stateManager
+                                      .onSelected!(PlutoGridOnSelectedEvent(
+                                    cell: rendererContext.cell,
+                                    row: rendererContext.row,
+                                    rowIdx: rendererContext.rowIdx,
+                                    selectedRows: rendererContext
+                                        .stateManager.currentSelectingRows,
+                                  ));
+                                }
+                              }
+                            },
                       child: Icon(
                         ((showTitleInCheckBox != null &&
                                         showTitleInCheckBox!.isNotEmpty)
@@ -977,9 +989,23 @@ class DataGridFromMap3 extends StatelessWidget {
         }
         try {
           for (var element in row.entries) {
-            cells[element.key] = PlutoCell(
-              value: element.value ?? "",
-            );
+            try {
+              cells[element.key] = PlutoCell(
+                value: formateDateColumn != null &&
+                        formateDateColumn!.containsKey(element.key) &&
+                        element.value != null
+                    ? DateFormat(dateFromat).format(
+                        DateFormat(formateDateColumn![element.key])
+                            .parse(element.value))
+                    : element.value ?? "",
+              );
+            } catch (e) {
+              print(
+                  "Problem while formating date assigning original value ${e.toString()}");
+              cells[element.key] = PlutoCell(
+                value: element.value ?? "",
+              );
+            }
           }
           segRows.add(PlutoRow(cells: cells, sortIdx: i));
         } catch (e) {
