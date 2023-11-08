@@ -15,6 +15,7 @@ import 'package:bms_salesco/widgets/dropdown.dart';
 import 'package:bms_salesco/widgets/gridFromMap.dart';
 import 'package:bms_salesco/widgets/input_fields.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:get/get.dart';
 import 'package:pluto_grid/pluto_grid.dart';
@@ -23,6 +24,8 @@ import '../../../../widgets/DataGridShowOnly.dart';
 import '../../../../widgets/floating_dialog.dart';
 import '../../../data/rowfilter.dart';
 import '../../../providers/Utils.dart';
+import '../../CommonDocs/controllers/common_docs_controller.dart';
+import '../../CommonDocs/views/common_docs_view.dart';
 import '../controllers/edi_ro_booking_controller.dart';
 
 class EdiRoBookingView extends StatelessWidget {
@@ -149,13 +152,19 @@ class EdiRoBookingView extends StatelessWidget {
                                   controller: controller.dealTypeTEC,
                                   width: 0.105,
                                   isEnable: false),
-                              DropDownField.formDropDown1WidthMap(
-                                  controller.brand.value, (data) {
-                                controller.selectedBrand = data;
-                                controller.brandLeave(data.key);
-                              }, "Brand", .22,
+                              Obx(
+                                () => DropDownField.formDropDown1WidthMap(
+                                  controller.brand.value,
+                                  (data) {
+                                    controller.selectedBrand = data;
+                                    controller.brandLeave(data.key);
+                                  },
+                                  "Brand",
+                                  .22,
                                   autoFocus: true,
-                                  selected: controller.selectedBrand),
+                                  selected: controller.selectedBrand,
+                                ),
+                              ),
                               DateWithThreeTextField(
                                 title: "Start Date",
                                 mainTextController: controller.startDateTEC,
@@ -472,11 +481,15 @@ class EdiRoBookingView extends StatelessWidget {
                   ],
                 ),
                 Obx(
-                  () => SizedBox(
-                    height: Get.height * 0.25,
-                    child: controller.lstDgvDealEntriesList.value.isEmpty
-                        ? null
-                        : DataGridShowOnlyKeys(
+                  () => controller.lstDgvDealEntriesList.value.isEmpty
+                      ? Container(
+                          height: Get.height * 0.25,
+                          decoration: BoxDecoration(
+                              border: Border.all(color: Colors.grey)),
+                        )
+                      : SizedBox(
+                          height: Get.height * 0.25,
+                          child: DataGridShowOnlyKeys(
                             mapData: controller.lstDgvDealEntriesList.value,
                             hideCode: false,
                             exportFileName: "EDI R.O. Booking",
@@ -493,16 +506,19 @@ class EdiRoBookingView extends StatelessWidget {
                               print(event.cell.column.field);
                             },
                           ),
-                  ),
+                        ),
                 ),
                 const SizedBox(
                   height: 1,
                 ),
                 Obx(() => Expanded(
-                      child: Container(
-                        child: controller.lstDgvSpotsList.value.isEmpty
-                            ? null
-                            : DataGridShowOnlyKeys(
+                      child: controller.lstDgvSpotsList.value.isEmpty
+                          ? Container(
+                              decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.grey)),
+                            )
+                          : Container(
+                              child: DataGridShowOnlyKeys(
                                 editKeys: ['noProgram'],
                                 mapData: controller.lstDgvSpotsList.value,
                                 hideCode: false,
@@ -580,28 +596,22 @@ class EdiRoBookingView extends StatelessWidget {
                                           .toString() ==
                                       'program') {
                                     event.row.cells['noProgram']?.value = 1;
-                                    event.row.cells['dealOK']?.value = 0;
-                                    event.row.cells['fctok']?.value = 0;
-                                    event.row.cells['okSpot']?.value = 0;
-
-                                    // var rowIdx =
-                                    //     controller.dvgSpotGrid!.currentRowIdx;
-                                    // controller.dvgSpotGrid!.insertRows(
-                                    //     event.row.sortIdx, [event.row]);
-                                    // controller.dvgSpotGrid!.removeCurrentRow();
+                                    event.row.cells['dealOK']?.value = "0";
+                                    event.row.cells['fctok']?.value = "0";
+                                    event.row.cells['okSpot']?.value = "0";
 
                                     controller
                                             .lstDgvSpotsList[event.row.sortIdx]
                                         ['noProgram'] = 1;
                                     controller
                                             .lstDgvSpotsList[event.row.sortIdx]
-                                        ['dealOK'] = 0;
+                                        ['dealOK'] = "0";
                                     controller
                                             .lstDgvSpotsList[event.row.sortIdx]
-                                        ['fctok'] = 0;
+                                        ['fctok'] = "0";
                                     controller
                                             .lstDgvSpotsList[event.row.sortIdx]
-                                        ['okSpot'] = 0;
+                                        ['okSpot'] = "0";
                                     controller.lstDgvSpotsList.refresh();
                                   } else if (event.cell.column.field
                                           .toString() ==
@@ -619,42 +629,8 @@ class EdiRoBookingView extends StatelessWidget {
                                   }
                                 },
                               ),
-                      ),
+                            ),
                     )),
-                // GetBuilder<HomeController>(
-                //     id: "buttons",
-                //     init: Get.find<HomeController>(),
-                //     builder: (btncontroller) {
-                //       if (btncontroller.buttons != null) {
-                //         return Container(
-                //           padding: EdgeInsets.only(top: 5),
-                //           height: 40,
-                //           child: Wrap(
-                //             spacing: 5,
-                //             runSpacing: 15,
-                //             crossAxisAlignment: WrapCrossAlignment.end,
-                //             alignment: WrapAlignment.start,
-                //             // mainAxisSize: MainAxisSize.min,
-                //             children: [
-                //               for (var btn in btncontroller.buttons!) ...{
-                //                 FormButtonWrapper(
-                //                     btnText: btn["name"], callback: () {}
-                //                     //  ((Utils.btnAccessHandler(btn['name'], controller.formPermissions!) == null))
-                //                     //     ? null
-                //                     //     : () => controller.formHandler(btn['name']),
-                //                     )
-                //               },
-                //               // for (var btn in btncontroller.buttons!)
-                //               //   FormButtonWrapper(
-                //               //     btnText: btn["name"],
-                //               //     callback: () => controller.formHandler(btn['name'].toString()),
-                //               //   ),
-                //             ],
-                //           ),
-                //         );
-                //       }
-                //       return Container();
-                //     }),
                 const SizedBox(
                   height: 5,
                 ),
@@ -674,20 +650,20 @@ class EdiRoBookingView extends StatelessWidget {
                           return Wrap(
                             spacing: 5,
                             runSpacing: 15,
-                            alignment: WrapAlignment.center,
+                            alignment: WrapAlignment.end,
                             children: [
                               for (var btn in controllerX.buttons!)
                                 FormButtonWrapper(
-                                    btnText: btn["name"],
-                                    callback: Utils.btnAccessHandler2(
-                                                btn['name'],
-                                                controllerX,
-                                                formPermissions) ==
-                                            null
-                                        ? null
-                                        : () => formHandler(
-                                              btn['name'],
-                                            )),
+                                  btnText: btn["name"],
+                                  callback: Utils.btnAccessHandler2(btn['name'],
+                                              controllerX, formPermissions) ==
+                                          null
+                                      ? null
+                                      : () => formHandler(
+                                            btn['name'],
+                                          ),
+                                  showIcon: false,
+                                ),
                               FormButtonWrapper(
                                 btnText: "Info",
                                 callback: () {
@@ -697,7 +673,9 @@ class EdiRoBookingView extends StatelessWidget {
                               ),
                               FormButtonWrapper(
                                 btnText: "Check All",
-                                callback: () {},
+                                callback: () {
+                                  controller.checkAll();
+                                },
                                 showIcon: false,
                               ),
                               FormButtonWrapper(
@@ -709,7 +687,9 @@ class EdiRoBookingView extends StatelessWidget {
                               ),
                               FormButtonWrapper(
                                 btnText: "Tape Id",
-                                callback: () {},
+                                callback: () {
+                                  controller.tapId();
+                                },
                                 showIcon: false,
                               ),
                               colorBox(
@@ -720,6 +700,32 @@ class EdiRoBookingView extends StatelessWidget {
                               colorBox("Revenue Type", Colors.yellow[700],
                                   Colors.white),
                               colorBox("Campaign", Colors.white, Colors.black),
+                              Obx(
+                                () => Visibility(
+                                  visible: controller.isEnterNewPDC.value,
+                                  child: DropDownField.formDropDown1WidthMap(
+                                    [],
+                                    (data) {},
+                                    "",
+                                    .10,
+                                    dialogHeight: 150,
+                                    showtitle: false,
+                                  ),
+                                ),
+                              ),
+                              Obx(
+                                () => Visibility(
+                                  visible: controller.isEnterNewPDC.value,
+                                  child: FormButtonWrapper(
+                                    btnText: "Enter new PDC",
+                                    callback: () {
+                                      // maincontroller.getFillPDC();
+                                      enterNewPdcDilogBox();
+                                    },
+                                    showIcon: false,
+                                  ),
+                                ),
+                              ),
                             ],
                           );
                         }
@@ -742,7 +748,7 @@ class EdiRoBookingView extends StatelessWidget {
       decoration:
           BoxDecoration(color: color, borderRadius: BorderRadius.circular(3)),
       child: Padding(
-        padding: const EdgeInsets.only(left: 8, right: 8, top: 6, bottom: 6),
+        padding: const EdgeInsets.only(left: 4, right: 4, top: 6, bottom: 6),
         child: Text(
           text,
           style:
@@ -759,6 +765,18 @@ class EdiRoBookingView extends StatelessWidget {
       Get.find<HomeController>().clearPage1();
     } else if (btnName == "Save") {
       // saveValidate();
+      enterNewPdcDilogBox();
+    } else if (btnName == "Docs") {
+      Get.defaultDialog(
+        title: "Documents",
+        content: CommonDocsView(
+          documentKey:
+              "RObooking${maincontroller.selectedLoactions!.key}${maincontroller.selectedChannel!.key}${maincontroller.bookingNo1TEC.text}${maincontroller.bookingNo2TEC.text}",
+        ),
+      ).then((value) {
+        Get.delete<CommonDocsController>(tag: "commonDocs");
+      });
+      // maincontroller.docs();
     }
   }
 
@@ -926,90 +944,313 @@ class EdiRoBookingView extends StatelessWidget {
   }
 
   mgSpotsDilogBox() {
+    if (maincontroller.selectedLoactions?.key == null) {
+      LoadingDialog.showErrorDialog('Please select location.');
+    } else if (maincontroller.selectedChannel?.key == null) {
+      LoadingDialog.showErrorDialog('Please select channel.');
+    } else if (maincontroller.selectedBrand?.key == null) {
+      LoadingDialog.showErrorDialog('Please select brand.');
+    } else {
+      maincontroller.drgabbleDialog.value = Card(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(2)),
+        borderOnForeground: false,
+        margin: const EdgeInsets.all(0),
+        child: Container(
+          height: Get.height * .65,
+          width: Get.width * .80,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    const SizedBox(
+                      width: 5,
+                    ),
+                    DateWithThreeTextField(
+                      title: "From Date",
+                      mainTextController: maincontroller.mgStartDateTEC,
+                      widthRation: .12,
+                    ),
+                    const SizedBox(
+                      width: 5,
+                    ),
+                    DateWithThreeTextField(
+                      title: "To Date",
+                      mainTextController: maincontroller.mgEndDateTEC,
+                      widthRation: .12,
+                    ),
+                    const SizedBox(
+                      width: 5,
+                    ),
+                    FormButton(
+                      btnText: "Show",
+                      callback: () {
+                        maincontroller.showMakeGood();
+                      },
+                      showIcon: false,
+                    ),
+                    const SizedBox(
+                      width: 5,
+                    ),
+                    FormButton(
+                      btnText: "Back",
+                      callback: () {
+                        maincontroller.drgabbleDialog.value = null;
+                      },
+                      showIcon: false,
+                    ),
+                    const SizedBox(
+                      width: 5,
+                    ),
+                    FormButton(
+                      btnText: "Import & Mark",
+                      callback: () {
+                        maincontroller.pickFile();
+                      },
+                      showIcon: false,
+                    ),
+                    const SizedBox(
+                      width: 5,
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: Obx(
+                  () => Container(
+                    decoration: maincontroller.infoTableList.isEmpty
+                        ? BoxDecoration(border: Border.all(color: Colors.grey))
+                        : null,
+                    child: maincontroller.infoTableList.value.isEmpty
+                        ? null
+                        : DataGridShowOnlyKeys(
+                            mapData: maincontroller.infoTableList.value,
+                            hideCode: false,
+                            exportFileName: "EDI R.O. Booking",
+                          ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+  }
+
+  enterNewPdcDilogBox() {
     maincontroller.drgabbleDialog.value = Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(2)),
       borderOnForeground: false,
       margin: const EdgeInsets.all(0),
       child: Container(
-        height: Get.height * .65,
-        width: Get.width * .80,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  const SizedBox(
-                    width: 5,
-                  ),
-                  DateWithThreeTextField(
-                    title: "From Date",
-                    mainTextController: TextEditingController(),
-                    widthRation: .12,
-                  ),
-                  const SizedBox(
-                    width: 5,
-                  ),
-                  DateWithThreeTextField(
-                    title: "To Date",
-                    mainTextController: TextEditingController(),
-                    widthRation: .12,
-                  ),
-                  const SizedBox(
-                    width: 5,
-                  ),
-                  FormButton(
-                    btnText: "Show",
-                    callback: () {
+        height: Get.height * .82,
+        width: Get.width * .50,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 0),
+                child: Align(
+                  alignment: Alignment.topRight,
+                  child: IconButton(
+                    onPressed: () {
                       maincontroller.drgabbleDialog.value = null;
                     },
-                    showIcon: false,
+                    icon: const Icon(Icons.close),
                   ),
-                  const SizedBox(
-                    width: 5,
-                  ),
-                  FormButton(
-                    btnText: "Back",
-                    callback: () {
-                      maincontroller.drgabbleDialog.value = null;
-                    },
-                    showIcon: false,
-                  ),
-                  const SizedBox(
-                    width: 5,
-                  ),
-                  FormButton(
-                    btnText: "Import & Mark",
-                    callback: () {
-                      maincontroller.pickFile();
-                    },
-                    showIcon: false,
-                  ),
-                  const SizedBox(
-                    width: 5,
-                  ),
-                ],
-              ),
-            ),
-            Expanded(
-              child: Obx(
-                () => Container(
-                  decoration: maincontroller.infoTableList.isEmpty
-                      ? BoxDecoration(border: Border.all(color: Colors.grey))
-                      : null,
-                  child: maincontroller.infoTableList.value.isEmpty
-                      ? null
-                      : DataGridShowOnlyKeys(
-                          mapData: maincontroller.infoTableList.value,
-                          hideCode: false,
-                          exportFileName: "EDI R.O. Booking",
-                        ),
                 ),
               ),
-            ),
-          ],
+              FocusTraversalGroup(
+                policy: OrderedTraversalPolicy(),
+                child: Wrap(
+                  spacing: Get.width * 0.005,
+                  runSpacing: 5,
+                  crossAxisAlignment: WrapCrossAlignment.end,
+                  alignment: WrapAlignment.spaceBetween,
+                  children: [
+                    InputFields.formField1(
+                      hintTxt: "Loaction",
+                      controller: maincontroller.pdcLoactionTEC,
+                      width: 0.24,
+                      isEnable: false,
+                    ),
+                    InputFields.formField1(
+                      hintTxt: "Channel",
+                      controller: maincontroller.pdcChannelTEC,
+                      width: 0.24,
+                      isEnable: false,
+                    ),
+                    InputFields.formField1(
+                      hintTxt: "Client",
+                      controller: maincontroller.pdcClientTEC,
+                      width: 0.24,
+                      isEnable: false,
+                    ),
+                    InputFields.formField1(
+                      hintTxt: "Agency",
+                      controller: maincontroller.pdcAgencyTEC,
+                      width: 0.24,
+                      isEnable: false,
+                    ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        FocusTraversalOrder(
+                          order: const NumericFocusOrder(1),
+                          child: InputFields.formField1(
+                            hintTxt: "Activity Period",
+                            controller: maincontroller.pdcActivityPeriodTEC,
+                            width: 0.075,
+                            autoFocus: true,
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 25,
+                        ),
+                        const Text(
+                          "[YYYYMM]",
+                          style: TextStyle(color: Colors.black, fontSize: 12),
+                        )
+                      ],
+                    ),
+                    Container(
+                      width: Get.width * 0.53,
+                      height: 1,
+                      color: Colors.grey,
+                    ),
+                    FocusTraversalOrder(
+                      order: const NumericFocusOrder(2),
+                      child: InputFields.formField1(
+                        hintTxt: "Cheque NO",
+                        controller: maincontroller.pdcChequeNoTEC,
+                        width: 0.15,
+                      ),
+                    ),
+                    DateWithThreeTextField(
+                      title: "Chq Dt",
+                      mainTextController: maincontroller.pdcChqDtTEC,
+                      widthRation: .15,
+                    ),
+                    InputFields.numbers4(
+                      hintTxt: "Chq Amt",
+                      padLeft: 0,
+                      controller: maincontroller.pdcChqAmtTEC,
+                      width: 0.15,
+                      isNegativeReq: false,
+                      inputformatters: [
+                        FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                      ],
+                    ),
+                    InputFields.formField1(
+                      hintTxt: "Bank",
+                      controller: maincontroller.pdcBankTEC,
+                      width: 0.24,
+                    ),
+                    InputFields.formField1(
+                      hintTxt: "Cheq Recd by",
+                      controller: maincontroller.pdcChequeRecordByTEC,
+                      width: 0.24,
+                    ),
+                    DateWithThreeTextField(
+                      title: "Recd On",
+                      mainTextController: maincontroller.pdcRecordOnTEC,
+                      widthRation: .15,
+                    ),
+                    InputFields.formField1(
+                      hintTxt: "Remarks",
+                      controller: maincontroller.pdcRemarksTEC,
+                      width: 0.33,
+                    ),
+                    Align(
+                      alignment: Alignment.topCenter,
+                      child: FormButtonWrapper(
+                        btnText: "Add",
+                        callback: () {
+                          maincontroller.fillGridAddData();
+                        },
+                        showIcon: false,
+                      ),
+                    ),
+                    Obx(
+                      () => maincontroller.fillPDCList.isEmpty
+                          ? Container(
+                              height: Get.height * 0.18,
+                              decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.grey)),
+                            )
+                          : SizedBox(
+                              height: Get.height * 0.18,
+                              child: DataGridShowOnlyKeys(
+                                formatDate: false,
+                                mapData: maincontroller.fillPDCList.value,
+                                hideCode: false,
+                                exportFileName: "EDI R.O. Booking",
+                                onload: (load) {
+                                  maincontroller.fillPDCTabelGrid =
+                                      load.stateManager;
+                                },
+                                colorCallback: (row) => row.row.cells
+                                        .containsValue(maincontroller
+                                            .fillPDCTabelGrid?.currentCell)
+                                    ? Colors.deepPurple.shade100
+                                    : Colors.white,
+                                onRowDoubleTap: (event) {
+                                  maincontroller.fillPDCTabelGrid
+                                      ?.setCurrentCell(
+                                          event.cell, event.rowIdx);
+                                  var gridValue = event.row.cells;
+                                  maincontroller.pdcChequeNoTEC.text =
+                                      gridValue['chqNo']?.value;
+                                  maincontroller.pdcChqDtTEC.text =
+                                      gridValue['chqDate']?.value;
+                                  maincontroller.pdcChqAmtTEC.text =
+                                      gridValue['chqAmount']?.value;
+                                  maincontroller.pdcBankTEC.text =
+                                      gridValue['bankName']?.value;
+                                  maincontroller.pdcChequeRecordByTEC.text =
+                                      gridValue['chequeReceviedBy']?.value;
+                                  maincontroller.pdcRecordOnTEC.text =
+                                      gridValue['chequeReceviedOn']?.value;
+                                  maincontroller.pdcRemarksTEC.text =
+                                      gridValue['remarks']?.value;
+
+                                  // print(event.row.cells['chqNo']?.value);
+                                  // print(event.cell.column.field);
+                                },
+                              ),
+                            ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        FormButtonWrapper(
+                          btnText: "Save",
+                          callback: () {},
+                          showIcon: false,
+                        ),
+                        const SizedBox(
+                          width: 5,
+                        ),
+                        FormButtonWrapper(
+                          btnText: "Clear",
+                          callback: () {
+                            maincontroller.clearFillPdc();
+                          },
+                          showIcon: false,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
