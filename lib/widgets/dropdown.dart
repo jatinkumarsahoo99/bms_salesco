@@ -2709,6 +2709,7 @@ class DropDownField {
                                       color: Colors.black,
                                       fontSize: SizeDefine.fontSizeInputField),
                                   child: Container(
+                                    color: Colors.white,
                                     padding: const EdgeInsets.all(8),
                                     height: dialogHeight - 20,
                                     child: Column(
@@ -2768,6 +2769,7 @@ class DropDownField {
                                           child: Obx(
                                             () {
                                               return Material(
+                                                color: Colors.white,
                                                 child: ListView(
                                                   shrinkWrap: true,
                                                   children: tempList
@@ -2779,7 +2781,8 @@ class DropDownField {
                                                             selected = element;
                                                             re(() {});
                                                             callback(element);
-                                                            FocusScope.of(context)
+                                                            FocusScope.of(
+                                                                    context)
                                                                 .requestFocus(
                                                                     inkWellFocusNode);
                                                           },
@@ -2787,7 +2790,8 @@ class DropDownField {
                                                             padding:
                                                                 const EdgeInsets
                                                                         .symmetric(
-                                                                    vertical: 8),
+                                                                    vertical:
+                                                                        8),
                                                             child: Text(
                                                               element.value ??
                                                                   "null",

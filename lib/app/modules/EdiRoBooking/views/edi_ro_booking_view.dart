@@ -20,6 +20,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
+import '../../../../widgets/CheckBoxWidget.dart';
 import '../../../../widgets/DataGridShowOnly.dart';
 import '../../../../widgets/floating_dialog.dart';
 import '../../../data/rowfilter.dart';
@@ -1015,6 +1016,16 @@ class EdiRoBookingView extends StatelessWidget {
                     const SizedBox(
                       width: 5,
                     ),
+                    Obx(() {
+                      return CheckBoxWidget1(
+                        title: "Select All",
+                        value: !maincontroller.controllsEnable.value,
+                        onChanged: (val) {
+                          maincontroller.controllsEnable.value =
+                              !(maincontroller.controllsEnable.value);
+                        },
+                      );
+                    }),
                   ],
                 ),
               ),
@@ -1047,209 +1058,211 @@ class EdiRoBookingView extends StatelessWidget {
       borderOnForeground: false,
       margin: const EdgeInsets.all(0),
       child: Container(
-        height: Get.height * .82,
+        height: Get.height * .80,
         width: Get.width * .50,
         child: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 0),
-                child: Align(
-                  alignment: Alignment.topRight,
-                  child: IconButton(
-                    onPressed: () {
-                      maincontroller.drgabbleDialog.value = null;
-                    },
-                    icon: const Icon(Icons.close),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 0),
+                  child: Align(
+                    alignment: Alignment.topRight,
+                    child: IconButton(
+                      onPressed: () {
+                        maincontroller.drgabbleDialog.value = null;
+                      },
+                      icon: const Icon(Icons.close),
+                    ),
                   ),
                 ),
-              ),
-              FocusTraversalGroup(
-                policy: OrderedTraversalPolicy(),
-                child: Wrap(
-                  spacing: Get.width * 0.005,
-                  runSpacing: 5,
-                  crossAxisAlignment: WrapCrossAlignment.end,
-                  alignment: WrapAlignment.spaceBetween,
-                  children: [
-                    InputFields.formField1(
-                      hintTxt: "Loaction",
-                      controller: maincontroller.pdcLoactionTEC,
-                      width: 0.24,
-                      isEnable: false,
-                    ),
-                    InputFields.formField1(
-                      hintTxt: "Channel",
-                      controller: maincontroller.pdcChannelTEC,
-                      width: 0.24,
-                      isEnable: false,
-                    ),
-                    InputFields.formField1(
-                      hintTxt: "Client",
-                      controller: maincontroller.pdcClientTEC,
-                      width: 0.24,
-                      isEnable: false,
-                    ),
-                    InputFields.formField1(
-                      hintTxt: "Agency",
-                      controller: maincontroller.pdcAgencyTEC,
-                      width: 0.24,
-                      isEnable: false,
-                    ),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        FocusTraversalOrder(
-                          order: const NumericFocusOrder(1),
-                          child: InputFields.formField1(
-                            hintTxt: "Activity Period",
-                            controller: maincontroller.pdcActivityPeriodTEC,
-                            width: 0.075,
-                            autoFocus: true,
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 25,
-                        ),
-                        const Text(
-                          "[YYYYMM]",
-                          style: TextStyle(color: Colors.black, fontSize: 12),
-                        )
-                      ],
-                    ),
-                    Container(
-                      width: Get.width * 0.53,
-                      height: 1,
-                      color: Colors.grey,
-                    ),
-                    FocusTraversalOrder(
-                      order: const NumericFocusOrder(2),
-                      child: InputFields.formField1(
-                        hintTxt: "Cheque NO",
-                        controller: maincontroller.pdcChequeNoTEC,
-                        width: 0.15,
+                FocusTraversalGroup(
+                  policy: OrderedTraversalPolicy(),
+                  child: Wrap(
+                    spacing: Get.width * 0.005,
+                    runSpacing: 5,
+                    crossAxisAlignment: WrapCrossAlignment.end,
+                    alignment: WrapAlignment.spaceBetween,
+                    children: [
+                      InputFields.formField1(
+                        hintTxt: "Loaction",
+                        controller: maincontroller.pdcLoactionTEC,
+                        width: 0.24,
+                        isEnable: false,
                       ),
-                    ),
-                    DateWithThreeTextField(
-                      title: "Chq Dt",
-                      mainTextController: maincontroller.pdcChqDtTEC,
-                      widthRation: .15,
-                    ),
-                    InputFields.numbers4(
-                      hintTxt: "Chq Amt",
-                      padLeft: 0,
-                      controller: maincontroller.pdcChqAmtTEC,
-                      width: 0.15,
-                      isNegativeReq: false,
-                      inputformatters: [
-                        FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
-                      ],
-                    ),
-                    InputFields.formField1(
-                      hintTxt: "Bank",
-                      controller: maincontroller.pdcBankTEC,
-                      width: 0.24,
-                    ),
-                    InputFields.formField1(
-                      hintTxt: "Cheq Recd by",
-                      controller: maincontroller.pdcChequeRecordByTEC,
-                      width: 0.24,
-                    ),
-                    DateWithThreeTextField(
-                      title: "Recd On",
-                      mainTextController: maincontroller.pdcRecordOnTEC,
-                      widthRation: .15,
-                    ),
-                    InputFields.formField1(
-                      hintTxt: "Remarks",
-                      controller: maincontroller.pdcRemarksTEC,
-                      width: 0.33,
-                    ),
-                    Align(
-                      alignment: Alignment.topCenter,
-                      child: FormButtonWrapper(
-                        btnText: "Add",
-                        callback: () {
-                          maincontroller.fillGridAddData();
-                        },
-                        showIcon: false,
+                      InputFields.formField1(
+                        hintTxt: "Channel",
+                        controller: maincontroller.pdcChannelTEC,
+                        width: 0.24,
+                        isEnable: false,
                       ),
-                    ),
-                    Obx(
-                      () => maincontroller.fillPDCList.isEmpty
-                          ? Container(
-                              height: Get.height * 0.18,
-                              decoration: BoxDecoration(
-                                  border: Border.all(color: Colors.grey)),
-                            )
-                          : SizedBox(
-                              height: Get.height * 0.18,
-                              child: DataGridShowOnlyKeys(
-                                formatDate: false,
-                                mapData: maincontroller.fillPDCList.value,
-                                hideCode: false,
-                                exportFileName: "EDI R.O. Booking",
-                                onload: (load) {
-                                  maincontroller.fillPDCTabelGrid =
-                                      load.stateManager;
-                                },
-                                colorCallback: (row) => row.row.cells
-                                        .containsValue(maincontroller
-                                            .fillPDCTabelGrid?.currentCell)
-                                    ? Colors.deepPurple.shade100
-                                    : Colors.white,
-                                onRowDoubleTap: (event) {
-                                  maincontroller.fillPDCTabelGrid
-                                      ?.setCurrentCell(
-                                          event.cell, event.rowIdx);
-                                  var gridValue = event.row.cells;
-                                  maincontroller.pdcChequeNoTEC.text =
-                                      gridValue['chqNo']?.value;
-                                  maincontroller.pdcChqDtTEC.text =
-                                      gridValue['chqDate']?.value;
-                                  maincontroller.pdcChqAmtTEC.text =
-                                      gridValue['chqAmount']?.value;
-                                  maincontroller.pdcBankTEC.text =
-                                      gridValue['bankName']?.value;
-                                  maincontroller.pdcChequeRecordByTEC.text =
-                                      gridValue['chequeReceviedBy']?.value;
-                                  maincontroller.pdcRecordOnTEC.text =
-                                      gridValue['chequeReceviedOn']?.value;
-                                  maincontroller.pdcRemarksTEC.text =
-                                      gridValue['remarks']?.value;
-
-                                  // print(event.row.cells['chqNo']?.value);
-                                  // print(event.cell.column.field);
-                                },
-                              ),
+                      InputFields.formField1(
+                        hintTxt: "Client",
+                        controller: maincontroller.pdcClientTEC,
+                        width: 0.24,
+                        isEnable: false,
+                      ),
+                      InputFields.formField1(
+                        hintTxt: "Agency",
+                        controller: maincontroller.pdcAgencyTEC,
+                        width: 0.24,
+                        isEnable: false,
+                      ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          FocusTraversalOrder(
+                            order: const NumericFocusOrder(1),
+                            child: InputFields.formField1(
+                              hintTxt: "Activity Period",
+                              controller: maincontroller.pdcActivityPeriodTEC,
+                              width: 0.075,
+                              autoFocus: true,
                             ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        FormButtonWrapper(
-                          btnText: "Save",
-                          callback: () {},
-                          showIcon: false,
+                          ),
+                          const SizedBox(
+                            width: 25,
+                          ),
+                          const Text(
+                            "[YYYYMM]",
+                            style: TextStyle(color: Colors.black, fontSize: 12),
+                          )
+                        ],
+                      ),
+                      Container(
+                        width: Get.width * 0.53,
+                        height: 1,
+                        color: Colors.grey,
+                      ),
+                      FocusTraversalOrder(
+                        order: const NumericFocusOrder(2),
+                        child: InputFields.formField1(
+                          hintTxt: "Cheque NO",
+                          controller: maincontroller.pdcChequeNoTEC,
+                          width: 0.15,
                         ),
-                        const SizedBox(
-                          width: 5,
-                        ),
-                        FormButtonWrapper(
-                          btnText: "Clear",
+                      ),
+                      DateWithThreeTextField(
+                        title: "Chq Dt",
+                        mainTextController: maincontroller.pdcChqDtTEC,
+                        widthRation: .15,
+                      ),
+                      InputFields.numbers4(
+                        hintTxt: "Chq Amt",
+                        padLeft: 0,
+                        controller: maincontroller.pdcChqAmtTEC,
+                        width: 0.15,
+                        isNegativeReq: false,
+                        inputformatters: [
+                          FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                        ],
+                      ),
+                      InputFields.formField1(
+                        hintTxt: "Bank",
+                        controller: maincontroller.pdcBankTEC,
+                        width: 0.24,
+                      ),
+                      InputFields.formField1(
+                        hintTxt: "Cheq Recd by",
+                        controller: maincontroller.pdcChequeRecordByTEC,
+                        width: 0.24,
+                      ),
+                      DateWithThreeTextField(
+                        title: "Recd On",
+                        mainTextController: maincontroller.pdcRecordOnTEC,
+                        widthRation: .15,
+                      ),
+                      InputFields.formField1(
+                        hintTxt: "Remarks",
+                        controller: maincontroller.pdcRemarksTEC,
+                        width: 0.33,
+                      ),
+                      Align(
+                        alignment: Alignment.topCenter,
+                        child: FormButtonWrapper(
+                          btnText: "Add",
                           callback: () {
-                            maincontroller.clearFillPdc();
+                            maincontroller.fillGridAddData();
                           },
                           showIcon: false,
                         ),
-                      ],
-                    ),
-                  ],
-                ),
-              )
-            ],
+                      ),
+                      Obx(
+                        () => maincontroller.fillPDCList.isEmpty
+                            ? Container(
+                                height: Get.height * 0.15,
+                                decoration: BoxDecoration(
+                                    border: Border.all(color: Colors.grey)),
+                              )
+                            : SizedBox(
+                                height: Get.height * 0.15,
+                                child: DataGridShowOnlyKeys(
+                                  formatDate: false,
+                                  mapData: maincontroller.fillPDCList.value,
+                                  hideCode: false,
+                                  exportFileName: "EDI R.O. Booking",
+                                  onload: (load) {
+                                    maincontroller.fillPDCTabelGrid =
+                                        load.stateManager;
+                                  },
+                                  colorCallback: (row) => row.row.cells
+                                          .containsValue(maincontroller
+                                              .fillPDCTabelGrid?.currentCell)
+                                      ? Colors.deepPurple.shade100
+                                      : Colors.white,
+                                  onRowDoubleTap: (event) {
+                                    maincontroller.fillPDCTabelGrid
+                                        ?.setCurrentCell(
+                                            event.cell, event.rowIdx);
+                                    var gridValue = event.row.cells;
+                                    maincontroller.pdcChequeNoTEC.text =
+                                        gridValue['chqNo']?.value;
+                                    maincontroller.pdcChqDtTEC.text =
+                                        gridValue['chqDate']?.value;
+                                    maincontroller.pdcChqAmtTEC.text =
+                                        gridValue['chqAmount']?.value;
+                                    maincontroller.pdcBankTEC.text =
+                                        gridValue['bankName']?.value;
+                                    maincontroller.pdcChequeRecordByTEC.text =
+                                        gridValue['chequeReceviedBy']?.value;
+                                    maincontroller.pdcRecordOnTEC.text =
+                                        gridValue['chequeReceviedOn']?.value;
+                                    maincontroller.pdcRemarksTEC.text =
+                                        gridValue['remarks']?.value;
+
+                                    // print(event.row.cells['chqNo']?.value);
+                                    // print(event.cell.column.field);
+                                  },
+                                ),
+                              ),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          FormButtonWrapper(
+                            btnText: "Save",
+                            callback: () {},
+                            showIcon: false,
+                          ),
+                          const SizedBox(
+                            width: 5,
+                          ),
+                          FormButtonWrapper(
+                            btnText: "Clear",
+                            callback: () {
+                              maincontroller.clearFillPdc();
+                            },
+                            showIcon: false,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),

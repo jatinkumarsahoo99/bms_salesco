@@ -95,6 +95,7 @@ class EdiRoBookingController extends GetxController {
   var isEnterNewPDC = false.obs;
   int chequeID = 0;
   var fillPDCList = [].obs;
+  var controllsEnable = true.obs;
 
   PlutoGridStateManager? dvgSpotGrid;
 
@@ -1167,7 +1168,7 @@ class EdiRoBookingController extends GetxController {
         pdcChqAmtTEC.text == "0.00" ||
         pdcBankTEC.text.isEmpty ||
         pdcChequeRecordByTEC.text.isEmpty) {
-      LoadingDialog.callInfoMessage(
+      LoadingDialog.showErrorDialog(
           "Cheque No cannot be blank, cheque amount hs to be greater then 0,\nbank name has to be specified and cheque received by cannot be blank.");
     } else if (fillPDCList.any((e) => e['chqNo'] == pdcChequeNoTEC.text)) {
       LoadingDialog.showErrorDialog("Duplicate cheque. Cannot add.");
