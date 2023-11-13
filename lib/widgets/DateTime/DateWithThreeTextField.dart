@@ -15,24 +15,26 @@ class DateWithThreeTextField extends StatefulWidget {
   final void Function(String date)? onFocusChange;
   final DateTime? startDate, endDate, intailDate;
   final String formatting;
-  const DateWithThreeTextField({
-    Key? key,
-    required this.title,
-    required this.mainTextController,
-    this.splitType = "-",
-    this.day = 31,
-    this.month = 12,
-    this.year = 2022,
-    this.monthWithFullName = false,
-    this.isEnable = true,
-    this.widthRation = .15,
-    this.onFocusChange,
-    this.startDate,
-    this.hideTitle = false,
-    this.endDate,
-    this.formatting = "yyyy/MM/dd",
-    this.intailDate,
-  }) : super(key: key);
+  final bool titleInLeft;
+  const DateWithThreeTextField(
+      {Key? key,
+      required this.title,
+      required this.mainTextController,
+      this.splitType = "-",
+      this.day = 31,
+      this.month = 12,
+      this.year = 2022,
+      this.monthWithFullName = false,
+      this.isEnable = true,
+      this.widthRation = .15,
+      this.onFocusChange,
+      this.startDate,
+      this.hideTitle = false,
+      this.endDate,
+      this.formatting = "yyyy/MM/dd",
+      this.intailDate,
+      this.titleInLeft = false})
+      : super(key: key);
 
   @override
   State<DateWithThreeTextField> createState() => _DateWithThreeTextFieldState();
@@ -130,7 +132,7 @@ class _DateWithThreeTextFieldState extends State<DateWithThreeTextField> {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (!widget.hideTitle) ...{
+        if (!widget.hideTitle && !widget.titleInLeft) ...{
           /// TITLE
           Text(
             widget.title,
@@ -144,270 +146,294 @@ class _DateWithThreeTextFieldState extends State<DateWithThreeTextField> {
         },
 
         /// BOX
-        Container(
-          height: SizeDefine.heightInputField,
-          padding: const EdgeInsets.symmetric(horizontal: 5),
-          width: Get.width * widget.widthRation,
-          decoration: BoxDecoration(border: Border.all(color: borderColor)),
-          alignment: Alignment.centerLeft,
-          child: Row(
-            children: [
-              /// DD/MMM/YYYY Textinput fields
-              SizedBox(
-                width: widget.monthWithFullName ? 115 : 80,
-                child: Row(
-                  children: [
-                    /// DAY
-                    Expanded(
-                      flex: widget.monthWithFullName ? 1 : 2,
-                      child: RawKeyboardListener(
-                        focusNode: focus[0],
-                        onKey: (event) async {
-                          if (event.isShiftPressed &&
-                              event.isKeyPressed(LogicalKeyboardKey.tab)) {
-                          } else if (event
-                              .isKeyPressed(LogicalKeyboardKey.tab)) {
-                            FocusScope.of(context).nextFocus(); //months
-                            FocusScope.of(context).nextFocus(); // years
-                            FocusScope.of(context)
-                                .nextFocus(); // next widget get focus
-                            if (widget.onFocusChange != null) {
-                              await assignValueToMainTextEditingController();
-                              widget.onFocusChange!(
-                                  widget.mainTextController.text);
-                            }
-                          } else if (event
-                              .isKeyPressed(LogicalKeyboardKey.arrowRight)) {
-                            FocusScope.of(context).nextFocus(); //months
-                          } else if (event
-                              .isKeyPressed(LogicalKeyboardKey.arrowLeft)) {
-                            cursorAtLast(0);
-                          } else if (event
-                              .isKeyPressed(LogicalKeyboardKey.arrowUp)) {
-                            incrementDecrementOnKeyBoardEvent(0, widget.day);
-                          } else if (event
-                              .isKeyPressed(LogicalKeyboardKey.arrowDown)) {
-                            incrementDecrementOnKeyBoardEvent(0, widget.day,
-                                up: false);
-                          }
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.only(top: 2),
-                          child: TextFormField(
-                            controller: textCtr[0],
-                            inputFormatters: [
-                              FilteringTextInputFormatter.digitsOnly
-                            ],
-                            decoration: style,
-                            onChanged: (value) {
-                              int no = int.tryParse(value) ?? 00;
-                              int selectedMonth =
-                                  getMonthINTFromMonthStr(textCtr[1].text);
-
-                              if (no > maxDays[selectedMonth - 1] ||
-                                  value == "00") {
-                                textCtr[0].text = "01";
-                                cursorAtLast(0);
-                              }
-                              if (value.length == 2) {
-                                cursorAtLast(0);
-                              }
-                            },
-                            maxLength: 2,
-                            textAlign: TextAlign.right,
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: textColor,
-                            ),
-                            showCursor: false,
-                            enabled: widget.isEnable,
-                          ),
-                        ),
-                      ),
-                    ),
-
-                    /// Split 1
-                    Text(
-                      widget.splitType,
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: textColor,
-                      ),
-                    ),
-
-                    /// MONTHS
-                    Expanded(
-                      flex: widget.monthWithFullName ? 4 : 3,
-                      child: RawKeyboardListener(
-                        focusNode: focus[1],
-                        onKey: (event) async {
-                          if (event.isShiftPressed &&
-                              event.isKeyPressed(LogicalKeyboardKey.tab)) {
-                            FocusScope.of(context).previousFocus(); //day
-                          } else if (event
-                              .isKeyPressed(LogicalKeyboardKey.tab)) {
-                            FocusScope.of(context).nextFocus(); // year
-                            FocusScope.of(context)
-                                .nextFocus(); // next widget get focus
-                            if (widget.onFocusChange != null) {
-                              await assignValueToMainTextEditingController();
-                              widget.onFocusChange!(
-                                  widget.mainTextController.text);
-                            }
-                          } else if (event
-                              .isKeyPressed(LogicalKeyboardKey.arrowLeft)) {
-                            FocusScope.of(context).previousFocus(); //day
-                          } else if (event
-                              .isKeyPressed(LogicalKeyboardKey.arrowRight)) {
-                            FocusScope.of(context).nextFocus(); //year
-                          } else if (event
-                              .isKeyPressed(LogicalKeyboardKey.arrowUp)) {
-                            incrementDecrementOnKeyBoardEvent(1, widget.month);
-                          } else if (event
-                              .isKeyPressed(LogicalKeyboardKey.arrowDown)) {
-                            incrementDecrementOnKeyBoardEvent(1, widget.month,
-                                up: false);
-                          }
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.only(top: 2),
-                          child: TextFormField(
-                            controller: textCtr[1],
-                            inputFormatters: [
-                              FilteringTextInputFormatter.digitsOnly,
-                            ],
-                            decoration: style,
-                            onChanged: (value) {
-                              if (previousTextInMonth + value == "10" ||
-                                  previousTextInMonth + value == "11" ||
-                                  previousTextInMonth + value == "12") {
-                                setMonthInTextField(
-                                    previousTextInMonth + value);
-                              } else {
-                                setMonthInTextField(value);
-                              }
-                              previousTextInMonth = value;
-                            },
-                            maxLength: 2,
-                            textAlign: TextAlign.right,
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: textColor,
-                            ),
-                            showCursor: false,
-                            enabled: widget.isEnable,
-                          ),
-                        ),
-                      ),
-                    ),
-
-                    /// Split 2
-                    Text(
-                      widget.splitType,
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: textColor,
-                      ),
-                    ),
-
-                    /// YEAR
-                    Expanded(
-                      flex: widget.monthWithFullName ? 2 : 4,
-                      child: RawKeyboardListener(
-                        focusNode: focus[2],
-                        onKey: (event) async {
-                          if (event.isShiftPressed &&
-                              event.isKeyPressed(LogicalKeyboardKey.tab)) {
-                            FocusScope.of(context).previousFocus(); //minutes
-                            FocusScope.of(context).previousFocus(); //Hours
-                          } else if (event
-                              .isKeyPressed(LogicalKeyboardKey.tab)) {
-                            FocusScope.of(context)
-                                .nextFocus(); // next widget get focus
-                            if (widget.onFocusChange != null) {
-                              await assignValueToMainTextEditingController();
-                              widget.onFocusChange!(
-                                  widget.mainTextController.text);
-                            }
-                          } else if (event
-                              .isKeyPressed(LogicalKeyboardKey.arrowUp)) {
-                            incrementDecrementOnKeyBoardEvent(2, widget.year);
-                          } else if (event
-                              .isKeyPressed(LogicalKeyboardKey.arrowLeft)) {
-                            FocusScope.of(context).previousFocus(); //month
-                          } else if (event
-                              .isKeyPressed(LogicalKeyboardKey.arrowRight)) {
-                            cursorAtLast(2);
-                          } else if (event
-                              .isKeyPressed(LogicalKeyboardKey.arrowDown)) {
-                            incrementDecrementOnKeyBoardEvent(2, widget.year,
-                                up: false);
-                          }
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.only(top: 2),
-                          child: TextFormField(
-                            controller: textCtr[2],
-                            inputFormatters: [
-                              FilteringTextInputFormatter.digitsOnly
-                            ],
-                            decoration: style,
-                            onChanged: (value) {
-                              if (value.length == 4) {
-                                cursorAtLast(2);
-                              }
-                            },
-                            textAlign: TextAlign.right,
-                            maxLength: 4,
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: textColor,
-                            ),
-                            showCursor: false,
-                            enabled: widget.isEnable,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
+        Row(
+          children: [
+            if (widget.titleInLeft) ...{
+              /// TITLE
+              Text(
+                widget.title,
+                style: TextStyle(
+                  fontSize: SizeDefine.labelSize1,
+                  color: Colors.black,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
-              const Spacer(),
+              const SizedBox(width: 10),
+            },
+            Container(
+              height: SizeDefine.heightInputField,
+              padding: const EdgeInsets.symmetric(horizontal: 5),
+              width: Get.width * widget.widthRation,
+              decoration: BoxDecoration(border: Border.all(color: borderColor)),
+              alignment: Alignment.centerLeft,
+              child: Row(
+                children: [
+                  /// DD/MMM/YYYY Textinput fields
+                  SizedBox(
+                    width: widget.monthWithFullName ? 115 : 80,
+                    child: Row(
+                      children: [
+                        /// DAY
+                        Expanded(
+                          flex: widget.monthWithFullName ? 1 : 2,
+                          child: RawKeyboardListener(
+                            focusNode: focus[0],
+                            onKey: (event) async {
+                              if (event.isShiftPressed &&
+                                  event.isKeyPressed(LogicalKeyboardKey.tab)) {
+                              } else if (event
+                                  .isKeyPressed(LogicalKeyboardKey.tab)) {
+                                FocusScope.of(context).nextFocus(); //months
+                                FocusScope.of(context).nextFocus(); // years
+                                FocusScope.of(context)
+                                    .nextFocus(); // next widget get focus
+                                if (widget.onFocusChange != null) {
+                                  await assignValueToMainTextEditingController();
+                                  widget.onFocusChange!(
+                                      widget.mainTextController.text);
+                                }
+                              } else if (event.isKeyPressed(
+                                  LogicalKeyboardKey.arrowRight)) {
+                                FocusScope.of(context).nextFocus(); //months
+                              } else if (event
+                                  .isKeyPressed(LogicalKeyboardKey.arrowLeft)) {
+                                cursorAtLast(0);
+                              } else if (event
+                                  .isKeyPressed(LogicalKeyboardKey.arrowUp)) {
+                                incrementDecrementOnKeyBoardEvent(
+                                    0, widget.day);
+                              } else if (event
+                                  .isKeyPressed(LogicalKeyboardKey.arrowDown)) {
+                                incrementDecrementOnKeyBoardEvent(0, widget.day,
+                                    up: false);
+                              }
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.only(top: 2),
+                              child: TextFormField(
+                                controller: textCtr[0],
+                                inputFormatters: [
+                                  FilteringTextInputFormatter.digitsOnly
+                                ],
+                                decoration: style,
+                                onChanged: (value) {
+                                  int no = int.tryParse(value) ?? 00;
+                                  int selectedMonth =
+                                      getMonthINTFromMonthStr(textCtr[1].text);
 
-              /// ICON BUTTON
-              InkWell(
-                focusNode: iconFocusNode,
-                onTap: widget.isEnable
-                    ? () {
-                        showDatePicker(
-                          context: context,
-                          initialDate: selectedDateTime ?? DateTime.now(),
-                          firstDate: widget.startDate ?? DateTime(2011),
-                          lastDate: widget.endDate ?? DateTime(2050),
-                        ).then(
-                          (selectedDate) {
-                            if (selectedDate != null) {
-                              // var now = DateTime.now();
-                              textCtr[0].text = selectedDate.day.toString();
-                              addZeroAndSetCursorAtLast(0);
-                              textCtr[1].text =
-                                  getMonthsFromIndex(selectedDate.month);
-                              textCtr[2].text = selectedDate.year.toString();
-                            }
-                            FocusScope.of(context).requestFocus(iconFocusNode);
-                            FocusScope.of(context).previousFocus();
-                          },
-                        );
-                      }
-                    : null,
-                child: Icon(Icons.date_range,
-                    size: 16,
-                    color: widget.isEnable
-                        ? Colors.deepPurpleAccent
-                        : Colors.grey),
+                                  if (no > maxDays[selectedMonth - 1] ||
+                                      value == "00") {
+                                    textCtr[0].text = "01";
+                                    cursorAtLast(0);
+                                  }
+                                  if (value.length == 2) {
+                                    cursorAtLast(0);
+                                  }
+                                },
+                                maxLength: 2,
+                                textAlign: TextAlign.right,
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: textColor,
+                                ),
+                                showCursor: false,
+                                enabled: widget.isEnable,
+                              ),
+                            ),
+                          ),
+                        ),
+
+                        /// Split 1
+                        Text(
+                          widget.splitType,
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: textColor,
+                          ),
+                        ),
+
+                        /// MONTHS
+                        Expanded(
+                          flex: widget.monthWithFullName ? 4 : 3,
+                          child: RawKeyboardListener(
+                            focusNode: focus[1],
+                            onKey: (event) async {
+                              if (event.isShiftPressed &&
+                                  event.isKeyPressed(LogicalKeyboardKey.tab)) {
+                                FocusScope.of(context).previousFocus(); //day
+                              } else if (event
+                                  .isKeyPressed(LogicalKeyboardKey.tab)) {
+                                FocusScope.of(context).nextFocus(); // year
+                                FocusScope.of(context)
+                                    .nextFocus(); // next widget get focus
+                                if (widget.onFocusChange != null) {
+                                  await assignValueToMainTextEditingController();
+                                  widget.onFocusChange!(
+                                      widget.mainTextController.text);
+                                }
+                              } else if (event
+                                  .isKeyPressed(LogicalKeyboardKey.arrowLeft)) {
+                                FocusScope.of(context).previousFocus(); //day
+                              } else if (event.isKeyPressed(
+                                  LogicalKeyboardKey.arrowRight)) {
+                                FocusScope.of(context).nextFocus(); //year
+                              } else if (event
+                                  .isKeyPressed(LogicalKeyboardKey.arrowUp)) {
+                                incrementDecrementOnKeyBoardEvent(
+                                    1, widget.month);
+                              } else if (event
+                                  .isKeyPressed(LogicalKeyboardKey.arrowDown)) {
+                                incrementDecrementOnKeyBoardEvent(
+                                    1, widget.month,
+                                    up: false);
+                              }
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.only(top: 2),
+                              child: TextFormField(
+                                controller: textCtr[1],
+                                inputFormatters: [
+                                  FilteringTextInputFormatter.digitsOnly,
+                                ],
+                                decoration: style,
+                                onChanged: (value) {
+                                  if (previousTextInMonth + value == "10" ||
+                                      previousTextInMonth + value == "11" ||
+                                      previousTextInMonth + value == "12") {
+                                    setMonthInTextField(
+                                        previousTextInMonth + value);
+                                  } else {
+                                    setMonthInTextField(value);
+                                  }
+                                  previousTextInMonth = value;
+                                },
+                                maxLength: 2,
+                                textAlign: TextAlign.right,
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: textColor,
+                                ),
+                                showCursor: false,
+                                enabled: widget.isEnable,
+                              ),
+                            ),
+                          ),
+                        ),
+
+                        /// Split 2
+                        Text(
+                          widget.splitType,
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: textColor,
+                          ),
+                        ),
+
+                        /// YEAR
+                        Expanded(
+                          flex: widget.monthWithFullName ? 2 : 4,
+                          child: RawKeyboardListener(
+                            focusNode: focus[2],
+                            onKey: (event) async {
+                              if (event.isShiftPressed &&
+                                  event.isKeyPressed(LogicalKeyboardKey.tab)) {
+                                FocusScope.of(context)
+                                    .previousFocus(); //minutes
+                                FocusScope.of(context).previousFocus(); //Hours
+                              } else if (event
+                                  .isKeyPressed(LogicalKeyboardKey.tab)) {
+                                FocusScope.of(context)
+                                    .nextFocus(); // next widget get focus
+                                if (widget.onFocusChange != null) {
+                                  await assignValueToMainTextEditingController();
+                                  widget.onFocusChange!(
+                                      widget.mainTextController.text);
+                                }
+                              } else if (event
+                                  .isKeyPressed(LogicalKeyboardKey.arrowUp)) {
+                                incrementDecrementOnKeyBoardEvent(
+                                    2, widget.year);
+                              } else if (event
+                                  .isKeyPressed(LogicalKeyboardKey.arrowLeft)) {
+                                FocusScope.of(context).previousFocus(); //month
+                              } else if (event.isKeyPressed(
+                                  LogicalKeyboardKey.arrowRight)) {
+                                cursorAtLast(2);
+                              } else if (event
+                                  .isKeyPressed(LogicalKeyboardKey.arrowDown)) {
+                                incrementDecrementOnKeyBoardEvent(
+                                    2, widget.year,
+                                    up: false);
+                              }
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.only(top: 2),
+                              child: TextFormField(
+                                controller: textCtr[2],
+                                inputFormatters: [
+                                  FilteringTextInputFormatter.digitsOnly
+                                ],
+                                decoration: style,
+                                onChanged: (value) {
+                                  if (value.length == 4) {
+                                    cursorAtLast(2);
+                                  }
+                                },
+                                textAlign: TextAlign.right,
+                                maxLength: 4,
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: textColor,
+                                ),
+                                showCursor: false,
+                                enabled: widget.isEnable,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const Spacer(),
+
+                  /// ICON BUTTON
+                  InkWell(
+                    focusNode: iconFocusNode,
+                    onTap: widget.isEnable
+                        ? () {
+                            showDatePicker(
+                              context: context,
+                              initialDate: selectedDateTime ?? DateTime.now(),
+                              firstDate: widget.startDate ?? DateTime(2011),
+                              lastDate: widget.endDate ?? DateTime(2050),
+                            ).then(
+                              (selectedDate) {
+                                if (selectedDate != null) {
+                                  // var now = DateTime.now();
+                                  textCtr[0].text = selectedDate.day.toString();
+                                  addZeroAndSetCursorAtLast(0);
+                                  textCtr[1].text =
+                                      getMonthsFromIndex(selectedDate.month);
+                                  textCtr[2].text =
+                                      selectedDate.year.toString();
+                                }
+                                FocusScope.of(context)
+                                    .requestFocus(iconFocusNode);
+                                FocusScope.of(context).previousFocus();
+                              },
+                            );
+                          }
+                        : null,
+                    child: Icon(Icons.date_range,
+                        size: 16,
+                        color: widget.isEnable
+                            ? Colors.deepPurpleAccent
+                            : Colors.grey),
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ],
     );

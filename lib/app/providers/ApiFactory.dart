@@ -222,8 +222,16 @@ class ApiFactory {
       "$BASE_URL/api/EDIRoBooking/OnMarkAsDone?FileName=$fileName";
   static String EDI_RO_SHOW_LINK = "$BASE_URL/api/EDIRoBooking/ShowLink";
 
-  static String EDI_RO_LEAVE_DEAL_NO(effDate, locationCode, channelCode, dealNo,
-          payRouteCode, agencyCode, clientCode, grpPDC) =>
+  static String EDI_RO_LEAVE_DEAL_NO(
+    effDate,
+    locationCode,
+    channelCode,
+    dealNo,
+    payRouteCode,
+    agencyCode,
+    clientCode,
+    grpPDC,
+  ) =>
       "$BASE_URL/api/EDIRoBooking/OnLeaveDealNo?EffDate=$effDate&LocationCode=$locationCode&ChannelCode=$channelCode&DealNo=$dealNo&PayRouteCode=$payRouteCode&AgencyCode=$agencyCode&ClientCode=$clientCode&grpPDC=$grpPDC";
 
   static String EDI_RO_SPOT_FPC_START(
@@ -243,6 +251,13 @@ class ApiFactory {
       "$BASE_URL/api/EDIRoBooking/GetFillPDC?ClientCode=$clientCode&AgencyCode=$agencyCode&EditMode=$editMode&ActivityPeriod=$activityPeriod";
   static String EDI_RO_SAVED_EDI_BOOKING =
       "$BASE_URL/api/EDIRoBooking/OnSaveEDIBooking";
+  static String EDI_RO_SAVED_CLIENT_PDC =
+      "$BASE_URL/api/EDIRoBooking/SaveClientPDC";
+
+  static String EDI_RO_IMPORT_MAKE_GOOD =
+      "$BASE_URL/api/EDIRoBooking/ImportMakeGood";
+
+  static String EDI_RO_CHECK_ALL = "$BASE_URL/api/EDIRoBooking/CheckAll";
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 
