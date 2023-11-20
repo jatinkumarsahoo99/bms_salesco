@@ -1534,9 +1534,13 @@ class InputFields {
     bool? isEnabled,
     FocusNode? focusNode,
     void Function(bool hasFocus)? onFocusChange,
+    void Function()? onTapPressed,
+    bool showUpDownArrow = true,
   }) {
     // var data = 0.obs;
-    var fN = FocusNode();
+    var fN = FocusNode(
+      skipTraversal: true,
+    );
     final iconColor =
         (isEnabled ?? true) ? Colors.deepPurpleAccent : Colors.grey;
     return Column(
@@ -1558,6 +1562,11 @@ class InputFields {
           child: RawKeyboardListener(
             focusNode: fN,
             onKey: (RawKeyEvent keyEvent) {
+              if (!keyEvent.isShiftPressed &&
+                  keyEvent.logicalKey == LogicalKeyboardKey.tab &&
+                  onTapPressed != null) {
+                onTapPressed();
+              }
               if (showbtn) {
                 if (keyEvent.isKeyPressed(LogicalKeyboardKey.arrowDown)) {
                   /* controller.text =
