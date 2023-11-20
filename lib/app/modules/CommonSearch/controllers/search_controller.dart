@@ -856,7 +856,9 @@ class SearchController extends GetxController {
   }
 
   doubleClickHandler(Variances rowvariance) {
-    if (rowvariance.dataType == "datetime" && grid!.type == "V") {
+    if ((rowvariance.dataType == "datetime" ||
+            rowvariance.dataType == "date") &&
+        grid!.type == "V") {
       var dateType = RxString("My Dates");
       // String from = DateFormat('dd-MMM-yyyy').format(DateTime.now());
       // String to = DateFormat('dd-MMM-yyyy').format(DateTime.now());
@@ -1578,7 +1580,7 @@ class SearchController extends GetxController {
           ],
           radius: 10.0);
     } else if ((rowvariance.dataType!.toLowerCase() == "date") &&
-        (grid!.type == "P" || grid!.type == "V")) {
+        grid!.type == "P") {
       List dateTypes = [
         "My Dates",
         "Today",
