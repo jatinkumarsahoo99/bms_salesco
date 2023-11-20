@@ -1578,7 +1578,7 @@ class SearchController extends GetxController {
           ],
           radius: 10.0);
     } else if ((rowvariance.dataType!.toLowerCase() == "date") &&
-        grid!.type == "P") {
+        (grid!.type == "P" || grid!.type == "V")) {
       List dateTypes = [
         "My Dates",
         "Today",

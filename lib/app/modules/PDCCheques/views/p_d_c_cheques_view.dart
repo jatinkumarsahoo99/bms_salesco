@@ -240,17 +240,22 @@ class PDCChequesView extends StatelessWidget {
                         hintTxt: "Chq Amt",
                         controller: controller.checkAmtTC,
                         isNegativeReq: false,
+                        showbtn: false,
                         inputformatters: [
                           FilteringTextInputFormatter.allow(
                               RegExp(r'^\d+\.?\d{0,4}'))
                         ],
-                        onFocusChange: (hasFocus) {
-                          if (!hasFocus) {
-                            controller.calculateTotal();
-                            if (!controller.checkAmtTC.text.contains(".")) {
-                              controller.checkAmtTC.text =
-                                  "${controller.checkAmtTC.text}.00";
-                            }
+                        onTapPressed: () {
+                          controller.calculateTotal();
+                          if (!controller.checkAmtTC.text.contains(".")) {
+                            controller.checkAmtTC.text =
+                                "${controller.checkAmtTC.text}.00";
+
+                            controller.checkAmtTC.selection =
+                                TextSelection.fromPosition(
+                              TextPosition(
+                                  offset: controller.checkAmtTC.text.length),
+                            );
                           }
                         },
                       ),
@@ -260,17 +265,22 @@ class PDCChequesView extends StatelessWidget {
                         hintTxt: "TDS Amt",
                         controller: controller.tdsAmtTC,
                         isNegativeReq: false,
+                        showbtn: false,
                         inputformatters: [
                           FilteringTextInputFormatter.allow(
                               RegExp(r'^\d+\.?\d{0,4}'))
                         ],
-                        onFocusChange: (hasFocus) {
-                          if (!hasFocus) {
-                            controller.calculateTotal();
-                          }
+                        onTapPressed: () {
+                          controller.calculateTotal();
                           if (!controller.tdsAmtTC.text.contains(".")) {
                             controller.tdsAmtTC.text =
                                 "${controller.tdsAmtTC.text}.00";
+
+                            controller.tdsAmtTC.selection =
+                                TextSelection.fromPosition(
+                              TextPosition(
+                                  offset: controller.tdsAmtTC.text.length),
+                            );
                           }
                         },
                       ),
@@ -280,17 +290,21 @@ class PDCChequesView extends StatelessWidget {
                         hintTxt: "Svc Tax %",
                         controller: controller.saveTaxTC,
                         isNegativeReq: false,
+                        showbtn: false,
                         inputformatters: [
                           FilteringTextInputFormatter.allow(
                               RegExp(r'^\d+\.?\d{0,4}'))
                         ],
-                        onFocusChange: (hasFocus) {
-                          if (!hasFocus) {
-                            controller.calculateTotal();
-                          }
+                        onTapPressed: () {
+                          controller.calculateTotal();
                           if (!controller.saveTaxTC.text.contains(".")) {
                             controller.saveTaxTC.text =
                                 "${controller.saveTaxTC.text}.00";
+                            controller.saveTaxTC.selection =
+                                TextSelection.fromPosition(
+                              TextPosition(
+                                  offset: controller.saveTaxTC.text.length),
+                            );
                           }
                         },
                       ),
@@ -324,6 +338,7 @@ class PDCChequesView extends StatelessWidget {
                         width: controller.widthRation,
                         hintTxt: "Rev Chq Amt",
                         controller: controller.revChqAmtTC,
+                        showbtn: false,
                         isNegativeReq: false,
                         inputformatters: [
                           FilteringTextInputFormatter.allow(
@@ -378,6 +393,7 @@ class PDCChequesView extends StatelessWidget {
                                 hintTxt: "Activity Month",
                                 controller: controller.activityMonthTC,
                                 isNegativeReq: false,
+                                showbtn: false,
                                 inputformatters: [
                                   FilteringTextInputFormatter.allow(
                                       RegExp(r'^\d+\.?\d{0,4}'))
@@ -460,32 +476,6 @@ class PDCChequesView extends StatelessWidget {
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            // Padding(
-                            //   padding: const EdgeInsets.all(8.0),
-                            //   child: Row(
-                            //     mainAxisAlignment: MainAxisAlignment.start,
-                            //     crossAxisAlignment: CrossAxisAlignment.end,
-                            //     children: [
-                            //       InputFields.numbers(
-                            //         padLeft: 0,
-                            //         width: .12,
-                            //         hintTxt: "Activity Month",
-                            //         controller: controller.activityMonthTC,
-                            //         isNegativeReq: false,
-                            //         inputformatters: [
-                            //           FilteringTextInputFormatter.allow(
-                            //               RegExp(r'^\d+\.?\d{0,4}'))
-                            //         ],
-                            //         focusNode: controller.activityMonthFN,
-                            //       ),
-                            //       SizedBox(width: 15),
-                            //       FormButton(
-                            //         btnText: "Save Cheque Grouping",
-                            //         callback: controller.saveChequeBookingData,
-                            //       ),
-                            //     ],
-                            //   ),
-                            // ),
                             Expanded(
                               child: Obx(() {
                                 return DataGridFromMap3(

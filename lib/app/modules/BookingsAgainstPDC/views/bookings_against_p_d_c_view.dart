@@ -62,6 +62,7 @@ class BookingsAgainstPDCView extends StatelessWidget {
                         hintTxt: "Activity Month",
                         controller: controller.activityMonthCTR,
                         isNegativeReq: false,
+                        showbtn: false,
                         inputformatters: [
                           FilteringTextInputFormatter.allow(
                               RegExp(r'^\d+\.?\d{0,4}'))
