@@ -128,7 +128,6 @@ class _DateWithThreeTextFieldState extends State<DateWithThreeTextField> {
     final borderColor =
         (widget.isEnable) ? Colors.deepPurpleAccent : Colors.grey;
     return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -147,6 +146,7 @@ class _DateWithThreeTextFieldState extends State<DateWithThreeTextField> {
 
         /// BOX
         Row(
+          mainAxisSize: MainAxisSize.min,
           children: [
             if (widget.titleInLeft) ...{
               /// TITLE
