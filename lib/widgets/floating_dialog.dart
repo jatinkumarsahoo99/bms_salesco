@@ -5,12 +5,12 @@ class DraggableFab extends StatefulWidget {
   final Offset? initPosition;
   final double securityBottom;
 
-  const DraggableFab(
-      {Key? key,
-      required this.child,
-      this.initPosition,
-      this.securityBottom = 0})
-      : super(key: key);
+  const DraggableFab({
+    ValueKey? key,
+    required this.child,
+    this.initPosition,
+    this.securityBottom = 0,
+  }) : super(key: key);
 
   @override
   _DraggableFabState createState() => _DraggableFabState();
@@ -33,8 +33,10 @@ class _DraggableFabState extends State<DraggableFab> {
   @override
   void didUpdateWidget(covariant DraggableFab oldWidget) {
     super.didUpdateWidget(oldWidget);
-    WidgetsBinding.instance
-        .addPostFrameCallback((_) => _getWidgetSize(context));
+    if (oldWidget.key != widget.key || widget.initPosition != null) {
+      WidgetsBinding.instance
+          .addPostFrameCallback((_) => _getWidgetSize(context));
+    }
   }
 
   void _getWidgetSize(BuildContext context) {
