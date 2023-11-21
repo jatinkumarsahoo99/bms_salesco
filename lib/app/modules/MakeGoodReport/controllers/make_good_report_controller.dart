@@ -248,11 +248,7 @@ class MakeGoodReportController extends GetxController {
   }
 
   generateReport() {
-    if (selectedLocation != null &&
-        selectedChannel != null &&
-        selectedClient != null &&
-        selectedAgency != null &&
-        selectedBrand != null) {
+    if (selectedLocation != null && selectedChannel != null) {
       LoadingDialog.call();
       Get.find<ConnectorControl>().POSTMETHOD(
         api: ApiFactory.MAKE_GOOD_REPORT_GET_GENERATE,

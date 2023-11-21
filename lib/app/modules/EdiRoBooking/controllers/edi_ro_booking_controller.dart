@@ -78,6 +78,7 @@ class EdiRoBookingController extends GetxController {
   var linkDealName = "".obs;
   bool showGstPopUp = true;
   bool pdcDetailsPopUP = true;
+  var extraButtons = ['Info', 'Check All', 'MG Spots', 'Tape Id'];
 
   var isShowLink = false.obs;
   var lstXmlDtList = [].obs;
@@ -86,7 +87,7 @@ class EdiRoBookingController extends GetxController {
   var tapIdTabelList = [].obs;
   var tempList = [].obs;
   var filtterValue = '';
-  var selectedIndex = 0.obs;
+  var selectedIndex = 9999.obs;
   var blnDurationMismatch = false.obs;
   var intMonth = 0.obs;
   var intYear = 0.obs;
@@ -95,6 +96,7 @@ class EdiRoBookingController extends GetxController {
   var isEnterNewPDC = false.obs;
   int chequeID = 0;
   var fillPDCList = [].obs;
+  var controllsEnable = true.obs;
 
   PlutoGridStateManager? dvgSpotGrid;
 
@@ -128,6 +130,8 @@ class EdiRoBookingController extends GetxController {
   DropDownValue? selectedChannel;
   DropDownValue? selectedDealNo;
   DropDownValue? selectedGstPlant;
+
+  ValueKey? valueKey;
 
   PlutoGridStateManager? stateManager;
   List<Map<String, Map<String, double>>>? userGridSetting1;
@@ -1167,7 +1171,7 @@ class EdiRoBookingController extends GetxController {
         pdcChqAmtTEC.text == "0.00" ||
         pdcBankTEC.text.isEmpty ||
         pdcChequeRecordByTEC.text.isEmpty) {
-      LoadingDialog.callInfoMessage(
+      LoadingDialog.showErrorDialog(
           "Cheque No cannot be blank, cheque amount hs to be greater then 0,\nbank name has to be specified and cheque received by cannot be blank.");
     } else if (fillPDCList.any((e) => e['chqNo'] == pdcChequeNoTEC.text)) {
       LoadingDialog.showErrorDialog("Duplicate cheque. Cannot add.");
@@ -1175,12 +1179,13 @@ class EdiRoBookingController extends GetxController {
       fillPDCList.add({
         "chqNo": pdcChequeNoTEC.text,
         "chqDate": pdcChqDtTEC.text,
-        "chqAmount": pdcChqAmtTEC.text,
+        "chqAmount": double.parse(pdcChqAmtTEC.text),
         "bankName": pdcBankTEC.text,
-        "chequeReceviedBy": pdcChequeRecordByTEC.text,
+        "chequeReceivedBy": pdcChequeRecordByTEC.text,
         "chequeReceviedOn": pdcRecordOnTEC.text,
         "remarks": pdcRemarksTEC.text,
-        "chequeId": "",
+        "chequeId": 0,
+        "rowNo": fillPDCList.length + 1,
       });
     }
   }
@@ -1220,10 +1225,79 @@ class EdiRoBookingController extends GetxController {
     }
   }
 
+  saveClientPDC() {
+    print(fillPDCList);
+    if (fillPDCList.isEmpty) {
+      LoadingDialog.showErrorDialog("No PDC's there to save.");
+    } else {
+      try {
+        LoadingDialog.call();
+        var payload = {
+          "clientCode": selectedClient?.key ?? "",
+          "activityPeriod": int.parse(pdcActivityPeriodTEC.text) ?? 0,
+          "modifiedBy": Get.find<MainController>().user?.logincode ?? "",
+          "agencyCode": selectedAgency?.key ?? "",
+          "lstClientPDC": fillPDCList.map((e) {
+            if (e['chqDate'] != null) {
+              e['chqDate'] = DateFormat('yyyy-dd-MMThh:mm:ss')
+                  .format(DateFormat('dd-MM-yyyy').parse(e['chqDate']));
+            }
+            if (e['chequeReceviedOn'] != null) {
+              e['chequeReceviedOn'] = DateFormat('yyyy-dd-MMThh:mm:ss').format(
+                  DateFormat('dd-MM-yyyy').parse(e['chequeReceviedOn']));
+            }
+            return e;
+          }).toList(),
+        };
+        Get.find<ConnectorControl>().POSTMETHOD(
+            api: ApiFactory.EDI_RO_SAVED_CLIENT_PDC,
+            json: payload,
+            fun: (map) {
+              Get.back();
+              if (map != null &&
+                  map['infoClientPDC'] != null &&
+                  map.containsKey('infoClientPDC')) {
+                LoadingDialog.callDataSaved(
+                    msg: map["infoClientPDC"]["message"],
+                    callback: () {
+                      clearFillPdc();
+                    });
+              } else {
+                LoadingDialog.callErrorMessage1(msg: map);
+              }
+            });
+      } catch (e) {
+        print(e.toString());
+      }
+    }
+  }
+
+  importMakeGood() {
+    try {
+      LoadingDialog.call();
+      var payload = {
+        "files": selectedClient?.key ?? "",
+        "lstMakeGood": [],
+      };
+      Get.find<ConnectorControl>().POSTMETHOD(
+          api: ApiFactory.EDI_RO_IMPORT_MAKE_GOOD,
+          json: payload,
+          fun: (map) {
+            Get.back();
+            if (map != null &&
+                map['infoShowMakeGood'] != null &&
+                map.containsKey('infoShowMakeGood')) {
+              print(map);
+            }
+          });
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
   save() {
     try {
       LoadingDialog.call();
-
       var payload = {
         "bookingNo": "",
         "grpPDC": "",
@@ -1247,30 +1321,25 @@ class EdiRoBookingController extends GetxController {
   }
 
   checkAll() {
-    //  spotsBookedTEC.text = "0";
-    // if (lstDgvSpotsList.isNotEmpty) {
-    //   var idSet = <String>{};
-    //   var distinct = [];
-    //   for (var d in lstDgvSpotsList) {
-    //     if (idSet.add(d['branD_ID'])) {
-    //       distinct.add(d);
-    //     }
-    //   }
-    //   print(distinct.length);
-
-    //   if (distinct.length == 1) {
-    //     print(distinct[0]['branD_ID']);
-    //     selectedBrand = brand.firstWhereOrNull(
-    //       (element) {
-    //         print(element.key.toString());
-    //         var result =
-    //             element.key.toString() == distinct[0]['branD_ID'].toString();
-    //         print(result);
-    //         return result;
-    //       },
-    //     );
-    //   }
-    // }
+    try {
+      LoadingDialog.call();
+      var payload = {
+        "lstXmlDt": lstXmlDtList,
+      };
+      Get.find<ConnectorControl>().POSTMETHOD(
+          api: ApiFactory.EDI_RO_CHECK_ALL,
+          json: payload,
+          fun: (map) {
+            Get.back();
+            if (map != null &&
+                map['infoShowMakeGood'] != null &&
+                map.containsKey('infoShowMakeGood')) {
+              print(map);
+            }
+          });
+    } catch (e) {
+      print(e.toString());
+    }
   }
 
   @override
