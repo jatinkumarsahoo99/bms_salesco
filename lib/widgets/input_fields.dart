@@ -1538,9 +1538,10 @@ class InputFields {
     bool showUpDownArrow = true,
   }) {
     // var data = 0.obs;
-    var fN = FocusNode(
-      skipTraversal: true,
-    );
+    // var fN = FocusNode(
+    //   skipTraversal: true,
+    // );
+    focusNode ??= FocusNode();
     final iconColor =
         (isEnabled ?? true) ? Colors.deepPurpleAccent : Colors.grey;
     return Column(
@@ -1560,7 +1561,7 @@ class InputFields {
           height: SizeDefine.heightInputField,
           width: Get.width * width!,
           child: RawKeyboardListener(
-            focusNode: fN,
+            focusNode: focusNode..skipTraversal = true,
             onKey: (RawKeyEvent keyEvent) {
               if (!keyEvent.isShiftPressed &&
                   keyEvent.logicalKey == LogicalKeyboardKey.tab &&
