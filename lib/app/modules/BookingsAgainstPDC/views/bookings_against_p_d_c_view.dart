@@ -57,11 +57,12 @@ class BookingsAgainstPDCView extends StatelessWidget {
                           selected: controller.selctedAgency,
                         );
                       }),
-                      InputFields.numbers(
+                      InputFields.numbers2(
                         focusNode: controller.activityMonthFN,
                         hintTxt: "Activity Month",
                         controller: controller.activityMonthCTR,
                         isNegativeReq: false,
+                        showbtn: false,
                         inputformatters: [
                           FilteringTextInputFormatter.allow(
                               RegExp(r'^\d+\.?\d{0,4}'))
