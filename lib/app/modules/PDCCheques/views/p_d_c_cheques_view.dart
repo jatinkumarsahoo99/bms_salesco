@@ -234,7 +234,7 @@ class PDCChequesView extends StatelessWidget {
                           ),
                         ),
                       ),
-                      InputFields.numbers(
+                      InputFields.numbers2(
                         width: controller.widthRation,
                         padLeft: 0,
                         hintTxt: "Chq Amt",
@@ -260,7 +260,7 @@ class PDCChequesView extends StatelessWidget {
                         //   }
                         // },
                       ),
-                      InputFields.numbers(
+                      InputFields.numbers2(
                         width: controller.widthRation,
                         padLeft: 0,
                         hintTxt: "TDS Amt",
@@ -286,7 +286,7 @@ class PDCChequesView extends StatelessWidget {
                         //   }
                         // },
                       ),
-                      InputFields.numbers(
+                      InputFields.numbers2(
                         padLeft: 0,
                         width: controller.widthRation,
                         hintTxt: "Svc Tax %",
@@ -336,7 +336,7 @@ class PDCChequesView extends StatelessWidget {
                         hintTxt: "Rev Chq No",
                         controller: controller.revChqNoTC,
                       ),
-                      InputFields.numbers(
+                      InputFields.numbers2(
                         padLeft: 0,
                         width: controller.widthRation,
                         hintTxt: "Rev Chq Amt",
@@ -390,7 +390,7 @@ class PDCChequesView extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
-                              InputFields.numbers(
+                              InputFields.numbers2(
                                 padLeft: 0,
                                 width: .12,
                                 hintTxt: "Activity Month",
