@@ -41,11 +41,11 @@ class BookingsAgainstPDCController extends GetxController {
 
   getBookingList() {
     if (selctedClient == null) {
-      // LoadingDialog.callInfoMessage("Please select Client.");
+      LoadingDialog.callInfoMessage("Please select Client.");
     } else if (selctedAgency == null) {
-      // LoadingDialog.callInfoMessage("Please select Agency.");
+      LoadingDialog.callInfoMessage("Please select Agency.");
     } else if (selectedCheque == null) {
-      // LoadingDialog.callInfoMessage("Please select Cheque No.");
+      LoadingDialog.callInfoMessage("Please select Cheque No.");
     } else {
       LoadingDialog.call();
       Get.find<ConnectorControl>().GETMETHODCALL(
