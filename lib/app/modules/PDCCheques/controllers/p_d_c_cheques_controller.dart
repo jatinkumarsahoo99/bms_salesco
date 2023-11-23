@@ -102,10 +102,10 @@ class PDCChequesController extends GetxController {
   @override
   void dispose() {
     super.dispose();
-    svcTaxFN.removeListener(() {});
-    tdsAmtFN.removeListener(() {});
-    chqAmtFN.removeListener(() {});
-    activityMonthFN.removeListener(() {});
+    // svcTaxFN.removeListener(() {});
+    // tdsAmtFN.removeListener(() {});
+    // chqAmtFN.removeListener(() {});
+    // activityMonthFN.removeListener(() {});
   }
 
   handleOnChangeClient(DropDownValue client) {
