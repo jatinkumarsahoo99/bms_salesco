@@ -97,6 +97,8 @@ class EdiRoBookingController extends GetxController {
   int chequeID = 0;
   var fillPDCList = [].obs;
   var controllsEnable = true.obs;
+  var isSelectingChange = true.obs;
+  var roMsg = "".obs;
 
   PlutoGridStateManager? dvgSpotGrid;
 
@@ -104,6 +106,7 @@ class EdiRoBookingController extends GetxController {
   PlutoGridStateManager? fpcStartTabelGrid;
   PlutoGridStateManager? tapeIdTabelGrid;
   PlutoGridStateManager? fillPDCTabelGrid;
+  PlutoRowColorContext? coloerEvents;
 
   EdiRoInitData? initData;
   var fileNames = RxList<DropDownValue>();
@@ -141,6 +144,7 @@ class EdiRoBookingController extends GetxController {
   }
 
   RxBool isEnable = RxBool(true);
+  RxBool isBrandEnable = RxBool(true);
 
   @override
   void onInit() {
@@ -301,6 +305,8 @@ class EdiRoBookingController extends GetxController {
               //Lst Xml Dt
               lstXmlDtList.value =
                   map["infoFileNameLeave"]['lstLoadXml']['lstXmlDt'];
+              roMsg.value =
+                  map["infoFileNameLeave"]['headerData']['message'] ?? "";
               leaveFileNameClagdetails();
               update(["initData"]);
             } else {
@@ -338,7 +344,9 @@ class EdiRoBookingController extends GetxController {
                 payRouteCodeTEC.text = e["payRouteCode"];
                 zoneCode.value = e["zonecode"];
               });
-
+              if (roMsg != "") {
+                LoadingDialog.callInfoMessage(roMsg.toString());
+              }
               update(["initData"]);
             }
           });
@@ -377,12 +385,12 @@ class EdiRoBookingController extends GetxController {
       Get.find<ConnectorControl>().GETMETHODCALL(
           api: ApiFactory.EDI_RO_LEAVE_DEAL_NO(
             DateFormat("yyyy-MM-dd").format(effFromDate),
-            selectedLoactions?.key,
-            selectedChannel?.key,
-            selectedDealNo?.key,
-            payRouteTEC.text,
-            selectedAgency?.key,
-            selectedClient?.key,
+            selectedLoactions?.key ?? "",
+            selectedChannel?.key ?? "",
+            selectedDealNo?.key ?? "",
+            payRouteTEC.text ?? "",
+            selectedAgency?.key ?? "",
+            selectedClient?.key ?? "",
             'false',
           ),
           fun: (map) {
@@ -644,6 +652,7 @@ class EdiRoBookingController extends GetxController {
                 map['infoBrandList'] != null &&
                 map.containsKey('infoBrandList')) {
               tapIdTabelList.clear();
+              tempList.clear();
               tapIdTabelList.value = map['infoBrandList'];
               tempList.addAll(tapIdTabelList.value);
             }
@@ -1163,6 +1172,10 @@ class EdiRoBookingController extends GetxController {
       intYear.value = int.parse(year);
     }
 
+    // if (dr.containsKey("isSpotsAvailable") && dr['isSpotsAvailable']) {
+    //   return Colors.deepPurple.shade100;
+    // }
+
     return Colors.white; // Return null if no color conditions are met.
   }
 
@@ -1324,7 +1337,7 @@ class EdiRoBookingController extends GetxController {
     try {
       LoadingDialog.call();
       var payload = {
-        "lstXmlDt": lstXmlDtList,
+        "lstSpots": lstDgvSpotsList,
       };
       Get.find<ConnectorControl>().POSTMETHOD(
           api: ApiFactory.EDI_RO_CHECK_ALL,
@@ -1332,9 +1345,73 @@ class EdiRoBookingController extends GetxController {
           fun: (map) {
             Get.back();
             if (map != null &&
-                map['infoShowMakeGood'] != null &&
-                map.containsKey('infoShowMakeGood')) {
-              print(map);
+                map['infoCheckAll'] != null &&
+                map.containsKey('infoCheckAll')) {
+              selectedBrand = brand.firstWhereOrNull((element) {
+                var result =
+                    element.key == map['infoCheckAll']['brandCodeSelected'];
+                return result;
+              });
+              lstDgvSpotsList.value.clear();
+              lstDgvSpotsList.value = map['infoCheckAll']['lstSpots'];
+              tapIdTabelList.clear();
+              tempList.clear();
+              tapIdTabelList.value = map['infoCheckAll']['brandLeave'];
+              tempList.addAll(tapIdTabelList.value);
+              isBrandEnable.value = false;
+              update(["initData"]);
+              if (map['infoCheckAll']['message'] != null) {
+                LoadingDialog.callInfoMessage(map['infoCheckAll']['message']);
+              } else {
+                dealLeave();
+                checkAllDealUtil();
+              }
+            }
+          });
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  checkAllDealUtil() {
+    try {
+      LoadingDialog.call();
+      var payload = {
+        "lstDealEntires": lstDgvDealEntriesList ?? "",
+        "lstSpots": lstDgvSpotsList ?? "",
+        "lstTapeIds": tapIdTabelList ?? "",
+        "locationCode": selectedLoactions!.key ?? "",
+        "channelCode": selectedChannel!.key ?? "",
+        "bookingMonth": bookingNo1TEC.text ?? "",
+        "txtPreviousBookedAmount": preBAmtTEC.text ?? "",
+        "txtPreviousValAmount": preVAmtTEC.text ?? ""
+      };
+      Get.find<ConnectorControl>().POSTMETHOD(
+          api: ApiFactory.EDI_RO_CHECK_ALL_DEAL_UTIL,
+          json: payload,
+          fun: (map) {
+            Get.back();
+            if (map != null &&
+                map['infoCheckAll'] != null &&
+                map.containsKey('infoCheckAll')) {
+              // selectedBrand = brand.firstWhereOrNull((element) {
+              //   var result =
+              //       element.key == map['infoCheckAll']['brandCodeSelected'];
+              //   return result;
+              // });
+              // lstDgvSpotsList.value.clear();
+              // lstDgvSpotsList.value = map['infoCheckAll']['lstSpots'];
+              // tapIdTabelList.clear();
+              // tempList.clear();
+              // tapIdTabelList.value = map['infoCheckAll']['brandLeave'];
+              // tempList.addAll(tapIdTabelList.value);
+              // isBrandEnable.value = false;
+              // update(["initData"]);
+              // if (map['infoCheckAll']['message'] != null || map['infoCheckAll']['message'] != "") {
+              //   LoadingDialog.callInfoMessage(map['infoCheckAll']['message']);
+              // } else {
+              //   dealLeave();
+              // }
             }
           });
     } catch (e) {

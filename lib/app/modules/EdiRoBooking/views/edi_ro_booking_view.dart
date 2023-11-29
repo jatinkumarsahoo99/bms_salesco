@@ -1,5 +1,5 @@
 import 'dart:html';
-
+import 'dart:html' as html;
 import 'package:bms_salesco/app/controller/HomeController.dart';
 import 'package:bms_salesco/app/controller/MainController.dart';
 import 'package:bms_salesco/app/data/DropDownValue.dart';
@@ -20,6 +20,7 @@ import 'package:flutter/services.dart';
 
 import 'package:get/get.dart';
 import 'package:pluto_grid/pluto_grid.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../widgets/CheckBoxWidget.dart';
 import '../../../../widgets/DataGridShowOnly.dart';
@@ -174,6 +175,7 @@ class EdiRoBookingView extends StatelessWidget {
                                       titleInLeft: true,
                                       autoFocus: true,
                                       selected: controller.selectedBrand,
+                                      isEnable: controller.isBrandEnable.value,
                                     ),
                                   ),
                                 ],
@@ -357,7 +359,7 @@ class EdiRoBookingView extends StatelessWidget {
                                         ),
                                       ),
                                       InputFields.formField1(
-                                        hintTxt: "Sport",
+                                        hintTxt: "Spots",
                                         isEnable: false,
                                         controller: controller.spotsAllTEC,
                                         width: 0.05,
@@ -382,7 +384,7 @@ class EdiRoBookingView extends StatelessWidget {
                                       //   width: Get.width * 0.05,
                                       // ),
                                       InputFields.formField1(
-                                        hintTxt: "Dur   ",
+                                        hintTxt: "Dur    ",
                                         isEnable: false,
                                         controller: controller.durAllTEC,
                                         width: 0.05,
@@ -407,7 +409,7 @@ class EdiRoBookingView extends StatelessWidget {
                                       //   width: Get.width * 0.05,
                                       // ),
                                       InputFields.formField1(
-                                        hintTxt: "Amt  ",
+                                        hintTxt: "Amt   ",
                                         isEnable: false,
                                         controller: controller.amtAllTEC,
                                         width: 0.05,
@@ -543,6 +545,8 @@ class EdiRoBookingView extends StatelessWidget {
                       : SizedBox(
                           height: Get.height * 0.30,
                           child: DataGridShowOnlyKeys(
+                            mode: PlutoGridMode.selectWithOneTap,
+                            onSelected: (event) {},
                             mapData: controller.lstDgvDealEntriesList.value,
                             hideCode: false,
                             exportFileName: "EDI R.O. Booking",
@@ -572,7 +576,16 @@ class EdiRoBookingView extends StatelessWidget {
                             )
                           : Container(
                               child: DataGridShowOnlyKeys(
+                                mode: PlutoGridMode.selectWithOneTap,
+                                onSelected: (event) {
+                                  controller.isSelectingChange.value = false;
+                                },
                                 editKeys: ['noProgram'],
+                                hideKeys: [
+                                  'backColor',
+                                  'selected',
+                                  'isSpotsAvailable'
+                                ],
                                 mapData: controller.lstDgvSpotsList.value,
                                 hideCode: false,
                                 formatDate: false,
@@ -584,9 +597,9 @@ class EdiRoBookingView extends StatelessWidget {
                                               controller.lastSelectedIdx)!
                                           .cells['program'],
                                       controller.lastSelectedIdx);
-                                  // load.stateManager.moveCurrentCellByRowIdx(
-                                  //     controller.lastSelectedIdx,
-                                  //     PlutoMoveDirection.down);
+                                  load.stateManager.moveCurrentCellByRowIdx(
+                                      controller.lastSelectedIdx,
+                                      PlutoMoveDirection.down);
                                   load.stateManager.scroll.vertical!.animateTo(
                                       controller.lastSelectedOffect,
                                       curve: Curves.ease,
@@ -594,15 +607,22 @@ class EdiRoBookingView extends StatelessWidget {
                                   controller.dvgSpotGrid = load.stateManager;
                                 },
                                 colorCallback: (colorEvent) {
-                                  colorEvent.row.cells.containsValue(
-                                          controller.dvgSpotGrid?.currentCell)
-                                      ? Colors.deepPurple.shade100
-                                      : Colors.white;
+                                  controller.coloerEvents = colorEvent;
+                                  if (colorEvent.row.cells.containsValue(
+                                      controller.dvgSpotGrid?.currentCell)) {
+                                    return Colors.deepPurple.shade100;
+                                  }
+                                  if (controller.lstDgvSpotsList[colorEvent
+                                          .rowIdx]['isSpotsAvailable'] &&
+                                      controller.isSelectingChange.value) {
+                                    return Colors.deepPurple.shade100;
+                                  }
 
                                   return controller.getColor(
-                                      controller
-                                          .lstDgvSpotsList[colorEvent.rowIdx],
-                                      colorEvent.rowIdx);
+                                    controller
+                                        .lstDgvSpotsList[colorEvent.rowIdx],
+                                    colorEvent.rowIdx,
+                                  );
                                 },
                                 onRowDoubleTap: (event) async {
                                   controller.lastSelectedOffect = controller

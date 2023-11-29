@@ -258,7 +258,8 @@ class ApiFactory {
       "$BASE_URL/api/EDIRoBooking/ImportMakeGood";
 
   static String EDI_RO_CHECK_ALL = "$BASE_URL/api/EDIRoBooking/CheckAll";
-
+  static String EDI_RO_CHECK_ALL_DEAL_UTIL =
+      "$BASE_URL/api/EDIRoBooking/CheckAllDealUtil";
 ///////////////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////// Create Break Pattern ///////////////////////////////////////////
