@@ -319,16 +319,21 @@ class HomeController extends GetxController {
                                   formPermissions!) ==
                               null
                           ? null
-                          : () {
+                          : () async {
                               btnName(controller.buttons?[index]['name']);
                               if (handleAutoClear &&
                                   controller.buttons?[index]['name'] ==
                                       "Clear") {
                                 if (RoutesList.listRoutes
-                                    .contains("/" + frmName)) {
-                                  Get.delete<T>().then((value) {
+                                    .contains("/$frmName")) {
+                                  try {
+                                    await Get.delete<T>();
+                                  } catch (e) {
+                                    print(
+                                        "Error while deleting controller ${e.toString()}");
+                                  } finally {
                                     clearPage1();
-                                  });
+                                  }
                                 } else {
                                   print(
                                       "Please add your route in RoutesList Class");
