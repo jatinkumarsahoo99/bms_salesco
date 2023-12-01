@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../widgets/LoadingScreen.dart';
 import '../../widgets/NoDataFoundPage.dart';
+import 'dart:html' as w;
 
 import '../modules/AmagiStatusReport/views/amagi_status_report_view.dart';
 import '../modules/AutoTimeLock/views/auto_time_lock_view.dart';
@@ -53,11 +54,48 @@ import '../modules/ZoneWiseInventoryUtilization/views/zone_wise_inventory_utiliz
 
 import '../routes/app_pages.dart';
 
-class AuthGuard extends StatelessWidget {
+class AuthGuard extends StatefulWidget {
   final String childName;
 
   AuthGuard({required this.childName}) {
     assert(this.childName != null);
+  }
+
+  @override
+  State<AuthGuard> createState() => _AuthGuardState();
+}
+
+class _AuthGuardState extends State<AuthGuard> with WidgetsBindingObserver {
+  @override
+  void initState() {
+    print("Auth guard init");
+    super.initState();
+    if (kIsWeb) {
+      w.window.addEventListener('focus', onFocus);
+      w.window.addEventListener('blur', onBlur);
+    } else {
+      WidgetsBinding.instance.addObserver(this);
+    }
+  }
+
+  @override
+  void dispose() {
+    print("Auth guard dispose");
+    if (kIsWeb) {
+      w.window.removeEventListener('focus', onFocus);
+      w.window.removeEventListener('blur', onBlur);
+    } else {
+      WidgetsBinding.instance.removeObserver(this);
+    }
+    super.dispose();
+  }
+
+  void onFocus(w.Event e) {
+    didChangeAppLifecycleState(AppLifecycleState.resumed);
+  }
+
+  void onBlur(w.Event e) {
+    didChangeAppLifecycleState(AppLifecycleState.paused);
   }
 
   Widget? currentWidget;
@@ -76,7 +114,7 @@ class AuthGuard extends StatelessWidget {
           print("Login value>>${controller.loginVal.value}");
         }
         if (controller.loginVal.value == 1) {
-          switch (childName) {
+          switch (widget.childName) {
             case Routes.P_D_C_CHEQUES:
               currentWidget = const PDCChequesView();
               break;
