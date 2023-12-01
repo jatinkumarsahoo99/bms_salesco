@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:bms_salesco/app/data/DropDownValue.dart';
 import 'package:bms_salesco/app/modules/CommonDocs/views/common_docs_view.dart';
+import 'package:bms_salesco/app/modules/EdiRoBooking/bindings/edi_ro_booking_check_all_deal_utility.dart';
+import 'package:bms_salesco/app/modules/EdiRoBooking/bindings/edi_ro_booking_model.dart';
 import 'package:bms_salesco/app/modules/EdiRoBooking/bindings/edit_ro_init_data.dart';
 import 'package:bms_salesco/widgets/LoadingDialog.dart';
 import 'package:file_picker/file_picker.dart';
@@ -21,6 +23,7 @@ import '../../../controller/MainController.dart';
 import '../../../data/rowfilter.dart';
 import '../../../providers/ApiFactory.dart';
 import '../../CommonDocs/controllers/common_docs_controller.dart';
+import '../bindings/edi_ro_booking_deal_leave_model.dart';
 
 class EdiRoBookingController extends GetxController {
   //TODO: Implement EdiRoBookingController
@@ -64,7 +67,8 @@ class EdiRoBookingController extends GetxController {
       pdcChequeRecordByTEC = TextEditingController(),
       pdcRecordOnTEC = TextEditingController(),
       pdcRemarksTEC = TextEditingController(),
-      effectiveDate = TextEditingController();
+      effectiveDate = TextEditingController(),
+      bkDate = TextEditingController();
 
   final count = 0.obs;
   var infoTableList = [].obs;
@@ -99,6 +103,9 @@ class EdiRoBookingController extends GetxController {
   var controllsEnable = true.obs;
   var isSelectingChange = true.obs;
   var roMsg = "".obs;
+  var lstDgvDealEntries = <LstDealEntries>[].obs;
+  var lstDgvSpots = <LstSpots>[].obs;
+  var makeGoodReportList = [].obs;
 
   PlutoGridStateManager? dvgSpotGrid;
 
@@ -109,6 +116,10 @@ class EdiRoBookingController extends GetxController {
   PlutoRowColorContext? coloerEvents;
 
   EdiRoInitData? initData;
+  RoBookingLeaveFileName? roBookingLeaveFileName;
+  RoBookingDealLeave? roBookingDealLeave;
+  RoBookingCheckAllDealUtility? roBookingCheckAllDealUtility;
+
   var fileNames = RxList<DropDownValue>();
   var loactions = RxList<DropDownValue>();
   var positions = RxList<DropDownValue>();
@@ -158,25 +169,23 @@ class EdiRoBookingController extends GetxController {
           api: ApiFactory.EDI_RO_INIT,
           fun: (map) {
             Get.back();
-            // initData = EdiRoInitData.fromJson(map["onLoadInfo"]);
+            initData = EdiRoInitData.fromJson(map["onLoadInfo"]);
             //FileName
             fileNames.clear();
-            map["onLoadInfo"]['softListMyFiles'].forEach((e) {
-              fileNames
-                  .add(DropDownValue(key: '', value: e['convertedFileName']));
+            initData!.softListMyFiles!.forEach((e) {
+              fileNames.add(DropDownValue(key: '', value: e.convertedFileName));
             });
             //Loaction
             loactions.clear();
-            map["onLoadInfo"]['lstLocation'].forEach((e) {
-              loactions.add(DropDownValue(
-                  key: e['locationCode'], value: e['locationName']));
+            initData!.lstLocation!.forEach((e) {
+              loactions.add(
+                  DropDownValue(key: e.locationCode, value: e.locationName));
             });
             // Position
             positions.clear();
-            map["onLoadInfo"]['lstSpotPosType'].forEach((e) {
+            initData!.lstSpotPosType!.forEach((e) {
               positions.add(DropDownValue(
-                  key: e['spotPositionTypeCode'],
-                  value: e['spotPositionTypeName']));
+                  key: e.spotPositionTypeCode, value: e.spotPositionTypeName));
             });
             selectedPositions = positions.firstWhereOrNull(
               (element) {
@@ -186,10 +195,15 @@ class EdiRoBookingController extends GetxController {
             );
             // Executives
             executives.clear();
-            map["onLoadInfo"]['executives'].forEach((e) {
-              executives.add(DropDownValue(
-                  key: e['personnelCode'], value: e['personnelName']));
+            initData!.executives!.forEach((e) {
+              executives.add(
+                  DropDownValue(key: e.personnelCode, value: e.personnelName));
             });
+            // executives.clear();
+            // map["onLoadInfo"]['executives'].forEach((e) {
+            //   executives.add(DropDownValue(
+            //       key: e['personnelCode'], value: e['personnelName']));
+            // });
             update(["initData"]);
           });
     } catch (e) {
@@ -216,97 +230,115 @@ class EdiRoBookingController extends GetxController {
             if (map != null &&
                 map['infoFileNameLeave'] != null &&
                 map.containsKey('infoFileNameLeave')) {
+              roBookingLeaveFileName = RoBookingLeaveFileName.fromJson(map);
+
               isEnable.value = false;
               //RO Ref No.
               strRoRefNo.clear();
-              map["infoFileNameLeave"]['strRoRefNo'].forEach((e) {
+              roBookingLeaveFileName!.infoFileNameLeave!.strRoRefNo!
+                  .forEach((e) {
                 strRoRefNo.add(DropDownValue(key: '', value: e));
                 selectedRoRefNo = DropDownValue(key: '', value: e);
               });
+
               //Location
               selectedLoactions = loactions.firstWhereOrNull((element) {
                 var result = element.key ==
-                    map['infoFileNameLeave']['headerData']['locationCode'];
+                    roBookingLeaveFileName!
+                        .infoFileNameLeave!.headerData!.locationCode;
                 return result;
               });
               pdcLoactionTEC.text = selectedLoactions!.value.toString();
 
               // Channel
               channel.clear();
-              map["infoFileNameLeave"]['headerData']['lstChannel'].forEach((e) {
-                channel.add(DropDownValue(
-                    key: e['channelCode'], value: e['channelName']));
+              roBookingLeaveFileName!.infoFileNameLeave!.headerData!.lstChannel!
+                  .forEach((e) {
+                channel.add(
+                    DropDownValue(key: e.channelCode, value: e.channelName));
               });
               selectedChannel = channel.firstWhereOrNull(
                 (element) {
                   var result = element.key ==
-                      map['infoFileNameLeave']['headerData']['channelCode'];
+                      roBookingLeaveFileName!
+                          .infoFileNameLeave!.headerData!.channelCode;
+
                   return result;
                 },
               );
               pdcChannelTEC.text = selectedChannel!.value.toString();
               //Client
               client.clear();
-              map["infoFileNameLeave"]['headerData']['lstClients'].forEach((e) {
-                client.add(DropDownValue(
-                    key: e['clientCode'], value: e['clientName']));
+              roBookingLeaveFileName!.infoFileNameLeave!.headerData!.lstClients!
+                  .forEach((e) {
+                client
+                    .add(DropDownValue(key: e.clientCode, value: e.clientName));
               });
+
               selectedClient = client.firstWhereOrNull(
                 (element) {
                   var result = element.key ==
-                      map['infoFileNameLeave']['headerData']['clientcode'];
+                      roBookingLeaveFileName!
+                          .infoFileNameLeave!.headerData!.clientcode;
                   return result;
                 },
               );
               pdcClientTEC.text = selectedClient!.value.toString();
               //Agency
               agency.clear();
-              map["infoFileNameLeave"]['headerData']['lstAgencies']
+              roBookingLeaveFileName!
+                  .infoFileNameLeave!.headerData!.lstAgencies!
                   .forEach((e) {
-                agency.add(DropDownValue(
-                    key: e['agencyCode'], value: e['agencyName']));
+                agency
+                    .add(DropDownValue(key: e.agencyCode, value: e.agencyName));
               });
               selectedAgency = agency.firstWhereOrNull(
                 (element) {
                   var result = element.key ==
-                      map['infoFileNameLeave']['headerData']['agencyCode'];
+                      roBookingLeaveFileName!
+                          .infoFileNameLeave!.headerData!.agencyCode;
                   return result;
                 },
               );
+
               pdcAgencyTEC.text = selectedAgency!.value.toString();
               //Brand
               brand.clear();
-              map["infoFileNameLeave"]['headerData']['lstBrands'].forEach((e) {
-                brand.add(
-                    DropDownValue(key: e['brandcode'], value: e['brandname']));
+              roBookingLeaveFileName!.infoFileNameLeave!.headerData!.lstBrands!
+                  .forEach((e) {
+                brand.add(DropDownValue(key: e.brandcode, value: e.brandname));
               });
               //Executives
               executives.clear();
-              map["infoFileNameLeave"]['headerData']['executivesSelectedValue']
+              roBookingLeaveFileName!
+                  .infoFileNameLeave!.headerData!.executivesSelectedValue!
                   .forEach((e) {
                 executives.add(DropDownValue(
-                    key: e['personnelCode'], value: e['personnelName']));
+                    key: e.personnelCode, value: e.personnelName));
               });
+
               selectedExecutives = DropDownValue(
                   key: executives[0].key, value: executives[0].value);
               // Show Programs
               programList.clear();
-              map["infoFileNameLeave"]['lstLoadXml']['lstShowPrograms']
+              roBookingLeaveFileName!
+                  .infoFileNameLeave!.lstLoadXml!.lstShowPrograms!
                   .forEach((e) {
                 programList.add(e);
               });
-
               //Deal No
               dealNo.clear();
-              map["infoFileNameLeave"]['headerData']['lstDealNumbers']
+              roBookingLeaveFileName!
+                  .infoFileNameLeave!.headerData!.lstDealNumbers!
                   .forEach((e) {
-                dealNo.add(DropDownValue(key: e['code'], value: e['name']));
+                dealNo.add(DropDownValue(key: e.code, value: e.name));
               });
               //Lst Xml Dt
-              lstXmlDtList.value =
-                  map["infoFileNameLeave"]['lstLoadXml']['lstXmlDt'];
-              roMsg.value =
-                  map["infoFileNameLeave"]['headerData']['message'] ?? "";
+              lstXmlDtList.value = roBookingLeaveFileName!
+                  .infoFileNameLeave!.lstLoadXml!.lstXmlDt!;
+              roMsg.value = roBookingLeaveFileName!
+                      .infoFileNameLeave!.headerData!.message ??
+                  "";
               leaveFileNameClagdetails();
               update(["initData"]);
             } else {
@@ -398,41 +430,50 @@ class EdiRoBookingController extends GetxController {
             if (map != null &&
                 map['infoLeaveOnDealNumber'] != null &&
                 map.containsKey('infoLeaveOnDealNumber')) {
+              roBookingDealLeave = RoBookingDealLeave.fromJson(map);
               //Booking No.
               bookingNo1TEC.text =
-                  map['infoLeaveOnDealNumber']['bookingMonth'] ?? "";
+                  roBookingDealLeave!.infoLeaveOnDealNumber!.bookingMonth! ??
+                      "";
+
               pdcActivityPeriodTEC.text =
-                  map['infoLeaveOnDealNumber']['bookingMonth'] ?? "";
+                  roBookingDealLeave!.infoLeaveOnDealNumber!.bookingMonth! ??
+                      "";
+
               //Start & End Date
               startDateTEC.text = DateFormat("dd-MM-yyyy").format(
-                  DateFormat("MM/dd/yyyy hh:mm:ss").parse(
-                      map['infoLeaveOnDealNumber']['displayDealDetails']
-                              ['startDate'] ??
-                          "10/01/2023 00:00:00"));
+                  DateFormat("MM/dd/yyyy hh:mm:ss").parse(roBookingDealLeave!
+                          .infoLeaveOnDealNumber!
+                          .displayDealDetails!
+                          .startDate! ??
+                      "10/01/2023 00:00:00"));
               endDateTEC.text = DateFormat("dd-MM-yyyy").format(
-                  DateFormat("MM/dd/yyyy hh:mm:ss").parse(
-                      map['infoLeaveOnDealNumber']['displayDealDetails']
-                              ['endDate'] ??
-                          "10/01/2023 00:00:00"));
+                  DateFormat("MM/dd/yyyy hh:mm:ss").parse(roBookingDealLeave!
+                          .infoLeaveOnDealNumber!
+                          .displayDealDetails!
+                          .endDate! ??
+                      "10/01/2023 00:00:00"));
               //Deal Type
-              dealTypeTEC.text = map['infoLeaveOnDealNumber']
-                      ['displayDealDetails']['dealType'] ??
+              dealTypeTEC.text = roBookingDealLeave!
+                      .infoLeaveOnDealNumber!.displayDealDetails!.dealType! ??
                   "";
               //Max Spend
-              maxSpendTEC.text = map['infoLeaveOnDealNumber']
-                      ['displayDealDetails']['dealMaxSpent'] ??
+              maxSpendTEC.text = roBookingDealLeave!.infoLeaveOnDealNumber!
+                      .displayDealDetails!.dealMaxSpent! ??
                   "";
+
               //Pay Mode
-              payModeTEC.text = map['infoLeaveOnDealNumber']
-                      ['displayDealDetails']['payMode'] ??
+              payModeTEC.text = roBookingDealLeave!
+                      .infoLeaveOnDealNumber!.displayDealDetails!.payMode! ??
                   "";
+
               //Pre V. Amt
-              preVAmtTEC.text = map['infoLeaveOnDealNumber']
-                      ['displayDealDetails']['previousValAmount'] ??
+              preVAmtTEC.text = roBookingDealLeave!.infoLeaveOnDealNumber!
+                      .displayDealDetails!.previousValAmount! ??
                   "";
               //Pre B. Amt
-              preBAmtTEC.text = map['infoLeaveOnDealNumber']
-                      ['displayDealDetails']['previousBookedAmount'] ??
+              preBAmtTEC.text = roBookingDealLeave!.infoLeaveOnDealNumber!
+                      .displayDealDetails!.previousBookedAmount! ??
                   "";
               //Deal Enter List
               List dealEntriesList = map['infoLeaveOnDealNumber']
@@ -451,42 +492,43 @@ class EdiRoBookingController extends GetxController {
 
               lstDgvLinkedDealsList.value = map['infoLeaveOnDealNumber']
                       ['displayDealDetails']['lstDgvLinkedDeals'] ??
-                  "";
+                  [];
 
               //GST Plants
-              gstNoTEC.text = map["infoLeaveOnDealNumber"]['gstRegNo'] ?? "";
-              map["infoLeaveOnDealNumber"]['gstPlantList'].forEach((e) {
+              gstNoTEC.text =
+                  roBookingDealLeave!.infoLeaveOnDealNumber!.gstRegNo! ?? "";
+              roBookingDealLeave!.infoLeaveOnDealNumber!.gstPlantList!
+                  .forEach((e) {
                 gstPlant.add(DropDownValue(
-                    key: e['plantid'].toString() ?? "",
-                    value: e['column1'] ?? ""));
+                    key: e.plantid.toString() ?? "", value: e.column1 ?? ""));
               });
               selectedGstPlant = gstPlant.firstWhereOrNull(
                 (element) {
-                  var result =
-                      element.key == map['infoLeaveOnDealNumber']['gstPlantID'];
+                  var result = element.key ==
+                      roBookingDealLeave!.infoLeaveOnDealNumber!.gstPlantId!;
                   return result;
                 },
               );
 
               isShowLink.value = true;
               //LD Button
-              linkDealNO.value = map['infoLeaveOnDealNumber']['showLinkDeal']
-                      ['linkDealNo'] ??
+              linkDealNO.value = roBookingDealLeave!
+                      .infoLeaveOnDealNumber!.showLinkDeal!.linkDealNo! ??
                   "";
-              linkDealName.value = map['infoLeaveOnDealNumber']['showLinkDeal']
-                      ['linkDealName'] ??
-                  "";
+              linkDealName.value = roBookingDealLeave!
+                  .infoLeaveOnDealNumber!.showLinkDeal!.linkDealName!;
+
               if (linkDealName.value == null) {
                 lDButton.value = true;
               }
               //PDC
-              if (map['infoLeaveOnDealNumber']['displayDealDetails']
-                  ['grpPDC']) {
+              if (roBookingDealLeave!
+                  .infoLeaveOnDealNumber!.displayDealDetails!.grpPdc!) {
                 if (pdcDetailsPopUP) {
                   pdcDetailsPopUP = false;
                   LoadingDialog.showErrorDialog(
-                      map['infoLeaveOnDealNumber']['displayDealDetails']
-                              ['message'] ??
+                      roBookingDealLeave!.infoLeaveOnDealNumber!
+                              .displayDealDetails!.message ??
                           "", callback: () {
                     isEnterNewPDC.value = true;
                     gstDilogBox();
@@ -1016,7 +1058,10 @@ class EdiRoBookingController extends GetxController {
             if (map != null &&
                 map['infoShowMakeGood'] != null &&
                 map.containsKey('infoShowMakeGood')) {
-              print(map);
+              makeGoodReportList.value = map['lstMakeGood'];
+              if (map['message'] != null || map['message']) {
+                LoadingDialog.callInfoMessage(map['message']);
+              }
             }
           });
     } catch (e) {
@@ -1308,31 +1353,6 @@ class EdiRoBookingController extends GetxController {
     }
   }
 
-  save() {
-    try {
-      LoadingDialog.call();
-      var payload = {
-        "bookingNo": "",
-        "grpPDC": "",
-        "pdc": "",
-        "lstSpots": [],
-      };
-      Get.find<ConnectorControl>().POSTMETHOD(
-          api: ApiFactory.EDI_RO_SAVED_EDI_BOOKING,
-          json: payload,
-          fun: (map) {
-            Get.back();
-            if (map != null &&
-                map['infoShowMakeGood'] != null &&
-                map.containsKey('infoShowMakeGood')) {
-              print(map);
-            }
-          });
-    } catch (e) {
-      print(e.toString());
-    }
-  }
-
   checkAll() {
     try {
       LoadingDialog.call();
@@ -1377,9 +1397,9 @@ class EdiRoBookingController extends GetxController {
     try {
       LoadingDialog.call();
       var payload = {
-        "lstDealEntires": lstDgvDealEntriesList ?? "",
-        "lstSpots": lstDgvSpotsList ?? "",
-        "lstTapeIds": tapIdTabelList ?? "",
+        "lstDealEntires": lstDgvDealEntriesList ?? [],
+        "lstSpots": lstDgvSpotsList ?? [],
+        "lstTapeIds": tapIdTabelList ?? [],
         "locationCode": selectedLoactions!.key ?? "",
         "channelCode": selectedChannel!.key ?? "",
         "bookingMonth": bookingNo1TEC.text ?? "",
@@ -1392,26 +1412,119 @@ class EdiRoBookingController extends GetxController {
           fun: (map) {
             Get.back();
             if (map != null &&
-                map['infoCheckAll'] != null &&
-                map.containsKey('infoCheckAll')) {
-              // selectedBrand = brand.firstWhereOrNull((element) {
-              //   var result =
-              //       element.key == map['infoCheckAll']['brandCodeSelected'];
-              //   return result;
-              // });
-              // lstDgvSpotsList.value.clear();
-              // lstDgvSpotsList.value = map['infoCheckAll']['lstSpots'];
-              // tapIdTabelList.clear();
-              // tempList.clear();
-              // tapIdTabelList.value = map['infoCheckAll']['brandLeave'];
-              // tempList.addAll(tapIdTabelList.value);
-              // isBrandEnable.value = false;
-              // update(["initData"]);
-              // if (map['infoCheckAll']['message'] != null || map['infoCheckAll']['message'] != "") {
-              //   LoadingDialog.callInfoMessage(map['infoCheckAll']['message']);
-              // } else {
-              //   dealLeave();
-              // }
+                map['infoCheckAllDealUtility'] != null &&
+                map.containsKey('infoCheckAllDealUtility')) {
+              roBookingCheckAllDealUtility =
+                  RoBookingCheckAllDealUtility.fromJson(map);
+              lstDgvDealEntries.value = roBookingCheckAllDealUtility!
+                  .infoCheckAllDealUtility!.lstDealEntries!;
+              lstDgvSpots.value = roBookingCheckAllDealUtility!
+                  .infoCheckAllDealUtility!.flagDeals!.lstSpots!;
+              lstDgvDealEntriesList.value =
+                  map['infoCheckAllDealUtility']['lstDealEntries'] ?? [];
+              lstDgvSpotsList.value =
+                  map['infoCheckAllDealUtility']['flagDeals']['lstSpots'] ?? [];
+              print("==========");
+              checkAllProgramFct();
+            }
+          });
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  checkAllProgramFct() {
+    try {
+      LoadingDialog.call();
+      var payload = {
+        "locationCode": selectedLoactions!.key ?? "",
+        "channelCode": selectedChannel!.key ?? "",
+        "clientCode": selectedClient!.key ?? "",
+        "agencyCode": selectedAgency!.key ?? "",
+        "txtSpots": spotsBookedTEC.text ?? "",
+        "txtDuration": durBookedTEC.text ?? "",
+        "txtAmount": amtBookedTEC.text ?? "",
+        "txtPreviousValAmount": num.parse(preVAmtTEC.text),
+        "txtPreviousBookedAmount": num.parse(preBAmtTEC.text),
+        "txtValAmount": amtValAmmountTEC.text ?? "",
+        "txtBalanceSpots": spotsBalanceTEC.text ?? "",
+        "lstSpot": lstDgvSpots.map((e) {
+          return e.toJson();
+        }).toList(),
+        "lstDgvDealEntries": lstDgvDealEntries.map((e) {
+          return e.toJson();
+        }).toList(),
+      };
+      Get.find<ConnectorControl>().POSTMETHOD(
+          api: ApiFactory.EDI_RO_CHECK_ALL_PROGRAM_FCT,
+          json: payload,
+          fun: (map) {
+            Get.back();
+            if (map != null &&
+                map['infoCheckAllProgramFCT'] != null &&
+                map.containsKey('infoCheckAllProgramFCT')) {
+              bookedAmountTEC.text = map['infoCheckAllProgramFCT']
+                          ['totalBookedAmount']
+                      .toString() ??
+                  "";
+              valAmountTEC.text =
+                  map['infoCheckAllProgramFCT']['totalValAmount'].toString() ??
+                      "";
+            }
+          });
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  save() {
+    try {
+      LoadingDialog.call();
+      var payload = {
+        "bookingNo": bookingNo1TEC.text ?? "0",
+        "grpPDC": false,
+        "pdc": "",
+        "lstPDCChannels": [],
+        "lstSpots": lstDgvSpots.map((e) {
+          return e.toJson();
+        }).toList(),
+        "lstMakeGood": makeGoodReportList.value ?? [],
+        "locationCode": selectedLoactions!.key ?? "",
+        "channelCode": selectedChannel!.key ?? "",
+        "brandCode": selectedBrand!.key ?? "",
+        "spot": spotsBookedTEC.text ?? "",
+        "chkGSTValidate": true,
+        "executiveCode": selectedExecutives!.key ?? "",
+        "dealMaxSpent": maxSpendTEC.text ?? "",
+        "totalBookedAmount": bookedAmountTEC.text ?? "",
+        "totalValAmount": valAmountTEC.text ?? "",
+        "amount": amtBookedTEC.text,
+        "agencyCode": selectedAgency!.key ?? "",
+        "position": selectedPositions!.key ?? "",
+        "bookingMonth": bookingNo1TEC.text ?? "0",
+        "clientCode": selectedClient!.key ?? "",
+        "dtpBookingDate": bkDate.text ?? "",
+        "dtpEffDate": effectiveDate.text ?? "",
+        "agncyCode": selectedAgency!.key ?? "",
+        "cboRORefNo": selectedRoRefNo!.value ?? "",
+        "payRoute": payRouteTEC.text ?? "",
+        "duration": durBookedTEC.text,
+        "zoneCode": zoneTEC.text,
+        "dealNo": selectedDealNo!.key ?? "",
+        "loggedUser": Get.find<MainController>().user?.logincode ?? "",
+        "fileName": selectedFile!.value ?? "",
+        "gstPlantsId": selectedGstPlant!.value ?? "",
+        "gstRegN": gstNoTEC.text
+      };
+      Get.find<ConnectorControl>().POSTMETHOD(
+          api: ApiFactory.EDI_RO_SAVED_EDI_BOOKING,
+          json: payload,
+          fun: (map) {
+            Get.back();
+            if (map != null &&
+                map['infoSave'] != null &&
+                map.containsKey('infoSave')) {
+              LoadingDialog.callInfoMessage(map['infoSave']['message']);
             }
           });
     } catch (e) {

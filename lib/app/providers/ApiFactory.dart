@@ -215,7 +215,7 @@ class ApiFactory {
       "$BASE_URL/api/EDIRoBooking/OnLeaveLocation?LocationCode=$locationCode";
   static String EDI_RO_LEAVE_FILE_NAME_CLAGDETAILS(
           locationName, channelName, clientName, agencyName, effectiveFrom) =>
-      "$BASE_URL/api/EDIRoBooking/OnLeaveFileNameClagdetails?LocationName=$locationName&ChannelName=$channelName&ClientName=$clientName&AgencyName=$agencyName&EffectiveFrom=$effectiveFrom";
+      "$BASE_URL/api/EDIRoBooking/OnLeaveFileNameClagdetails?LocationName=$locationName&ChannelName=${Uri.encodeQueryComponent(channelName)}&ClientName=$clientName&AgencyName=$agencyName&EffectiveFrom=$effectiveFrom";
   static String EDI_RO_AGENCY_LEAVE =
       "$BASE_URL/api/EDIRoBooking/OnAgencyLeave";
   static String EDI_RO_MARK_AS_DONE(fileName) =>
@@ -260,6 +260,8 @@ class ApiFactory {
   static String EDI_RO_CHECK_ALL = "$BASE_URL/api/EDIRoBooking/CheckAll";
   static String EDI_RO_CHECK_ALL_DEAL_UTIL =
       "$BASE_URL/api/EDIRoBooking/CheckAllDealUtil";
+  static String EDI_RO_CHECK_ALL_PROGRAM_FCT =
+      "$BASE_URL/api/EDIRoBooking/CheckAllProgramFCT";
 ///////////////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////// Create Break Pattern ///////////////////////////////////////////

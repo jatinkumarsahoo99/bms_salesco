@@ -236,7 +236,7 @@ class EdiRoBookingView extends StatelessWidget {
                                 children: [
                                   DateWithThreeTextField(
                                     title: "Bk. Date  ",
-                                    mainTextController: TextEditingController(),
+                                    mainTextController: controller.bkDate,
                                     widthRation: .08,
                                     titleInLeft: true,
                                   ),
@@ -851,7 +851,8 @@ class EdiRoBookingView extends StatelessWidget {
 
         break;
       case "Save":
-        enterNewPdcDilogBox();
+        // enterNewPdcDilogBox();
+        maincontroller.save();
 
         break;
       case "Docs":
