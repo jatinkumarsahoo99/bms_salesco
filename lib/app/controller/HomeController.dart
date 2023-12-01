@@ -32,6 +32,15 @@ class HomeController extends GetxController {
     super.onInit();
   }
 
+  @override
+  void onReady() {
+    super.onReady();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      update(["buttons"]);
+    });
+    update(["buttons"]);
+  }
+
   getbuttondata() async {
     String value = await rootBundle.loadString('assets/json/buttons.json');
     buttons = json.decode(value);
