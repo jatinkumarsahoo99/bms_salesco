@@ -1,8 +1,10 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:bms_salesco/app/providers/ApiFactory.dart';
+import 'package:flutter/foundation.dart';
 // import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:intl/intl.dart';
@@ -91,7 +93,26 @@ class Utils {
 
     return pascalCaseWords.join(' ');
   }
-
+  static Future<bool> copyToClipboardHack(String text) async {
+    if (kIsWeb) {
+      final textarea = html.TextAreaElement();
+      html.document.body?.append(textarea);
+      textarea.style.border = '0';
+      textarea.style.margin = '0';
+      textarea.style.padding = '0';
+      textarea.style.opacity = '0';
+      textarea.style.position = 'absolute';
+      textarea.readOnly = true;
+      textarea.value = text;
+      textarea.select();
+      html.document.execCommand('copy');
+      textarea.remove();
+      await html.window.navigator.clipboard?.writeText(text);
+    } else {
+      await Clipboard.setData(ClipboardData(text: text));
+    }
+    return true;
+  }
 
   String formatDateTime2(String? inputDateTime) {
     if (inputDateTime != null && inputDateTime != "") {

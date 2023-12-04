@@ -7,7 +7,7 @@ import 'package:bms_salesco/widgets/FormButton.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:pluto_grid/pluto_grid.dart';
+import 'package:bms_salesco/widgets/PlutoGrid/pluto_grid.dart';
 import '../data/DrawerModel.dart';
 import '../data/PermissionModel.dart';
 import '../providers/Aes.dart';

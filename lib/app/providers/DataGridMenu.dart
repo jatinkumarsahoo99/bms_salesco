@@ -3,12 +3,16 @@ import 'dart:convert';
 // import 'package:bms_programming/app/controller/MainController.dart';
 // import 'package:bms_programming/app/providers/extensions/datagrid.dart';
 import 'package:bms_salesco/app/providers/extensions/datagrid.dart';
+import 'package:bms_salesco/widgets/PlutoGridExport/lib/src/pdf/pluto_grid_pdf_export.dart';
+// import 'package:bms_salesco/widgets/PlutoGridExport/lib/src/pdf/pluto_grid_pdf_export.dart';
+import 'package:bms_salesco/widgets/PlutoGridExport/lib/src/pluto_grid_export.dart' as pluto_grid_export;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_file_saver/flutter_file_saver.dart';
 import 'package:get/get.dart';
-import 'package:pluto_grid/pluto_grid.dart';
-import 'package:pluto_grid_export/pluto_grid_export.dart' as pluto_grid_export;
+import 'package:bms_salesco/widgets/PlutoGrid/pluto_grid.dart';
+import 'package:pdf/pdf.dart';
+// import 'package:pluto_grid_export/pluto_grid_export.dart' as pluto_grid_export;
 
 import '../../widgets/PlutoGridExport/lib/src/pdf/pluto_grid_export1.dart';
 import '../../widgets/PlutoGridExport/lib/src/pdf/pluto_grid_export2.dart';
@@ -1693,11 +1697,11 @@ class DataGridMenu {
 
         break;
       case DataGridMenuItem.print:
-        pluto_grid_export.PlutoGridDefaultPdfExport plutoGridPdfExport =
-            pluto_grid_export.PlutoGridDefaultPdfExport(
+        PlutoGridDefaultPdfExport plutoGridPdfExport =
+            PlutoGridDefaultPdfExport(
           title: exportFileName ?? "ExportedData${DateTime.now().toString()}",
           creator: "BMS_Flutter",
-          format: pluto_grid_export.PdfPageFormat.a4.landscape,
+          format: PdfPageFormat.a4.landscape,
         );
         ExportData().printFromGridData(plutoGridPdfExport, stateManager);
 
@@ -2375,11 +2379,11 @@ class DataGridMenu {
 
         break;
       case DataGridMenuItem.print:
-        pluto_grid_export.PlutoGridDefaultPdfExport plutoGridPdfExport =
-            pluto_grid_export.PlutoGridDefaultPdfExport(
+       PlutoGridDefaultPdfExport plutoGridPdfExport =
+            PlutoGridDefaultPdfExport(
           title: exportFileName ?? "ExportedData${DateTime.now().toString()}",
           creator: "BMS_Flutter",
-          format: pluto_grid_export.PdfPageFormat.a4.landscape,
+          format: PdfPageFormat.a4.landscape,
         );
         ExportData().printFromGridData(plutoGridPdfExport, stateManager);
 
@@ -3125,11 +3129,11 @@ class DataGridMenu {
 
         break;
       case DataGridMenuItem.print:
-        pluto_grid_export.PlutoGridDefaultPdfExport plutoGridPdfExport =
-            pluto_grid_export.PlutoGridDefaultPdfExport(
+        PlutoGridDefaultPdfExport plutoGridPdfExport =
+           PlutoGridDefaultPdfExport(
           title: exportFileName ?? "ExportedData${DateTime.now().toString()}",
           creator: "BMS_Flutter",
-          format: pluto_grid_export.PdfPageFormat.a4.landscape,
+          format: PdfPageFormat.a4.landscape,
         );
         ExportData().printFromGridData(plutoGridPdfExport, stateManager);
 

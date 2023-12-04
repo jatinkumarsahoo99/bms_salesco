@@ -1,3 +1,4 @@
+import 'package:bms_salesco/widgets/PlutoGrid/pluto_grid.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -96,6 +97,7 @@ class MonthlyReportView extends GetView<MonthlyReportController> {
                                   .getGridWidthByKey(
                                       userGridSettingList:
                                           controller.userGridSetting1?.value),
+                              mode: PlutoGridMode.normal,
                               onload: (event) {
                                 controller.stateManager = event.stateManager;
                               },

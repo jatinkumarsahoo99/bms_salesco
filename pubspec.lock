@@ -57,6 +57,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.2.4"
+  bidi:
+    dependency: transitive
+    description:
+      name: bidi
+      sha256: "1a7d0c696324b2089f72e7671fd1f1f64fef44c980f3cebc84e803967c597b63"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.10"
   boolean_selector:
     dependency: transitive
     description:
@@ -146,7 +154,7 @@ packages:
     source: hosted
     version: "1.0.0"
   csv:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: csv
       sha256: "016b31a51a913744a0a1655c74ff13c9379e1200e246a03d96c81c5d9ed297b5"
@@ -476,10 +484,10 @@ packages:
     dependency: transitive
     description:
       name: image
-      sha256: "8e9d133755c3e84c73288363e6343157c383a0c6c56fc51afcc5d4d7180306d6"
+      sha256: a72242c9a0ffb65d03de1b7113bc4e189686fc07c7147b8b41811d0dd0e0d9bf
       url: "https://pub.dev"
     source: hosted
-    version: "3.3.0"
+    version: "4.0.17"
   intl:
     dependency: "direct main"
     description:
@@ -665,13 +673,21 @@ packages:
     source: hosted
     version: "2.1.7"
   pdf:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: pdf
-      sha256: "10659b915e65832b106f6d1d213e09b789cc1f24bf282ee911e49db35b96be4d"
+      sha256: "586d3debf5432e5377044754032cfa53ab45e9abf371d4865e9ad5019570e246"
       url: "https://pub.dev"
     source: hosted
-    version: "3.8.4"
+    version: "3.10.1"
+  pdf_widget_wrapper:
+    dependency: transitive
+    description:
+      name: pdf_widget_wrapper
+      sha256: "754867bf32c4683da29ccc6bf31250905431fb0818a7258c153e21cd627b3212"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0"
   petitparser:
     dependency: transitive
     description:
@@ -696,22 +712,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.5"
-  pluto_grid:
-    dependency: "direct main"
-    description:
-      name: pluto_grid
-      sha256: eab54b350911e7995fa0722103328a243d7585e5686e1d67bf845f9a7a193023
-      url: "https://pub.dev"
-    source: hosted
-    version: "5.4.9"
-  pluto_grid_export:
-    dependency: "direct main"
-    description:
-      name: pluto_grid_export
-      sha256: "6c68e8efd857081e254811c0ad34971f7d8e687744e742bb67be3055151c1c31"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.4"
   pointycastle:
     dependency: transitive
     description:
@@ -721,13 +721,13 @@ packages:
     source: hosted
     version: "3.7.3"
   printing:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: printing
-      sha256: "4df9e22bd4cb2ecea67183e5b328711b10276127b8878d9d5cb60ccd4c24a77c"
+      sha256: "6aa86779d51f1c60608defee7b231e1133ab9b00f63b3b71abfa85cb39898571"
       url: "https://pub.dev"
     source: hosted
-    version: "5.9.3"
+    version: "5.10.4"
   provider:
     dependency: transitive
     description:

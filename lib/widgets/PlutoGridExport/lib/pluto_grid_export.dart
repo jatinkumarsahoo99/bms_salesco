@@ -10,3 +10,4 @@ export './src/pdf/generic_pdf_controller.dart';
 export './src/pdf/pdf_controller.dart';
 export './src/pdf/pluto_grid_pdf_export.dart';
 export './src/pluto_grid_export.dart';
+export './pluto_grid_export.dart';

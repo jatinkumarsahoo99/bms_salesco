@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:pluto_grid/pluto_grid.dart';
+import 'package:bms_salesco/widgets/PlutoGrid/pluto_grid.dart';
 
 import '../../../../widgets/FormButton.dart';
 import '../../../../widgets/dropdown.dart';
@@ -88,7 +88,8 @@ class RescheduleImportView extends GetView<RescheduleImportController> {
                         : DataGridFromMap(
                             doPasccal: false,
                             formatDate: false,
-                            mode: PlutoGridMode.selectWithOneTap,
+                            // mode: PlutoGridMode.selectWithOneTap,
+                            mode: PlutoGridMode.normal,
                             mapData: controller.dataTableList.value.map((e) {
                               // print(e);
                               if (e['Sch Date'].toString().contains('T')) {
