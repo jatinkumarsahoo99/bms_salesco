@@ -58,7 +58,7 @@ class BookingsAgainstPDCView extends StatelessWidget {
                           selected: controller.selctedAgency,
                         );
                       }),
-                      InputFields.numbers(
+                      InputFields.numbers2(
                         focusNode: controller.activityMonthFN,
                         hintTxt: "Activity Month",
                         controller: controller.activityMonthCTR,

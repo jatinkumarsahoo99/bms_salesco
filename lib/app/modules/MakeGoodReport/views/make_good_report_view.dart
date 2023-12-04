@@ -59,12 +59,12 @@ class MakeGoodReportView extends GetView<MakeGoodReportController> {
                     DateWithThreeTextField(
                       title: "From Date",
                       mainTextController: controller.fromDateTC,
-                      widthRation: 0.15,
+                      widthRation: .15,
                     ),
                     DateWithThreeTextField(
                       title: "To Date",
                       mainTextController: controller.toDateTC,
-                      widthRation: 0.15,
+                      widthRation: .15,
                       onFocusChange: (date) {
                         controller.getClient();
                       },

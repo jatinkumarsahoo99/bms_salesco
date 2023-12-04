@@ -43,7 +43,11 @@ class PDCChequesController extends GetxController {
       activityMonthTC = TextEditingController();
   var saveTaxAmt = "".obs, newBookAmt = "".obs;
   var isDummy = false.obs;
-  var clientFN = FocusNode(), activityMonthFN = FocusNode();
+  var clientFN = FocusNode(),
+      activityMonthFN = FocusNode(),
+      chqAmtFN = FocusNode(),
+      tdsAmtFN = FocusNode(),
+      svcTaxFN = FocusNode();
   int chequeID = 0;
   double widthRation = .15;
 
@@ -53,18 +57,55 @@ class PDCChequesController extends GetxController {
     LoadingDialog.call();
     Future.delayed(const Duration(seconds: 2)).then((value) {
       activityMonthTC.text = "${DateTime.now().year}${DateTime.now().month}";
-      activityMonthFN.onKey = (node, event) {
-        if (!event.isShiftPressed &&
-            !event.isAltPressed &&
-            event.logicalKey == LogicalKeyboardKey.tab) {
-          Get.focusScope?.nextFocus();
+      activityMonthFN.addListener(() {
+        if (!activityMonthFN.hasFocus) {
           getChequeBookingData(chequeId: chequeID);
-          return KeyEventResult.handled;
         }
-        return KeyEventResult.ignored;
-      };
+      });
+      chqAmtFN.addListener(() {
+        if (!chqAmtFN.hasFocus) {
+          calculateTotal();
+          if (!checkAmtTC.text.contains(".")) {
+            checkAmtTC.text = "${checkAmtTC.text}.00";
+            checkAmtTC.selection = TextSelection.fromPosition(
+              TextPosition(offset: checkAmtTC.text.length),
+            );
+          }
+        }
+      });
+      tdsAmtFN.addListener(() {
+        if (!tdsAmtFN.hasFocus) {
+          calculateTotal();
+          if (!tdsAmtTC.text.contains(".")) {
+            tdsAmtTC.text = "${tdsAmtTC.text}.00";
+            tdsAmtTC.selection = TextSelection.fromPosition(
+              TextPosition(offset: tdsAmtTC.text.length),
+            );
+          }
+        }
+      });
+      svcTaxFN.addListener(() {
+        if (!svcTaxFN.hasFocus) {
+          calculateTotal();
+          if (!saveTaxTC.text.contains(".")) {
+            saveTaxTC.text = "${saveTaxTC.text}.00";
+            saveTaxTC.selection = TextSelection.fromPosition(
+              TextPosition(offset: saveTaxTC.text.length),
+            );
+          }
+        }
+      });
       getOnLoadData();
     });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    // svcTaxFN.removeListener(() {});
+    // tdsAmtFN.removeListener(() {});
+    // chqAmtFN.removeListener(() {});
+    // activityMonthFN.removeListener(() {});
   }
 
   handleOnChangeClient(DropDownValue client) {

@@ -442,6 +442,7 @@ class ReleseOrderRescheduleTapeIDController extends GetxController {
         brand?.key == null ||
         tapeCode?.value == null) {
       documentKey = "";
+      return;
     } else {
       documentKey =
           "ROReschedule_ByTapeID ${location?.value}${channel?.value}${client?.key}${agency?.key}${brand?.key}${selectedTapeRight?.key ?? ''}${tapeCode?.key}";

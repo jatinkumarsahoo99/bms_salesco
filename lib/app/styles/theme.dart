@@ -1,5 +1,7 @@
+import 'package:bms_salesco/app/providers/Utils.dart';
 import 'package:bms_salesco/app/providers/extensions/datagrid.dart';
 import 'package:bms_salesco/widgets/PlutoGrid/pluto_grid.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:bms_salesco/widgets/PlutoGrid/pluto_grid.dart';
@@ -42,21 +44,22 @@ ThemeData primaryThemeData = ThemeData(
   ),
 );
 
-PlutoGridConfiguration plutoGridConfiguration({
-  Function? actionOnPress,
-  String? actionKey,
-  bool autoScale = false,
-  Color? checkColor = const Color(0xFFD1C4E9),
-  required FocusNode focusNode,
-  FocusNode? previousWidgetFN,
-  double rowHeight = 25,double headerHeight = 30
-}) =>
+PlutoGridConfiguration plutoGridConfiguration(
+        {Function? actionOnPress,
+        String? actionKey,
+        bool autoScale = false,
+        Color? checkColor = const Color(0xFFD1C4E9),
+        required FocusNode focusNode,
+        FocusNode? previousWidgetFN,
+        double rowHeight = 25,
+        double headerHeight = 30}) =>
     PlutoGridConfiguration.dark(
-      shortcut: PlutoGridShortcut(
-        actions: {
-          // This is a Map with basic shortcut keys and actions set.
-          ...PlutoGridShortcut.defaultActions,
-
+        shortcut: PlutoGridShortcut(
+          actions: {
+            // This is a Map with basic shortcut keys and actions set.
+            ...PlutoGridShortcut.defaultActions,
+            LogicalKeySet(LogicalKeyboardKey.control, LogicalKeyboardKey.keyC):
+                CopyValueFromDataTable(),
             LogicalKeySet(LogicalKeyboardKey.tab):
                 CustomTabKeyAction(focusNode, previousWidgetFN),
             LogicalKeySet(LogicalKeyboardKey.shift, LogicalKeyboardKey.tab):
@@ -74,7 +77,7 @@ PlutoGridConfiguration plutoGridConfiguration({
         ),
         style: PlutoGridStyleConfig(
             rowHeight: rowHeight,
-            columnHeight: headerHeight??30,
+            columnHeight: headerHeight ?? 30,
             defaultCellPadding: const EdgeInsets.all(2),
             enableCellBorderHorizontal: true,
             gridBorderColor: Colors.deepPurpleAccent,
@@ -118,6 +121,8 @@ PlutoGridConfiguration plutoGridConfiguration2({
         actions: {
           // This is a Map with basic shortcut keys and actions set.
           ...PlutoGridShortcut.defaultActions,
+          LogicalKeySet(LogicalKeyboardKey.control, LogicalKeyboardKey.keyC):
+              CopyValueFromDataTable(),
           LogicalKeySet(LogicalKeyboardKey.shift, LogicalKeyboardKey.tab):
               CustomTabKeyAction(focusNode, previousWidgetFN),
           LogicalKeySet(LogicalKeyboardKey.tab):
@@ -244,6 +249,35 @@ PlutoGridConfiguration plutoGridConfiguration3({
 // Create a new class that inherits from PlutoGridShortcutAction
 // If the execute method is implemented,
 // the implemented method is executed when the enter key is pressed.
+
+class CopyValueFromDataTable extends PlutoGridShortcutAction {
+  @override
+  void execute(
+      {required PlutoKeyManagerEvent keyEvent,
+      required PlutoGridStateManager stateManager}) {
+    if (stateManager.isEditing == true) {
+      return;
+    }
+    print('''
+Current Column Name:${stateManager.currentColumnField}\n
+Selecting rows lentgh:${stateManager.currentSelectingRows.length}\n
+Selectig currentSelectingPositionList Lentgh:${stateManager.currentSelectingPositionList.length}\n
+Selecting Mode Name:${stateManager.selectingMode.name}
+''');
+    if (stateManager.currentSelectingPositionList.isEmpty &&
+        stateManager.currentSelectingRows.isEmpty &&
+        stateManager.currentColumnField == "no" &&
+        stateManager.currentRow != null) {
+      print("copying one row");
+      Utils.copyToClipboard(
+          stateManager.selectValueFromRow([stateManager.currentRow!]));
+    } else {
+      print("copying cells");
+      Utils.copyToClipboard(stateManager.currentSelectingText);
+    }
+  }
+}
+
 class CustomEnterKeyAction extends PlutoGridShortcutAction {
   CustomEnterKeyAction({
     this.actionOnPress,

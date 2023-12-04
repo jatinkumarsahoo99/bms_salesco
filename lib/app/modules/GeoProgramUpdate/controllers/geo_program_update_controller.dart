@@ -62,9 +62,9 @@ class GeoProgramUpdateController extends GetxController {
   }
 
   updateAPICall() {
-    if (selectedLocation == null) {
+    if (selectedLocation.value == null) {
       LoadingDialog.showErrorDialog("Please select location");
-    } else if (selectedChannel == null) {
+    } else if (selectedChannel.value == null) {
       LoadingDialog.showErrorDialog("Please select channel");
     } else {
       LoadingDialog.call();

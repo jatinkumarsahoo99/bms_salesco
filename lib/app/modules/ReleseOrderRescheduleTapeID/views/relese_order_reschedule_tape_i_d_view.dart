@@ -363,7 +363,7 @@ class ReleseOrderRescheduleTapeIDView extends StatelessWidget {
                   /// Common Buttons
                   Get.find<HomeController>()
                       .getCommonButton<ReleseOrderRescheduleTapeIDController>(
-                    Routes.COMMERCIAL_CREATION_AUTO,
+                    Routes.RELESE_ORDER_RESCHEDULE_TAPE_I_D,
                     (btnName) {
                       if (btnName == "Save") {
                         controller.saveData(
