@@ -7,7 +7,7 @@ import 'package:flutter/services.dart';
 
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:pluto_grid/pluto_grid.dart';
+import 'package:bms_salesco/widgets/PlutoGrid/pluto_grid.dart';
 
 import '../../../../widgets/DateTime/DateWithThreeTextField.dart';
 import '../../../../widgets/FormButton.dart';

@@ -2,7 +2,7 @@ import 'package:bms_salesco/widgets/LoadingDialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:pluto_grid/pluto_grid.dart';
+import 'package:bms_salesco/widgets/PlutoGrid/pluto_grid.dart';
 
 import '../../../controller/ConnectorControl.dart';
 import '../../../controller/HomeController.dart';

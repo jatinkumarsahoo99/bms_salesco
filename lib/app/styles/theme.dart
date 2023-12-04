@@ -1,9 +1,10 @@
 import 'package:bms_salesco/app/providers/Utils.dart';
 import 'package:bms_salesco/app/providers/extensions/datagrid.dart';
+import 'package:bms_salesco/widgets/PlutoGrid/pluto_grid.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:pluto_grid/pluto_grid.dart';
+import 'package:bms_salesco/widgets/PlutoGrid/pluto_grid.dart';
 
 import '../providers/SizeDefine.dart';
 
@@ -268,11 +269,11 @@ Selecting Mode Name:${stateManager.selectingMode.name}
         stateManager.currentColumnField == "no" &&
         stateManager.currentRow != null) {
       print("copying one row");
-      Utils.copyToClipboard(
+      Utils.copyToClipboardHack(
           stateManager.selectValueFromRow([stateManager.currentRow!]));
     } else {
       print("copying cells");
-      Utils.copyToClipboard(stateManager.currentSelectingText);
+      Utils.copyToClipboardHack(stateManager.currentSelectingText);
     }
   }
 }

@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:pluto_grid/pluto_grid.dart';
+import 'package:bms_salesco/widgets/PlutoGrid/pluto_grid.dart';
 
 import '../../../../widgets/CheckBox/app_check_box.dart';
 import '../../../../widgets/LoadingDialog.dart';

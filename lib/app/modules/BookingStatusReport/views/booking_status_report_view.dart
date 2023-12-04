@@ -2,7 +2,7 @@ import 'package:bms_salesco/app/data/DropDownValue.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:pluto_grid/pluto_grid.dart';
+import 'package:bms_salesco/widgets/PlutoGrid/pluto_grid.dart';
 
 import '../../../../widgets/CheckBox/multi_check_box.dart';
 import '../../../../widgets/DataGridShowOnly.dart';
@@ -179,6 +179,7 @@ class BookingStatusReportView extends StatelessWidget {
                       mapData: controller.dataTableList.value,
                       hideCode: false,
                       exportFileName: "BookingStatus Report",
+                      mode: PlutoGridMode.normal,
                       onload: (loadevent) {
                         loadevent.stateManager.setSelecting(true);
                         loadevent.stateManager

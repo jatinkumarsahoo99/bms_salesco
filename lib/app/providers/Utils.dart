@@ -18,26 +18,6 @@ import "dart:html" as html;
 class Utils {
   static String twoDigits(int n) => n.toString().padLeft(2, "0");
 
-  static Future<void> copyToClipboard(String text) async {
-    if (kIsWeb) {
-      final textarea = html.TextAreaElement();
-      html.document.body?.append(textarea);
-      textarea.style.border = '0';
-      textarea.style.margin = '0';
-      textarea.style.padding = '0';
-      textarea.style.opacity = '0';
-      textarea.style.position = 'absolute';
-      textarea.readOnly = true;
-      textarea.value = text;
-      textarea.select();
-      html.document.execCommand('copy');
-      textarea.remove();
-      await html.window.navigator.clipboard?.writeText(text);
-    } else {
-      await Clipboard.setData(ClipboardData(text: text));
-    }
-  }
-
   static String twoDigitsString(String n) => n.padLeft(2, "0");
 
   static toDateFormat(String? date, {bool? isStringRequired}) {
@@ -125,6 +105,26 @@ class Utils {
     }
 
     return pascalCaseWords.join(' ');
+  }
+  static Future<bool> copyToClipboardHack(String text) async {
+    if (kIsWeb) {
+      final textarea = html.TextAreaElement();
+      html.document.body?.append(textarea);
+      textarea.style.border = '0';
+      textarea.style.margin = '0';
+      textarea.style.padding = '0';
+      textarea.style.opacity = '0';
+      textarea.style.position = 'absolute';
+      textarea.readOnly = true;
+      textarea.value = text;
+      textarea.select();
+      html.document.execCommand('copy');
+      textarea.remove();
+      await html.window.navigator.clipboard?.writeText(text);
+    } else {
+      await Clipboard.setData(ClipboardData(text: text));
+    }
+    return true;
   }
 
   String formatDateTime2(String? inputDateTime) {

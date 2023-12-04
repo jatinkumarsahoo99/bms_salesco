@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pluto_grid/pluto_grid.dart';
+import 'package:bms_salesco/widgets/PlutoGrid/pluto_grid.dart';
 
 import '../../../../widgets/FormButton.dart';
 import '../../../../widgets/Snack.dart';
@@ -120,7 +120,7 @@ class SearchResultPage extends StatelessWidget {
                     //         autoSizeMode: PlutoAutoSizeMode.none,
                     //         resizeMode: PlutoResizeMode.normal));
                   },
-                  mode: PlutoGridMode.select,
+                  mode: PlutoGridMode.normal,
                   colorCallback: (row) => sm?.currentRow == row.row
                       ? Colors.deepPurple.shade100
                       : Colors.white,

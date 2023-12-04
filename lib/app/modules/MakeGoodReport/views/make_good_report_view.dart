@@ -2,7 +2,7 @@ import 'package:bms_salesco/widgets/CheckBoxWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:pluto_grid/pluto_grid.dart';
+import 'package:bms_salesco/widgets/PlutoGrid/pluto_grid.dart';
 
 import '../../../../widgets/DateTime/DateWithThreeTextField.dart';
 import '../../../../widgets/FormButton.dart';
@@ -149,6 +149,7 @@ class MakeGoodReportView extends GetView<MakeGoodReportController> {
                                   ? Colors.deepPurple.shade100
                                   : Colors.white,
                               columnAutoResize: false,
+                              mode: PlutoGridMode.normal,
                               widthSpecificColumn: Get.find<HomeController>()
                                   .getGridWidthByKey(
                                       userGridSettingList:

@@ -3,6 +3,7 @@ import 'package:bms_salesco/app/providers/ApiFactory.dart';
 import 'package:bms_salesco/app/providers/extensions/screen_size.dart';
 import 'package:bms_salesco/app/routes/app_pages.dart';
 import 'package:bms_salesco/widgets/FormButton.dart';
+import 'package:bms_salesco/widgets/PlutoGrid/pluto_grid.dart';
 import 'package:bms_salesco/widgets/gridFromMap.dart';
 import 'package:bms_salesco/widgets/input_fields.dart';
 import 'package:flutter/material.dart';
@@ -108,9 +109,11 @@ class BookingsAgainstPDCView extends StatelessWidget {
                         onload: (sm) {
                           controller.sm = sm.stateManager;
                         },
+                        mode: PlutoGridMode.normal,
                       );
                     }),
                   ),
+
                   Get.find<HomeController>()
                       .getCommonButton<BookingsAgainstPDCController>(
                     Routes.BOOKINGS_AGAINST_P_D_C,
