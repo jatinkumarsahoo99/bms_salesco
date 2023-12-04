@@ -269,11 +269,11 @@ Selecting Mode Name:${stateManager.selectingMode.name}
         stateManager.currentColumnField == "no" &&
         stateManager.currentRow != null) {
       print("copying one row");
-      Utils.copyToClipboard(
+      Utils.copyToClipboardHack(
           stateManager.selectValueFromRow([stateManager.currentRow!]));
     } else {
       print("copying cells");
-      Utils.copyToClipboard(stateManager.currentSelectingText);
+      Utils.copyToClipboardHack(stateManager.currentSelectingText);
     }
   }
 }
