@@ -2,7 +2,7 @@ import 'package:bms_salesco/app/data/DropDownValue.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:pluto_grid/pluto_grid.dart';
+import 'package:bms_salesco/widgets/PlutoGrid/pluto_grid.dart';
 
 import '../../../../widgets/DateTime/DateWithThreeTextField.dart';
 import '../../../../widgets/FormButton.dart';
@@ -262,6 +262,7 @@ class DealRecoSummaryView extends GetView<DealRecoSummaryController> {
                                     .toList())!,
                                 // mapData: (controllerX.dataList)!,
                                 widthRatio: Get.width / 9 - 1,
+                                mode: PlutoGridMode.normal,
                                 onload: (PlutoGridOnLoadedEvent load){
                                   controllerX.stateManager = load.stateManager;
                                 },

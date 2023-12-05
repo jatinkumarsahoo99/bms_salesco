@@ -1,9 +1,14 @@
+import 'package:bms_salesco/widgets/PlutoGridExport/lib/pluto_grid_export.dart';
 import 'package:excel/excel.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_file_saver/flutter_file_saver.dart';
 import 'package:get/get.dart';
-import 'package:pluto_grid_export/pluto_grid_export.dart' as pluto_grid_export;
-import 'package:pluto_grid_export/pluto_grid_export.dart';
+// import 'package:pluto_grid_export/pluto_grid_export.dart' as pluto_grid_export;
+// import 'package:pluto_grid_export/pluto_grid_export.dart';
+
+import 'package:bms_salesco/widgets/PlutoGridExport/lib/src/pluto_grid_export.dart' as pluto_grid_export;
+import 'package:bms_salesco/widgets/PlutoGridExport/lib/src/pluto_grid_export.dart';
+import 'package:printing/printing.dart';
 
 import '../../widgets/LoadingDialog.dart';
 import '../../widgets/Snack.dart';
@@ -95,11 +100,11 @@ class ExportData {
   }
 
   printFromGridData(plutoGridPdfExport, stateManager) async {
-    plutoGridPdfExport.themeData = pluto_grid_export.ThemeData.withFont(
-      base: pluto_grid_export.Font.ttf(
+    plutoGridPdfExport.themeData = ThemeData.withFont(
+      base: Font.ttf(
         await rootBundle.load('assets/fonts/OpenSans-Regular.ttf'),
       ),
-      bold: pluto_grid_export.Font.ttf(
+      bold: Font.ttf(
         await rootBundle.load('assets/fonts/OpenSans-Bold.ttf'),
       ),
     );
@@ -114,19 +119,19 @@ class ExportData {
   }
 
   exportPdfFromGridData(
-      pluto_grid_export.PlutoGridDefaultPdfExport plutoGridPdfExport,
+      PlutoGridDefaultPdfExport plutoGridPdfExport,
       stateManager) async {
     LoadingDialog.call();
 
-    plutoGridPdfExport.themeData = pluto_grid_export.ThemeData.withFont(
-      base: pluto_grid_export.Font.ttf(
+    plutoGridPdfExport.themeData = ThemeData.withFont(
+      base: Font.ttf(
         await rootBundle.load('assets/fonts/OpenSans-Regular.ttf'),
       ),
-      bold: pluto_grid_export.Font.ttf(
+      bold: Font.ttf(
         await rootBundle.load('assets/fonts/OpenSans-Bold.ttf'),
       ),
     );
-    await pluto_grid_export.Printing.sharePdf(
+    await Printing.sharePdf(
         bytes: await plutoGridPdfExport.export(stateManager),
         filename: plutoGridPdfExport.getFilename());
 

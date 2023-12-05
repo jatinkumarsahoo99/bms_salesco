@@ -12,14 +12,14 @@ dependencies:
   shared_preferences:
   url_strategy: ^0.2.0
   intl: ^0.17.0
-  pluto_grid: ^5.3.2
+#  pluto_grid: ^5.3.2
   dropdown_plus: ^0.0.9
   dropdown_search: ^5.0.3
   time_range_picker: 2.0.1
   encrypt:
   flutter_file_saver: ^0.6.1+1
   excel:
-  pluto_grid_export: ^1.0.3
+#  pluto_grid_export: ^1.0.3
   url_launcher:
   data_table_2: 2.3.9
   url_encoder:
@@ -31,6 +31,9 @@ dependencies:
   google_fonts: ^4.0.4
   flutter_widget_from_html: ^0.10.3
   collection:
+  csv:
+  pdf:
+  printing:
 
 dev_dependencies: 
   flutter_lints: ^2.0.0
