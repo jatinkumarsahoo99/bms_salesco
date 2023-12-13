@@ -87,12 +87,12 @@ class SearchResultPage extends StatelessWidget {
                 width: Get.width * 2,
                 padding:
                     const EdgeInsets.only(bottom: 8, top: 8, left: 8, right: 8),
-                child: DataGridFromMap3(
+                child: DataGridFromMap6(
                   columnAutoResize: false,
                   checkBoxColumnKey: ['isDummy'],
                   noEditcheckBoxColumnKey: ['isDummy'],
-                  checkBoxStrComparison: "true",
-                  uncheckCheckBoxStr: "false",
+                  checkBoxStrComparison: true,
+                  uncheckCheckBoxStr: false,
                   formateDateColumn: const {
                     "ApprovedTill": "yyyy-MM-ddThh:mm:ss",
                     "ChequeDate": "yyyy-MM-ddThh:mm:ss",
