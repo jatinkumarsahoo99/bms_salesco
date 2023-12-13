@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:bms_salesco/widgets/PlutoGrid/pluto_grid.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../widgets/FormButton.dart';
 import '../../../../widgets/Snack.dart';
@@ -108,7 +109,32 @@ class SearchResultPage extends StatelessWidget {
                               controller.selectVarianceId.toString(),
                         )["varianceName"]} _Search_Result",
                   hideCode: false,
-                  mapData: controller.searchResult!,
+                  mapData: controller.searchResult!.map((e) {
+                    if (e['DealDate'] != null) {
+                      e['DealDate'] = DateFormat('dd-MM-yyyy').format(
+                          DateFormat('yyyy-MM-ddThh:mm:ss')
+                              .parse(e['DealDate']));
+                    }
+                    // e = controller.dateFormate(e['DealDate']);
+
+                    if (e['ReferenceDate'] != null) {
+                      e['ReferenceDate'] = DateFormat('dd-MM-yyyy').format(
+                          DateFormat('yyyy-MM-ddThh:mm:ss')
+                              .parse(e['ReferenceDate']));
+                    }
+                    if (e['fromdate'] != null) {
+                      e['fromdate'] = DateFormat('dd-MM-yyyy').format(
+                          DateFormat('yyyy-MM-ddThh:mm:ss')
+                              .parse(e['fromdate']));
+                    }
+                    if (e['Todate'] != null) {
+                      e['Todate'] = DateFormat('dd-MM-yyyy').format(
+                          DateFormat('yyyy-MM-ddThh:mm:ss').parse(e['Todate']));
+                    }
+
+                    return e;
+                  }).toList(),
+                  formatDate: false,
                   doPasccal: false,
                   onload: (event) {
                     sm = event.stateManager;
