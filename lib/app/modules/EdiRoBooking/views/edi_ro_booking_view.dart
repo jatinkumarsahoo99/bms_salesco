@@ -576,133 +576,174 @@ class EdiRoBookingView extends StatelessWidget {
                                   border: Border.all(color: Colors.grey)),
                             )
                           : Container(
-                              child: DataGridShowOnlyKeys(
-                                mode: PlutoGridMode.selectWithOneTap,
-                                onSelected: (event) {
-                                  controller.isSelectingChange.value = false;
-                                },
-                                editKeys: ['noProgram'],
-                                hideKeys: [
-                                  'backColor',
-                                  'selected',
-                                  'isSpotsAvailable'
-                                ],
-                                mapData: controller.lstDgvSpotsList.value,
-                                hideCode: false,
-                                formatDate: false,
-                                exportFileName: "EDI R.O. Booking",
-                                onload: (load) {
-                                  load.stateManager.setCurrentCell(
-                                      load.stateManager
-                                          .getRowByIdx(
-                                              controller.lastSelectedIdx)!
-                                          .cells['program'],
-                                      controller.lastSelectedIdx);
-                                  load.stateManager.moveCurrentCellByRowIdx(
-                                      controller.lastSelectedIdx,
-                                      PlutoMoveDirection.down);
-                                  load.stateManager.scroll.vertical!.animateTo(
-                                      controller.lastSelectedOffect,
-                                      curve: Curves.ease,
-                                      duration: Duration(milliseconds: 2));
-                                  controller.dvgSpotGrid = load.stateManager;
-                                },
-                                colorCallback: (colorEvent) {
-                                  controller.coloerEvents = colorEvent;
-                                  if (colorEvent.row.cells.containsValue(
-                                      controller.dvgSpotGrid?.currentCell)) {
-                                    return Colors.deepPurple.shade100;
-                                  }
-                                  if (controller.lstDgvSpotsList[colorEvent
-                                          .rowIdx]['isSpotsAvailable'] &&
-                                      controller.isSelectingChange.value) {
-                                    return Colors.deepPurple.shade100;
-                                  }
-
-                                  return controller.getColor(
-                                    controller
-                                        .lstDgvSpotsList[colorEvent.rowIdx],
-                                    colorEvent.rowIdx,
-                                  );
-                                },
-                                onRowDoubleTap: (event) async {
-                                  controller.lastSelectedOffect = controller
-                                      .dvgSpotGrid!.scroll.verticalOffset;
-                                  controller.lastSelectedIdx = event.rowIdx;
-//Down Grid Set
-                                  controller.dvgSpotGrid?.setCurrentCell(
-                                      event.cell, event.rowIdx);
-                                  //Clear
-                                  if (Get.find<MainController>()
-                                      .filters1
-                                      .containsKey(controller
-                                          .dgvDealEntriesGrid.hashCode
-                                          .toString())) {
-                                    await controller.clearFirstDataTableFilter(
-                                        controller.dgvDealEntriesGrid!);
-                                  }
-                                  //Up Grid Set
-                                  for (var element
-                                      in controller.dgvDealEntriesGrid!.rows) {
-                                    if (element.cells['costPer10Sec']?.value ==
-                                        event.cell.value) {
-                                      controller.dgvDealEntriesGrid
-                                          ?.setCurrentCell(
-                                              element.cells['costPer10Sec'],
-                                              element.sortIdx);
-                                      break;
+                              child: DataGridFromMap3(
+                                  mode: PlutoGridMode.selectWithOneTap,
+                                  onSelected: (event) {
+                                    controller.isSelectingChange.value = false;
+                                  },
+                                  editKeys: ['noProgram'],
+                                  hideKeys: [
+                                    'backColor',
+                                    'selected',
+                                    'isSpotsAvailable'
+                                  ],
+                                  mapData: controller.lstDgvSpotsList.value,
+                                  hideCode: false,
+                                  formatDate: false,
+                                  exportFileName: "EDI R.O. Booking",
+                                  onload: (load) {
+                                    load.stateManager.setCurrentCell(
+                                        load.stateManager
+                                            .getRowByIdx(
+                                                controller.lastSelectedIdx)!
+                                            .cells['program'],
+                                        controller.lastSelectedIdx);
+                                    load.stateManager.moveCurrentCellByRowIdx(
+                                        controller.lastSelectedIdx,
+                                        PlutoMoveDirection.down);
+                                    load.stateManager.scroll.vertical!
+                                        .animateTo(
+                                            controller.lastSelectedOffect,
+                                            curve: Curves.ease,
+                                            duration:
+                                                Duration(milliseconds: 2));
+                                    controller.dvgSpotGrid = load.stateManager;
+                                  },
+                                  colorCallback: (colorEvent) {
+                                    controller.coloerEvents = colorEvent;
+                                    if (colorEvent.row.cells.containsValue(
+                                        controller.dvgSpotGrid?.currentCell)) {
+                                      return Colors.deepPurple.shade100;
                                     }
-                                  }
+                                    if (controller.lstDgvSpotsList[colorEvent
+                                            .rowIdx]['isSpotsAvailable'] &&
+                                        controller.isSelectingChange.value) {
+                                      return Colors.deepPurple.shade100;
+                                    }
 
-                                  // print(event.cell.row.sortIdx);
-                                  // print(event.cell.value);
-                                  // print(event.cell.column.field);
-                                  // print(event.row.cells['acT_DT']?.value);
+                                    return controller.getColor(
+                                      controller
+                                          .lstDgvSpotsList[colorEvent.rowIdx],
+                                      colorEvent.rowIdx,
+                                    );
+                                  },
+                                  onRowDoubleTap: (event) async {
+                                    controller.lastSelectedOffect = controller
+                                        .dvgSpotGrid!.scroll.verticalOffset;
+                                    controller.lastSelectedIdx = event.rowIdx;
+//Down Grid Set
+                                    controller.dvgSpotGrid?.setCurrentCell(
+                                        event.cell, event.rowIdx);
+                                    //Clear
+                                    if (Get.find<MainController>()
+                                        .filters1
+                                        .containsKey(controller
+                                            .dgvDealEntriesGrid.hashCode
+                                            .toString())) {
+                                      await controller
+                                          .clearFirstDataTableFilter(
+                                              controller.dgvDealEntriesGrid!);
+                                    }
+                                    //Up Grid Set
+                                    for (var element in controller
+                                        .dgvDealEntriesGrid!.rows) {
+                                      if (element
+                                              .cells['costPer10Sec']?.value ==
+                                          event.cell.value) {
+                                        controller.dgvDealEntriesGrid
+                                            ?.setCurrentCell(
+                                                element.cells['costPer10Sec'],
+                                                element.sortIdx);
+                                        break;
+                                      }
+                                    }
 
-                                  if (event.cell.column.field.toString() ==
-                                      'fpcstart') {
-                                    controller.spotFpcStart(
-                                        controller.selectedLoactions?.key,
-                                        controller.selectedChannel?.key,
-                                        event.row.cells['acT_DT']?.value
-                                            .toString());
-                                  } else if (event.cell.column.field
-                                          .toString() ==
-                                      'program') {
-                                    event.row.cells['noProgram']?.value = 1;
-                                    event.row.cells['dealOK']?.value = "0";
-                                    event.row.cells['fctok']?.value = "0";
-                                    event.row.cells['okSpot']?.value = "0";
+                                    // print(event.cell.row.sortIdx);
+                                    // print(event.cell.value);
+                                    // print(event.cell.column.field);
+                                    // print(event.row.cells['acT_DT']?.value);
 
-                                    controller
-                                            .lstDgvSpotsList[event.row.sortIdx]
-                                        ['noProgram'] = 1;
-                                    controller
-                                            .lstDgvSpotsList[event.row.sortIdx]
-                                        ['dealOK'] = "0";
-                                    controller
-                                            .lstDgvSpotsList[event.row.sortIdx]
-                                        ['fctok'] = "0";
-                                    controller
-                                            .lstDgvSpotsList[event.row.sortIdx]
-                                        ['okSpot'] = "0";
-                                    controller.lstDgvSpotsList.refresh();
-                                  } else if (event.cell.column.field
-                                          .toString() ==
-                                      'spoT_RATE') {
-                                    await controller.doubleClickFilterGrid(
-                                        controller.dvgSpotGrid);
-                                    await controller.doubleClickFilterGrid1(
-                                        controller.dgvDealEntriesGrid,
-                                        'costPer10Sec',
-                                        event.cell.value.toString());
-                                  } else if (event.cell.column.field
-                                          .toString() ==
-                                      'tapE_ID') {
-                                    controller.tapeIdDilogBox();
-                                  }
-                                },
-                              ),
+                                    if (event.cell.column.field.toString() ==
+                                        'fpcstart') {
+                                      controller.spotFpcStart(
+                                          controller.selectedLoactions?.key,
+                                          controller.selectedChannel?.key,
+                                          event.row.cells['acT_DT']?.value
+                                              .toString());
+                                    } else if (event.cell.column.field
+                                            .toString() ==
+                                        'program') {
+                                      event.row.cells['noProgram']?.value = 1;
+                                      event.row.cells['dealOK']?.value = "0";
+                                      event.row.cells['fctok']?.value = "0";
+                                      event.row.cells['okSpot']?.value = "0";
+
+                                      controller.lstDgvSpotsList[
+                                          event.row.sortIdx]['noProgram'] = 1;
+                                      controller.lstDgvSpotsList[
+                                          event.row.sortIdx]['dealOK'] = "0";
+                                      controller.lstDgvSpotsList[
+                                          event.row.sortIdx]['fctok'] = "0";
+                                      controller.lstDgvSpotsList[
+                                          event.row.sortIdx]['okSpot'] = "0";
+                                      controller.lstDgvSpotsList.refresh();
+                                    } else if (event.cell.column.field
+                                            .toString() ==
+                                        'spoT_RATE') {
+                                      await controller.doubleClickFilterGrid(
+                                          controller.dvgSpotGrid);
+                                      await controller.doubleClickFilterGrid1(
+                                          controller.dgvDealEntriesGrid,
+                                          'costPer10Sec',
+                                          event.cell.value.toString());
+                                    } else if (event.cell.column.field
+                                            .toString() ==
+                                        'tapE_ID') {
+                                      controller.tapeIdDilogBox();
+                                    }
+                                  },
+                                  doPasccal: true,
+                                  keyMapping: const {
+                                    "station": "STATION",
+                                    "acT_DT": "ACT_DT",
+                                    "stime": "STIME",
+                                    "etime": "ETIME",
+                                    "program": "PROGRAM",
+                                    "fpcstart": "FPCSTART",
+                                    "fpcprogram": "FPCPROGRAM",
+                                    "tapE_ID": "TAPE_ID",
+                                    "commercialcaption": "COMMERCIALCAPTION",
+                                    "dur": "DUR",
+                                    "commercialduration": "COMMERCIALCAPTION",
+                                    "brand": "BRAND",
+                                    "commCaption": "CommCaption",
+                                    "pmtType": "PMTType",
+                                    "schD_ID": "SCHD_ID",
+                                    "spoT_STATUS": "SPOT_STATUS",
+                                    "dealno": "DEALNO",
+                                    "dealrow": "DEALROW",
+                                    "amount": "AMOUNT",
+                                    "spoT_RATE": "SPOT_RATE",
+                                    "fctok": "FCTOK",
+                                    "dealOK": "DealOK",
+                                    "clienT_NAME": "CLIENT_NAME",
+                                    "endTime": "EndTime",
+                                    "nO_SPOT": "NO_SPOT",
+                                    "okSpot": "OKSpot",
+                                    "programcategoryname":
+                                        "PROGRAMCATEGORYNAME",
+                                    "groupcode": "GROUPCODE",
+                                    "rO_NUM": "RO_NUM",
+                                    "rO_DATE": "RO_DATE",
+                                    "statioN_ID": "STATION_ID",
+                                    "clienT_ID": "CLIENT_ID",
+                                    "noProgram": "NoProgram",
+                                    "brandName": "BrandName",
+                                    "branD_ID": "BRAND_ID",
+                                    "sEgmentNumber": "SEgmentNumber",
+                                    "programCode": "ProgramCode",
+                                    "pEndTime": "PEndTime",
+                                  }),
                             ),
                     )),
                 const SizedBox(
@@ -908,183 +949,193 @@ class EdiRoBookingView extends StatelessWidget {
   // }
 
   showProgramDilogBox() {
-    maincontroller.drgabbleDialog.value = Card(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
-      margin: EdgeInsets.zero,
-      color: Colors.white,
-      child: Container(
-          height: Get.height * .50,
-          width: Get.width * .20,
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 3),
-                child: Align(
-                  alignment: Alignment.topRight,
-                  child: IconButton(
-                    onPressed: () {
-                      maincontroller.drgabbleDialog.value = null;
-                    },
-                    icon: const Icon(Icons.close),
+    maincontroller.drgabbleDialog.value = Focus(
+      autofocus: true,
+      onKey: (node, event) {
+        maincontroller.drgabbleDialog.value = null;
+
+        return KeyEventResult.ignored;
+      },
+      child: Card(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
+        margin: EdgeInsets.zero,
+        color: Colors.white,
+        child: Container(
+            height: Get.height * .50,
+            width: Get.width * .20,
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 3),
+                  child: Align(
+                    alignment: Alignment.topRight,
+                    child: IconButton(
+                      onPressed: () {
+                        maincontroller.drgabbleDialog.value = null;
+                      },
+                      icon: const Icon(Icons.close),
+                    ),
                   ),
                 ),
-              ),
-              Expanded(
-                child: Container(
-                  decoration:
-                      BoxDecoration(border: Border.all(color: Colors.grey)),
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: maincontroller.programList.length,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: EdgeInsets.all(8),
-                        child: Obx(
-                          () => GestureDetector(
-                            onTap: () {
-                              maincontroller.selectedIndex.value = index;
-                            },
-                            onDoubleTap: () async {
-                              maincontroller.selectedIndex.value = index;
+                Expanded(
+                  child: Container(
+                    decoration:
+                        BoxDecoration(border: Border.all(color: Colors.grey)),
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: maincontroller.programList.length,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: EdgeInsets.all(8),
+                          child: Obx(
+                            () => GestureDetector(
+                              onTap: () {
+                                maincontroller.selectedIndex.value = index;
+                              },
+                              onDoubleTap: () async {
+                                maincontroller.selectedIndex.value = index;
 
-                              if (maincontroller.lstDgvSpotsList.isNotEmpty) {
-                                // Down Grid
-                                if (Get.find<MainController>()
-                                    .filters1
-                                    .containsKey(maincontroller
-                                        .dvgSpotGrid.hashCode
-                                        .toString())) {
-                                  await maincontroller
-                                      .clearFirstDataTableFilter(
-                                          maincontroller.dvgSpotGrid!);
-                                }
-                                for (var element
-                                    in maincontroller.dvgSpotGrid!.rows) {
-                                  maincontroller.dvgSpotGrid?.setCurrentCell(
-                                      element.cells['spoT_RATE'],
-                                      element.sortIdx);
-                                  break;
-                                }
+                                if (maincontroller.lstDgvSpotsList.isNotEmpty) {
+                                  // Down Grid
+                                  if (Get.find<MainController>()
+                                      .filters1
+                                      .containsKey(maincontroller
+                                          .dvgSpotGrid.hashCode
+                                          .toString())) {
+                                    await maincontroller
+                                        .clearFirstDataTableFilter(
+                                            maincontroller.dvgSpotGrid!);
+                                  }
+                                  for (var element
+                                      in maincontroller.dvgSpotGrid!.rows) {
+                                    maincontroller.dvgSpotGrid?.setCurrentCell(
+                                        element.cells['spoT_RATE'],
+                                        element.sortIdx);
+                                    break;
+                                  }
 
-                                await maincontroller.doubleClickFilterGrid1(
-                                    maincontroller.dvgSpotGrid,
-                                    'program',
-                                    maincontroller.programList[index]
-                                        .toString());
+                                  await maincontroller.doubleClickFilterGrid1(
+                                      maincontroller.dvgSpotGrid,
+                                      'program',
+                                      maincontroller.programList[index]
+                                          .toString());
 
-                                // UP Grid
-                                if (Get.find<MainController>()
-                                    .filters1
-                                    .containsKey(maincontroller
-                                        .dgvDealEntriesGrid.hashCode
-                                        .toString())) {
-                                  await maincontroller
-                                      .clearFirstDataTableFilter(
-                                          maincontroller.dgvDealEntriesGrid!);
-                                }
+                                  // UP Grid
+                                  if (Get.find<MainController>()
+                                      .filters1
+                                      .containsKey(maincontroller
+                                          .dgvDealEntriesGrid.hashCode
+                                          .toString())) {
+                                    await maincontroller
+                                        .clearFirstDataTableFilter(
+                                            maincontroller.dgvDealEntriesGrid!);
+                                  }
 
-                                for (var element in maincontroller
-                                    .dgvDealEntriesGrid!.rows) {
-                                  maincontroller.dgvDealEntriesGrid
-                                      ?.setCurrentCell(
-                                          element.cells['costPer10Sec'],
-                                          element.sortIdx);
-                                  break;
+                                  for (var element in maincontroller
+                                      .dgvDealEntriesGrid!.rows) {
+                                    maincontroller.dgvDealEntriesGrid
+                                        ?.setCurrentCell(
+                                            element.cells['costPer10Sec'],
+                                            element.sortIdx);
+                                    break;
+                                  }
+                                  await maincontroller.doubleClickFilterGrid1(
+                                      maincontroller.dgvDealEntriesGrid,
+                                      'costPer10Sec',
+                                      maincontroller.dvgSpotGrid!.rows[0]
+                                          .cells['spoT_RATE']!.value
+                                          .toString());
+                                } else {
+                                  LoadingDialog.showErrorDialog(
+                                      'Spot not found.');
                                 }
-                                await maincontroller.doubleClickFilterGrid1(
-                                    maincontroller.dgvDealEntriesGrid,
-                                    'costPer10Sec',
-                                    maincontroller.dvgSpotGrid!.rows[0]
-                                        .cells['spoT_RATE']!.value
-                                        .toString());
-                              } else {
-                                LoadingDialog.showErrorDialog(
-                                    'Spot not found.');
-                              }
-                            },
-                            child: Container(
-                              color:
-                                  (maincontroller.selectedIndex.value == index)
-                                      ? Colors.deepPurpleAccent
-                                      : Colors.white,
-                              child: Text(
-                                maincontroller.programList[index].toString(),
-                                style: TextStyle(
-                                    fontSize: SizeDefine.dropDownFontSize),
+                              },
+                              child: Container(
+                                color: (maincontroller.selectedIndex.value ==
+                                        index)
+                                    ? Colors.deepPurpleAccent
+                                    : Colors.white,
+                                child: Text(
+                                  maincontroller.programList[index].toString(),
+                                  style: TextStyle(
+                                      fontSize: SizeDefine.dropDownFontSize),
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      );
-                    },
+                        );
+                      },
+                    ),
                   ),
                 ),
-              ),
-            ],
-          )),
+              ],
+            )),
+      ),
     );
   }
 
   infoDilogBox() {
     maincontroller.valueKey = ValueKey("infoDilogBox");
-    maincontroller.drgabbleDialog.value = Card(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-      borderOnForeground: false,
-      margin: const EdgeInsets.all(0),
-      child: Container(
-        height: Get.height * .50,
-        width: Get.width * .45,
-        child: Column(
-          children: [
-            Expanded(
-              child: Obx(
-                () => Container(
-                  decoration: maincontroller.infoTableList.isEmpty
-                      ? BoxDecoration(border: Border.all(color: Colors.grey))
-                      : null,
-                  child: maincontroller.infoTableList.value.isEmpty
-                      ? null
-                      : DataGridShowOnlyKeys(
-                          mapData: maincontroller.infoTableList.value,
-                          hideCode: false,
-                          exportFileName: "EDI R.O. Booking",
-                        ),
+    maincontroller.drgabbleDialog.value = Focus(
+      autofocus: true,
+      onKey: (node, event) {
+        maincontroller.drgabbleDialog.value = null;
+
+        return KeyEventResult.ignored;
+      },
+      child: Card(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+        borderOnForeground: false,
+        margin: const EdgeInsets.all(0),
+        child: Container(
+          height: Get.height * .50,
+          width: Get.width * .45,
+          child: Column(
+            children: [
+              Expanded(
+                child: Obx(
+                  () => Container(
+                    decoration: maincontroller.infoTableList.isEmpty
+                        ? BoxDecoration(border: Border.all(color: Colors.grey))
+                        : null,
+                    child: maincontroller.infoTableList.value.isEmpty
+                        ? null
+                        : DataGridShowOnlyKeys(
+                            mapData: maincontroller.infoTableList.value,
+                            hideCode: false,
+                            exportFileName: "EDI R.O. Booking",
+                          ),
+                  ),
                 ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8),
-              child: Align(
-                alignment: Alignment.topCenter,
-                child: FormButton(
-                  btnText: "Done",
-                  callback: () {
-                    maincontroller.drgabbleDialog.value = null;
-                  },
-                  showIcon: false,
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                child: Align(
+                  alignment: Alignment.topCenter,
+                  child: FormButton(
+                    btnText: "Done",
+                    callback: () {
+                      maincontroller.drgabbleDialog.value = null;
+                    },
+                    showIcon: false,
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
   }
 
   mgSpotsDilogBox() {
-    // if (maincontroller.selectedLoactions?.key == null) {
-    //   LoadingDialog.showErrorDialog('Please select location.');
-    // } else if (maincontroller.selectedChannel?.key == null) {
-    //   LoadingDialog.showErrorDialog('Please select channel.');
-    // } else if (maincontroller.selectedBrand?.key == null) {
-    //   LoadingDialog.showErrorDialog('Please select brand.');
-    // } else {
     maincontroller.valueKey = ValueKey("mgSpotsDilogBox");
 
-    maincontroller.drgabbleDialog.value = Material(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(2)),
+    maincontroller.drgabbleDialog.value = Card(
+      // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(2)),
+      color: Colors.white,
       // margin: const EdgeInsets.all(0),
-      child: Container(
+      child: SizedBox(
         height: Get.height * .65,
         width: Get.width * .80,
         child: Column(
@@ -1147,10 +1198,31 @@ class EdiRoBookingView extends StatelessWidget {
                   Obx(() {
                     return CheckBoxWidget1(
                       title: "Select All",
-                      value: !maincontroller.controllsEnable.value,
+                      value: maincontroller.controllsEnable.value,
                       onChanged: (val) {
                         maincontroller.controllsEnable.value =
                             !(maincontroller.controllsEnable.value);
+
+                        for (var i = 0;
+                            i < maincontroller.makeGoodReportList.length;
+                            i++) {
+                          maincontroller.makeGoodReportList.value[maincontroller
+                                  .mgSpotTabelGrid!
+                                  .refRows[i]
+                                  .sortIdx]['selectRow'] =
+                              maincontroller.controllsEnable.value;
+                          maincontroller.mgSpotTabelGrid!.changeCellValue(
+                            maincontroller.mgSpotTabelGrid!
+                                .getRowByIdx(i)!
+                                .cells['selectRow']!,
+                            maincontroller.controllsEnable.value.toString(),
+                            callOnChangedEvent: false,
+                            force: true,
+                            notify: true,
+                          );
+                          print(maincontroller.makeGoodReportList);
+                          maincontroller.makeGoodReportList.refresh();
+                        }
                       },
                     );
                   }),
@@ -1159,17 +1231,47 @@ class EdiRoBookingView extends StatelessWidget {
             ),
             Expanded(
               child: Obx(
-                () => Container(
-                  decoration: maincontroller.infoTableList.isEmpty
-                      ? BoxDecoration(border: Border.all(color: Colors.grey))
-                      : null,
-                  child: maincontroller.infoTableList.value.isEmpty
-                      ? null
-                      : DataGridShowOnlyKeys(
-                          mapData: maincontroller.infoTableList.value,
-                          hideCode: false,
-                          exportFileName: "EDI R.O. Booking",
-                        ),
+                () => DataGridFromMap3(
+                  mapData: maincontroller.makeGoodReportList.value.map((e) {
+                    e['selectRow'] = (e['selectRow'] ?? false).toString();
+
+                    return e;
+                  }).toList(),
+                  hideCode: false,
+                  formatDate: false,
+                  exportFileName: "EDI R.O. Booking",
+                  onload: (event) {
+                    maincontroller.mgSpotTabelGrid = event.stateManager;
+                  },
+                  colorCallback: (row) => (row.row.cells.containsValue(
+                          maincontroller.mgSpotTabelGrid?.currentCell))
+                      ? Colors.deepPurple.shade200
+                      : Colors.white,
+                  checkBoxColumnKey: ['selectRow'],
+                  checkBoxStrComparison: "true",
+                  uncheckCheckBoxStr: "false",
+                  actionIconKey: ['selectRow'],
+                  actionOnPress: (position, isSpaceCalled) {
+                    if (isSpaceCalled) {
+                      maincontroller.mgLastSelectedIdx = position.rowIdx ?? 0;
+                      maincontroller.mgSpotTabelGrid!.changeCellValue(
+                        maincontroller.mgSpotTabelGrid!.currentCell!,
+                        (maincontroller.mgSpotTabelGrid?.currentCell?.value ==
+                                "true")
+                            .toString(),
+                        force: true,
+                        callOnChangedEvent: true,
+                        notify: true,
+                      );
+                    }
+                  },
+                  onEdit: (row) {
+                    maincontroller.mgLastSelectedIdx = row.rowIdx;
+                    maincontroller.makeGoodReportList[row.rowIdx]['selectRow'] =
+                        (row.value.toString()) == "true";
+
+                    print(maincontroller.makeGoodReportList);
+                  },
                 ),
               ),
             ),

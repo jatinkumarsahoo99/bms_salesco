@@ -827,10 +827,14 @@ class DataGridFromMap3 extends StatelessWidget {
                   )
                 : null,
             title: doPasccal
-                ? key == "fpcCaption"
-                    ? "FPC Caption"
+                ? keyMapping != null
+                    ? keyMapping!.containsKey(key)
+                        ? keyMapping![key]
+                        : key == "fpcCaption"
+                            ? "FPC Caption"
+                            : key.toString().pascalCaseToNormal()
                     : key.toString().pascalCaseToNormal()
-                : key,
+                : key.toString(),
             enableRowChecked: false,
             renderer: ((rendererContext) {
               if (checkBoxColumnKey != null &&

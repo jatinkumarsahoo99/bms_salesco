@@ -110,28 +110,11 @@ class SearchResultPage extends StatelessWidget {
                         )["varianceName"]} _Search_Result",
                   hideCode: false,
                   mapData: controller.searchResult!.map((e) {
-                    if (e['DealDate'] != null) {
-                      e['DealDate'] = DateFormat('dd-MM-yyyy').format(
-                          DateFormat('yyyy-MM-ddThh:mm:ss')
-                              .parse(e['DealDate']));
-                    }
-                    // e = controller.dateFormate(e['DealDate']);
-
-                    if (e['ReferenceDate'] != null) {
-                      e['ReferenceDate'] = DateFormat('dd-MM-yyyy').format(
-                          DateFormat('yyyy-MM-ddThh:mm:ss')
-                              .parse(e['ReferenceDate']));
-                    }
-                    if (e['fromdate'] != null) {
-                      e['fromdate'] = DateFormat('dd-MM-yyyy').format(
-                          DateFormat('yyyy-MM-ddThh:mm:ss')
-                              .parse(e['fromdate']));
-                    }
-                    if (e['Todate'] != null) {
-                      e['Todate'] = DateFormat('dd-MM-yyyy').format(
-                          DateFormat('yyyy-MM-ddThh:mm:ss').parse(e['Todate']));
-                    }
-
+                    e['DealDate'] = controller.dateFormate(e['DealDate']);
+                    e['ReferenceDate'] =
+                        controller.dateFormate(e['ReferenceDate']);
+                    e['fromdate'] = controller.dateFormate(e['fromdate']);
+                    e['Todate'] = controller.dateFormate(e['Todate']);
                     return e;
                   }).toList(),
                   formatDate: false,
