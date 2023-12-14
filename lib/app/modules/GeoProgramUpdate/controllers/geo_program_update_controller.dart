@@ -12,8 +12,8 @@ class GeoProgramUpdateController extends GetxController {
   //TODO: Implement GeoProgramUpdateController
   // DropDownValue? selectedLocation;
   // DropDownValue? selectedChannel;
-  Rxn<DropDownValue> selectedLocation = Rxn<DropDownValue>();
-  Rxn<DropDownValue> selectedChannel = Rxn<DropDownValue>();
+  var selectedLocation = Rxn<DropDownValue?>();
+  var selectedChannel = Rxn<DropDownValue?>();
 
   FocusNode channelFN = FocusNode();
   FocusNode loactionFN = FocusNode();
