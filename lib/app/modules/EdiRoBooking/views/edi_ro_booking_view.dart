@@ -703,6 +703,7 @@ class EdiRoBookingView extends StatelessWidget {
                                     }
                                   },
                                   doPasccal: true,
+                                  columnAutoResize: true,
                                   keyMapping: const {
                                     "station": "STATION",
                                     "acT_DT": "ACT_DT",
@@ -952,7 +953,9 @@ class EdiRoBookingView extends StatelessWidget {
     maincontroller.drgabbleDialog.value = Focus(
       autofocus: true,
       onKey: (node, event) {
-        maincontroller.drgabbleDialog.value = null;
+        if (event.logicalKey == LogicalKeyboardKey.escape) {
+          maincontroller.drgabbleDialog.value = null;
+        }
 
         return KeyEventResult.ignored;
       },
@@ -1079,7 +1082,9 @@ class EdiRoBookingView extends StatelessWidget {
     maincontroller.drgabbleDialog.value = Focus(
       autofocus: true,
       onKey: (node, event) {
-        maincontroller.drgabbleDialog.value = null;
+        if (event.logicalKey == LogicalKeyboardKey.escape) {
+          maincontroller.drgabbleDialog.value = null;
+        }
 
         return KeyEventResult.ignored;
       },

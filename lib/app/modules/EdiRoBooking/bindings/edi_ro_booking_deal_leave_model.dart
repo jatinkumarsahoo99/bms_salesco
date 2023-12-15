@@ -86,7 +86,7 @@ class InfoLeaveOnDealNumber {
 }
 
 class GstPlantList {
-  int? plantid;
+  num? plantid;
   String? column1;
 
   GstPlantList({this.plantid, this.column1});
@@ -195,7 +195,7 @@ class DisplayDealDetails {
 }
 
 class LstDgvLinkedDeals {
-  int? recordnumber;
+  num? recordnumber;
   String? bandcode;
   String? impactNonImpact;
   String? sponsorTypeName;
@@ -203,46 +203,46 @@ class LstDgvLinkedDeals {
   dynamic programname;
   String? starttime;
   String? endTime;
-  int? seconds;
-  int? costPer10Sec;
-  int? utilisedTime;
-  int? balance;
-  int? amount;
-  int? valuationrate;
-  int? groupCode;
-  int? sun;
-  int? mon;
-  int? tue;
-  int? wed;
-  int? thu;
-  int? fri;
-  int? sat;
-  int? booked;
+  num? seconds;
+  num? costPer10Sec;
+  num? utilisedTime;
+  num? balance;
+  num? amount;
+  num? valuationrate;
+  num? groupCode;
+  num? sun;
+  num? mon;
+  num? tue;
+  num? wed;
+  num? thu;
+  num? fri;
+  num? sat;
+  num? booked;
   String? fromdate;
   String? todate;
   String? locationname;
   String? channelname;
-  int? maxspend;
+  num? maxspend;
   String? paymentmodecaption;
-  int? ispdcenterd;
+  num? ispdcenterd;
   String? startdate;
   String? enddate;
   String? clientName;
   String? agencyName;
   String? dealnumber;
-  int? valuationAmount;
-  int? balanceAmount;
-  int? dealValAmount;
-  int? balanceValAmount;
-  int? utilInRo;
-  int? totalUtil;
-  int? totalBookedAmt;
-  int? totalValAmt;
-  int? bookedAmt;
+  num? valuationAmount;
+  num? balanceAmount;
+  num? dealValAmount;
+  num? balanceValAmount;
+  num? utilInRo;
+  num? totalUtil;
+  num? totalBookedAmt;
+  num? totalValAmt;
+  num? bookedAmt;
   String? locationcode;
   String? channelCode;
-  int? baseduration;
-  int? countbased;
+  num? baseduration;
+  num? countbased;
 
   LstDgvLinkedDeals(
       {this.recordnumber,
@@ -400,7 +400,7 @@ class LstDgvLinkedDeals {
 }
 
 class LstDgvDealEntries {
-  int? recordnumber;
+  num? recordnumber;
   String? bandcode;
   String? impactNonImpact;
   String? sponsorTypeName;
@@ -408,46 +408,46 @@ class LstDgvDealEntries {
   dynamic programname;
   String? starttime;
   String? endTime;
-  int? seconds;
-  int? costPer10Sec;
-  int? utilisedTime;
-  int? balance;
-  int? amount;
-  int? valuationrate;
+  num? seconds;
+  num? costPer10Sec;
+  num? utilisedTime;
+  num? balance;
+  num? amount;
+  num? valuationrate;
   dynamic groupCode;
-  int? sun;
-  int? mon;
-  int? tue;
-  int? wed;
-  int? thu;
-  int? fri;
-  int? sat;
-  int? booked;
+  num? sun;
+  num? mon;
+  num? tue;
+  num? wed;
+  num? thu;
+  num? fri;
+  num? sat;
+  num? booked;
   String? fromdate;
   String? todate;
   String? locationname;
   String? channelname;
-  int? maxspend;
+  num? maxspend;
   String? paymentmodecaption;
-  int? ispdcenterd;
+  num? ispdcenterd;
   String? startdate;
   String? enddate;
   String? clientName;
   String? agencyName;
   String? dealnumber;
-  int? valuationAmount;
-  int? balanceAmount;
-  int? dealValAmount;
-  int? balanceValAmount;
-  int? utilInRo;
-  int? totalUtil;
-  int? totalBookedAmt;
-  int? totalValAmt;
-  int? bookedAmt;
+  num? valuationAmount;
+  num? balanceAmount;
+  num? dealValAmount;
+  num? balanceValAmount;
+  num? utilInRo;
+  num? totalUtil;
+  num? totalBookedAmt;
+  num? totalValAmt;
+  num? bookedAmt;
   String? locationcode;
   String? channelCode;
-  int? baseduration;
-  int? countbased;
+  num? baseduration;
+  num? countbased;
 
   LstDgvDealEntries(
       {this.recordnumber,
