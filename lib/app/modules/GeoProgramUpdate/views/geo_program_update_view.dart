@@ -25,19 +25,19 @@ class GeoProgramUpdateView extends StatelessWidget {
         child: SizedBox(
           width: context.width * .5,
           child: Dialog(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
-            ),
+            // shape: RoundedRectangleBorder(
+            //   borderRadius: BorderRadius.circular(20),
+            // ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Container(
                   width: context.width * .48,
                   height: 50,
-                  margin: const EdgeInsets.all(30),
+                  // margin: const EdgeInsets.all(30),
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    color: Colors.deepPurpleAccent.shade100,
+                    // borderRadius: BorderRadius.circular(12),
+                    color: Colors.deepPurple,
                   ),
                   alignment: Alignment.center,
                   child: const Text(
@@ -48,6 +48,9 @@ class GeoProgramUpdateView extends StatelessWidget {
                       color: Colors.white,
                     ),
                   ),
+                ),
+                const SizedBox(
+                  height: 10,
                 ),
                 Obx(
                   () => DropDownField.formDropDown1WidthMap(

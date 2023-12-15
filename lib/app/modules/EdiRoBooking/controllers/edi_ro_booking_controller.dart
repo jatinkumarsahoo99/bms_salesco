@@ -171,43 +171,49 @@ class EdiRoBookingController extends GetxController {
       Get.find<ConnectorControl>().GETMETHODCALL(
           api: ApiFactory.EDI_RO_INIT,
           fun: (map) {
-            Get.back();
-            initData = EdiRoInitData.fromJson(map["onLoadInfo"]);
-            //FileName
-            fileNames.clear();
-            initData!.softListMyFiles!.forEach((e) {
-              fileNames.add(DropDownValue(key: '', value: e.convertedFileName));
-            });
-            //Loaction
-            loactions.clear();
-            initData!.lstLocation!.forEach((e) {
-              loactions.add(
-                  DropDownValue(key: e.locationCode, value: e.locationName));
-            });
-            // Position
-            positions.clear();
-            initData!.lstSpotPosType!.forEach((e) {
-              positions.add(DropDownValue(
-                  key: e.spotPositionTypeCode, value: e.spotPositionTypeName));
-            });
-            selectedPositions = positions.firstWhereOrNull(
-              (element) {
-                var result = element.key == "ZAMID00002";
-                return result;
-              },
-            );
-            // Executives
-            executives.clear();
-            initData!.executives!.forEach((e) {
-              executives.add(
-                  DropDownValue(key: e.personnelCode, value: e.personnelName));
-            });
-            // executives.clear();
-            // map["onLoadInfo"]['executives'].forEach((e) {
-            //   executives.add(DropDownValue(
-            //       key: e['personnelCode'], value: e['personnelName']));
-            // });
-            update(["initData"]);
+            if (map is Map && map.containsKey("onLoadInfo")) {
+              Get.back();
+              initData = EdiRoInitData.fromJson(map["onLoadInfo"]);
+              //FileName
+              fileNames.clear();
+              initData!.softListMyFiles!.forEach((e) {
+                fileNames
+                    .add(DropDownValue(key: '', value: e.convertedFileName));
+              });
+              //Loaction
+              loactions.clear();
+              initData!.lstLocation!.forEach((e) {
+                loactions.add(
+                    DropDownValue(key: e.locationCode, value: e.locationName));
+              });
+              // Position
+              positions.clear();
+              initData!.lstSpotPosType!.forEach((e) {
+                positions.add(DropDownValue(
+                    key: e.spotPositionTypeCode,
+                    value: e.spotPositionTypeName));
+              });
+              selectedPositions = positions.firstWhereOrNull(
+                (element) {
+                  var result = element.key == "ZAMID00002";
+                  return result;
+                },
+              );
+              // Executives
+              executives.clear();
+              initData!.executives!.forEach((e) {
+                executives.add(DropDownValue(
+                    key: e.personnelCode, value: e.personnelName));
+              });
+              // executives.clear();
+              // map["onLoadInfo"]['executives'].forEach((e) {
+              //   executives.add(DropDownValue(
+              //       key: e['personnelCode'], value: e['personnelName']));
+              // });
+              update(["initData"]);
+            } else if (map is String) {
+              LoadingDialog.callErrorMessage1(msg: map);
+            }
           });
     } catch (e) {
       print(e.toString());
@@ -519,9 +525,15 @@ class EdiRoBookingController extends GetxController {
                       .infoLeaveOnDealNumber!.showLinkDeal!.linkDealNo! ??
                   "";
               linkDealName.value = roBookingDealLeave!
-                  .infoLeaveOnDealNumber!.showLinkDeal!.linkDealName!;
-
-              if (linkDealName.value == null) {
+                      .infoLeaveOnDealNumber!.showLinkDeal!.linkDealName! ??
+                  "";
+              print(roBookingDealLeave!
+                  .infoLeaveOnDealNumber!.showLinkDeal!.linkDealNo!
+                  .toString());
+              if (roBookingDealLeave!
+                      .infoLeaveOnDealNumber!.showLinkDeal!.linkDealNo!
+                      .toString() !=
+                  "0") {
                 lDButton.value = true;
               }
               //PDC
@@ -781,7 +793,9 @@ class EdiRoBookingController extends GetxController {
     drgabbleDialog.value = Focus(
       autofocus: true,
       onKey: (node, event) {
-        drgabbleDialog.value = null;
+        if (event.logicalKey == LogicalKeyboardKey.escape) {
+          drgabbleDialog.value = null;
+        }
 
         return KeyEventResult.ignored;
       },
@@ -870,7 +884,9 @@ class EdiRoBookingController extends GetxController {
     drgabbleDialog.value = Focus(
       autofocus: true,
       onKey: (node, event) {
-        drgabbleDialog.value = null;
+        if (event.logicalKey == LogicalKeyboardKey.escape) {
+          drgabbleDialog.value = null;
+        }
 
         return KeyEventResult.ignored;
       },
