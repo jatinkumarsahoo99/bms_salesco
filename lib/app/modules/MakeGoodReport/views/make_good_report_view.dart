@@ -142,6 +142,8 @@ class MakeGoodReportView extends GetView<MakeGoodReportController> {
                                 controller.stateManager = load.stateManager;
                                 load.stateManager.setSelectingMode(
                                     PlutoGridSelectingMode.row);
+                                load.stateManager.setCurrentCell(
+                                    load.stateManager.firstCell, 0);
                               },
                               exportFileName: "Make Good Report",
                               hideCode: false,
@@ -150,6 +152,7 @@ class MakeGoodReportView extends GetView<MakeGoodReportController> {
                                           controller.stateManager?.currentCell)
                                   ? Colors.deepPurple.shade100
                                   : Colors.white,
+                              removeKeysFromFile: ["no", "message"],
                               columnAutoResize: false,
                               mode: PlutoGridMode.normal,
                               widthSpecificColumn: Get.find<HomeController>()
