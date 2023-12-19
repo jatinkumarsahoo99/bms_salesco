@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:bms_salesco/widgets/PlutoGrid/pluto_grid.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../widgets/FormButton.dart';
 import '../../../../widgets/Snack.dart';
@@ -108,7 +109,15 @@ class SearchResultPage extends StatelessWidget {
                               controller.selectVarianceId.toString(),
                         )["varianceName"]} _Search_Result",
                   hideCode: false,
-                  mapData: controller.searchResult!,
+                  mapData: controller.searchResult!.map((e) {
+                    e['DealDate'] = controller.dateFormate(e['DealDate']);
+                    e['ReferenceDate'] =
+                        controller.dateFormate(e['ReferenceDate']);
+                    e['fromdate'] = controller.dateFormate(e['fromdate']);
+                    e['Todate'] = controller.dateFormate(e['Todate']);
+                    return e;
+                  }).toList(),
+                  formatDate: false,
                   doPasccal: false,
                   onload: (event) {
                     sm = event.stateManager;

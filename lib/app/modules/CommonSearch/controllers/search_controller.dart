@@ -1765,4 +1765,12 @@ class SearchController extends GetxController {
       },
     );
   }
+
+  dateFormate(date) {
+    if (date != null) {
+      date = DateFormat('dd-MM-yyyy')
+          .format(DateFormat('yyyy-MM-ddThh:mm:ss').parse(date));
+      return date;
+    }
+  }
 }

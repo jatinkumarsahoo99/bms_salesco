@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:bms_salesco/app/data/DropDownValue.dart';
 import 'package:bms_salesco/app/modules/CommonDocs/views/common_docs_view.dart';
+import 'package:bms_salesco/app/modules/EdiRoBooking/bindings/edi_ro_booking_check_all_deal_utility.dart';
+import 'package:bms_salesco/app/modules/EdiRoBooking/bindings/edi_ro_booking_model.dart';
 import 'package:bms_salesco/app/modules/EdiRoBooking/bindings/edit_ro_init_data.dart';
 import 'package:bms_salesco/widgets/LoadingDialog.dart';
 import 'package:file_picker/file_picker.dart';
@@ -21,6 +23,7 @@ import '../../../controller/MainController.dart';
 import '../../../data/rowfilter.dart';
 import '../../../providers/ApiFactory.dart';
 import '../../CommonDocs/controllers/common_docs_controller.dart';
+import '../bindings/edi_ro_booking_deal_leave_model.dart';
 
 class EdiRoBookingController extends GetxController {
   //TODO: Implement EdiRoBookingController
@@ -64,7 +67,8 @@ class EdiRoBookingController extends GetxController {
       pdcChequeRecordByTEC = TextEditingController(),
       pdcRecordOnTEC = TextEditingController(),
       pdcRemarksTEC = TextEditingController(),
-      effectiveDate = TextEditingController();
+      effectiveDate = TextEditingController(),
+      bkDate = TextEditingController();
 
   final count = 0.obs;
   var infoTableList = [].obs;
@@ -96,7 +100,13 @@ class EdiRoBookingController extends GetxController {
   var isEnterNewPDC = false.obs;
   int chequeID = 0;
   var fillPDCList = [].obs;
-  var controllsEnable = true.obs;
+  var controllsEnable = false.obs;
+  var isSelectingChange = true.obs;
+  var roMsg = "".obs;
+  var lstDgvDealEntries = <LstDealEntries>[].obs;
+  var lstDgvSpots = <LstSpots>[].obs;
+  var makeGoodReportList = [].obs;
+  int mgLastSelectedIdx = 0;
 
   PlutoGridStateManager? dvgSpotGrid;
 
@@ -104,8 +114,15 @@ class EdiRoBookingController extends GetxController {
   PlutoGridStateManager? fpcStartTabelGrid;
   PlutoGridStateManager? tapeIdTabelGrid;
   PlutoGridStateManager? fillPDCTabelGrid;
+  PlutoGridStateManager? mgSpotTabelGrid;
+
+  PlutoRowColorContext? coloerEvents;
 
   EdiRoInitData? initData;
+  RoBookingLeaveFileName? roBookingLeaveFileName;
+  RoBookingDealLeave? roBookingDealLeave;
+  RoBookingCheckAllDealUtility? roBookingCheckAllDealUtility;
+
   var fileNames = RxList<DropDownValue>();
   var loactions = RxList<DropDownValue>();
   var positions = RxList<DropDownValue>();
@@ -141,6 +158,7 @@ class EdiRoBookingController extends GetxController {
   }
 
   RxBool isEnable = RxBool(true);
+  RxBool isBrandEnable = RxBool(true);
 
   @override
   void onInit() {
@@ -153,40 +171,49 @@ class EdiRoBookingController extends GetxController {
       Get.find<ConnectorControl>().GETMETHODCALL(
           api: ApiFactory.EDI_RO_INIT,
           fun: (map) {
-            Get.back();
-            // initData = EdiRoInitData.fromJson(map["onLoadInfo"]);
-            //FileName
-            fileNames.clear();
-            map["onLoadInfo"]['softListMyFiles'].forEach((e) {
-              fileNames
-                  .add(DropDownValue(key: '', value: e['convertedFileName']));
-            });
-            //Loaction
-            loactions.clear();
-            map["onLoadInfo"]['lstLocation'].forEach((e) {
-              loactions.add(DropDownValue(
-                  key: e['locationCode'], value: e['locationName']));
-            });
-            // Position
-            positions.clear();
-            map["onLoadInfo"]['lstSpotPosType'].forEach((e) {
-              positions.add(DropDownValue(
-                  key: e['spotPositionTypeCode'],
-                  value: e['spotPositionTypeName']));
-            });
-            selectedPositions = positions.firstWhereOrNull(
-              (element) {
-                var result = element.key == "ZAMID00002";
-                return result;
-              },
-            );
-            // Executives
-            executives.clear();
-            map["onLoadInfo"]['executives'].forEach((e) {
-              executives.add(DropDownValue(
-                  key: e['personnelCode'], value: e['personnelName']));
-            });
-            update(["initData"]);
+            if (map is Map && map.containsKey("onLoadInfo")) {
+              Get.back();
+              initData = EdiRoInitData.fromJson(map["onLoadInfo"]);
+              //FileName
+              fileNames.clear();
+              initData!.softListMyFiles!.forEach((e) {
+                fileNames
+                    .add(DropDownValue(key: '', value: e.convertedFileName));
+              });
+              //Loaction
+              loactions.clear();
+              initData!.lstLocation!.forEach((e) {
+                loactions.add(
+                    DropDownValue(key: e.locationCode, value: e.locationName));
+              });
+              // Position
+              positions.clear();
+              initData!.lstSpotPosType!.forEach((e) {
+                positions.add(DropDownValue(
+                    key: e.spotPositionTypeCode,
+                    value: e.spotPositionTypeName));
+              });
+              selectedPositions = positions.firstWhereOrNull(
+                (element) {
+                  var result = element.key == "ZAMID00002";
+                  return result;
+                },
+              );
+              // Executives
+              executives.clear();
+              initData!.executives!.forEach((e) {
+                executives.add(DropDownValue(
+                    key: e.personnelCode, value: e.personnelName));
+              });
+              // executives.clear();
+              // map["onLoadInfo"]['executives'].forEach((e) {
+              //   executives.add(DropDownValue(
+              //       key: e['personnelCode'], value: e['personnelName']));
+              // });
+              update(["initData"]);
+            } else if (map is String) {
+              LoadingDialog.callErrorMessage1(msg: map);
+            }
           });
     } catch (e) {
       print(e.toString());
@@ -212,95 +239,115 @@ class EdiRoBookingController extends GetxController {
             if (map != null &&
                 map['infoFileNameLeave'] != null &&
                 map.containsKey('infoFileNameLeave')) {
+              roBookingLeaveFileName = RoBookingLeaveFileName.fromJson(map);
+
               isEnable.value = false;
               //RO Ref No.
               strRoRefNo.clear();
-              map["infoFileNameLeave"]['strRoRefNo'].forEach((e) {
+              roBookingLeaveFileName!.infoFileNameLeave!.strRoRefNo!
+                  .forEach((e) {
                 strRoRefNo.add(DropDownValue(key: '', value: e));
                 selectedRoRefNo = DropDownValue(key: '', value: e);
               });
+
               //Location
               selectedLoactions = loactions.firstWhereOrNull((element) {
                 var result = element.key ==
-                    map['infoFileNameLeave']['headerData']['locationCode'];
+                    roBookingLeaveFileName!
+                        .infoFileNameLeave!.headerData!.locationCode;
                 return result;
               });
               pdcLoactionTEC.text = selectedLoactions!.value.toString();
 
               // Channel
               channel.clear();
-              map["infoFileNameLeave"]['headerData']['lstChannel'].forEach((e) {
-                channel.add(DropDownValue(
-                    key: e['channelCode'], value: e['channelName']));
+              roBookingLeaveFileName!.infoFileNameLeave!.headerData!.lstChannel!
+                  .forEach((e) {
+                channel.add(
+                    DropDownValue(key: e.channelCode, value: e.channelName));
               });
               selectedChannel = channel.firstWhereOrNull(
                 (element) {
                   var result = element.key ==
-                      map['infoFileNameLeave']['headerData']['channelCode'];
+                      roBookingLeaveFileName!
+                          .infoFileNameLeave!.headerData!.channelCode;
+
                   return result;
                 },
               );
               pdcChannelTEC.text = selectedChannel!.value.toString();
               //Client
               client.clear();
-              map["infoFileNameLeave"]['headerData']['lstClients'].forEach((e) {
-                client.add(DropDownValue(
-                    key: e['clientCode'], value: e['clientName']));
+              roBookingLeaveFileName!.infoFileNameLeave!.headerData!.lstClients!
+                  .forEach((e) {
+                client
+                    .add(DropDownValue(key: e.clientCode, value: e.clientName));
               });
+
               selectedClient = client.firstWhereOrNull(
                 (element) {
                   var result = element.key ==
-                      map['infoFileNameLeave']['headerData']['clientcode'];
+                      roBookingLeaveFileName!
+                          .infoFileNameLeave!.headerData!.clientcode;
                   return result;
                 },
               );
               pdcClientTEC.text = selectedClient!.value.toString();
               //Agency
               agency.clear();
-              map["infoFileNameLeave"]['headerData']['lstAgencies']
+              roBookingLeaveFileName!
+                  .infoFileNameLeave!.headerData!.lstAgencies!
                   .forEach((e) {
-                agency.add(DropDownValue(
-                    key: e['agencyCode'], value: e['agencyName']));
+                agency
+                    .add(DropDownValue(key: e.agencyCode, value: e.agencyName));
               });
               selectedAgency = agency.firstWhereOrNull(
                 (element) {
                   var result = element.key ==
-                      map['infoFileNameLeave']['headerData']['agencyCode'];
+                      roBookingLeaveFileName!
+                          .infoFileNameLeave!.headerData!.agencyCode;
                   return result;
                 },
               );
+
               pdcAgencyTEC.text = selectedAgency!.value.toString();
               //Brand
               brand.clear();
-              map["infoFileNameLeave"]['headerData']['lstBrands'].forEach((e) {
-                brand.add(
-                    DropDownValue(key: e['brandcode'], value: e['brandname']));
+              roBookingLeaveFileName!.infoFileNameLeave!.headerData!.lstBrands!
+                  .forEach((e) {
+                brand.add(DropDownValue(key: e.brandcode, value: e.brandname));
               });
               //Executives
               executives.clear();
-              map["infoFileNameLeave"]['headerData']['executivesSelectedValue']
+              roBookingLeaveFileName!
+                  .infoFileNameLeave!.headerData!.executivesSelectedValue!
                   .forEach((e) {
                 executives.add(DropDownValue(
-                    key: e['personnelCode'], value: e['personnelName']));
+                    key: e.personnelCode, value: e.personnelName));
               });
+
               selectedExecutives = DropDownValue(
                   key: executives[0].key, value: executives[0].value);
               // Show Programs
               programList.clear();
-              map["infoFileNameLeave"]['lstLoadXml']['lstShowPrograms']
+              roBookingLeaveFileName!
+                  .infoFileNameLeave!.lstLoadXml!.lstShowPrograms!
                   .forEach((e) {
                 programList.add(e);
               });
-
               //Deal No
               dealNo.clear();
-              map["infoFileNameLeave"]['headerData']['lstDealNumbers']
+              roBookingLeaveFileName!
+                  .infoFileNameLeave!.headerData!.lstDealNumbers!
                   .forEach((e) {
-                dealNo.add(DropDownValue(key: e['code'], value: e['name']));
+                dealNo.add(DropDownValue(key: e.code, value: e.name));
               });
               //Lst Xml Dt
-              lstXmlDtList.value =
-                  map["infoFileNameLeave"]['lstLoadXml']['lstXmlDt'];
+              lstXmlDtList.value = roBookingLeaveFileName!
+                  .infoFileNameLeave!.lstLoadXml!.lstXmlDt!;
+              roMsg.value = roBookingLeaveFileName!
+                      .infoFileNameLeave!.headerData!.message ??
+                  "";
               leaveFileNameClagdetails();
               update(["initData"]);
             } else {
@@ -338,7 +385,9 @@ class EdiRoBookingController extends GetxController {
                 payRouteCodeTEC.text = e["payRouteCode"];
                 zoneCode.value = e["zonecode"];
               });
-
+              if (roMsg != "") {
+                LoadingDialog.callInfoMessage(roMsg.toString());
+              }
               update(["initData"]);
             }
           });
@@ -377,12 +426,12 @@ class EdiRoBookingController extends GetxController {
       Get.find<ConnectorControl>().GETMETHODCALL(
           api: ApiFactory.EDI_RO_LEAVE_DEAL_NO(
             DateFormat("yyyy-MM-dd").format(effFromDate),
-            selectedLoactions?.key,
-            selectedChannel?.key,
-            selectedDealNo?.key,
-            payRouteTEC.text,
-            selectedAgency?.key,
-            selectedClient?.key,
+            selectedLoactions?.key ?? "",
+            selectedChannel?.key ?? "",
+            selectedDealNo?.key ?? "",
+            payRouteTEC.text ?? "",
+            selectedAgency?.key ?? "",
+            selectedClient?.key ?? "",
             'false',
           ),
           fun: (map) {
@@ -390,41 +439,50 @@ class EdiRoBookingController extends GetxController {
             if (map != null &&
                 map['infoLeaveOnDealNumber'] != null &&
                 map.containsKey('infoLeaveOnDealNumber')) {
+              roBookingDealLeave = RoBookingDealLeave.fromJson(map);
               //Booking No.
               bookingNo1TEC.text =
-                  map['infoLeaveOnDealNumber']['bookingMonth'] ?? "";
+                  roBookingDealLeave!.infoLeaveOnDealNumber!.bookingMonth! ??
+                      "";
+
               pdcActivityPeriodTEC.text =
-                  map['infoLeaveOnDealNumber']['bookingMonth'] ?? "";
+                  roBookingDealLeave!.infoLeaveOnDealNumber!.bookingMonth! ??
+                      "";
+
               //Start & End Date
               startDateTEC.text = DateFormat("dd-MM-yyyy").format(
-                  DateFormat("MM/dd/yyyy hh:mm:ss").parse(
-                      map['infoLeaveOnDealNumber']['displayDealDetails']
-                              ['startDate'] ??
-                          "10/01/2023 00:00:00"));
+                  DateFormat("MM/dd/yyyy hh:mm:ss").parse(roBookingDealLeave!
+                          .infoLeaveOnDealNumber!
+                          .displayDealDetails!
+                          .startDate! ??
+                      "10/01/2023 00:00:00"));
               endDateTEC.text = DateFormat("dd-MM-yyyy").format(
-                  DateFormat("MM/dd/yyyy hh:mm:ss").parse(
-                      map['infoLeaveOnDealNumber']['displayDealDetails']
-                              ['endDate'] ??
-                          "10/01/2023 00:00:00"));
+                  DateFormat("MM/dd/yyyy hh:mm:ss").parse(roBookingDealLeave!
+                          .infoLeaveOnDealNumber!
+                          .displayDealDetails!
+                          .endDate! ??
+                      "10/01/2023 00:00:00"));
               //Deal Type
-              dealTypeTEC.text = map['infoLeaveOnDealNumber']
-                      ['displayDealDetails']['dealType'] ??
+              dealTypeTEC.text = roBookingDealLeave!
+                      .infoLeaveOnDealNumber!.displayDealDetails!.dealType! ??
                   "";
               //Max Spend
-              maxSpendTEC.text = map['infoLeaveOnDealNumber']
-                      ['displayDealDetails']['dealMaxSpent'] ??
+              maxSpendTEC.text = roBookingDealLeave!.infoLeaveOnDealNumber!
+                      .displayDealDetails!.dealMaxSpent! ??
                   "";
+
               //Pay Mode
-              payModeTEC.text = map['infoLeaveOnDealNumber']
-                      ['displayDealDetails']['payMode'] ??
+              payModeTEC.text = roBookingDealLeave!
+                      .infoLeaveOnDealNumber!.displayDealDetails!.payMode! ??
                   "";
+
               //Pre V. Amt
-              preVAmtTEC.text = map['infoLeaveOnDealNumber']
-                      ['displayDealDetails']['previousValAmount'] ??
+              preVAmtTEC.text = roBookingDealLeave!.infoLeaveOnDealNumber!
+                      .displayDealDetails!.previousValAmount! ??
                   "";
               //Pre B. Amt
-              preBAmtTEC.text = map['infoLeaveOnDealNumber']
-                      ['displayDealDetails']['previousBookedAmount'] ??
+              preBAmtTEC.text = roBookingDealLeave!.infoLeaveOnDealNumber!
+                      .displayDealDetails!.previousBookedAmount! ??
                   "";
               //Deal Enter List
               List dealEntriesList = map['infoLeaveOnDealNumber']
@@ -443,42 +501,49 @@ class EdiRoBookingController extends GetxController {
 
               lstDgvLinkedDealsList.value = map['infoLeaveOnDealNumber']
                       ['displayDealDetails']['lstDgvLinkedDeals'] ??
-                  "";
+                  [];
 
               //GST Plants
-              gstNoTEC.text = map["infoLeaveOnDealNumber"]['gstRegNo'] ?? "";
-              map["infoLeaveOnDealNumber"]['gstPlantList'].forEach((e) {
+              gstNoTEC.text =
+                  roBookingDealLeave!.infoLeaveOnDealNumber!.gstRegNo! ?? "";
+              roBookingDealLeave!.infoLeaveOnDealNumber!.gstPlantList!
+                  .forEach((e) {
                 gstPlant.add(DropDownValue(
-                    key: e['plantid'].toString() ?? "",
-                    value: e['column1'] ?? ""));
+                    key: e.plantid.toString() ?? "", value: e.column1 ?? ""));
               });
               selectedGstPlant = gstPlant.firstWhereOrNull(
                 (element) {
-                  var result =
-                      element.key == map['infoLeaveOnDealNumber']['gstPlantID'];
+                  var result = element.key ==
+                      roBookingDealLeave!.infoLeaveOnDealNumber!.gstPlantId!;
                   return result;
                 },
               );
 
               isShowLink.value = true;
               //LD Button
-              linkDealNO.value = map['infoLeaveOnDealNumber']['showLinkDeal']
-                      ['linkDealNo'] ??
+              linkDealNO.value = roBookingDealLeave!
+                      .infoLeaveOnDealNumber!.showLinkDeal!.linkDealNo! ??
                   "";
-              linkDealName.value = map['infoLeaveOnDealNumber']['showLinkDeal']
-                      ['linkDealName'] ??
+              linkDealName.value = roBookingDealLeave!
+                      .infoLeaveOnDealNumber!.showLinkDeal!.linkDealName! ??
                   "";
-              if (linkDealName.value == null) {
+              print(roBookingDealLeave!
+                  .infoLeaveOnDealNumber!.showLinkDeal!.linkDealNo!
+                  .toString());
+              if (roBookingDealLeave!
+                      .infoLeaveOnDealNumber!.showLinkDeal!.linkDealNo!
+                      .toString() !=
+                  "0") {
                 lDButton.value = true;
               }
               //PDC
-              if (map['infoLeaveOnDealNumber']['displayDealDetails']
-                  ['grpPDC']) {
+              if (roBookingDealLeave!
+                  .infoLeaveOnDealNumber!.displayDealDetails!.grpPdc!) {
                 if (pdcDetailsPopUP) {
                   pdcDetailsPopUP = false;
                   LoadingDialog.showErrorDialog(
-                      map['infoLeaveOnDealNumber']['displayDealDetails']
-                              ['message'] ??
+                      roBookingDealLeave!.infoLeaveOnDealNumber!
+                              .displayDealDetails!.message ??
                           "", callback: () {
                     isEnterNewPDC.value = true;
                     gstDilogBox();
@@ -644,6 +709,7 @@ class EdiRoBookingController extends GetxController {
                 map['infoBrandList'] != null &&
                 map.containsKey('infoBrandList')) {
               tapIdTabelList.clear();
+              tempList.clear();
               tapIdTabelList.value = map['infoBrandList'];
               tempList.addAll(tapIdTabelList.value);
             }
@@ -724,76 +790,90 @@ class EdiRoBookingController extends GetxController {
   }
 
   fpcStartDilogBox() {
-    drgabbleDialog.value = Card(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
-      margin: EdgeInsets.zero,
-      color: Colors.white,
-      child: SizedBox(
-        width: Get.width * 0.60,
-        height: Get.height * 0.6,
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              Align(
-                alignment: Alignment.topRight,
-                child: IconButton(
-                  onPressed: () {
-                    drgabbleDialog.value = null;
-                  },
-                  icon: const Icon(Icons.close),
-                ),
-              ),
-              Expanded(
-                child: Obx(
-                  () => Container(
-                    margin: const EdgeInsets.only(bottom: 8),
-                    decoration: fpcStartTabelList.isEmpty
-                        ? BoxDecoration(border: Border.all(color: Colors.grey))
-                        : null,
-                    child: fpcStartTabelList.value.isEmpty
-                        ? null
-                        : DataGridShowOnlyKeys(
-                            mapData: fpcStartTabelList.value,
-                            hideCode: false,
-                            exportFileName: "EDI R.O. Booking",
-                            formatDate: false,
-                            onload: (event) {
-                              fpcStartTabelGrid = event.stateManager;
-                            },
-                            colorCallback: (colorEvent) {
-                              return colorEvent.row.cells.containsValue(
-                                      fpcStartTabelGrid?.currentCell)
-                                  ? Colors.deepPurple.shade100
-                                  : Colors.white;
-                            },
-                            onRowDoubleTap: (event) {
-                              // print(event.cell.column.field);
+    drgabbleDialog.value = Focus(
+      autofocus: true,
+      onKey: (node, event) {
+        if (event.logicalKey == LogicalKeyboardKey.escape) {
+          drgabbleDialog.value = null;
+        }
 
-                              if (event.cell.column.field.toString() ==
-                                  'telecastTime') {
-                                if (dvgSpotGrid?.currentRow?.sortIdx == null) {
-                                  LoadingDialog.callInfoMessage(
-                                      "Please select row.");
-                                } else {
-                                  lstDgvSpotsList.value[dvgSpotGrid!.currentRow!
-                                      .sortIdx]['fpcstart'] = event.cell.value!;
-                                  dvgSpotGrid!.changeCellValue(
-                                    dvgSpotGrid!.currentRow!.cells['fpcstart']!,
-                                    event.cell.value!,
-                                    callOnChangedEvent: false,
-                                    force: true,
-                                  );
-                                }
-                                // print(
-                                //     event.row.cells['telecastTime']?.value);
-                              }
-                            },
-                          ),
+        return KeyEventResult.ignored;
+      },
+      child: Card(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
+        margin: EdgeInsets.zero,
+        color: Colors.white,
+        child: SizedBox(
+          width: Get.width * 0.60,
+          height: Get.height * 0.6,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: [
+                Align(
+                  alignment: Alignment.topRight,
+                  child: IconButton(
+                    onPressed: () {
+                      drgabbleDialog.value = null;
+                    },
+                    icon: const Icon(Icons.close),
                   ),
                 ),
-              ),
-            ],
+                Expanded(
+                  child: Obx(
+                    () => Container(
+                      margin: const EdgeInsets.only(bottom: 8),
+                      decoration: fpcStartTabelList.isEmpty
+                          ? BoxDecoration(
+                              border: Border.all(color: Colors.grey))
+                          : null,
+                      child: fpcStartTabelList.value.isEmpty
+                          ? null
+                          : DataGridShowOnlyKeys(
+                              mapData: fpcStartTabelList.value,
+                              hideCode: false,
+                              exportFileName: "EDI R.O. Booking",
+                              formatDate: false,
+                              onload: (event) {
+                                fpcStartTabelGrid = event.stateManager;
+                              },
+                              colorCallback: (colorEvent) {
+                                return colorEvent.row.cells.containsValue(
+                                        fpcStartTabelGrid?.currentCell)
+                                    ? Colors.deepPurple.shade100
+                                    : Colors.white;
+                              },
+                              onRowDoubleTap: (event) {
+                                // print(event.cell.column.field);
+
+                                if (event.cell.column.field.toString() ==
+                                    'telecastTime') {
+                                  if (dvgSpotGrid?.currentRow?.sortIdx ==
+                                      null) {
+                                    LoadingDialog.callInfoMessage(
+                                        "Please select row.");
+                                  } else {
+                                    lstDgvSpotsList.value[
+                                            dvgSpotGrid!.currentRow!.sortIdx]
+                                        ['fpcstart'] = event.cell.value!;
+                                    dvgSpotGrid!.changeCellValue(
+                                      dvgSpotGrid!
+                                          .currentRow!.cells['fpcstart']!,
+                                      event.cell.value!,
+                                      callOnChangedEvent: false,
+                                      force: true,
+                                    );
+                                  }
+                                  // print(
+                                  //     event.row.cells['telecastTime']?.value);
+                                }
+                              },
+                            ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -801,135 +881,182 @@ class EdiRoBookingController extends GetxController {
   }
 
   tapeIdDilogBox() {
-    drgabbleDialog.value = Card(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
-      margin: EdgeInsets.zero,
-      color: Colors.white,
-      child: SizedBox(
-        width: Get.width * 0.60,
-        height: Get.height * 0.6,
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  InputFields.formField1(
-                    hintTxt: "Search Tape ID",
-                    controller: TextEditingController(),
-                    onFieldSubmitted: (value) {
-                      tempList.clear();
-                      if (value.isNotEmpty) {
-                        for (var i = 0; i < tapIdTabelList.length; i++) {
-                          if (value == tapIdTabelList[i]['exportTapeCode']) {
-                            tempList.add(tapIdTabelList[i]);
+    drgabbleDialog.value = Focus(
+      autofocus: true,
+      onKey: (node, event) {
+        if (event.logicalKey == LogicalKeyboardKey.escape) {
+          drgabbleDialog.value = null;
+        }
+
+        return KeyEventResult.ignored;
+      },
+      child: Card(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
+        margin: EdgeInsets.zero,
+        color: Colors.white,
+        child: SizedBox(
+          width: Get.width * 0.60,
+          height: Get.height * 0.6,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    InputFields.formField1(
+                      hintTxt: "Search Tape ID",
+                      controller: TextEditingController(),
+                      onchanged: (value) async {
+                        if (Get.find<MainController>()
+                            .filters1
+                            .containsKey(tapeIdTabelGrid.hashCode.toString())) {
+                          await clearFirstDataTableFilter(tapeIdTabelGrid!);
+                        }
+                      },
+                      onFieldSubmitted: (value) async {
+                        // tempList.clear();
+                        // if (value.isNotEmpty) {
+                        //   for (var i = 0; i < tapIdTabelList.length; i++) {
+                        //     if (value == tapIdTabelList[i]['exportTapeCode']) {
+                        //       tempList.add(tapIdTabelList[i]);
+                        //     }
+                        //   }
+                        // } else {
+                        //   tempList.addAll(tapIdTabelList.value);
+                        // }
+                        print(value.toString());
+                        if (Get.find<MainController>()
+                            .filters1
+                            .containsKey(tapeIdTabelGrid.hashCode.toString())) {
+                          await clearFirstDataTableFilter(tapeIdTabelGrid!);
+                        }
+                        for (var element in tapeIdTabelGrid!.rows) {
+                          if (element.cells['exportTapeCode']?.value ==
+                              value.toString()) {
+                            tapeIdTabelGrid?.setCurrentCell(
+                                element.cells['exportTapeCode'],
+                                element.sortIdx);
+                            break;
                           }
                         }
-                      } else {
-                        tempList.addAll(tapIdTabelList.value);
-                      }
-                    },
-                    width: 0.3,
-                  ),
-                  Align(
-                    alignment: Alignment.topRight,
-                    child: IconButton(
-                      onPressed: () {
-                        drgabbleDialog.value = null;
+                        doubleClickFilterGrid1(tapeIdTabelGrid,
+                            'exportTapeCode', value.toString());
                       },
-                      icon: const Icon(Icons.close),
+                      width: 0.3,
                     ),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 8,
-              ),
-              Expanded(
-                child: Obx(
-                  () => Container(
-                    margin: const EdgeInsets.only(bottom: 8),
-                    decoration: tempList.isEmpty
-                        ? BoxDecoration(border: Border.all(color: Colors.grey))
-                        : null,
-                    child: tempList.value.isEmpty
-                        ? null
-                        : DataGridShowOnlyKeys(
-                            mapData: tempList.value,
-                            hideCode: false,
-                            exportFileName: "EDI R.O. Booking",
-                            formatDate: false,
-                            onload: (event) {
-                              tapeIdTabelGrid = event.stateManager;
-                            },
-                            colorCallback: (colorEvent) {
-                              return colorEvent.row.cells.containsValue(
-                                      tapeIdTabelGrid?.currentCell)
-                                  ? Colors.deepPurple.shade100
-                                  : Colors.white;
-                            },
-                            onRowDoubleTap: (event) {
-                              if (event.cell.column.field.toString() ==
-                                  'exportTapeCode') {
-                                if (dvgSpotGrid?.currentRow?.sortIdx == null) {
-                                  LoadingDialog.callInfoMessage(
-                                      "Please select row.");
-                                } else if (dvgSpotGrid!.currentRow!
-                                        .cells['commercialduration']!.value
-                                        .toString() !=
-                                    event.row.cells['commercialDuration']?.value
-                                        .toString()) {
-                                  LoadingDialog.callErrorMessage1(
-                                      msg: "Duration mismatch!");
-                                } else {
-                                  for (int i = 0;
-                                      i < dvgSpotGrid!.refRows.length;
-                                      i++) {
-                                    if (dvgSpotGrid!.refRows[i]
-                                            .cells['commercialduration']!.value
-                                            .toString() ==
-                                        event.row.cells['commercialDuration']
-                                            ?.value
-                                            .toString()) {
-                                      //Tape Id
-                                      lstDgvSpotsList.value[
-                                              dvgSpotGrid!.refRows[i].sortIdx]
-                                          ['tapE_ID'] = event.cell.value!;
-                                      dvgSpotGrid!.changeCellValue(
-                                        dvgSpotGrid!
-                                            .refRows[i].cells['tapE_ID']!,
-                                        event.cell.value!.toString(),
-                                        callOnChangedEvent: false,
-                                        force: true,
-                                      );
-                                      //Commercial Caption
-                                      lstDgvSpotsList.value[dvgSpotGrid!
+                    Align(
+                      alignment: Alignment.topRight,
+                      child: IconButton(
+                        onPressed: () {
+                          drgabbleDialog.value = null;
+                        },
+                        icon: const Icon(Icons.close),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 8,
+                ),
+                Expanded(
+                  child: Obx(
+                    () => Container(
+                      margin: const EdgeInsets.only(bottom: 8),
+                      decoration: tapIdTabelList.isEmpty
+                          ? BoxDecoration(
+                              border: Border.all(color: Colors.grey))
+                          : null,
+                      child: tapIdTabelList.value.isEmpty
+                          ? null
+                          : DataGridShowOnlyKeys(
+                              mapData: tapIdTabelList.value,
+                              hideCode: false,
+                              exportFileName: "EDI R.O. Booking",
+                              formatDate: false,
+                              onload: (event) {
+                                tapeIdTabelGrid = event.stateManager;
+                                tapeIdTabelGrid?.setCurrentCell(
+                                    tapeIdTabelGrid
+                                        ?.getRowByIdx(
+                                            tapeIdTabelGrid?.currentRowIdx ?? 0)
+                                        ?.cells['exportTapeCode'],
+                                    tapeIdTabelGrid?.currentRowIdx ?? 0);
+                              },
+                              colorCallback: (colorEvent) {
+                                return colorEvent.row.cells.containsValue(
+                                        tapeIdTabelGrid?.currentCell)
+                                    ? Colors.deepPurple.shade100
+                                    : Colors.white;
+                              },
+                              onRowDoubleTap: (event) {
+                                tapeIdTabelGrid?.setCurrentCell(
+                                    event.cell, event.rowIdx);
+                                if (event.cell.column.field.toString() ==
+                                    'exportTapeCode') {
+                                  if (dvgSpotGrid?.currentRow?.sortIdx ==
+                                      null) {
+                                    LoadingDialog.callInfoMessage(
+                                        "Please select row.");
+                                  } else if (dvgSpotGrid!.currentRow!
+                                          .cells['commercialduration']!.value
+                                          .toString() !=
+                                      event.row.cells['commercialDuration']
+                                          ?.value
+                                          .toString()) {
+                                    LoadingDialog.callErrorMessage1(
+                                        msg: "Duration mismatch!");
+                                  } else {
+                                    for (int i = 0;
+                                        i < dvgSpotGrid!.refRows.length;
+                                        i++) {
+                                      if (dvgSpotGrid!
                                               .refRows[i]
-                                              .sortIdx]['commercialcaption'] =
+                                              .cells['commercialduration']!
+                                              .value
+                                              .toString() ==
+                                          event.row.cells['commercialDuration']
+                                              ?.value
+                                              .toString()) {
+                                        //Tape Id
+                                        lstDgvSpotsList.value[
+                                                dvgSpotGrid!.refRows[i].sortIdx]
+                                            ['tapE_ID'] = event.cell.value!;
+                                        dvgSpotGrid!.changeCellValue(
+                                          dvgSpotGrid!
+                                              .refRows[i].cells['tapE_ID']!,
+                                          event.cell.value!.toString(),
+                                          callOnChangedEvent: false,
+                                          force: true,
+                                        );
+                                        //Commercial Caption
+                                        lstDgvSpotsList.value[dvgSpotGrid!
+                                                .refRows[i]
+                                                .sortIdx]['commercialcaption'] =
+                                            event.row.cells['commercialCaption']
+                                                ?.value
+                                                .toString();
+                                        dvgSpotGrid!.changeCellValue(
+                                          dvgSpotGrid!.refRows[i]
+                                              .cells['commercialcaption']!,
                                           event.row.cells['commercialCaption']
                                               ?.value
-                                              .toString();
-                                      dvgSpotGrid!.changeCellValue(
-                                        dvgSpotGrid!.refRows[i]
-                                            .cells['commercialcaption']!,
-                                        event.row.cells['commercialCaption']
-                                            ?.value
-                                            .toString(),
-                                        callOnChangedEvent: false,
-                                        force: true,
-                                      );
+                                              .toString(),
+                                          callOnChangedEvent: false,
+                                          force: true,
+                                        );
+                                      }
                                     }
                                   }
                                 }
-                              }
-                            },
-                          ),
+                              },
+                            ),
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -985,33 +1112,46 @@ class EdiRoBookingController extends GetxController {
   }
 
   showMakeGood() {
-    try {
-      var fromDate = DateFormat("MM-dd-yyyy").format(
-          DateFormat("dd-MM-yyyy").parse(mgStartDateTEC.text ?? "10-01-2023"));
-      var toDate = DateFormat("MM-dd-yyyy").format(
-          DateFormat("dd-MM-yyyy").parse(mgEndDateTEC.text ?? "10-01-2023"));
-      LoadingDialog.call();
-      Get.find<ConnectorControl>().GETMETHODCALL(
-          api: ApiFactory.EDI_RO_SHOW_MAKE_GOOD(
-            selectedLoactions?.value ?? "",
-            selectedChannel?.value ?? "",
-            selectedBrand?.value ?? "",
-            selectedClient?.value ?? "",
-            selectedAgency?.value ?? "",
-            fromDate,
-            toDate,
-            selectedDealNo?.value ?? "",
-          ),
-          fun: (map) {
-            Get.back();
-            if (map != null &&
-                map['infoShowMakeGood'] != null &&
-                map.containsKey('infoShowMakeGood')) {
-              print(map);
-            }
-          });
-    } catch (e) {
-      print(e.toString());
+    if (selectedLoactions?.key == null) {
+      LoadingDialog.showErrorDialog('Please select location.');
+    } else if (selectedChannel?.key == null) {
+      LoadingDialog.showErrorDialog('Please select channel.');
+    } else if (selectedBrand?.key == null) {
+      LoadingDialog.showErrorDialog('Please select brand.');
+    } else {
+      try {
+        var fromDate = DateFormat("MM-dd-yyyy").format(DateFormat("dd-MM-yyyy")
+            .parse(mgStartDateTEC.text ?? "10-01-2023"));
+        var toDate = DateFormat("MM-dd-yyyy").format(
+            DateFormat("dd-MM-yyyy").parse(mgEndDateTEC.text ?? "10-01-2023"));
+        LoadingDialog.call();
+        Get.find<ConnectorControl>().GETMETHODCALL(
+            api: ApiFactory.EDI_RO_SHOW_MAKE_GOOD(
+              selectedLoactions?.value ?? "",
+              selectedChannel?.value ?? "",
+              selectedBrand?.value ?? "",
+              selectedClient?.value ?? "",
+              selectedAgency?.value ?? "",
+              fromDate,
+              toDate,
+              selectedDealNo?.value ?? "",
+            ),
+            fun: (map) {
+              Get.back();
+              if (map != null &&
+                  map['infoShowMakeGood'] != null &&
+                  map.containsKey('infoShowMakeGood')) {
+                makeGoodReportList.value =
+                    map['infoShowMakeGood']['lstMakeGood'];
+                if (map['infoShowMakeGood']['message'] != null) {
+                  LoadingDialog.callInfoMessage(
+                      map['infoShowMakeGood']['message']);
+                }
+              }
+            });
+      } catch (e) {
+        print(e.toString());
+      }
     }
   }
 
@@ -1089,6 +1229,7 @@ class EdiRoBookingController extends GetxController {
       Get.find<MainController>().filters1[gridController!.hashCode.toString()] =
           RxList([]);
     }
+    print(gridController!.currentCell);
 
     if (gridController!.currentCell != null) {
       Get.find<MainController>()
@@ -1098,6 +1239,8 @@ class EdiRoBookingController extends GetxController {
               field: field,
               operator: "equal",
               value: value));
+    } else {
+      print(gridController!.currentCell);
     }
 
     var _filters = Get.find<MainController>()
@@ -1162,6 +1305,10 @@ class EdiRoBookingController extends GetxController {
           .format(DateFormat('dd-MM-yyyy').parse(dr['acT_DT']));
       intYear.value = int.parse(year);
     }
+
+    // if (dr.containsKey("isSpotsAvailable") && dr['isSpotsAvailable']) {
+    //   return Colors.deepPurple.shade100;
+    // }
 
     return Colors.white; // Return null if no color conditions are met.
   }
@@ -1295,36 +1442,11 @@ class EdiRoBookingController extends GetxController {
     }
   }
 
-  save() {
-    try {
-      LoadingDialog.call();
-      var payload = {
-        "bookingNo": "",
-        "grpPDC": "",
-        "pdc": "",
-        "lstSpots": [],
-      };
-      Get.find<ConnectorControl>().POSTMETHOD(
-          api: ApiFactory.EDI_RO_SAVED_EDI_BOOKING,
-          json: payload,
-          fun: (map) {
-            Get.back();
-            if (map != null &&
-                map['infoShowMakeGood'] != null &&
-                map.containsKey('infoShowMakeGood')) {
-              print(map);
-            }
-          });
-    } catch (e) {
-      print(e.toString());
-    }
-  }
-
   checkAll() {
     try {
       LoadingDialog.call();
       var payload = {
-        "lstXmlDt": lstXmlDtList,
+        "lstSpots": lstDgvSpotsList,
       };
       Get.find<ConnectorControl>().POSTMETHOD(
           api: ApiFactory.EDI_RO_CHECK_ALL,
@@ -1332,9 +1454,166 @@ class EdiRoBookingController extends GetxController {
           fun: (map) {
             Get.back();
             if (map != null &&
-                map['infoShowMakeGood'] != null &&
-                map.containsKey('infoShowMakeGood')) {
-              print(map);
+                map['infoCheckAll'] != null &&
+                map.containsKey('infoCheckAll')) {
+              selectedBrand = brand.firstWhereOrNull((element) {
+                var result =
+                    element.key == map['infoCheckAll']['brandCodeSelected'];
+                return result;
+              });
+              lstDgvSpotsList.value.clear();
+              lstDgvSpotsList.value = map['infoCheckAll']['lstSpots'];
+              tapIdTabelList.clear();
+              tempList.clear();
+              tapIdTabelList.value = map['infoCheckAll']['brandLeave'];
+              tempList.addAll(tapIdTabelList.value);
+              isBrandEnable.value = false;
+              update(["initData"]);
+              if (map['infoCheckAll']['message'] != null) {
+                LoadingDialog.callInfoMessage(map['infoCheckAll']['message']);
+              } else {
+                dealLeave();
+                checkAllDealUtil();
+              }
+            }
+          });
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  checkAllDealUtil() {
+    try {
+      LoadingDialog.call();
+      var payload = {
+        "lstDealEntires": lstDgvDealEntriesList ?? [],
+        "lstSpots": lstDgvSpotsList ?? [],
+        "lstTapeIds": tapIdTabelList ?? [],
+        "locationCode": selectedLoactions!.key ?? "",
+        "channelCode": selectedChannel!.key ?? "",
+        "bookingMonth": bookingNo1TEC.text ?? "",
+        "txtPreviousBookedAmount": preBAmtTEC.text ?? "",
+        "txtPreviousValAmount": preVAmtTEC.text ?? ""
+      };
+      Get.find<ConnectorControl>().POSTMETHOD(
+          api: ApiFactory.EDI_RO_CHECK_ALL_DEAL_UTIL,
+          json: payload,
+          fun: (map) {
+            Get.back();
+            if (map != null &&
+                map['infoCheckAllDealUtility'] != null &&
+                map.containsKey('infoCheckAllDealUtility')) {
+              roBookingCheckAllDealUtility =
+                  RoBookingCheckAllDealUtility.fromJson(map);
+              lstDgvDealEntries.value = roBookingCheckAllDealUtility!
+                  .infoCheckAllDealUtility!.lstDealEntries!;
+              lstDgvSpots.value = roBookingCheckAllDealUtility!
+                  .infoCheckAllDealUtility!.flagDeals!.lstSpots!;
+              lstDgvDealEntriesList.value =
+                  map['infoCheckAllDealUtility']['lstDealEntries'] ?? [];
+              lstDgvSpotsList.value =
+                  map['infoCheckAllDealUtility']['flagDeals']['lstSpots'] ?? [];
+              print("==========");
+              checkAllProgramFct();
+            }
+          });
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  checkAllProgramFct() {
+    try {
+      LoadingDialog.call();
+      var payload = {
+        "locationCode": selectedLoactions!.key ?? "",
+        "channelCode": selectedChannel!.key ?? "",
+        "clientCode": selectedClient!.key ?? "",
+        "agencyCode": selectedAgency!.key ?? "",
+        "txtSpots": spotsBookedTEC.text ?? "",
+        "txtDuration": durBookedTEC.text ?? "",
+        "txtAmount": amtBookedTEC.text ?? "",
+        "txtPreviousValAmount": num.parse(preVAmtTEC.text),
+        "txtPreviousBookedAmount": num.parse(preBAmtTEC.text),
+        "txtValAmount": amtValAmmountTEC.text ?? "",
+        "txtBalanceSpots": spotsBalanceTEC.text ?? "",
+        "lstSpot": lstDgvSpots.map((e) {
+          return e.toJson();
+        }).toList(),
+        "lstDgvDealEntries": lstDgvDealEntries.map((e) {
+          return e.toJson();
+        }).toList(),
+      };
+      Get.find<ConnectorControl>().POSTMETHOD(
+          api: ApiFactory.EDI_RO_CHECK_ALL_PROGRAM_FCT,
+          json: payload,
+          fun: (map) {
+            Get.back();
+            if (map != null &&
+                map['infoCheckAllProgramFCT'] != null &&
+                map.containsKey('infoCheckAllProgramFCT')) {
+              bookedAmountTEC.text = map['infoCheckAllProgramFCT']
+                          ['totalBookedAmount']
+                      .toString() ??
+                  "";
+              valAmountTEC.text =
+                  map['infoCheckAllProgramFCT']['totalValAmount'].toString() ??
+                      "";
+            }
+          });
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  save() {
+    try {
+      LoadingDialog.call();
+      var payload = {
+        "bookingNo": bookingNo1TEC.text ?? "0",
+        "grpPDC": false,
+        "pdc": "",
+        "lstPDCChannels": [],
+        "lstSpots": lstDgvSpots.map((e) {
+          return e.toJson();
+        }).toList(),
+        "lstMakeGood": makeGoodReportList.value ?? [],
+        "locationCode": selectedLoactions!.key ?? "",
+        "channelCode": selectedChannel!.key ?? "",
+        "brandCode": selectedBrand!.key ?? "",
+        "spot": spotsBookedTEC.text ?? "",
+        "chkGSTValidate": true,
+        "executiveCode": selectedExecutives!.key ?? "",
+        "dealMaxSpent": maxSpendTEC.text ?? "",
+        "totalBookedAmount": bookedAmountTEC.text ?? "",
+        "totalValAmount": valAmountTEC.text ?? "",
+        "amount": amtBookedTEC.text,
+        "agencyCode": selectedAgency!.key ?? "",
+        "position": selectedPositions!.key ?? "",
+        "bookingMonth": bookingNo1TEC.text ?? "0",
+        "clientCode": selectedClient!.key ?? "",
+        "dtpBookingDate": bkDate.text ?? "",
+        "dtpEffDate": effectiveDate.text ?? "",
+        "agncyCode": selectedAgency!.key ?? "",
+        "cboRORefNo": selectedRoRefNo!.value ?? "",
+        "payRoute": payRouteTEC.text ?? "",
+        "duration": durBookedTEC.text,
+        "zoneCode": zoneTEC.text,
+        "dealNo": selectedDealNo!.key ?? "",
+        "loggedUser": Get.find<MainController>().user?.logincode ?? "",
+        "fileName": selectedFile!.value ?? "",
+        "gstPlantsId": selectedGstPlant!.value ?? "",
+        "gstRegN": gstNoTEC.text
+      };
+      Get.find<ConnectorControl>().POSTMETHOD(
+          api: ApiFactory.EDI_RO_SAVED_EDI_BOOKING,
+          json: payload,
+          fun: (map) {
+            Get.back();
+            if (map != null &&
+                map['infoSave'] != null &&
+                map.containsKey('infoSave')) {
+              LoadingDialog.callInfoMessage(map['infoSave']['message']);
             }
           });
     } catch (e) {

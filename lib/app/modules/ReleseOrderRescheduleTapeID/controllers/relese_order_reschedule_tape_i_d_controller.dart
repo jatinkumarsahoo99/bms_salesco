@@ -409,8 +409,8 @@ class ReleseOrderRescheduleTapeIDController extends GetxController {
             LoadingDialog.callDataSaved(
                 msg: resp['message'],
                 callback: () {
-                  Get.delete<ReleseOrderRescheduleTapeIDController>();
-                  Get.find<HomeController>().clearPage1();
+                  // Get.delete<ReleseOrderRescheduleTapeIDController>();
+                  // Get.find<HomeController>().clearPage1();
                 });
           } else {
             if (resp != null &&
