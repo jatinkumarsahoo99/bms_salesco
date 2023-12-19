@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:bms_salesco/app/data/DropDownValue.dart';
 import 'package:bms_salesco/app/modules/CommonDocs/views/common_docs_view.dart';
@@ -1101,7 +1102,9 @@ class EdiRoBookingController extends GetxController {
             if (map != null &&
                 map['strCompTape'] != null &&
                 map.containsKey('strCompTape')) {
-              LoadingDialog.showErrorDialog(map['strCompTape']);
+              if (map['strCompTape'].isNotEmpty) {
+                LoadingDialog.showErrorDialog(map['strCompTape']);
+              }
               // update(["initData"]);
             }
           });
@@ -1618,6 +1621,1052 @@ class EdiRoBookingController extends GetxController {
           });
     } catch (e) {
       print(e.toString());
+    }
+  }
+
+  Future dealSpotsValidation(int rowIndex, {bool showMessage = false}) async {
+    int spotRowIndex = 0;
+    double timeSpan = 0;
+    double dayTimeSpan = 0;
+    double endTimeBuffer = 0;
+    bool nextDayDeal = false;
+
+    List<int> intDays = List.filled(7, 0);
+
+    var dealEntriesGrid = dgvDealEntriesGrid!.currentRow!.cells;
+    var spotGrid = dvgSpotGrid!.currentRow!.cells;
+    var intSpotRowIndex = dvgSpotGrid!.currentRow!.sortIdx;
+    print(intSpotRowIndex);
+    String sponsorTypeName =
+        dealEntriesGrid['sponsorTypeName']!.value.toString();
+    intDays[0] = int.parse(dealEntriesGrid['sun']!.value);
+    intDays[1] = int.parse(dealEntriesGrid['mon']!.value);
+    intDays[2] = int.parse(dealEntriesGrid['tue']!.value);
+    intDays[3] = int.parse(dealEntriesGrid['wed']!.value);
+    intDays[4] = int.parse(dealEntriesGrid['thu']!.value);
+    intDays[5] = int.parse(dealEntriesGrid['fri']!.value);
+    intDays[6] = int.parse(dealEntriesGrid['sat']!.value);
+
+    // for (var _dr in dvgSpotGrid!.refRows) {
+    //   if (_dr.cells['spoT_RATE'] == true) {
+    //     _dr = true;
+    //   }
+    // }
+    var lengthValue = isSelectingChange.isTrue ? lstDgvSpotsList.length : 1;
+    for (var i = 0; i < lengthValue; i++) {
+      spotRowIndex = isSelectingChange.isTrue ? i : intSpotRowIndex;
+
+      print(
+          "$spotRowIndex ====>  ${lstDgvSpotsList[spotRowIndex]['fpcstart']!.toString()}");
+      if (lstDgvSpotsList[spotRowIndex]['fpcstart']!.toString() == "") {
+        await LoadingDialog.showErrorDialog1("FPC time not entered.",
+            callback: () {
+          Get.back();
+        });
+      }
+
+      var weeksName = DateFormat('EEEE').format(DateFormat('dd-MM-yyyy')
+          .parse(lstDgvSpotsList[spotRowIndex]['acT_DT']!.toString() ?? ""));
+      int intDayOfWeek = weekCount(weeksName);
+
+      var intDealStartTime =
+          convertToDouble(dealEntriesGrid['starttime']!.value.toString());
+      var intDealEndTime =
+          convertToDouble(dealEntriesGrid['endTime']!.value.toString());
+      if (intDealStartTime > intDealEndTime) {
+        timeSpan = 864000000000;
+        endTimeBuffer = 0;
+        intDealEndTime = timeSpan + intDealEndTime;
+        nextDayDeal = true;
+      } else {
+        timeSpan = 0;
+        endTimeBuffer = 0;
+      }
+
+      num intSpotStartTime;
+      if (sponsorTypeName == "ROS") {
+        intSpotStartTime =
+            convertToDouble(lstDgvSpotsList[spotRowIndex]['stime']!.toString());
+      } else {
+        intSpotStartTime = convertToDouble(
+            lstDgvSpotsList[spotRowIndex]['fpcstart']!.toString());
+      }
+      num intSpotEndTime = lstDgvSpotsList[spotRowIndex]['etime']!.toString() ==
+              "00:00:00"
+          ? convertToDouble("23:59:59")
+          : convertToDouble(lstDgvSpotsList[spotRowIndex]['etime']!.toString());
+      if (intSpotEndTime == 0) {
+        timeSpan = 0;
+      }
+      DateTime now = DateTime.now();
+      num intCurrentSQLTime =
+          convertToDouble("${now.hour}:${now.minute}:${now.second}");
+      DateTime actDate = DateFormat('dd-MM-yyyy')
+          .parse(lstDgvSpotsList[spotRowIndex]['acT_DT']!.toString() ?? "");
+
+      DateTime toDayDate =
+          DateFormat('dd-MM-yyyy').parse("${now.day}-${now.month}-${now.year}");
+      if (actDate.isAfter(toDayDate)) {
+        dayTimeSpan = 864000000000;
+      }
+      if (nextDayDeal) {
+        timeSpan = 864000000000 + (intSpotEndTime * 2);
+      }
+
+      DateTime eFromDate = DateFormat('dd-MM-yyyy')
+          .parse(dealEntriesGrid['fromdate']!.value.toString());
+      DateTime eToDate = DateFormat('dd-MM-yyyy')
+          .parse(dealEntriesGrid['todate']!.value.toString());
+
+      if (intDays[intDayOfWeek] == 1) {
+        if (sponsorTypeName != "ROS") {
+          if (dealEntriesGrid['groupCode']!.value.toString() == "" ||
+              dealEntriesGrid['groupCode']!.value.toString() == null) {
+            if (num.parse(dealEntriesGrid['costPer10Sec']!.value.toString()) ==
+                num.parse(
+                    lstDgvSpotsList[spotRowIndex]['spoT_RATE']!.toString())) {
+              if (actDate.isAfter(eFromDate) ||
+                  actDate.isAtSameMomentAs(eFromDate) &&
+                      actDate.isBefore(eToDate) ||
+                  actDate.isAtSameMomentAs(eToDate)) {
+                if (intSpotStartTime >= intDealStartTime &&
+                    intSpotStartTime <= intDealEndTime) {
+                  if (((intSpotEndTime - endTimeBuffer) <= intDealEndTime) ||
+                      (intSpotEndTime - intDealEndTime).abs() <= 3000000000) {
+                    if ((dayTimeSpan + intDealEndTime).abs() >
+                        intCurrentSQLTime) {
+                      if (actDate.isAfter(toDayDate)) {
+                        if (dealEntriesGrid['locationcode']!.value.toString() ==
+                                selectedLoactions!.key.toString() &&
+                            dealEntriesGrid['channelCode']!.value.toString() ==
+                                selectedChannel!.key.toString()) {
+                          lstDgvSpotsList[spotRowIndex]['dealrow'] =
+                              dealEntriesGrid['recordnumber']!.value;
+                          dvgSpotGrid!.changeCellValue(
+                            spotGrid['dealrow']!,
+                            dealEntriesGrid['recordnumber']!.value,
+                            callOnChangedEvent: false,
+                            force: true,
+                          );
+
+                          lstDgvSpotsList[spotRowIndex]['dealno'] =
+                              dealEntriesGrid['dealnumber']!.value;
+                          dvgSpotGrid!.changeCellValue(
+                            spotGrid['dealno']!,
+                            dealEntriesGrid['dealnumber']!.value,
+                            callOnChangedEvent: false,
+                            force: true,
+                          );
+                          if (lstDgvSpotsList[spotRowIndex]['endTime']!
+                                      .toString() !=
+                                  "" ||
+                              lstDgvSpotsList[spotRowIndex]['endTime']! !=
+                                  null) {
+                            lstDgvSpotsList[spotRowIndex]['endTime'] =
+                                dealEntriesGrid['endTime']!;
+                            dvgSpotGrid!.changeCellValue(
+                              spotGrid['endTime']!,
+                              dealEntriesGrid['endTime']!.value,
+                              callOnChangedEvent: false,
+                              force: true,
+                            );
+                          }
+
+                          lstDgvSpotsList[spotRowIndex]['nO_SPOT'] = "1";
+                          dvgSpotGrid!.changeCellValue(
+                            spotGrid['nO_SPOT']!,
+                            "1",
+                            callOnChangedEvent: false,
+                            force: true,
+                          );
+                          lstDgvSpotsList[spotRowIndex]['amount'] = (num.parse(
+                                  dealEntriesGrid['costPer10Sec']!.value) *
+                              num.parse(lstDgvSpotsList[spotRowIndex]
+                                  ['commercialduration']) /
+                              10);
+                          dvgSpotGrid!.changeCellValue(
+                            spotGrid['amount']!,
+                            (num.parse(dealEntriesGrid['costPer10Sec']!.value) *
+                                num.parse(lstDgvSpotsList[spotRowIndex]
+                                    ['commercialduration']) /
+                                10),
+                            callOnChangedEvent: false,
+                            force: true,
+                          );
+                        }
+                      } else {
+                        if (showMessage) {
+                          await LoadingDialog.showErrorDialog1(
+                              "Date already gone!", callback: () {
+                            Get.back();
+                          });
+                        } else {
+                          lstDgvSpotsList[spotRowIndex]['dealrow'] = "";
+                          dvgSpotGrid!.changeCellValue(
+                            spotGrid['dealrow']!,
+                            "",
+                            callOnChangedEvent: false,
+                            force: true,
+                          );
+                          lstDgvSpotsList[spotRowIndex]['dealno'] = "";
+                          dvgSpotGrid!.changeCellValue(
+                            spotGrid['dealno']!,
+                            "",
+                            callOnChangedEvent: false,
+                            force: true,
+                          );
+                          lstDgvSpotsList[spotRowIndex]['amount'] = 0;
+                          dvgSpotGrid!.changeCellValue(
+                            spotGrid['amount']!,
+                            0,
+                            callOnChangedEvent: false,
+                            force: true,
+                          );
+                        }
+                      }
+                    } else {
+                      if (showMessage) {
+                        await LoadingDialog.showErrorDialog1(
+                            "Time already gone!", callback: () {
+                          Get.back();
+                        });
+                      } else {
+                        lstDgvSpotsList[spotRowIndex]['dealrow'] = "";
+                        dvgSpotGrid!.changeCellValue(
+                          spotGrid['dealrow']!,
+                          "",
+                          callOnChangedEvent: false,
+                          force: true,
+                        );
+                        lstDgvSpotsList[spotRowIndex]['dealno'] = "";
+                        dvgSpotGrid!.changeCellValue(
+                          spotGrid['dealno']!,
+                          "",
+                          callOnChangedEvent: false,
+                          force: true,
+                        );
+                        lstDgvSpotsList[spotRowIndex]['amount'] = 0;
+                        dvgSpotGrid!.changeCellValue(
+                          spotGrid['amount']!,
+                          0,
+                          callOnChangedEvent: false,
+                          force: true,
+                        );
+                      }
+                    }
+                  } else {
+                    if (showMessage) {
+                      await LoadingDialog.showErrorDialog1(
+                          "End time mismatch with deal row!", callback: () {
+                        Get.back();
+                      });
+                    } else {
+                      lstDgvSpotsList[spotRowIndex]['dealrow'] = "";
+                      dvgSpotGrid!.changeCellValue(
+                        spotGrid['dealrow']!,
+                        "",
+                        callOnChangedEvent: false,
+                        force: true,
+                      );
+                      lstDgvSpotsList[spotRowIndex]['dealno'] = "";
+                      dvgSpotGrid!.changeCellValue(
+                        spotGrid['dealno']!,
+                        "",
+                        callOnChangedEvent: false,
+                        force: true,
+                      );
+                      lstDgvSpotsList[spotRowIndex]['amount'] = 0;
+                      dvgSpotGrid!.changeCellValue(
+                        spotGrid['amount']!,
+                        0,
+                        callOnChangedEvent: false,
+                        force: true,
+                      );
+                    }
+                  }
+                } else {
+                  if (showMessage) {
+                    await LoadingDialog.showErrorDialog1(
+                        "Start time mismatch with deal row!", callback: () {
+                      Get.back();
+                    });
+                  } else {
+                    lstDgvSpotsList[spotRowIndex]['dealrow'] = "";
+                    dvgSpotGrid!.changeCellValue(
+                      spotGrid['dealrow']!,
+                      "",
+                      callOnChangedEvent: false,
+                      force: true,
+                    );
+                    lstDgvSpotsList[spotRowIndex]['dealno'] = "";
+                    dvgSpotGrid!.changeCellValue(
+                      spotGrid['dealno']!,
+                      "",
+                      callOnChangedEvent: false,
+                      force: true,
+                    );
+                    lstDgvSpotsList[spotRowIndex]['amount'] = 0;
+                    dvgSpotGrid!.changeCellValue(
+                      spotGrid['amount']!,
+                      0,
+                      callOnChangedEvent: false,
+                      force: true,
+                    );
+                  }
+                }
+              } else {
+                if (showMessage) {
+                  await LoadingDialog.showErrorDialog1("Deal expired!",
+                      callback: () {
+                    Get.back();
+                  });
+                } else {
+                  lstDgvSpotsList[spotRowIndex]['dealrow'] = "";
+                  dvgSpotGrid!.changeCellValue(
+                    spotGrid['dealrow']!,
+                    "",
+                    callOnChangedEvent: false,
+                    force: true,
+                  );
+                  lstDgvSpotsList[spotRowIndex]['dealno'] = "";
+                  dvgSpotGrid!.changeCellValue(
+                    spotGrid['dealno']!,
+                    "",
+                    callOnChangedEvent: false,
+                    force: true,
+                  );
+                  lstDgvSpotsList[spotRowIndex]['amount'] = 0;
+                  dvgSpotGrid!.changeCellValue(
+                    spotGrid['amount']!,
+                    0,
+                    callOnChangedEvent: false,
+                    force: true,
+                  );
+                }
+              }
+            } else {
+              if (showMessage) {
+                await LoadingDialog.showErrorDialog1(
+                    "Rate mismatch with deal row!", callback: () {
+                  Get.back();
+                });
+              } else {
+                lstDgvSpotsList[spotRowIndex]['dealrow'] = "";
+                dvgSpotGrid!.changeCellValue(
+                  spotGrid['dealrow']!,
+                  "",
+                  callOnChangedEvent: false,
+                  force: true,
+                );
+                lstDgvSpotsList[spotRowIndex]['dealno'] = "";
+                dvgSpotGrid!.changeCellValue(
+                  spotGrid['dealno']!,
+                  "",
+                  callOnChangedEvent: false,
+                  force: true,
+                );
+                lstDgvSpotsList[spotRowIndex]['amount'] = 0;
+                dvgSpotGrid!.changeCellValue(
+                  spotGrid['amount']!,
+                  0,
+                  callOnChangedEvent: false,
+                  force: true,
+                );
+              }
+            }
+          } else {
+            if (dealEntriesGrid['groupCode']!.value.toString() ==
+                lstDgvSpotsList[spotRowIndex]['groupcode']!.toString()) {
+              if (num.parse(
+                      dealEntriesGrid['costPer10Sec']!.value.toString()) ==
+                  num.parse(
+                      lstDgvSpotsList[spotRowIndex]['spoT_RATE']!.toString())) {
+                if (actDate.isAfter(eFromDate) ||
+                    actDate.isAtSameMomentAs(eFromDate) &&
+                        actDate.isBefore(eToDate) ||
+                    actDate.isAtSameMomentAs(eToDate)) {
+                  if (intSpotStartTime >= intDealStartTime &&
+                      intSpotStartTime <= intDealEndTime) {
+                    if (((intSpotEndTime - endTimeBuffer) <= intDealEndTime) ||
+                        (intSpotEndTime - intDealEndTime).abs() <= 3000000000) {
+                      if ((dayTimeSpan + intDealEndTime).abs() >
+                          intCurrentSQLTime) {
+                        if (actDate.isAfter(toDayDate)) {
+                          if (dealEntriesGrid['locationcode']!
+                                      .value
+                                      .toString() ==
+                                  selectedLoactions!.key.toString() &&
+                              dealEntriesGrid['channelCode']!
+                                      .value
+                                      .toString() ==
+                                  selectedChannel!.key.toString()) {
+                            lstDgvSpotsList[intSpotRowIndex]['dealrow'] =
+                                dealEntriesGrid['recordnumber']!.value;
+                            dvgSpotGrid!.changeCellValue(
+                              spotGrid['dealrow']!,
+                              dealEntriesGrid['recordnumber']!.value,
+                              callOnChangedEvent: false,
+                              force: true,
+                            );
+
+                            lstDgvSpotsList[intSpotRowIndex]['dealno'] =
+                                dealEntriesGrid['dealnumber']!.value;
+                            dvgSpotGrid!.changeCellValue(
+                              spotGrid['dealno']!,
+                              dealEntriesGrid['dealnumber']!.value,
+                              callOnChangedEvent: false,
+                              force: true,
+                            );
+                            if (lstDgvSpotsList[spotRowIndex]['endTime']!
+                                        .toString() !=
+                                    "" ||
+                                lstDgvSpotsList[spotRowIndex]['endTime']! !=
+                                    null) {
+                              lstDgvSpotsList[intSpotRowIndex]['endTime'] =
+                                  dealEntriesGrid['endTime']!.value;
+                              dvgSpotGrid!.changeCellValue(
+                                spotGrid['endTime']!,
+                                dealEntriesGrid['endTime']!.value,
+                                callOnChangedEvent: false,
+                                force: true,
+                              );
+                            }
+
+                            lstDgvSpotsList[spotRowIndex]['nO_SPOT'] = "1";
+                            dvgSpotGrid!.changeCellValue(
+                              spotGrid['nO_SPOT']!,
+                              "1",
+                              callOnChangedEvent: false,
+                              force: true,
+                            );
+                            lstDgvSpotsList[spotRowIndex]
+                                ['amount'] = (num.parse(
+                                    dealEntriesGrid['costPer10Sec']!.value) *
+                                num.parse(lstDgvSpotsList[spotRowIndex]
+                                    ['commercialduration']) /
+                                10);
+                            dvgSpotGrid!.changeCellValue(
+                              spotGrid['amount']!,
+                              (num.parse(
+                                      dealEntriesGrid['costPer10Sec']!.value) *
+                                  num.parse(lstDgvSpotsList[spotRowIndex]
+                                      ['commercialduration']) /
+                                  10),
+                              callOnChangedEvent: false,
+                              force: true,
+                            );
+                          }
+                        } else {
+                          if (showMessage) {
+                            await LoadingDialog.showErrorDialog1(
+                                "Date already gone!", callback: () {
+                              Get.back();
+                            });
+                          } else {
+                            lstDgvSpotsList[spotRowIndex]['dealrow'] = "";
+                            dvgSpotGrid!.changeCellValue(
+                              spotGrid['dealrow']!,
+                              "",
+                              callOnChangedEvent: false,
+                              force: true,
+                            );
+                            lstDgvSpotsList[spotRowIndex]['dealno'] = "";
+                            dvgSpotGrid!.changeCellValue(
+                              spotGrid['dealno']!,
+                              "",
+                              callOnChangedEvent: false,
+                              force: true,
+                            );
+                            lstDgvSpotsList[spotRowIndex]['amount'] = 0;
+                            dvgSpotGrid!.changeCellValue(
+                              spotGrid['amount']!,
+                              0,
+                              callOnChangedEvent: false,
+                              force: true,
+                            );
+                          }
+                        }
+                      } else {
+                        if (showMessage) {
+                          await LoadingDialog.showErrorDialog1(
+                              "Time already gone!", callback: () {
+                            Get.back();
+                          });
+                        } else {
+                          lstDgvSpotsList[spotRowIndex]['dealrow'] = "";
+                          dvgSpotGrid!.changeCellValue(
+                            spotGrid['dealrow']!,
+                            "",
+                            callOnChangedEvent: false,
+                            force: true,
+                          );
+                          lstDgvSpotsList[spotRowIndex]['dealno'] = "";
+                          dvgSpotGrid!.changeCellValue(
+                            spotGrid['dealno']!,
+                            "",
+                            callOnChangedEvent: false,
+                            force: true,
+                          );
+                          lstDgvSpotsList[spotRowIndex]['amount'] = 0;
+                          dvgSpotGrid!.changeCellValue(
+                            spotGrid['amount']!,
+                            0,
+                            callOnChangedEvent: false,
+                            force: true,
+                          );
+                        }
+                      }
+                    } else {
+                      if (showMessage) {
+                        await LoadingDialog.showErrorDialog1(
+                            "End time mismatch with deal row!", callback: () {
+                          Get.back();
+                        });
+                      } else {
+                        lstDgvSpotsList[spotRowIndex]['dealrow'] = "";
+                        dvgSpotGrid!.changeCellValue(
+                          spotGrid['dealrow']!,
+                          "",
+                          callOnChangedEvent: false,
+                          force: true,
+                        );
+                        lstDgvSpotsList[spotRowIndex]['dealno'] = "";
+                        dvgSpotGrid!.changeCellValue(
+                          spotGrid['dealno']!,
+                          "",
+                          callOnChangedEvent: false,
+                          force: true,
+                        );
+                        lstDgvSpotsList[spotRowIndex]['amount'] = 0;
+                        dvgSpotGrid!.changeCellValue(
+                          spotGrid['amount']!,
+                          0,
+                          callOnChangedEvent: false,
+                          force: true,
+                        );
+                      }
+                    }
+                  } else {
+                    if (showMessage) {
+                      await LoadingDialog.showErrorDialog1(
+                          "Start time mismatch with deal row!", callback: () {
+                        Get.back();
+                      });
+                    } else {
+                      lstDgvSpotsList[spotRowIndex]['dealrow'] = "";
+                      dvgSpotGrid!.changeCellValue(
+                        spotGrid['dealrow']!,
+                        "",
+                        callOnChangedEvent: false,
+                        force: true,
+                      );
+                      lstDgvSpotsList[spotRowIndex]['dealno'] = "";
+                      dvgSpotGrid!.changeCellValue(
+                        spotGrid['dealno']!,
+                        "",
+                        callOnChangedEvent: false,
+                        force: true,
+                      );
+                      lstDgvSpotsList[spotRowIndex]['amount'] = 0;
+                      dvgSpotGrid!.changeCellValue(
+                        spotGrid['amount']!,
+                        0,
+                        callOnChangedEvent: false,
+                        force: true,
+                      );
+                    }
+                  }
+                } else {
+                  if (showMessage) {
+                    await LoadingDialog.showErrorDialog1("Deal expired!",
+                        callback: () {
+                      Get.back();
+                    });
+                  } else {
+                    lstDgvSpotsList[spotRowIndex]['dealrow'] = "";
+                    dvgSpotGrid!.changeCellValue(
+                      spotGrid['dealrow']!,
+                      "",
+                      callOnChangedEvent: false,
+                      force: true,
+                    );
+                    lstDgvSpotsList[spotRowIndex]['dealno'] = "";
+                    dvgSpotGrid!.changeCellValue(
+                      spotGrid['dealno']!,
+                      "",
+                      callOnChangedEvent: false,
+                      force: true,
+                    );
+                    lstDgvSpotsList[spotRowIndex]['amount'] = 0;
+                    dvgSpotGrid!.changeCellValue(
+                      spotGrid['amount']!,
+                      0,
+                      callOnChangedEvent: false,
+                      force: true,
+                    );
+                  }
+                }
+              } else {
+                if (showMessage) {
+                  await LoadingDialog.showErrorDialog1(
+                      "Rate mismatch with deal row!", callback: () {
+                    Get.back();
+                  });
+                } else {
+                  lstDgvSpotsList[spotRowIndex]['dealrow'] = "";
+                  dvgSpotGrid!.changeCellValue(
+                    spotGrid['dealrow']!,
+                    "",
+                    callOnChangedEvent: false,
+                    force: true,
+                  );
+                  lstDgvSpotsList[spotRowIndex]['dealno'] = "";
+                  dvgSpotGrid!.changeCellValue(
+                    spotGrid['dealno']!,
+                    "",
+                    callOnChangedEvent: false,
+                    force: true,
+                  );
+                  lstDgvSpotsList[spotRowIndex]['amount'] = 0;
+                  dvgSpotGrid!.changeCellValue(
+                    spotGrid['amount']!,
+                    0,
+                    callOnChangedEvent: false,
+                    force: true,
+                  );
+                }
+              }
+            } else {
+              if (showMessage) {
+                await LoadingDialog.showErrorDialog1(
+                    "Program name mismatch with deal row!", callback: () {
+                  Get.back();
+                });
+              } else {
+                lstDgvSpotsList[spotRowIndex]['dealrow'] = "";
+                dvgSpotGrid!.changeCellValue(
+                  spotGrid['dealrow']!,
+                  "",
+                  callOnChangedEvent: false,
+                  force: true,
+                );
+                lstDgvSpotsList[spotRowIndex]['dealno'] = "";
+                dvgSpotGrid!.changeCellValue(
+                  spotGrid['dealno']!,
+                  "",
+                  callOnChangedEvent: false,
+                  force: true,
+                );
+                lstDgvSpotsList[spotRowIndex]['amount'] = 0;
+                dvgSpotGrid!.changeCellValue(
+                  spotGrid['amount']!,
+                  0,
+                  callOnChangedEvent: false,
+                  force: true,
+                );
+              }
+            }
+          }
+        } else {
+          if (num.parse(dealEntriesGrid['costPer10Sec']!.value.toString()) ==
+              num.parse(
+                  lstDgvSpotsList[spotRowIndex]['spoT_RATE']!.toString())) {
+            if (actDate.isAfter(eFromDate) ||
+                actDate.isAtSameMomentAs(eFromDate) &&
+                    actDate.isBefore(eToDate) ||
+                actDate.isAtSameMomentAs(eToDate)) {
+              if (intSpotStartTime >= intDealStartTime &&
+                  intSpotStartTime <= intDealEndTime) {
+                if ((((timeSpan - intSpotEndTime).abs() - endTimeBuffer)
+                        .abs() >=
+                    intDealEndTime)) {
+                  if (((intSpotEndTime - endTimeBuffer) <= intDealEndTime) ||
+                      (intSpotEndTime - intDealEndTime).abs() <= 3000000000) {
+                    if ((dayTimeSpan + intDealEndTime).abs() >
+                        intCurrentSQLTime) {
+                      if (actDate.isAfter(toDayDate)) {
+                        if (dealEntriesGrid['locationcode']!.value.toString() ==
+                                selectedLoactions!.key.toString() &&
+                            dealEntriesGrid['channelCode']!.value.toString() ==
+                                selectedChannel!.key.toString()) {
+                          lstDgvSpotsList[intSpotRowIndex]['dealrow'] =
+                              dealEntriesGrid['recordnumber']!.value;
+                          dvgSpotGrid!.changeCellValue(
+                            spotGrid['dealrow']!,
+                            dealEntriesGrid['recordnumber']!.value,
+                            callOnChangedEvent: false,
+                            force: true,
+                          );
+
+                          lstDgvSpotsList[intSpotRowIndex]['dealno'] =
+                              dealEntriesGrid['dealnumber']!.value;
+                          dvgSpotGrid!.changeCellValue(
+                            spotGrid['dealno']!,
+                            dealEntriesGrid['dealnumber']!.value,
+                            callOnChangedEvent: false,
+                            force: true,
+                          );
+
+                          lstDgvSpotsList[spotRowIndex]['nO_SPOT'] = "1";
+                          dvgSpotGrid!.changeCellValue(
+                            spotGrid['nO_SPOT']!,
+                            "1",
+                            callOnChangedEvent: false,
+                            force: true,
+                          );
+
+                          lstDgvSpotsList[spotRowIndex]['fpcprogram'] = "";
+                          dvgSpotGrid!.changeCellValue(
+                            spotGrid['fpcprogram']!,
+                            "",
+                            callOnChangedEvent: false,
+                            force: true,
+                          );
+
+                          lstDgvSpotsList[spotRowIndex]['fpcstart'] =
+                              dealEntriesGrid['starttime']!.value;
+                          dvgSpotGrid!.changeCellValue(
+                            spotGrid['fpcstart']!,
+                            dealEntriesGrid['starttime']!.value,
+                            callOnChangedEvent: false,
+                            force: true,
+                          );
+
+                          lstDgvSpotsList[spotRowIndex]['programCode'] = "";
+                          dvgSpotGrid!.changeCellValue(
+                            spotGrid['programCode']!,
+                            "",
+                            callOnChangedEvent: false,
+                            force: true,
+                          );
+
+                          lstDgvSpotsList[spotRowIndex]['endTime'] =
+                              dealEntriesGrid['endTime']!.value;
+                          dvgSpotGrid!.changeCellValue(
+                            spotGrid['endTime']!,
+                            dealEntriesGrid['endTime']!.value,
+                            callOnChangedEvent: false,
+                            force: true,
+                          );
+
+                          lstDgvSpotsList[spotRowIndex]['amount'] = (num.parse(
+                                  dealEntriesGrid['costPer10Sec']!.value) *
+                              num.parse(lstDgvSpotsList[spotRowIndex]
+                                  ['commercialduration']) /
+                              10);
+                          dvgSpotGrid!.changeCellValue(
+                            spotGrid['amount']!,
+                            (num.parse(dealEntriesGrid['costPer10Sec']!.value) *
+                                num.parse(lstDgvSpotsList[spotRowIndex]
+                                    ['commercialduration']) /
+                                10),
+                            callOnChangedEvent: false,
+                            force: true,
+                          );
+                        }
+                      } else {
+                        if (showMessage) {
+                          await LoadingDialog.showErrorDialog1(
+                              "Date already gone!", callback: () {
+                            Get.back();
+                          });
+                        } else {
+                          lstDgvSpotsList[spotRowIndex]['dealrow'] = "";
+                          dvgSpotGrid!.changeCellValue(
+                            spotGrid['dealrow']!,
+                            "",
+                            callOnChangedEvent: false,
+                            force: true,
+                          );
+                          lstDgvSpotsList[spotRowIndex]['dealno'] = "";
+                          dvgSpotGrid!.changeCellValue(
+                            spotGrid['dealno']!,
+                            "",
+                            callOnChangedEvent: false,
+                            force: true,
+                          );
+                          lstDgvSpotsList[spotRowIndex]['amount'] = 0;
+                          dvgSpotGrid!.changeCellValue(
+                            spotGrid['amount']!,
+                            0,
+                            callOnChangedEvent: false,
+                            force: true,
+                          );
+                        }
+                      }
+                    } else {
+                      if (showMessage) {
+                        await LoadingDialog.showErrorDialog1(
+                            "Time already gone!", callback: () {
+                          Get.back();
+                        });
+                      } else {
+                        lstDgvSpotsList[spotRowIndex]['dealrow'] = "";
+                        dvgSpotGrid!.changeCellValue(
+                          spotGrid['dealrow']!,
+                          "",
+                          callOnChangedEvent: false,
+                          force: true,
+                        );
+                        lstDgvSpotsList[spotRowIndex]['dealno'] = "";
+                        dvgSpotGrid!.changeCellValue(
+                          spotGrid['dealno']!,
+                          "",
+                          callOnChangedEvent: false,
+                          force: true,
+                        );
+                        lstDgvSpotsList[spotRowIndex]['amount'] = 0;
+                        dvgSpotGrid!.changeCellValue(
+                          spotGrid['amount']!,
+                          0,
+                          callOnChangedEvent: false,
+                          force: true,
+                        );
+                      }
+                    }
+                  } else {
+                    if (showMessage) {
+                      await LoadingDialog.showErrorDialog1(
+                          "RO End time is more than 5 minutes with deal end time! Pl check the deal",
+                          callback: () {
+                        Get.back();
+                      });
+                      lstDgvSpotsList[spotRowIndex]['dealrow'] = "";
+                      dvgSpotGrid!.changeCellValue(
+                        spotGrid['dealrow']!,
+                        "",
+                        callOnChangedEvent: false,
+                        force: true,
+                      );
+                      lstDgvSpotsList[spotRowIndex]['dealno'] = "";
+                      dvgSpotGrid!.changeCellValue(
+                        spotGrid['dealno']!,
+                        "",
+                        callOnChangedEvent: false,
+                        force: true,
+                      );
+                      lstDgvSpotsList[spotRowIndex]['amount'] = 0;
+                      dvgSpotGrid!.changeCellValue(
+                        spotGrid['amount']!,
+                        0,
+                        callOnChangedEvent: false,
+                        force: true,
+                      );
+                    } else {
+                      lstDgvSpotsList[spotRowIndex]['dealrow'] = "";
+                      dvgSpotGrid!.changeCellValue(
+                        spotGrid['dealrow']!,
+                        "",
+                        callOnChangedEvent: false,
+                        force: true,
+                      );
+                      lstDgvSpotsList[spotRowIndex]['dealno'] = "";
+                      dvgSpotGrid!.changeCellValue(
+                        spotGrid['dealno']!,
+                        "",
+                        callOnChangedEvent: false,
+                        force: true,
+                      );
+                      lstDgvSpotsList[spotRowIndex]['amount'] = 0;
+                      dvgSpotGrid!.changeCellValue(
+                        spotGrid['amount']!,
+                        0,
+                        callOnChangedEvent: false,
+                        force: true,
+                      );
+                    }
+                  }
+                } else {
+                  if (showMessage) {
+                    await LoadingDialog.showErrorDialog1(
+                        "End time mismatch with deal row!", callback: () {
+                      Get.back();
+                    });
+                  } else {
+                    lstDgvSpotsList[spotRowIndex]['dealrow'] = "";
+                    dvgSpotGrid!.changeCellValue(
+                      spotGrid['dealrow']!,
+                      "",
+                      callOnChangedEvent: false,
+                      force: true,
+                    );
+                    lstDgvSpotsList[spotRowIndex]['dealno'] = "";
+                    dvgSpotGrid!.changeCellValue(
+                      spotGrid['dealno']!,
+                      "",
+                      callOnChangedEvent: false,
+                      force: true,
+                    );
+                    lstDgvSpotsList[spotRowIndex]['amount'] = 0;
+                    dvgSpotGrid!.changeCellValue(
+                      spotGrid['amount']!,
+                      0,
+                      callOnChangedEvent: false,
+                      force: true,
+                    );
+                  }
+                }
+              } else {
+                if (showMessage) {
+                  await LoadingDialog.showErrorDialog1(
+                      "Start time mismatch with deal row!", callback: () {
+                    Get.back();
+                  });
+                } else {
+                  lstDgvSpotsList[spotRowIndex]['dealrow'] = "";
+                  dvgSpotGrid!.changeCellValue(
+                    spotGrid['dealrow']!,
+                    "",
+                    callOnChangedEvent: false,
+                    force: true,
+                  );
+                  lstDgvSpotsList[spotRowIndex]['dealno'] = "";
+                  dvgSpotGrid!.changeCellValue(
+                    spotGrid['dealno']!,
+                    "",
+                    callOnChangedEvent: false,
+                    force: true,
+                  );
+                  lstDgvSpotsList[spotRowIndex]['amount'] = 0;
+                  dvgSpotGrid!.changeCellValue(
+                    spotGrid['amount']!,
+                    0,
+                    callOnChangedEvent: false,
+                    force: true,
+                  );
+                }
+              }
+            } else {
+              if (showMessage) {
+                await LoadingDialog.showErrorDialog1("Deal expired!",
+                    callback: () {
+                  Get.back();
+                });
+              } else {
+                lstDgvSpotsList[spotRowIndex]['dealrow'] = "";
+                dvgSpotGrid!.changeCellValue(
+                  spotGrid['dealrow']!,
+                  "",
+                  callOnChangedEvent: false,
+                  force: true,
+                );
+                lstDgvSpotsList[spotRowIndex]['dealno'] = "";
+                dvgSpotGrid!.changeCellValue(
+                  spotGrid['dealno']!,
+                  "",
+                  callOnChangedEvent: false,
+                  force: true,
+                );
+                lstDgvSpotsList[spotRowIndex]['amount'] = 0;
+                dvgSpotGrid!.changeCellValue(
+                  spotGrid['amount']!,
+                  0,
+                  callOnChangedEvent: false,
+                  force: true,
+                );
+              }
+            }
+          } else {
+            if (showMessage) {
+              await LoadingDialog.showErrorDialog1(
+                  "Rate mismatch with deal row!", callback: () {
+                Get.back();
+              });
+            } else {
+              lstDgvSpotsList[spotRowIndex]['dealrow'] = "";
+              dvgSpotGrid!.changeCellValue(
+                spotGrid['dealrow']!,
+                "",
+                callOnChangedEvent: false,
+                force: true,
+              );
+              lstDgvSpotsList[spotRowIndex]['dealno'] = "";
+              dvgSpotGrid!.changeCellValue(
+                spotGrid['dealno']!,
+                "",
+                callOnChangedEvent: false,
+                force: true,
+              );
+              lstDgvSpotsList[spotRowIndex]['amount'] = 0;
+              dvgSpotGrid!.changeCellValue(
+                spotGrid['amount']!,
+                0,
+                callOnChangedEvent: false,
+                force: true,
+              );
+            }
+          }
+        }
+      } else {
+        if (showMessage) {
+          await LoadingDialog.showErrorDialog1("Day mismatch!", callback: () {
+            Get.back();
+          });
+          // return;
+        } else {
+          lstDgvSpotsList[spotRowIndex]['dealrow'] = "";
+          dvgSpotGrid!.changeCellValue(
+            spotGrid['dealrow']!,
+            "",
+            callOnChangedEvent: false,
+            force: true,
+          );
+          lstDgvSpotsList[spotRowIndex]['dealno'] = "";
+          dvgSpotGrid!.changeCellValue(
+            spotGrid['dealno']!,
+            "",
+            callOnChangedEvent: false,
+            force: true,
+          );
+          lstDgvSpotsList[spotRowIndex]['amount'] = 0;
+          dvgSpotGrid!.changeCellValue(
+            spotGrid['amount']!,
+            0,
+            callOnChangedEvent: false,
+            force: true,
+          );
+        }
+      }
+    }
+  }
+
+  // int weekNumber(DateTime date) {
+  //   int dayOfYear = int.parse(DateFormat("D").format(date));
+  //   return ((dayOfYear - date.weekday + 10) / 7).floor();
+  // }
+
+  convertToDouble(String timeString) {
+    List<String> timeComponents = timeString.split(':');
+    int hours = int.parse(timeComponents[0]);
+    int minutes = int.parse(timeComponents[1]);
+    int seconds = int.parse(timeComponents[2]);
+
+    // double totalMinutes = hours * 60 + minutes + seconds / 60.0;
+    Duration duration =
+        Duration(hours: hours, minutes: minutes, seconds: seconds);
+    int intDealStartTime = duration.inMicroseconds;
+
+    return intDealStartTime;
+  }
+
+  weekCount(weekName) {
+    switch (weekName) {
+      case "Monday":
+        return 1;
+      case "Tuesday":
+        return 2;
+      case "Wednesday":
+        return 3;
+      case "Thursday":
+        return 4;
+      case "Friday":
+        return 5;
+      case "Saturday":
+        return 6;
+      case "Sunday":
+        return 0;
+      default:
+        return 0;
     }
   }
 
