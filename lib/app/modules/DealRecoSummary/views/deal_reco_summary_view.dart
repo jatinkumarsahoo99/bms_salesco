@@ -257,6 +257,11 @@ class DealRecoSummaryView extends GetView<DealRecoSummaryController> {
                                 showSrNo: false,
                                 hideCode: false,
                                 formatDate: false,
+                                colorCallback: (row) => (row.row.cells
+                                    .containsValue(
+                                    controllerX.stateManager?.currentCell))
+                                    ? Colors.deepPurple.shade200
+                                    : Colors.white,
                                 mapData: (controllerX.dealRecoSummaryModel!.gentare
                                     ?.map((e) => e.toJson())
                                     .toList())!,
