@@ -272,8 +272,9 @@ Selecting Mode Name:${stateManager.selectingMode.name}
       Utils.copyToClipboardHack(
           stateManager.selectValueFromRow([stateManager.currentRow!]));
     } else {
-      print("copying cells");
-      Utils.copyToClipboardHack(stateManager.currentSelectingText);
+      // print("copying cells: "+stateManager.currentSelectingTextWithHeader.toString());
+      // Utils.copyToClipboardHack(stateManager.currentSelectingText);
+      Utils.copyToClipboardHack(stateManager.currentSelectingTextWithHeader);
     }
   }
 }
