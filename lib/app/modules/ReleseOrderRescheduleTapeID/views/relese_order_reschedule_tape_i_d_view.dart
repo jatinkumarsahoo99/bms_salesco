@@ -5,6 +5,7 @@ import 'package:bms_salesco/app/routes/app_pages.dart';
 import 'package:bms_salesco/widgets/DateTime/DateWithThreeTextField.dart';
 import 'package:bms_salesco/widgets/FormButton.dart';
 import 'package:bms_salesco/widgets/gridFromMap.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -81,7 +82,7 @@ class ReleseOrderRescheduleTapeIDView extends StatelessWidget {
                             );
                           },
                           "Client",
-                          .12,
+                          .21,
                           selected: controller.selectedClient,
                           dialogWidth: 300,
                         );
@@ -99,7 +100,7 @@ class ReleseOrderRescheduleTapeIDView extends StatelessWidget {
                             );
                           },
                           "Agency",
-                          .12,
+                          .21,
                           selected: controller.selectedAgency,
                           dialogWidth: 300,
                         );
@@ -120,7 +121,7 @@ class ReleseOrderRescheduleTapeIDView extends StatelessWidget {
                             );
                           },
                           "Brand",
-                          .12,
+                          .21,
                           selected: controller.selectedBrand,
                           dialogWidth: 300,
                         );
@@ -139,21 +140,27 @@ class ReleseOrderRescheduleTapeIDView extends StatelessWidget {
                       }),
                       Obx(() {
                         return InputFields.formFieldDisable1(
-                          hintTxt: "TapeCode Duration",
-                          value: controller.tapeCodeDura.value,
-                          widthRatio: .12,
-                        );
+                            hintTxt: "TapeCode Duration",
+                            value: controller.tapeCodeDura.value,
+                            widthRatio: .12,
+                            leftPad: 0);
                       }),
-                      Row(),
+                      // Row(),
                       DateWithThreeTextField(
                         title: "Eff. From Date",
                         widthRation: .12,
                         mainTextController: controller.fromDateTC,
+                        startDate: DateTime.now(),
+                        endDate: DateTime.now().add(Duration(days: 1825)),
+                        intailDate: DateTime.now(),
                       ),
                       DateWithThreeTextField(
                         widthRation: .12,
                         title: "Eff. To Date",
                         mainTextController: controller.toDateTC,
+                        startDate: DateTime.now(),
+                        endDate: DateTime.now().add(Duration(days: 1825)),
+                        intailDate: DateTime.now(),
                       ),
                       FormButton(
                         btnText: "Search",
@@ -175,42 +182,41 @@ class ReleseOrderRescheduleTapeIDView extends StatelessWidget {
                           Get.find<HomeController>().clearPage1();
                         },
                       ),
+                      Obx(() {
+                        return AppCheckBox(
+                          title: "Apply For All",
+                          value: controller.isAllCheck.value,
+                          onChanged: (val) {
+                            if (controller.selectedTapeRight == null ||
+                                controller.lstBookingDetails.isEmpty) {
+                              controller.isAllCheck.value = false;
+                              controller.isAllCheck.refresh();
+                              LoadingDialog.callInfoMessage(
+                                controller.lstBookingDetails.isEmpty
+                                    ? "No optional TapeID found for replacing existing TapeID."
+                                    : "Please replaceble Tapecode.",
+                              );
+                            } else {
+                              controller.isAllCheck.value =
+                                  !controller.isAllCheck.value;
+                              for (var i = 0;
+                                  i < controller.lstBookingDetails.length;
+                                  i++) {
+                                controller.lstBookingDetails[i].action =
+                                    controller.isAllCheck.value;
+                              }
+                              controller.lstBookingDetails.refresh();
+                              WidgetsBinding.instance
+                                  .addPostFrameCallback((timeStamp) {
+                                controller.changeExportTapeCode();
+                              });
+                            }
+                          },
+                        );
+                      }),
                     ],
                   ),
-                  const SizedBox(height: 5),
-
-                  Obx(() {
-                    return AppCheckBox(
-                      title: "Apply For All",
-                      value: controller.isAllCheck.value,
-                      onChanged: (val) {
-                        if (controller.selectedTapeRight == null ||
-                            controller.lstBookingDetails.isEmpty) {
-                          controller.isAllCheck.value = false;
-                          controller.isAllCheck.refresh();
-                          LoadingDialog.callInfoMessage(
-                            controller.lstBookingDetails.isEmpty
-                                ? "No optional TapeID found for replacing existing TapeID."
-                                : "Please replaceble Tapecode.",
-                          );
-                        } else {
-                          controller.isAllCheck.value =
-                              !controller.isAllCheck.value;
-                          for (var i = 0;
-                              i < controller.lstBookingDetails.length;
-                              i++) {
-                            controller.lstBookingDetails[i].action =
-                                controller.isAllCheck.value;
-                          }
-                          controller.lstBookingDetails.refresh();
-                          WidgetsBinding.instance
-                              .addPostFrameCallback((timeStamp) {
-                            controller.changeExportTapeCode();
-                          });
-                        }
-                      },
-                    );
-                  }),
+                  // const SizedBox(height: 5),
 
                   /// Data table
                   Expanded(

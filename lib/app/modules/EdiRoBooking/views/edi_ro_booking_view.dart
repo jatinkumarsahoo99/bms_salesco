@@ -561,7 +561,10 @@ class EdiRoBookingView extends StatelessWidget {
                             onRowDoubleTap: (event) {
                               controller.dgvDealEntriesGrid
                                   ?.setCurrentCell(event.cell, event.rowIdx);
-                              print(event.cell.column.field);
+
+                              controller.dealSpotsValidation(
+                                  event.cell.row.sortIdx,
+                                  showMessage: true);
                             },
                           ),
                         ),
@@ -577,174 +580,174 @@ class EdiRoBookingView extends StatelessWidget {
                             )
                           : Container(
                               child: DataGridFromMap3(
-                                  mode: PlutoGridMode.selectWithOneTap,
-                                  onSelected: (event) {
-                                    controller.isSelectingChange.value = false;
-                                  },
-                                  editKeys: ['noProgram'],
-                                  hideKeys: [
-                                    'backColor',
-                                    'selected',
-                                    'isSpotsAvailable'
-                                  ],
-                                  mapData: controller.lstDgvSpotsList.value,
-                                  hideCode: false,
-                                  formatDate: false,
-                                  exportFileName: "EDI R.O. Booking",
-                                  onload: (load) {
-                                    load.stateManager.setCurrentCell(
-                                        load.stateManager
-                                            .getRowByIdx(
-                                                controller.lastSelectedIdx)!
-                                            .cells['program'],
-                                        controller.lastSelectedIdx);
-                                    load.stateManager.moveCurrentCellByRowIdx(
-                                        controller.lastSelectedIdx,
-                                        PlutoMoveDirection.down);
-                                    load.stateManager.scroll.vertical!
-                                        .animateTo(
-                                            controller.lastSelectedOffect,
-                                            curve: Curves.ease,
-                                            duration:
-                                                Duration(milliseconds: 2));
-                                    controller.dvgSpotGrid = load.stateManager;
-                                  },
-                                  colorCallback: (colorEvent) {
-                                    controller.coloerEvents = colorEvent;
-                                    if (colorEvent.row.cells.containsValue(
-                                        controller.dvgSpotGrid?.currentCell)) {
-                                      return Colors.deepPurple.shade100;
-                                    }
-                                    if (controller.lstDgvSpotsList[colorEvent
-                                            .rowIdx]['isSpotsAvailable'] &&
-                                        controller.isSelectingChange.value) {
-                                      return Colors.deepPurple.shade100;
-                                    }
+                                mode: PlutoGridMode.selectWithOneTap,
+                                onSelected: (event) {
+                                  controller.isSelectingChange.value = false;
+                                },
+                                editKeys: ['noProgram'],
+                                hideKeys: [
+                                  'backColor',
+                                  'selected',
+                                  'isSpotsAvailable'
+                                ],
+                                mapData: controller.lstDgvSpotsList.value,
+                                hideCode: false,
+                                formatDate: false,
+                                exportFileName: "EDI R.O. Booking",
+                                onload: (load) {
+                                  load.stateManager.setCurrentCell(
+                                      load.stateManager
+                                          .getRowByIdx(
+                                              controller.lastSelectedIdx)!
+                                          .cells['program'],
+                                      controller.lastSelectedIdx);
+                                  load.stateManager.moveCurrentCellByRowIdx(
+                                      controller.lastSelectedIdx,
+                                      PlutoMoveDirection.down);
+                                  load.stateManager.scroll.vertical!.animateTo(
+                                      controller.lastSelectedOffect,
+                                      curve: Curves.ease,
+                                      duration: Duration(milliseconds: 2));
+                                  controller.dvgSpotGrid = load.stateManager;
+                                },
+                                colorCallback: (colorEvent) {
+                                  controller.coloerEvents = colorEvent;
+                                  if (colorEvent.row.cells.containsValue(
+                                      controller.dvgSpotGrid?.currentCell)) {
+                                    return Colors.deepPurple.shade100;
+                                  }
+                                  if (controller.lstDgvSpotsList[colorEvent
+                                          .rowIdx]['isSpotsAvailable'] &&
+                                      controller.isSelectingChange.value) {
+                                    return Colors.deepPurple.shade100;
+                                  }
 
-                                    return controller.getColor(
-                                      controller
-                                          .lstDgvSpotsList[colorEvent.rowIdx],
-                                      colorEvent.rowIdx,
-                                    );
-                                  },
-                                  onRowDoubleTap: (event) async {
-                                    controller.lastSelectedOffect = controller
-                                        .dvgSpotGrid!.scroll.verticalOffset;
-                                    controller.lastSelectedIdx = event.rowIdx;
+                                  return controller.getColor(
+                                    controller
+                                        .lstDgvSpotsList[colorEvent.rowIdx],
+                                    colorEvent.rowIdx,
+                                  );
+                                },
+                                onRowDoubleTap: (event) async {
+                                  controller.lastSelectedOffect = controller
+                                      .dvgSpotGrid!.scroll.verticalOffset;
+                                  controller.lastSelectedIdx = event.rowIdx;
 //Down Grid Set
-                                    controller.dvgSpotGrid?.setCurrentCell(
-                                        event.cell, event.rowIdx);
-                                    //Clear
-                                    if (Get.find<MainController>()
-                                        .filters1
-                                        .containsKey(controller
-                                            .dgvDealEntriesGrid.hashCode
-                                            .toString())) {
-                                      await controller
-                                          .clearFirstDataTableFilter(
-                                              controller.dgvDealEntriesGrid!);
+                                  controller.dvgSpotGrid?.setCurrentCell(
+                                      event.cell, event.rowIdx);
+                                  //Clear
+                                  if (Get.find<MainController>()
+                                      .filters1
+                                      .containsKey(controller
+                                          .dgvDealEntriesGrid.hashCode
+                                          .toString())) {
+                                    await controller.clearFirstDataTableFilter(
+                                        controller.dgvDealEntriesGrid!);
+                                  }
+                                  //Up Grid Set
+                                  for (var element
+                                      in controller.dgvDealEntriesGrid!.rows) {
+                                    if (element.cells['costPer10Sec']?.value ==
+                                        event.cell.value) {
+                                      controller.dgvDealEntriesGrid
+                                          ?.setCurrentCell(
+                                              element.cells['costPer10Sec'],
+                                              element.sortIdx);
+                                      break;
                                     }
-                                    //Up Grid Set
-                                    for (var element in controller
-                                        .dgvDealEntriesGrid!.rows) {
-                                      if (element
-                                              .cells['costPer10Sec']?.value ==
-                                          event.cell.value) {
-                                        controller.dgvDealEntriesGrid
-                                            ?.setCurrentCell(
-                                                element.cells['costPer10Sec'],
-                                                element.sortIdx);
-                                        break;
-                                      }
-                                    }
+                                  }
 
-                                    // print(event.cell.row.sortIdx);
-                                    // print(event.cell.value);
-                                    // print(event.cell.column.field);
-                                    // print(event.row.cells['acT_DT']?.value);
+                                  // print(event.cell.row.sortIdx);
+                                  // print(event.cell.value);
+                                  // print(event.cell.column.field);
+                                  // print(event.row.cells['acT_DT']?.value);
 
-                                    if (event.cell.column.field.toString() ==
-                                        'fpcstart') {
-                                      controller.spotFpcStart(
-                                          controller.selectedLoactions?.key,
-                                          controller.selectedChannel?.key,
-                                          event.row.cells['acT_DT']?.value
-                                              .toString());
-                                    } else if (event.cell.column.field
-                                            .toString() ==
-                                        'program') {
-                                      event.row.cells['noProgram']?.value = 1;
-                                      event.row.cells['dealOK']?.value = "0";
-                                      event.row.cells['fctok']?.value = "0";
-                                      event.row.cells['okSpot']?.value = "0";
+                                  if (event.cell.column.field.toString() ==
+                                      'fpcstart') {
+                                    controller.spotFpcStart(
+                                        controller.selectedLoactions?.key,
+                                        controller.selectedChannel?.key,
+                                        event.row.cells['acT_DT']?.value
+                                            .toString());
+                                  } else if (event.cell.column.field
+                                          .toString() ==
+                                      'program') {
+                                    event.row.cells['noProgram']?.value = 1;
+                                    event.row.cells['dealOK']?.value = "0";
+                                    event.row.cells['fctok']?.value = "0";
+                                    event.row.cells['okSpot']?.value = "0";
 
-                                      controller.lstDgvSpotsList[
-                                          event.row.sortIdx]['noProgram'] = 1;
-                                      controller.lstDgvSpotsList[
-                                          event.row.sortIdx]['dealOK'] = "0";
-                                      controller.lstDgvSpotsList[
-                                          event.row.sortIdx]['fctok'] = "0";
-                                      controller.lstDgvSpotsList[
-                                          event.row.sortIdx]['okSpot'] = "0";
-                                      controller.lstDgvSpotsList.refresh();
-                                    } else if (event.cell.column.field
-                                            .toString() ==
-                                        'spoT_RATE') {
-                                      await controller.doubleClickFilterGrid(
-                                          controller.dvgSpotGrid);
-                                      await controller.doubleClickFilterGrid1(
-                                          controller.dgvDealEntriesGrid,
-                                          'costPer10Sec',
-                                          event.cell.value.toString());
-                                    } else if (event.cell.column.field
-                                            .toString() ==
-                                        'tapE_ID') {
-                                      controller.tapeIdDilogBox();
-                                    }
-                                  },
-                                  doPasccal: true,
-                                  columnAutoResize: true,
-                                  keyMapping: const {
-                                    "station": "STATION",
-                                    "acT_DT": "ACT_DT",
-                                    "stime": "STIME",
-                                    "etime": "ETIME",
-                                    "program": "PROGRAM",
-                                    "fpcstart": "FPCSTART",
-                                    "fpcprogram": "FPCPROGRAM",
-                                    "tapE_ID": "TAPE_ID",
-                                    "commercialcaption": "COMMERCIALCAPTION",
-                                    "dur": "DUR",
-                                    "commercialduration": "COMMERCIALCAPTION",
-                                    "brand": "BRAND",
-                                    "commCaption": "CommCaption",
-                                    "pmtType": "PMTType",
-                                    "schD_ID": "SCHD_ID",
-                                    "spoT_STATUS": "SPOT_STATUS",
-                                    "dealno": "DEALNO",
-                                    "dealrow": "DEALROW",
-                                    "amount": "AMOUNT",
-                                    "spoT_RATE": "SPOT_RATE",
-                                    "fctok": "FCTOK",
-                                    "dealOK": "DealOK",
-                                    "clienT_NAME": "CLIENT_NAME",
-                                    "endTime": "EndTime",
-                                    "nO_SPOT": "NO_SPOT",
-                                    "okSpot": "OKSpot",
-                                    "programcategoryname":
-                                        "PROGRAMCATEGORYNAME",
-                                    "groupcode": "GROUPCODE",
-                                    "rO_NUM": "RO_NUM",
-                                    "rO_DATE": "RO_DATE",
-                                    "statioN_ID": "STATION_ID",
-                                    "clienT_ID": "CLIENT_ID",
-                                    "noProgram": "NoProgram",
-                                    "brandName": "BrandName",
-                                    "branD_ID": "BRAND_ID",
-                                    "sEgmentNumber": "SEgmentNumber",
-                                    "programCode": "ProgramCode",
-                                    "pEndTime": "PEndTime",
-                                  }),
+                                    controller
+                                            .lstDgvSpotsList[event.row.sortIdx]
+                                        ['noProgram'] = 1;
+                                    controller
+                                            .lstDgvSpotsList[event.row.sortIdx]
+                                        ['dealOK'] = "0";
+                                    controller
+                                            .lstDgvSpotsList[event.row.sortIdx]
+                                        ['fctok'] = "0";
+                                    controller
+                                            .lstDgvSpotsList[event.row.sortIdx]
+                                        ['okSpot'] = "0";
+                                    controller.lstDgvSpotsList.refresh();
+                                  } else if (event.cell.column.field
+                                          .toString() ==
+                                      'spoT_RATE') {
+                                    await controller.doubleClickFilterGrid(
+                                        controller.dvgSpotGrid);
+                                    await controller.doubleClickFilterGrid1(
+                                        controller.dgvDealEntriesGrid,
+                                        'costPer10Sec',
+                                        event.cell.value.toString());
+                                  } else if (event.cell.column.field
+                                          .toString() ==
+                                      'tapE_ID') {
+                                    controller.tapeIdDilogBox();
+                                  }
+                                },
+                                doPasccal: true,
+                                columnAutoResize: false,
+                                keyMapping: const {
+                                  "station": "STATION",
+                                  "acT_DT": "ACT_DT",
+                                  "stime": "STIME",
+                                  "etime": "ETIME",
+                                  "program": "PROGRAM",
+                                  "fpcstart": "FPCSTART",
+                                  "fpcprogram": "FPCPROGRAM",
+                                  "tapE_ID": "TAPE_ID",
+                                  "commercialcaption": "COMMERCIALCAPTION",
+                                  "dur": "DUR",
+                                  "commercialduration": "COMMERCIALCAPTION",
+                                  "brand": "BRAND",
+                                  "commCaption": "CommCaption",
+                                  "pmtType": "PMTType",
+                                  "schD_ID": "SCHD_ID",
+                                  "spoT_STATUS": "SPOT_STATUS",
+                                  "dealno": "DEALNO",
+                                  "dealrow": "DEALROW",
+                                  "amount": "AMOUNT",
+                                  "spoT_RATE": "SPOT_RATE",
+                                  "fctok": "FCTOK",
+                                  "dealOK": "DealOK",
+                                  "clienT_NAME": "CLIENT_NAME",
+                                  "endTime": "EndTime",
+                                  "nO_SPOT": "NO_SPOT",
+                                  "okSpot": "OKSpot",
+                                  "programcategoryname": "PROGRAMCATEGORYNAME",
+                                  "groupcode": "GROUPCODE",
+                                  "rO_NUM": "RO_NUM",
+                                  "rO_DATE": "RO_DATE",
+                                  "statioN_ID": "STATION_ID",
+                                  "clienT_ID": "CLIENT_ID",
+                                  "noProgram": "NoProgram",
+                                  "brandName": "BrandName",
+                                  "branD_ID": "BRAND_ID",
+                                  "sEgmentNumber": "SEgmentNumber",
+                                  "programCode": "ProgramCode",
+                                  "pEndTime": "PEndTime",
+                                },
+                              ),
                             ),
                     )),
                 const SizedBox(

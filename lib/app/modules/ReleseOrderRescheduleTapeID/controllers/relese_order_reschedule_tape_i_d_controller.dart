@@ -6,6 +6,7 @@ import 'package:bms_salesco/widgets/LoadingDialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:bms_salesco/widgets/PlutoGrid/pluto_grid.dart';
+import 'package:intl/intl.dart';
 
 import '../../CommonDocs/controllers/common_docs_controller.dart';
 import '../../CommonDocs/views/common_docs_view.dart';
@@ -15,6 +16,9 @@ class ReleseOrderRescheduleTapeIDController extends GetxController {
   RORescheduleOnLoadModel? onloadData;
   List<LsttapeDetails>? lsttapeDetails;
   PlutoGridStateManager? stateManager;
+  DateTime now = DateTime.now();
+
+  DateFormat df1 = DateFormat("dd-MM-yyyy");
 
   var lstBookingDetails = <LstBookingDetails>[].obs;
   var locationList = <DropDownValue>[].obs,
@@ -41,6 +45,13 @@ class ReleseOrderRescheduleTapeIDController extends GetxController {
   var fromDateTC = TextEditingController(), toDateTC = TextEditingController();
 
   FocusNode locationFN = FocusNode();
+  @override
+  void onInit() {
+    // fetchChannel();
+
+    fromDateTC.text = df1.format(now);
+    super.onInit();
+  }
 
   @override
   void onReady() {

@@ -140,6 +140,8 @@ class MakeGoodReportView extends GetView<MakeGoodReportController> {
                           : DataGridFromMap3(
                               onload: (PlutoGridOnLoadedEvent load) {
                                 controller.stateManager = load.stateManager;
+                                load.stateManager.setSelectingMode(
+                                    PlutoGridSelectingMode.row);
                               },
                               exportFileName: "Make Good Report",
                               hideCode: false,
