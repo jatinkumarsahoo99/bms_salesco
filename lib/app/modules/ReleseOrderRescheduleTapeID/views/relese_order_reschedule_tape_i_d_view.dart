@@ -224,7 +224,7 @@ class ReleseOrderRescheduleTapeIDView extends StatelessWidget {
                       children: [
                         Expanded(
                           child: Obx(() {
-                            return DataGridFromMap3(
+                            return DataGridFromMap6(
                               columnAutoResize: false,
                               mapData: controller.lstBookingDetails.value
                                   .map((e) => e.toJson())
