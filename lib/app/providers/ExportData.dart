@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:bms_salesco/widgets/PlutoGridExport/lib/pluto_grid_export.dart';
 import 'package:excel/excel.dart';
 import 'package:flutter/services.dart';
@@ -159,6 +161,19 @@ class ExportData {
           plutoGridPdfExport.format = format;
           return plutoGridPdfExport.export(stateManager);
         });
+  }
+
+  exportFilefromBase64(String data, String fileName) async {
+    try {
+      await FlutterFileSaver()
+          .writeFileAsBytes(fileName: fileName, bytes: base64.decode(data))
+          .then((value) {
+        LoadingDialog.callInfoMessage("Exported Successfully");
+        return value;
+      });
+    } catch (e) {
+      Snack.callError("Failed To Save File");
+    }
   }
 
   exportPdfFromGridData(

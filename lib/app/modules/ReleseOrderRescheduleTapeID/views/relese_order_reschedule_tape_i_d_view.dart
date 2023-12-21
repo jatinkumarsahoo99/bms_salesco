@@ -20,6 +20,7 @@ import '../controllers/relese_order_reschedule_tape_i_d_controller.dart';
 
 class ReleseOrderRescheduleTapeIDView extends StatelessWidget {
   const ReleseOrderRescheduleTapeIDView({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(ReleseOrderRescheduleTapeIDController());
@@ -273,6 +274,10 @@ class ReleseOrderRescheduleTapeIDView extends StatelessWidget {
                                   controller.lastSelectedRow = 0;
                                 }
                               },
+                              widthSpecificColumn: Get.find<HomeController>()
+                                  .getGridWidthByKey(
+                                      userGridSettingList:
+                                          controller.userGridSetting1?.value),
                               onSelected: (event) {
                                 controller.lastSelectedRow = event.rowIdx;
                                 controller.tapeCodeCaptionRight.value = event
@@ -390,6 +395,11 @@ class ReleseOrderRescheduleTapeIDView extends StatelessWidget {
                           controller.toDateTC.text,
                           controller.selectedTape,
                         );
+                      } else if (btnName == "Exit") {
+                        Get.find<HomeController>()
+                            .postUserGridSetting1(listStateManager: [
+                          controller.stateManager,
+                        ]);
                       } else if (btnName == "Docs") {
                         controller.docs(
                           controller.selectedLocation,

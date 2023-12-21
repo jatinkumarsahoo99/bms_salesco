@@ -20,7 +20,7 @@ class MonthlyReportController extends GetxController {
   int lastSelectedIdx = 0;
   var dataTableList = [].obs;
   var selectedRadio = "".obs;
-  Rxn<List<Map<String, Map<String, double>>>>? userGridSetting1;
+  Rxn<List<Map<String, Map<String, double>>>>? userGridSetting1=Rxn([]);
   PlutoGridStateManager? stateManager;
   fetchUserSetting1() async {
     userGridSetting1?.value =

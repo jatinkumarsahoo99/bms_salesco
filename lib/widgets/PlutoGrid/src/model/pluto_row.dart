@@ -293,6 +293,52 @@ class PlutoRow {
 
     return json;
   }
+
+  Map<String, dynamic> toJsonWithRawData({
+    bool includeChildren = true,
+    String childrenField = 'children',
+    List<String>? hideKeys,
+  }) {
+    Map<String, dynamic> myCell1 = {};
+    for (var item in cells.entries) {
+      if (item.key != "no") {
+        if (hideKeys != null && hideKeys.isNotEmpty) {
+          if (!hideKeys.contains(item.key)) {
+            if (item.value.value == null) {
+              myCell1[item.key] = "";
+            } else {
+              try {
+                num v = num.parse(item.value.value);
+                // data.add(v ?? "");
+                myCell1[item.key] = v ?? "";
+              } catch (e) {
+                // data[key] = value;
+                // data.add(value ?? "");
+                myCell1[item.key] = item.value.value ?? "";
+              }
+              // myCell1[item.key] = item.value.value;
+            }
+          }
+        } else {
+          if (item.value.value == null) {
+            myCell1[item.key] = "";
+          } else {
+            try {
+              num v = num.parse(item.value.value);
+              // data.add(v ?? "");
+              myCell1[item.key] = v ?? "";
+            } catch (e) {
+              // data[key] = value;
+              // data.add(value ?? "");
+              myCell1[item.key] = item.value.value ?? "";
+            }
+            // myCell1[item.key] = item.value.value;
+          }
+        }
+      }
+    }
+    return myCell1;
+  }
 }
 
 enum PlutoRowState {
