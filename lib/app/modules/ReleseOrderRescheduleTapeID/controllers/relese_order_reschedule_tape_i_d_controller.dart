@@ -43,14 +43,20 @@ class ReleseOrderRescheduleTapeIDController extends GetxController {
       tapeCodeCaptionRight = "".obs;
 
   var fromDateTC = TextEditingController(), toDateTC = TextEditingController();
-
+  Rxn<List<Map<String, Map<String, double>>>>? userGridSetting1=Rxn([]);
   FocusNode locationFN = FocusNode();
   @override
   void onInit() {
     // fetchChannel();
-
+    fetchUserSetting1();
     fromDateTC.text = df1.format(now);
     super.onInit();
+  }
+
+  fetchUserSetting1() async {
+    userGridSetting1?.value =
+    await Get.find<HomeController>().fetchUserSetting1();
+    update(["grid"]);
   }
 
   @override

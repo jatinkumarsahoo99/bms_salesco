@@ -28,7 +28,7 @@ class MarkROsFlagController extends GetxController {
   var buttonsList = ["Save Today", "Save All Days"];
   bool madeChanges = false;
 
-  Rxn<List<Map<String, Map<String, double>>>>? userGridSetting1;
+  Rxn<List<Map<String, Map<String, double>>>>? userGridSetting1=Rxn([]);
   fetchUserSetting1() async {
     userGridSetting1?.value =
         await Get.find<HomeController>().fetchUserSetting1();
