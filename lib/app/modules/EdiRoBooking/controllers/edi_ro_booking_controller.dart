@@ -93,7 +93,7 @@ class EdiRoBookingController extends GetxController {
   var tempList = [].obs;
   var filtterValue = '';
   var selectedIndex = 9999.obs;
-  var blnDurationMismatch = false.obs;
+  var blnDurationMismatch = true.obs;
   var intMonth = 0.obs;
   var intYear = 0.obs;
   int lastSelectedIdx = 0;
@@ -628,6 +628,10 @@ class EdiRoBookingController extends GetxController {
             if (map != null &&
                 map['infoShowLink'] != null &&
                 map.containsKey('infoShowLink')) {
+              if (map['infoShowLink']['message'] != null) {
+                LoadingDialog.showErrorDialog(
+                    map['infoShowLink']['message'].toString());
+              }
               lstDgvSpotsList.value = map['infoShowLink']['lstDgvSpots'];
               spotsAllTEC.text = map['infoShowLink']['allSpots'];
               durAllTEC.text = map['infoShowLink']['allDuration'];
@@ -1271,9 +1275,11 @@ class EdiRoBookingController extends GetxController {
     } else if (dr.containsKey("dur") &&
         dr.containsKey("commercialduration") &&
         dr["dur"].toString() != dr["commercialduration"].toString()) {
-      // blnDurationMismatch.value = true;
-      LoadingDialog.callErrorMessage(
-          "Duration mismatch!\nRequested duration is not equal to tape duration!");
+      // if (blnDurationMismatch.value) {
+      //   blnDurationMismatch.value = false;
+      //   LoadingDialog.callErrorMessage(
+      //       "Duration mismatch!\nRequested duration is not equal to tape duration!");
+      // }
       return const Color.fromRGBO(255, 230, 230, 1);
     }
 
@@ -1282,8 +1288,8 @@ class EdiRoBookingController extends GetxController {
       var months =
           DateFormat('MM').format(DateFormat('dd-MM-yyyy').parse(dr['acT_DT']));
       if (dr.containsKey("acT_DT") && int.parse(months) != intMonth.value) {
-        LoadingDialog.callErrorMessage(
-            "Month / Year mismatch!\nMultiple Month / Year not allowed!");
+        // LoadingDialog.callErrorMessage(
+        //     "Month / Year mismatch!\nMultiple Month / Year not allowed!");
 
         return const Color.fromRGBO(255, 230, 230, 1);
       }
@@ -1298,8 +1304,8 @@ class EdiRoBookingController extends GetxController {
       var year = DateFormat('yyyy')
           .format(DateFormat('dd-MM-yyyy').parse(dr['acT_DT']));
       if (dr.containsKey("acT_DT") && int.parse(year) != intYear.value) {
-        LoadingDialog.callErrorMessage(
-            "Month / Year mismatch!\nMultiple Month / Year not allowed!");
+        // LoadingDialog.callErrorMessage(
+        //     "Month / Year mismatch!\nMultiple Month / Year not allowed!");
 
         return const Color.fromRGBO(255, 230, 230, 1);
       }
