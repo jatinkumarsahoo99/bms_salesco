@@ -725,6 +725,7 @@ class DataGridFromMap3 extends StatelessWidget {
       this.rowHeight = 25,
       this.formateDateColumn,
       this.noEditcheckBoxColumnKey,
+      this.removeKeysFromFile,
       this.widthSpecificColumn})
       : super(key: key);
   final FocusNode? previousWidgetFN;
@@ -748,6 +749,7 @@ class DataGridFromMap3 extends StatelessWidget {
   final String? dateFromat;
   final String? exportFileName;
   final List<String>? showonly;
+  final List<String>? removeKeysFromFile;
   final Function(PlutoGridOnRowDoubleTapEvent)? onRowDoubleTap;
   final Function(PlutoGridOnChangedEvent)? onEdit;
   final Function(bool)? onFocusChange;
@@ -947,7 +949,8 @@ class DataGridFromMap3 extends StatelessWidget {
                   onSecondaryTapDown: (detail) {
                     DataGridMenu().showGridMenu(
                         rendererContext.stateManager, detail, context,
-                        exportFileName: exportFileName);
+                        exportFileName: exportFileName,
+                        removeKeysFromFile: removeKeysFromFile);
                   },
                   child: Text(
                     rendererContext.cell.value.toString(),
@@ -1298,7 +1301,7 @@ class DataGridFromMap6 extends StatelessWidget {
                                     : rendererContext.cell.value) ==
                                 checkBoxStrComparison
                             ? Colors.deepPurpleAccent
-                            : Colors.grey,
+                            : Colors.white,
                         size: rowHeight <= 22 ? 18 : Get.theme.iconTheme.size,
                       ),
                     ),

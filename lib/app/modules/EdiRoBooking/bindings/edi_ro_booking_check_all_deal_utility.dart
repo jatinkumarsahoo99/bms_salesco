@@ -51,8 +51,8 @@ class FlagDeals {
   List<LstSpots>? lstSpots;
   dynamic checkRevenue;
   dynamic message;
-  int? intSpotDuration;
-  int? intBalanceDuration;
+  num? intSpotDuration;
+  num? intBalanceDuration;
 
   FlagDeals(
       {this.lstSpots,
@@ -94,17 +94,17 @@ class LstSpots {
   String? fpcprogram;
   String? tapEId;
   String? commercialcaption;
-  int? dur;
-  int? commercialduration;
+  num? dur;
+  num? commercialduration;
   String? brand;
   String? commCaption;
   String? pmtType;
   String? schDId;
   String? spoTStatus;
   String? dealno;
-  int? dealrow;
-  int? amount;
-  int? spoTRate;
+  num? dealrow;
+  num? amount;
+  num? spoTRate;
   String? fctok;
   String? dealOk;
   String? clienTName;
@@ -117,10 +117,10 @@ class LstSpots {
   String? rODate;
   String? statioNId;
   String? clienTId;
-  int? noProgram;
+  num? noProgram;
   String? brandName;
   String? branDId;
-  int? sEgmentNumber;
+  num? sEgmentNumber;
   String? programCode;
   String? pEndTime;
   dynamic backColor;
@@ -262,7 +262,7 @@ class LstSpots {
 }
 
 class LstDealEntries {
-  int? recordnumber;
+  num? recordnumber;
   String? bandcode;
   String? impactNonImpact;
   String? sponsorTypeName;
@@ -270,46 +270,46 @@ class LstDealEntries {
   dynamic programname;
   String? starttime;
   String? endTime;
-  int? seconds;
-  int? costPer10Sec;
-  int? utilisedTime;
-  int? balance;
-  int? amount;
-  int? valuationrate;
+  num? seconds;
+  num? costPer10Sec;
+  num? utilisedTime;
+  num? balance;
+  num? amount;
+  num? valuationrate;
   dynamic groupCode;
-  int? sun;
-  int? mon;
-  int? tue;
-  int? wed;
-  int? thu;
-  int? fri;
-  int? sat;
-  int? booked;
+  num? sun;
+  num? mon;
+  num? tue;
+  num? wed;
+  num? thu;
+  num? fri;
+  num? sat;
+  num? booked;
   String? fromdate;
   String? todate;
   String? locationname;
   String? channelname;
-  int? maxspend;
+  num? maxspend;
   String? paymentmodecaption;
-  int? ispdcenterd;
+  num? ispdcenterd;
   String? startdate;
   String? enddate;
   String? clientName;
   String? agencyName;
   String? dealnumber;
-  int? valuationAmount;
-  int? balanceAmount;
-  int? dealValAmount;
-  int? balanceValAmount;
-  int? utilInRo;
-  int? totalUtil;
-  int? totalBookedAmt;
-  int? totalValAmt;
-  int? bookedAmt;
+  num? valuationAmount;
+  num? balanceAmount;
+  num? dealValAmount;
+  num? balanceValAmount;
+  num? utilInRo;
+  num? totalUtil;
+  num? totalBookedAmt;
+  num? totalValAmt;
+  num? bookedAmt;
   String? locationcode;
   String? channelCode;
-  int? baseduration;
-  int? countbased;
+  num? baseduration;
+  num? countbased;
 
   LstDealEntries(
       {this.recordnumber,

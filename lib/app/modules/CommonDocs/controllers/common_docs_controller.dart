@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:file_picker/file_picker.dart';
+import 'package:file_saver/file_saver.dart';
 import 'package:get/get.dart';
 import 'package:bms_salesco/widgets/PlutoGrid/pluto_grid.dart';
 
@@ -51,12 +52,13 @@ class CommonDocsController extends GetxController {
     Get.find<ConnectorControl>().GET_METHOD_CALL_HEADER(
       api: ApiFactory.COMMON_DOCS_VIEW(
           (documents[row.rowIdx].documentId).toString()),
-      fun: (data) {
+      fun: (data) async {
         Get.back();
         if (data is Map && data.containsKey("addingDocument")) {
-          ExportData().exportFilefromByte(
+         /* ExportData().exportFilefromByte(
               base64Decode(data["addingDocument"][0]["documentData"]),
-              data["addingDocument"][0]["documentname"]);
+              data["addingDocument"][0]["documentname"]);*/
+          await FileSaver.instance.saveFile(name: (data["addingDocument"][0]["documentname"].toString().split(".")[0]),bytes: base64Decode(data["addingDocument"][0]["documentData"]),ext: (data["addingDocument"][0]["documentname"].toString().split(".")[1])!);
         }
       },
       failed: () {
@@ -123,12 +125,13 @@ class CommonDocsController extends GetxController {
           documents[viewDocsStateManger?.currentRowIdx ?? 0]
               .documentId
               .toString()),
-      fun: (data) {
+      fun: (data) async {
         Get.back();
         if (data is Map && data.containsKey("addingDocument")) {
-          ExportData().exportFilefromByte(
+          /*ExportData().exportFilefromByte(
               base64Decode(data["addingDocument"][0]["documentData"]),
-              data["addingDocument"][0]["documentname"]);
+              data["addingDocument"][0]["documentname"]);*/
+          await FileSaver.instance.saveFile(name: (data["addingDocument"][0]["documentname"].toString().split(".")[0]),bytes: base64Decode(data["addingDocument"][0]["documentData"]),ext: (data["addingDocument"][0]["documentname"].toString().split(".")[1])!);
         }
       },
       failed: () {
