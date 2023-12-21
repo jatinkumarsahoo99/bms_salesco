@@ -127,7 +127,7 @@ class ReleseOrderRescheduleTapeIDView extends StatelessWidget {
                         );
                       }),
                       Obx(() {
-                        return DropDownField.formDropDown1WidthMap(
+                        return DropDownField.formDropDown1WidthMap2(
                           controller.tapeList.value,
                           (val) {
                             controller.selectedTape = val;
@@ -323,10 +323,17 @@ class ReleseOrderRescheduleTapeIDView extends StatelessWidget {
                             return Column(
                               children: [
                                 Obx(() {
-                                  return DropDownField.formDropDown1WidthMap(
+                                  return DropDownField.formDropDown1WidthMap2(
                                     controller.tapeListRight.value,
                                     (val) {
                                       controller.selectedTapeRight = val;
+                                      print(val.key);
+                                      print(val.value);
+                                      print(val.type);
+                                      controller.tapeCodeDuraRight.value =
+                                          val.key!;
+                                      controller.tapeCodeCaptionRight.value =
+                                          val.type!;
                                     },
                                     "Tape Code",
                                     .2,
