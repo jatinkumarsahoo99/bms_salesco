@@ -585,11 +585,11 @@ class EdiRoBookingView extends StatelessWidget {
                                   controller.isSelectingChange.value = false;
                                 },
                                 editKeys: ['noProgram'],
-                                hideKeys: [
-                                  'backColor',
-                                  'selected',
-                                  'isSpotsAvailable'
-                                ],
+                                // hideKeys: [
+                                //   'backColor',
+                                //   'selected',
+                                //   'isSpotsAvailable'
+                                // ],
                                 mapData: controller.lstDgvSpotsList.value,
                                 hideCode: false,
                                 formatDate: false,
@@ -617,6 +617,9 @@ class EdiRoBookingView extends StatelessWidget {
                                     return Colors.deepPurple.shade100;
                                   }
                                   if (controller.lstDgvSpotsList[colorEvent
+                                              .rowIdx]['isSpotsAvailable'] !=
+                                          null &&
+                                      controller.lstDgvSpotsList[colorEvent
                                           .rowIdx]['isSpotsAvailable'] &&
                                       controller.isSelectingChange.value) {
                                     return Colors.deepPurple.shade100;
