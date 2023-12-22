@@ -36,7 +36,6 @@ import '../modules/UserGroupsForDealWorkflow/bindings/user_groups_for_deal_workf
 import '../modules/ViewOldDeal/bindings/view_old_deal_binding.dart';
 import '../modules/ZoneWiseInventoryUtilization/bindings/zone_wise_inventory_utilization_binding.dart';
 import '../providers/AuthGuard1.dart';
-
 part 'app_routes.dart';
 
 class AppPages {
@@ -44,7 +43,7 @@ class AppPages {
 
   static const INITIAL = kReleaseMode
       ? Routes.HOME
-      : (Routes.EDI_RO_BOOKING +
+      : (Routes.DEAL_UTIL_PERIODIC +
           "?personalNo=R9vVPL7er1Os/usemWG/Iw==&loginCode=0iGe3vK5h2KGjfSKZTpmsQ==&formName=OI8ukDpPPVN0I2BEXu2h4nuFu%2BZm1ZRpvP8NL4XCXzQ%3D");
 
   static final routes = [
