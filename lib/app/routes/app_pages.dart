@@ -36,7 +36,6 @@ import '../modules/UserGroupsForDealWorkflow/bindings/user_groups_for_deal_workf
 import '../modules/ViewOldDeal/bindings/view_old_deal_binding.dart';
 import '../modules/ZoneWiseInventoryUtilization/bindings/zone_wise_inventory_utilization_binding.dart';
 import '../providers/AuthGuard1.dart';
-
 part 'app_routes.dart';
 
 class AppPages {

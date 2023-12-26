@@ -332,9 +332,6 @@ class ReleseOrderRescheduleTapeIDView extends StatelessWidget {
                                     controller.tapeListRight.value,
                                     (val) {
                                       controller.selectedTapeRight = val;
-                                      print(val.key);
-                                      print(val.value);
-                                      print(val.type);
                                       controller.tapeCodeDuraRight.value =
                                           val.key!;
                                       controller.tapeCodeCaptionRight.value =
