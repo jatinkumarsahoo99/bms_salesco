@@ -58,6 +58,9 @@ abstract class Routes {
   static const DEAL_UTIL_PERIODIC = _Paths.DEAL_UTIL_PERIODIC;
   static const BOOKINGS_AGAINST_P_D_C = _Paths.BOOKINGS_AGAINST_P_D_C;
   static const P_D_C_CHEQUES = _Paths.P_D_C_CHEQUES;
+  static const COMMERCIAL_MASTER_AUTO_ID = _Paths.COMMERCIAL_MASTER_AUTO_ID;
+  static const COMMERCIAL_MASTER_AUTO_ID_DETAILS =
+      _Paths.COMMERCIAL_MASTER_AUTO_ID_DETAILS;
 }
 
 abstract class RoutesList {
@@ -103,6 +106,8 @@ abstract class RoutesList {
     _Paths.DEAL_UTIL_PERIODIC,
     _Paths.MARK_R_OS_FLAG,
     _Paths.E_D_I_MAPPING,
+    _Paths.COMMERCIAL_MASTER_AUTO_ID_DETAILS,
+    _Paths.COMMERCIAL_MASTER_AUTO_ID,
   ];
 
   /* static final RoutesList _instance = RoutesList._();
@@ -163,4 +168,7 @@ abstract class _Paths {
   static const DEAL_UTIL_PERIODIC = '/frmsearchingKKBMS_DealUtilPeriodic';
   static const BOOKINGS_AGAINST_P_D_C = '/frmBookingsAgainstPDC';
   static const P_D_C_CHEQUES = '/frmPDCs';
+  static const COMMERCIAL_MASTER_AUTO_ID = '/frmCommercialMasterAutoCreate_New';
+  static const COMMERCIAL_MASTER_AUTO_ID_DETAILS =
+      '/commercial-master-auto-id-details';
 }

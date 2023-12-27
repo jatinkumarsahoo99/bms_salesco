@@ -20,6 +20,7 @@ import '../controllers/CommercialCreationAutoDetailsController.dart';
 
 class CommercialCreationAutoDetailsView
     extends GetView<CommercialCreationAutoDetailsController> {
+
   CommercialCreationAutoDetailsController controllerX =
       Get.put<CommercialCreationAutoDetailsController>(
           CommercialCreationAutoDetailsController());
