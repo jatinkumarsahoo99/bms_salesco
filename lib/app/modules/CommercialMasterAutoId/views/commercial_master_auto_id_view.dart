@@ -17,7 +17,7 @@ import '../../../routes/app_pages.dart';
 import '../controllers/commercial_master_auto_id_controller.dart';
 
 class CommercialMasterAutoIdView
-    extends GetView<CommercialMasterAutoIdController> {
+    extends StatelessWidget {
    CommercialMasterAutoIdView({Key? key}) : super(key: key);
 
    CommercialMasterAutoIdController controllerX =

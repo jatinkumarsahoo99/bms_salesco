@@ -19,7 +19,7 @@ import '../../../routes/app_pages.dart';
 import '../controllers/commercial_master_auto_id_details_controller.dart';
 
 class CommercialMasterAutoIdDetailsView
-    extends GetView<CommercialMasterAutoIdDetailsController> {
+    extends  StatelessWidget {
    CommercialMasterAutoIdDetailsView({Key? key}) : super(key: key);
 
    CommercialMasterAutoIdDetailsController controllerX =
@@ -76,7 +76,7 @@ class CommercialMasterAutoIdDetailsView
                                         GlobalKey(), context,
                                         title: "Client",
                                         autoFocus: true,
-                                        inkwellFocus: controller.clientFocus,
+                                        inkwellFocus: controllerX.clientFocus,
                                         customInData: "lstClientMaster",
                                         url: ApiFactory
                                             .COMMERCIAL_MASTER_CLIENT_LIST(),

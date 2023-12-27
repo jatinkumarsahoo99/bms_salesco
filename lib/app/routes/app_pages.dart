@@ -270,13 +270,13 @@ class AppPages {
       name: _Paths.COMMERCIAL_MASTER_AUTO_ID,
       page: () => AuthGuard(childName: _Paths.COMMERCIAL_MASTER_AUTO_ID),
       // page: () =>   CommercialMasterAutoIdView(),
-      binding: CommercialMasterAutoIdBinding(),
+      // binding: CommercialMasterAutoIdBinding(),
     ),
     GetPage(
       name: _Paths.COMMERCIAL_MASTER_AUTO_ID_DETAILS,
       page: () => AuthGuard(childName: _Paths.COMMERCIAL_MASTER_AUTO_ID_DETAILS),
       // page: () =>  CommercialMasterAutoIdDetailsView(),
-      binding: CommercialMasterAutoIdDetailsBinding(),
+      // binding: CommercialMasterAutoIdDetailsBinding(),
     ),
   ];
 }
