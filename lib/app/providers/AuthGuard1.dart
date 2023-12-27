@@ -18,6 +18,8 @@ import '../modules/AmagiStatusReport/views/amagi_status_report_view.dart';
 import '../modules/AutoTimeLock/views/auto_time_lock_view.dart';
 import '../modules/BookingsAgainstPDC/views/bookings_against_p_d_c_view.dart';
 import '../modules/ChangeRONumber/views/change_r_o_number_view.dart';
+import '../modules/CommercialMasterAutoId/views/commercial_master_auto_id_view.dart';
+import '../modules/CommercialMasterAutoIdDetails/views/commercial_master_auto_id_details_view.dart';
 import '../modules/CommonSearch/views/common_search_view.dart';
 import '../modules/DealWorkflowDefinition/views/workflow_definition_view.dart';
 import '../modules/CommercialCreationAutoDetails/views/CommercialCreationAutoDetailsView.dart';
@@ -258,6 +260,12 @@ class _AuthGuardState extends State<AuthGuard> with WidgetsBindingObserver {
               break;
             case Routes.DEALVS_R_O_DATA_REPORT:
               currentWidget = DealvsRODataReportView();
+              break;
+            case Routes.COMMERCIAL_MASTER_AUTO_ID:
+              currentWidget = CommercialMasterAutoIdView();
+              break;
+            case Routes.COMMERCIAL_MASTER_AUTO_ID_DETAILS:
+              currentWidget = CommercialMasterAutoIdDetailsView();
               break;
             case Routes.BOOKING_STATUS_REPORT:
               currentWidget = BookingStatusReportView();

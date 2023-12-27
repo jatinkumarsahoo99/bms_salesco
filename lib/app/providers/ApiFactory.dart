@@ -1136,6 +1136,33 @@ class ApiFactory {
       "$BASE_URL/api/CommercialMasterAuto/GetEOMSelect?EOM=$som&SOM=$eom";
   static String COMMERCIAL_CREATION_SAVE() =>
       "$BASE_URL/api/CommercialMasterAuto/PostSave";
+
+
+  ///////////////////////// COMERCIAL MASTER AUTO ID/////////
+  static String COMMERCIAL_MASTER_GET_LOAD() =>
+      "$BASE_URL/api/CommercialMasterAutoId/GetLoad";
+  static String COMMERCIAL_MASTER_PROVIDER_LIST(String provider) =>
+      "$BASE_URL/api/CommercialMasterAutoId/GetProviderSelect?Provider=$provider";
+  static String COMMERCIAL_MASTER_CLIENT_LEAVE(String clientMaster) =>
+      "$BASE_URL/api/CommercialMasterAutoId/GetClientMasterLeave?ClientMaster=$clientMaster";
+  static String COMMERCIAL_MASTER_CLIENT_LIST() =>
+      "$BASE_URL/api/CommercialMasterAutoId/GetClientMaster?SearchText=";
+  static String COMMERCIAL_MASTER_BRAND_LIST(String client) =>
+      "$BASE_URL/api/CommercialMasterAutoId/GetBrandMaster?Clientcode=$client&SearchText=";
+  static String COMMERCIAL_MASTER_SHOW_ACID(String acid) =>
+      "$BASE_URL/api/CommercialMasterAutoId/GetShowACID?acid=$acid";
+  static String COMMERCIAL_MASTER_REVENUE_TYPE_SELECT(String revenue) =>
+      "$BASE_URL/api/CommercialMasterAutoId/GetrevenuetypeSelect?revenuetype=$revenue";
+  static String COMMERCIAL_MASTER_SELECT_CLIENT(String clientCode) =>
+      "$BASE_URL/api/CommercialMasterAutoId/GetClientMasterByCode?SearchValue=$clientCode";
+  static String COMMERCIAL_MASTER_SELECT_BRAND(String clientCode) =>
+      "$BASE_URL/api/CommercialMasterAutoId/GetBrandMasterByCode?SearchValue=$clientCode";
+  static String COMMERCIAL_MASTER_EOM_SELECT(String som, String eom) =>
+      "$BASE_URL/api/CommercialMasterAutoId/GetEOMSelect?EOM=$som&SOM=$eom";
+  static String COMMERCIAL_MASTER_SAVE() =>
+      "$BASE_URL/api/CommercialMasterAutoId/PostSave";
+
+
   ///////////////////////// End: COMERCIAL CREATION AUTO ////////////
   ///
   ///
