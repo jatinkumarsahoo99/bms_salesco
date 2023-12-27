@@ -209,6 +209,8 @@ class CommercialMasterAutoIdDetailsController extends GetxController {
               key: commercialDetails?.lstShowACID![0].brandcode,
               value: commercialDetails?.lstShowACID![0].brandName);
 
+          agencyId_.text = commercialDetails?.lstShowACID![0].clockId??"";
+
           // getRevenueLeave(commercialDetails?.lstShowACID![0].revenueCode ?? "");
 
           clientFocus.requestFocus();

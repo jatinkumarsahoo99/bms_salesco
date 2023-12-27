@@ -84,6 +84,7 @@ class CommercialMasterAutoIdView
                               .toList())!,
                           widthRatio: (Get.width / 9) + 5,
                           showSrNo: true,
+                          hideCode: false,
                           onload: (PlutoGridOnLoadedEvent grid) {
                             controllerX.stateManager = grid.stateManager;
                           },
