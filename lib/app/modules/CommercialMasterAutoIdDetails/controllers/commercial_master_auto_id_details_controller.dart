@@ -334,13 +334,13 @@ class CommercialMasterAutoIdDetailsController extends GetxController {
                   LoadingDialog.callDataSavedMessage(
                       "Data Saved Successfully with TapeID :${tapeId_.text}",
                       callback: () {
-                        clear();
+                        // clear();
                       });
                 } else if (map["lstsectype"].toString().trim() != "") {
                   LoadingDialog.callDataSavedMessage(
                       "Data Saved Successfully with TapeID :${tapeId_.text}",
                       callback: () {
-                        clear();
+                        // clear();
                       });
                 }
               } else {
