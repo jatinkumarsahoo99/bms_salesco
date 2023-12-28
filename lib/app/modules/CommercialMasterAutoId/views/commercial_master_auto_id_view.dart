@@ -91,7 +91,7 @@ class CommercialMasterAutoIdView
                           // widthSpecificColumn: controllerX.userGridSetting1?[0]??{},
                           widthSpecificColumn: Get.find<HomeController>().getGridWidthByKey(
                               userGridSettingList: controllerX.userGridSetting1),
-                          hideKeys: ["acid"],
+                          hideKeys: ["acid","clientCode","brandcode","languagecode","brandName"],
                           mode: PlutoGridMode.select,
                           colorCallback: (row) => (row.row.cells
                               .containsValue(controllerX
