@@ -156,6 +156,7 @@ class DataGridFromMap1 extends StatelessWidget {
                       onSecondaryTapDown: (detail) {
                         DataGridMenu().showGridMenu(
                             rendererContext.stateManager, detail, context,
+                            data: mapData,
                             exportFileName: exportFileName);
                       },
                       child: Text(
@@ -220,6 +221,7 @@ class DataGridFromMap1 extends StatelessWidget {
                     onSecondaryTapDown: (detail) {
                       DataGridMenu().showGridMenu(
                           rendererContext.stateManager, detail, context,
+                          data: mapData,
                           exportFileName: exportFileName);
                     },
                     child: Text(
@@ -235,6 +237,7 @@ class DataGridFromMap1 extends StatelessWidget {
                   onSecondaryTapDown: (detail) {
                     DataGridMenu().showGridMenu(
                         rendererContext.stateManager, detail, context,
+                        data: mapData,
                         exportFileName: exportFileName);
                   },
                   child: Text(
@@ -249,6 +252,7 @@ class DataGridFromMap1 extends StatelessWidget {
                   onSecondaryTapDown: (detail) {
                     DataGridMenu().showGridMenu(
                         rendererContext.stateManager, detail, context,
+                        data: mapData,
                         exportFileName: exportFileName);
                   },
                   child: Text(
