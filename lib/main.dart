@@ -46,7 +46,7 @@ Future<void> main() async {
         print("Keyvault JSON DATA 1>>>" + jsonEncode(Get.find<MainController>().environmentModel?.toJson()));
       },
       getPages: AppPages.routes,
-      debugShowCheckedModeBanner: true,
+      debugShowCheckedModeBanner: false,
       theme: primaryThemeData,
       transitionDuration: Duration.zero,
       defaultTransition: Transition.noTransition,
