@@ -47,6 +47,7 @@ Future<void> main() async {
       },
       getPages: AppPages.routes,
       debugShowCheckedModeBanner: false,
+
       theme: primaryThemeData,
       transitionDuration: Duration.zero,
       defaultTransition: Transition.noTransition,
