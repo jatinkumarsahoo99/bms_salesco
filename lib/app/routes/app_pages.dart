@@ -1,5 +1,7 @@
 import 'package:flutter/foundation.dart';
+
 import 'package:get/get.dart';
+
 import '../modules/AmagiSpotPlanning/bindings/amagi_spot_planning_binding.dart';
 import '../modules/AmagiSpotsReplacement/bindings/amagi_spots_replacement_binding.dart';
 import '../modules/AmagiStatusReport/bindings/amagi_status_report_binding.dart';
@@ -7,6 +9,10 @@ import '../modules/AsrunDetailsReport/bindings/asrun_details_report_binding.dart
 import '../modules/AuditStatusReport/bindings/audit_status_report_binding.dart';
 import '../modules/AutoTimeLock/bindings/auto_time_lock_binding.dart';
 import '../modules/ChangeRONumber/bindings/change_r_o_number_binding.dart';
+import '../modules/CommercialMasterAutoId/bindings/commercial_master_auto_id_binding.dart';
+import '../modules/CommercialMasterAutoId/views/commercial_master_auto_id_view.dart';
+import '../modules/CommercialMasterAutoIdDetails/bindings/commercial_master_auto_id_details_binding.dart';
+import '../modules/CommercialMasterAutoIdDetails/views/commercial_master_auto_id_details_view.dart';
 import '../modules/CommonDocs/bindings/common_docs_binding.dart';
 import '../modules/CommonDocs/views/common_docs_view.dart';
 import '../modules/DealRecoSummary/bindings/deal_reco_summary_binding.dart';
@@ -36,6 +42,7 @@ import '../modules/UserGroupsForDealWorkflow/bindings/user_groups_for_deal_workf
 import '../modules/ViewOldDeal/bindings/view_old_deal_binding.dart';
 import '../modules/ZoneWiseInventoryUtilization/bindings/zone_wise_inventory_utilization_binding.dart';
 import '../providers/AuthGuard1.dart';
+
 part 'app_routes.dart';
 
 class AppPages {
@@ -43,8 +50,8 @@ class AppPages {
 
   static const INITIAL = kReleaseMode
       ? Routes.HOME
-      : (Routes.DEAL_UTIL_PERIODIC +
-          "?personalNo=R9vVPL7er1Os/usemWG/Iw==&loginCode=0iGe3vK5h2KGjfSKZTpmsQ==&formName=OI8ukDpPPVN0I2BEXu2h4nuFu%2BZm1ZRpvP8NL4XCXzQ%3D");
+      : (Routes.COMMERCIAL_MASTER_AUTO_ID +
+          "?personalNo=R9vVPL7er1Os%2FusemWG%2FIw%3D%3D&loginCode=0iGe3vK5h2KGjfSKZTpmsQ%3D%3D&formName=MaVLyYQSV0sP95yVJGhW0vfdaf7cuMlussE5gq0FEi0%3D");
 
   static final routes = [
     GetPage(
@@ -258,6 +265,18 @@ class AppPages {
     GetPage(
       name: _Paths.DEALVS_R_O_DATA_REPORT,
       page: () => AuthGuard(childName: _Paths.DEALVS_R_O_DATA_REPORT),
+    ),
+    GetPage(
+      name: _Paths.COMMERCIAL_MASTER_AUTO_ID,
+      page: () => AuthGuard(childName: _Paths.COMMERCIAL_MASTER_AUTO_ID),
+      // page: () =>   CommercialMasterAutoIdView(),
+      // binding: CommercialMasterAutoIdBinding(),
+    ),
+    GetPage(
+      name: _Paths.COMMERCIAL_MASTER_AUTO_ID_DETAILS,
+      page: () => AuthGuard(childName: _Paths.COMMERCIAL_MASTER_AUTO_ID_DETAILS),
+      // page: () =>  CommercialMasterAutoIdDetailsView(),
+      // binding: CommercialMasterAutoIdDetailsBinding(),
     ),
   ];
 }

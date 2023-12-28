@@ -26,8 +26,8 @@ class ReleseOrderRescheduleTapeIDController extends GetxController {
       clientList = <DropDownValue>[].obs,
       agencyList = <DropDownValue>[].obs,
       brandList = <DropDownValue>[].obs,
-      tapeList = <DropDownValue>[].obs,
-      tapeListRight = <DropDownValue>[].obs;
+      tapeList = <DropDownValue2>[].obs,
+      tapeListRight = <DropDownValue2>[].obs;
   var isAllCheck = false.obs;
   int? lastSelectedRow;
 
@@ -35,12 +35,11 @@ class ReleseOrderRescheduleTapeIDController extends GetxController {
       selectedChannel,
       selectedClient,
       selectedAgency,
-      selectedBrand,
-      selectedTape,
-      selectedTapeRight;
+      selectedBrand;
   var tapeCodeDura = "".obs,
       tapeCodeDuraRight = "".obs,
       tapeCodeCaptionRight = "".obs;
+  DropDownValue2? selectedTape, selectedTapeRight;
 
   var fromDateTC = TextEditingController(), toDateTC = TextEditingController();
   Rxn<List<Map<String, Map<String, double>>>>? userGridSetting1=Rxn([]);
@@ -279,12 +278,17 @@ class ReleseOrderRescheduleTapeIDController extends GetxController {
             }
             tapeList.value = [];
             tapeList.value.addAll(lsttapeDetails
-                    ?.map((e) => DropDownValue(
+                    ?.map((e) => DropDownValue2(
                           key: (e.duration ?? "").toString(),
                           value: e.exportTapeCode,
+                          type: e.commercialCaption,
                         ))
                     .toList() ??
                 []);
+            selectedTape = DropDownValue2(
+                key: tapeList[0].key,
+                value: tapeList[0].value,
+                type: tapeList[0].type);
           } else {
             LoadingDialog.showErrorDialog(resp.toString());
           }
@@ -305,7 +309,7 @@ class ReleseOrderRescheduleTapeIDController extends GetxController {
     DropDownValue? brand,
     String fromDate,
     String toDate,
-    DropDownValue? tapeCode,
+    DropDownValue2? tapeCode,
   ) {
     if (location?.key == null) {
       LoadingDialog.callInfoMessage("Please select Location.");
@@ -382,7 +386,7 @@ class ReleseOrderRescheduleTapeIDController extends GetxController {
     DropDownValue? brand,
     String fromDate,
     String toDate,
-    DropDownValue? tapeCode,
+    DropDownValue2? tapeCode,
   ) {
     if (location?.key == null) {
       LoadingDialog.callInfoMessage("Please select Location.");
@@ -449,7 +453,7 @@ class ReleseOrderRescheduleTapeIDController extends GetxController {
     DropDownValue? client,
     DropDownValue? agency,
     DropDownValue? brand,
-    DropDownValue? tapeCode,
+    DropDownValue2? tapeCode,
   ) async {
     String documentKey = "";
     if (location?.key == null ||
