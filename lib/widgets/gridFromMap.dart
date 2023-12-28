@@ -1307,7 +1307,7 @@ class DataGridFromMap6 extends StatelessWidget {
                                     : rendererContext.cell.value) ==
                                 checkBoxStrComparison
                             ? Colors.deepPurpleAccent
-                            : Colors.grey,
+                            : Colors.white,
                         size: rowHeight <= 22 ? 18 : Get.theme.iconTheme.size,
                       ),
                     ),
