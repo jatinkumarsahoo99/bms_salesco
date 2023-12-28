@@ -79,6 +79,7 @@ class CommercialMasterAutoIdDetailsController extends GetxController {
 
   @override
   void onReady() {
+    tapeId_.text = Aes.decrypt((Get.parameters["exportTapeCode"] ?? "").toString())??"";
     super.onReady();
   }
 
