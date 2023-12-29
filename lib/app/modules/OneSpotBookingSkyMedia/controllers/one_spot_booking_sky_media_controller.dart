@@ -199,51 +199,73 @@ class OneSpotBookingSkyMediaController extends GetxController {
           }
         });
   }
-
+  closeDialogIfOpen() {
+    if (Get.isDialogOpen ?? false) {
+      Get.back();
+    }
+  }
   saveBtnClick() {
-    LoadingDialog.call();
-    Map<String, dynamic> postData = {
-      "locationcode": selectedLocation?.value?.key ?? "",
-      "channelcode": selectedChannel?.value?.key ?? "",
-      "bookingdate": DateFormat('yyyy-MM-ddTHH:mm:ss').format(
+
+    if(selectedLocation == null || selectedLocation?.value == null  ){
+      LoadingDialog.showErrorDialog("Please select location");
+    }else if(selectedChannel == null || selectedChannel?.value == null){
+      LoadingDialog.showErrorDialog("Please select channel");
+    }else{
+
+      try{
+        LoadingDialog.call();
+        Map<String, dynamic> postData = {
+          "locationcode": selectedLocation?.value?.key ?? "",
+          "channelcode": selectedChannel?.value?.key ?? "",
+          "bookingdate": DateFormat('yyyy-MM-ddTHH:mm:ss').format(
               DateFormat('dd-MM-yyyy').parse(bookingDateController.text)) ??
-          "2023-07-25T09:07:49.424Z",
-      "effectivedate": DateFormat('yyyy-MM-ddTHH:mm:ss').format(
+              "2023-07-25T09:07:49.424Z",
+          "effectivedate": DateFormat('yyyy-MM-ddTHH:mm:ss').format(
               DateFormat('dd-MM-yyyy').parse(effectiveDateController.text)) ??
-          "2023-07-25T09:07:49.424Z",
-      "bookingnumber": txtController.text ?? "",
-      "clientcode": selectedClient?.value?.key ?? "",
-      "agencycode": selectedAgency?.value?.key ?? "",
-      "brandcode": selectedBrandList?.value?.key ?? "",
-      "refno": bookingRegController.text ?? "",
-      "amount": int.tryParse(
-          (amountController.text != null && amountController.text != "")
-              ? amountController.text
-              : "0"),
-      "payroutecode": selectedPayrouteList?.value?.key ?? "",
-      "executivecode": selectedExecutiveList?.value?.key ?? "",
-      "loggeduser": Get.find<MainController>().user?.logincode ?? ""
-    };
-    // print(">>>>>postData>>>"+(postData).toString());
-    Get.find<ConnectorControl>().POSTMETHOD(
-        api: ApiFactory.ONE_SPOT_BOOKING_SAVE,
-        json: postData,
-        fun: (map) {
-          Get.back();
-          if (map is Map &&
-              map.containsKey("saveOSBooking") &&
-              map['saveOSBooking'] != null &&
-              map['saveOSBooking'].containsKey('meassage') &&
-              map['saveOSBooking']['meassage'] != null) {
-            LoadingDialog.callDataSavedMessage(
-                map['saveOSBooking']['meassage'] ?? "", callback: () {
-              clearAll();
+              "2023-07-25T09:07:49.424Z",
+          "bookingnumber": txtController.text ?? "",
+          "clientcode": selectedClient?.value?.key ?? "",
+          "agencycode": selectedAgency?.value?.key ?? "",
+          "brandcode": selectedBrandList?.value?.key ?? "",
+          "refno": bookingRegController.text ?? "",
+          "amount": int.tryParse(
+              (amountController.text != null && amountController.text != "")
+                  ? amountController.text
+                  : "0"),
+          "payroutecode": selectedPayrouteList?.value?.key ?? "",
+          "executivecode": selectedExecutiveList?.value?.key ?? "",
+          "loggeduser": Get.find<MainController>().user?.logincode ?? ""
+        };
+        // print(">>>>>postData>>>"+(postData).toString());
+        Get.find<ConnectorControl>().POSTMETHOD(
+            api: ApiFactory.ONE_SPOT_BOOKING_SAVE,
+            json: postData,
+            fun: (map) {
+              closeDialogIfOpen();
+              if (map is Map &&
+                  map.containsKey("saveOSBooking") &&
+                  map['saveOSBooking'] != null &&
+                  map['saveOSBooking'].containsKey('meassage') &&
+                  map['saveOSBooking']['meassage'] != null) {
+                LoadingDialog.callDataSavedMessage(
+                    map['saveOSBooking']['meassage'] ?? "", callback: () {
+                  clearAll();
+                });
+              } else {
+                LoadingDialog.showErrorDialog(
+                    (map ?? "Something went wrong").toString());
+              }
             });
-          } else {
-            LoadingDialog.showErrorDialog(
-                (map ?? "Something went wrong").toString());
-          }
-        });
+      }catch(e){
+        closeDialogIfOpen();
+        LoadingDialog.showErrorDialog(
+            ( "Something went wrong").toString());
+      }
+
+
+    }
+
+
   }
 
   @override

@@ -647,6 +647,18 @@ class Utils {
     return formPermissions;
   }
 
+  static String getPageRouteName(){
+    try{
+      String extractName = (html.window.location.href.split("?")[0])
+          .split(ApiFactory.SPLIT_CLEAR_PAGE)[1];
+      return extractName;
+
+    }catch(e){
+      return "";
+    }
+  }
+
+
   static btnAccessHandler(btn, List<PermissionModel> formPermissions) {
     log('permission ===> ${jsonEncode(formPermissions)}');
     if (formPermissions.isEmpty) return;
