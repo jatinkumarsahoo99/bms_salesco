@@ -186,7 +186,7 @@ class EdiRoBookingView extends StatelessWidget {
                                   DateWithThreeTextField(
                                     title: "Start Date",
                                     mainTextController: controller.startDateTEC,
-                                    widthRation: .105,
+                                    widthRation: .110,
                                     isEnable: false,
                                     titleInLeft: true,
                                   ),
@@ -196,18 +196,21 @@ class EdiRoBookingView extends StatelessWidget {
                                   DateWithThreeTextField(
                                     title: "End Date",
                                     mainTextController: controller.endDateTEC,
-                                    widthRation: .105,
+                                    widthRation: .110,
                                     isEnable: false,
                                     titleInLeft: true,
                                   ),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  InputFields.formField3(
+                                    hintTxt: "Zone ",
+                                    isEnable: false,
+                                    controller: controller.zoneTEC,
+                                    width: 0.105,
+                                    titleInLeft: true,
+                                  ),
                                 ],
-                              ),
-                              InputFields.formField1(
-                                hintTxt: "Zone           ",
-                                isEnable: false,
-                                controller: controller.zoneTEC,
-                                width: 0.40,
-                                titleInLeft: true,
                               ),
                               const SizedBox(
                                 width: 20,
@@ -248,20 +251,20 @@ class EdiRoBookingView extends StatelessWidget {
                                     hintTxt: "",
                                     isEnable: false,
                                     controller: controller.payRouteCodeTEC,
-                                    width: 0.05,
+                                    width: 0.055,
                                     showTitle: false,
                                     titleInLeft: true,
                                   ),
                                 ],
                               ),
-                              InputFields.formField1(
+                              InputFields.formField3(
                                 hintTxt: "Pay Route ",
                                 isEnable: false,
                                 controller: controller.payRouteTEC,
                                 width: 0.137,
                                 titleInLeft: true,
                               ),
-                              InputFields.formField1(
+                              InputFields.formField3(
                                 hintTxt: "Pay Mode ",
                                 isEnable: false,
                                 controller: controller.payModeTEC,
@@ -271,23 +274,32 @@ class EdiRoBookingView extends StatelessWidget {
                               SizedBox(
                                 width: Get.width * 0.18,
                                 child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  // mainAxisAlignment:
+                                  //     MainAxisAlignment.spaceBetween,
                                   children: [
                                     InputFields.formField1(
-                                      hintTxt: "Booking NO",
+                                      hintTxt: "Booking No",
                                       controller: controller.bookingNo1TEC,
-                                      width: 0.075,
+                                      width: 0.054,
+                                      titleInLeft: true,
+                                    ),
+                                    const SizedBox(
+                                      width: 5,
                                     ),
                                     InputFields.formField1(
                                       hintTxt: "",
                                       controller: controller.bookingNo2TEC,
                                       width: 0.02,
+                                      titleInLeft: true,
+                                    ),
+                                    const SizedBox(
+                                      width: 5,
                                     ),
                                     InputFields.formField1(
                                       hintTxt: "",
                                       controller: controller.bookingNo3TEC,
-                                      width: 0.075,
+                                      width: 0.055,
+                                      titleInLeft: true,
                                     ),
                                   ],
                                 ),
@@ -299,10 +311,11 @@ class EdiRoBookingView extends StatelessWidget {
                                     controller.selectedExecutives = data;
                                   },
                                   "Executive",
-                                  .18,
+                                  .136,
                                   selected: controller.selectedExecutives,
                                   autoFocus: true,
                                   dialogHeight: 250,
+                                  titleInLeft: true,
                                 ),
                               ),
                             ],
@@ -359,7 +372,7 @@ class EdiRoBookingView extends StatelessWidget {
                                               fontSize: SizeDefine.labelSize1),
                                         ),
                                       ),
-                                      InputFields.formField1(
+                                      InputFields.formField3(
                                         hintTxt: "Spots",
                                         isEnable: false,
                                         controller: controller.spotsAllTEC,
@@ -384,7 +397,7 @@ class EdiRoBookingView extends StatelessWidget {
                                       //   alignment: Alignment.center,
                                       //   width: Get.width * 0.05,
                                       // ),
-                                      InputFields.formField1(
+                                      InputFields.formField3(
                                         hintTxt: "Dur    ",
                                         isEnable: false,
                                         controller: controller.durAllTEC,
@@ -409,7 +422,7 @@ class EdiRoBookingView extends StatelessWidget {
                                       //   alignment: Alignment.center,
                                       //   width: Get.width * 0.05,
                                       // ),
-                                      InputFields.formField1(
+                                      InputFields.formField3(
                                         hintTxt: "Amt   ",
                                         isEnable: false,
                                         controller: controller.amtAllTEC,
@@ -451,13 +464,13 @@ class EdiRoBookingView extends StatelessWidget {
                                           autoFocus: true,
                                         ),
                                       ),
-                                      InputFields.formField1(
+                                      InputFields.formField3(
                                         hintTxt: "Pre. V Amt",
                                         isEnable: false,
                                         controller: controller.preVAmtTEC,
                                         width: 0.05,
                                       ),
-                                      InputFields.formField1(
+                                      InputFields.formField3(
                                         hintTxt: "Pre. B Amt",
                                         isEnable: false,
                                         controller: controller.preBAmtTEC,
@@ -496,20 +509,20 @@ class EdiRoBookingView extends StatelessWidget {
                                     width: Get.width * 0.07,
                                     child: Wrap(
                                       children: [
-                                        InputFields.formField1(
+                                        InputFields.formField3(
                                           hintTxt: "Max Spend",
                                           isEnable: false,
                                           controller: controller.maxSpendTEC,
                                           width: 0.05,
                                         ),
-                                        InputFields.formField1(
+                                        InputFields.formField3(
                                           hintTxt: "Booked Amount",
                                           isEnable: false,
                                           controller:
                                               controller.bookedAmountTEC,
                                           width: 0.05,
                                         ),
-                                        InputFields.formField1(
+                                        InputFields.formField3(
                                           hintTxt: "Val Amount",
                                           isEnable: false,
                                           controller: controller.valAmountTEC,
@@ -553,6 +566,10 @@ class EdiRoBookingView extends StatelessWidget {
                             exportFileName: "EDI R.O. Booking",
                             onload: (load) {
                               controller.dgvDealEntriesGrid = load.stateManager;
+                              load.stateManager
+                                  .setSelectingMode(PlutoGridSelectingMode.row);
+                              load.stateManager.setCurrentCell(
+                                  load.stateManager.firstCell, 0);
                             },
                             colorCallback: (row) => row.row.cells.containsValue(
                                     controller.dgvDealEntriesGrid?.currentCell)
@@ -584,12 +601,12 @@ class EdiRoBookingView extends StatelessWidget {
                                 onSelected: (event) {
                                   controller.isSelectingChange.value = false;
                                 },
-                                editKeys: ['noProgram'],
-                                // hideKeys: [
-                                //   'backColor',
-                                //   'selected',
-                                //   'isSpotsAvailable'
-                                // ],
+                                editKeys: const ['noProgram'],
+                                hideKeys: const [
+                                  'backColor',
+                                  'selected',
+                                  'isSpotsAvailable'
+                                ],
                                 mapData: controller.lstDgvSpotsList.value,
                                 hideCode: false,
                                 formatDate: false,
@@ -608,6 +625,10 @@ class EdiRoBookingView extends StatelessWidget {
                                       controller.lastSelectedOffect,
                                       curve: Curves.ease,
                                       duration: Duration(milliseconds: 2));
+                                  load.stateManager.setSelectingMode(
+                                      PlutoGridSelectingMode.row);
+                                  load.stateManager.setCurrentCell(
+                                      load.stateManager.firstCell, 0);
                                   controller.dvgSpotGrid = load.stateManager;
                                 },
                                 colorCallback: (colorEvent) {
@@ -841,12 +862,15 @@ class EdiRoBookingView extends StatelessWidget {
                                 () => Visibility(
                                   visible: controller.isEnterNewPDC.value,
                                   child: DropDownField.formDropDown1WidthMap(
-                                    [],
-                                    (data) {},
+                                    controller.newPdcList.value,
+                                    (data) {
+                                      controller.selectedPdc = data;
+                                    },
                                     "",
                                     .10,
                                     dialogHeight: 150,
                                     showtitle: false,
+                                    selected: controller.selectedPdc,
                                   ),
                                 ),
                               ),
@@ -857,6 +881,8 @@ class EdiRoBookingView extends StatelessWidget {
                                     btnText: "Enter new PDC",
                                     callback: () {
                                       // maincontroller.getFillPDC();
+                                      controller.pdcActivityPeriodTEC.text =
+                                          controller.bookingNo1TEC.text;
                                       enterNewPdcDilogBox();
                                     },
                                     showIcon: false,
@@ -1115,6 +1141,12 @@ class EdiRoBookingView extends StatelessWidget {
                             mapData: maincontroller.infoTableList.value,
                             hideCode: false,
                             exportFileName: "EDI R.O. Booking",
+                            onload: (load) {
+                              load.stateManager
+                                  .setSelectingMode(PlutoGridSelectingMode.row);
+                              load.stateManager.setCurrentCell(
+                                  load.stateManager.firstCell, 0);
+                            },
                           ),
                   ),
                 ),
@@ -1251,8 +1283,12 @@ class EdiRoBookingView extends StatelessWidget {
                   hideCode: false,
                   formatDate: false,
                   exportFileName: "EDI R.O. Booking",
-                  onload: (event) {
-                    maincontroller.mgSpotTabelGrid = event.stateManager;
+                  onload: (load) {
+                    maincontroller.mgSpotTabelGrid = load.stateManager;
+                    load.stateManager
+                        .setSelectingMode(PlutoGridSelectingMode.row);
+                    load.stateManager
+                        .setCurrentCell(load.stateManager.firstCell, 0);
                   },
                   colorCallback: (row) => (row.row.cells.containsValue(
                           maincontroller.mgSpotTabelGrid?.currentCell))
@@ -1361,6 +1397,7 @@ class EdiRoBookingView extends StatelessWidget {
                               controller: maincontroller.pdcActivityPeriodTEC,
                               width: 0.075,
                               autoFocus: true,
+                              readOnly: true,
                             ),
                           ),
                           const SizedBox(
@@ -1382,19 +1419,19 @@ class EdiRoBookingView extends StatelessWidget {
                         child: InputFields.formField1(
                           hintTxt: "Cheque NO",
                           controller: maincontroller.pdcChequeNoTEC,
-                          width: 0.15,
+                          width: 0.11,
                         ),
                       ),
                       DateWithThreeTextField(
                         title: "Chq Dt",
                         mainTextController: maincontroller.pdcChqDtTEC,
-                        widthRation: .15,
+                        widthRation: .11,
                       ),
                       InputFields.numbers4(
                         hintTxt: "Chq Amt",
                         padLeft: 0,
                         controller: maincontroller.pdcChqAmtTEC,
-                        width: 0.15,
+                        width: 0.11,
                         isNegativeReq: false,
                         inputformatters: [
                           FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
@@ -1403,12 +1440,12 @@ class EdiRoBookingView extends StatelessWidget {
                       InputFields.formField1(
                         hintTxt: "Bank",
                         controller: maincontroller.pdcBankTEC,
-                        width: 0.24,
+                        width: 0.11,
                       ),
                       InputFields.formField1(
                         hintTxt: "Cheq Recd by",
                         controller: maincontroller.pdcChequeRecordByTEC,
-                        width: 0.24,
+                        width: 0.15,
                       ),
                       DateWithThreeTextField(
                         title: "Recd On",
@@ -1418,7 +1455,7 @@ class EdiRoBookingView extends StatelessWidget {
                       InputFields.formField1(
                         hintTxt: "Remarks",
                         controller: maincontroller.pdcRemarksTEC,
-                        width: 0.33,
+                        width: 0.15,
                       ),
                       Align(
                         alignment: Alignment.topCenter,
@@ -1433,12 +1470,12 @@ class EdiRoBookingView extends StatelessWidget {
                       Obx(
                         () => maincontroller.fillPDCList.isEmpty
                             ? Container(
-                                height: Get.height * 0.15,
+                                height: Get.height * 0.19,
                                 decoration: BoxDecoration(
                                     border: Border.all(color: Colors.grey)),
                               )
                             : SizedBox(
-                                height: Get.height * 0.15,
+                                height: Get.height * 0.19,
                                 child: DataGridShowOnlyKeys(
                                   formatDate: false,
                                   mapData: maincontroller.fillPDCList.value,
@@ -1447,6 +1484,10 @@ class EdiRoBookingView extends StatelessWidget {
                                   onload: (load) {
                                     maincontroller.fillPDCTabelGrid =
                                         load.stateManager;
+                                    load.stateManager.setSelectingMode(
+                                        PlutoGridSelectingMode.row);
+                                    load.stateManager.setCurrentCell(
+                                        load.stateManager.firstCell, 0);
                                   },
                                   colorCallback: (row) => row.row.cells
                                           .containsValue(maincontroller
