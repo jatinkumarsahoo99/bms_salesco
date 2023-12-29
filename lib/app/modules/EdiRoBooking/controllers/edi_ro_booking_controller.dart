@@ -652,7 +652,7 @@ class EdiRoBookingController extends GetxController {
   spotFpcStart(locationCode, channelCode, telicastDate) {
     try {
       var date = DateFormat("MM-dd-yyyy")
-          .format(DateFormat("dd-MM-yyyy").parse(telicastDate ?? "10-01-2023"));
+          .format(DateFormat("dd/MM/yyyy").parse(telicastDate ?? "10/01/2023"));
       LoadingDialog.call();
       Get.find<ConnectorControl>().GETMETHODCALL(
           api: ApiFactory.EDI_RO_SPOT_FPC_START(
