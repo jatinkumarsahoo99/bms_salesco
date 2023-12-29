@@ -135,6 +135,7 @@ class EdiRoBookingController extends GetxController {
   var channel = RxList<DropDownValue>();
   var dealNo = RxList<DropDownValue>();
   var gstPlant = RxList<DropDownValue>();
+  var newPdcList = RxList<DropDownValue>();
 
   // Selected DropDownValues
   DropDownValue? selectedFile;
@@ -148,6 +149,7 @@ class EdiRoBookingController extends GetxController {
   DropDownValue? selectedChannel;
   DropDownValue? selectedDealNo;
   DropDownValue? selectedGstPlant;
+  DropDownValue? selectedPdc;
 
   ValueKey? valueKey;
 
@@ -548,6 +550,7 @@ class EdiRoBookingController extends GetxController {
                           "", callback: () {
                     isEnterNewPDC.value = true;
                     gstDilogBox();
+                    getFillPDC();
                   });
                 }
               } else {
@@ -649,7 +652,7 @@ class EdiRoBookingController extends GetxController {
   spotFpcStart(locationCode, channelCode, telicastDate) {
     try {
       var date = DateFormat("MM-dd-yyyy")
-          .format(DateFormat("dd-MM-yyyy").parse(telicastDate ?? "10-01-2023"));
+          .format(DateFormat("dd/MM/yyyy").parse(telicastDate ?? "10/01/2023"));
       LoadingDialog.call();
       Get.find<ConnectorControl>().GETMETHODCALL(
           api: ApiFactory.EDI_RO_SPOT_FPC_START(
@@ -725,20 +728,39 @@ class EdiRoBookingController extends GetxController {
   }
 
   onMarkAsDone() {
-    try {
-      LoadingDialog.call();
-      Get.find<ConnectorControl>().GETMETHODCALL(
-          api: ApiFactory.EDI_RO_MARK_AS_DONE(selectedFile?.value),
-          fun: (map) {
-            Get.back();
-            print(map);
-            if (map != null &&
-                map['infoChannelList'] != null &&
-                map.containsKey('infoChannelList') &&
-                (map['infoChannelList'] as List<dynamic>).isNotEmpty) {}
-          });
-    } catch (e) {
-      print(e.toString());
+    if (selectedFile == null) {
+      LoadingDialog.showErrorDialog("Nothing to update");
+    } else {
+      LoadingDialog.modify(
+        "Do you want to mark this RO as entered!\nIf yes then it will not appear in your screen to enter again!",
+        () {
+          //yes
+          try {
+            LoadingDialog.call();
+            Get.find<ConnectorControl>().GETMETHODCALL(
+              api: ApiFactory.EDI_RO_MARK_AS_DONE(selectedFile?.value),
+              fun: (map) {
+                Get.back();
+                print(map);
+                if (map != null &&
+                    map['infoAgencyLeave'] != null &&
+                    map.containsKey('infoAgencyLeave')) {
+                  Get.delete<EdiRoBookingController>();
+                  Get.find<HomeController>().clearPage1();
+                }
+              },
+            );
+          } catch (e) {
+            print(e.toString());
+          }
+        },
+        () {
+          //No
+          Get.back();
+        },
+        deleteTitle: "Yes",
+        cancelTitle: "No",
+      );
     }
   }
 
@@ -851,27 +873,63 @@ class EdiRoBookingController extends GetxController {
                               onRowDoubleTap: (event) {
                                 // print(event.cell.column.field);
 
-                                if (event.cell.column.field.toString() ==
-                                    'telecastTime') {
-                                  if (dvgSpotGrid?.currentRow?.sortIdx ==
-                                      null) {
-                                    LoadingDialog.callInfoMessage(
-                                        "Please select row.");
-                                  } else {
-                                    lstDgvSpotsList.value[
-                                            dvgSpotGrid!.currentRow!.sortIdx]
-                                        ['fpcstart'] = event.cell.value!;
-                                    dvgSpotGrid!.changeCellValue(
-                                      dvgSpotGrid!
-                                          .currentRow!.cells['fpcstart']!,
-                                      event.cell.value!,
-                                      callOnChangedEvent: false,
-                                      force: true,
-                                    );
-                                  }
-                                  // print(
-                                  //     event.row.cells['telecastTime']?.value);
+                                fpcStartTabelGrid?.setCurrentCell(
+                                    event.cell, event.rowIdx);
+
+                                // if (event.cell.column.field.toString() ==
+                                //     'telecastTime') {
+                                if (dvgSpotGrid?.currentRow?.sortIdx == null) {
+                                  LoadingDialog.callInfoMessage(
+                                      "Please select row.");
+                                } else {
+                                  // Telecast Time
+                                  lstDgvSpotsList.value[dvgSpotGrid!
+                                          .currentRow!.sortIdx]['fpcstart'] =
+                                      event.row.cells['telecastTime']?.value;
+                                  dvgSpotGrid!.changeCellValue(
+                                    dvgSpotGrid!.currentRow!.cells['fpcstart']!,
+                                    event.row.cells['telecastTime']?.value,
+                                    callOnChangedEvent: false,
+                                    force: true,
+                                  );
+                                  // Program Name
+                                  lstDgvSpotsList.value[dvgSpotGrid!
+                                          .currentRow!.sortIdx]['fpcprogram'] =
+                                      event.row.cells['programName']?.value;
+                                  dvgSpotGrid!.changeCellValue(
+                                    dvgSpotGrid!
+                                        .currentRow!.cells['fpcprogram']!,
+                                    event.row.cells['programName']?.value,
+                                    callOnChangedEvent: false,
+                                    force: true,
+                                  );
+                                  // Program Code
+                                  lstDgvSpotsList.value[dvgSpotGrid!
+                                          .currentRow!.sortIdx]['programCode'] =
+                                      event.row.cells['programCode']?.value;
+                                  dvgSpotGrid!.changeCellValue(
+                                    dvgSpotGrid!
+                                        .currentRow!.cells['programCode']!,
+                                    event.row.cells['programCode']?.value,
+                                    callOnChangedEvent: false,
+                                    force: true,
+                                  );
+
+                                  // Group Code
+                                  lstDgvSpotsList.value[dvgSpotGrid!
+                                          .currentRow!.sortIdx]['groupcode'] =
+                                      event.row.cells['groupCode']?.value;
+                                  dvgSpotGrid!.changeCellValue(
+                                    dvgSpotGrid!
+                                        .currentRow!.cells['groupcode']!,
+                                    event.row.cells['groupCode']?.value,
+                                    callOnChangedEvent: false,
+                                    force: true,
+                                  );
                                 }
+                                // print(
+                                //     event.row.cells['telecastTime']?.value);
+                                // }
                               },
                             ),
                     ),
@@ -1196,7 +1254,7 @@ class EdiRoBookingController extends GetxController {
       Get.find<MainController>().filters1[gridController!.hashCode.toString()] =
           RxList([]);
     }
-    filtterValue = dvgSpotGrid!.currentCell!.value;
+    // filtterValue = dvgSpotGrid!.currentCell!.value;
     if (gridController!.currentCell != null) {
       Get.find<MainController>()
           .filters1[gridController!.hashCode.toString()]!
@@ -1366,14 +1424,20 @@ class EdiRoBookingController extends GetxController {
             selectedClient?.key ?? "",
             selectedAgency?.key ?? "",
             "0",
-            pdcActivityPeriodTEC.text ?? "",
+            DateFormat('yyyy-MM-dd')
+                .format(DateFormat('dd-MM-yyyy').parse(effectiveDate.text)),
           ),
           fun: (map) {
             Get.back();
             if (map != null &&
-                map['infoShowMakeGood'] != null &&
-                map.containsKey('infoShowMakeGood')) {
-              print(map);
+                map['infoFillPDC'] != null &&
+                map.containsKey('infoFillPDC')) {
+              //New PDC
+              newPdcList.clear();
+              map['infoFillPDC']['lstPDC'].forEach((e) {
+                newPdcList.add(DropDownValue(
+                    key: e['chequeId'].toString(), value: e['chequeNo']));
+              });
             }
           });
     } catch (e) {
@@ -1385,6 +1449,9 @@ class EdiRoBookingController extends GetxController {
     print(fillPDCList);
     if (fillPDCList.isEmpty) {
       LoadingDialog.showErrorDialog("No PDC's there to save.");
+    } else if (pdcActivityPeriodTEC.text.isEmpty) {
+      LoadingDialog.showErrorDialog(
+          "Active period cannot be left blank & Cannot be less than 6\ndigits & Should be numeric.");
     } else {
       try {
         LoadingDialog.call();
@@ -1395,11 +1462,11 @@ class EdiRoBookingController extends GetxController {
           "agencyCode": selectedAgency?.key ?? "",
           "lstClientPDC": fillPDCList.map((e) {
             if (e['chqDate'] != null) {
-              e['chqDate'] = DateFormat('yyyy-dd-MMThh:mm:ss')
+              e['chqDate'] = DateFormat('yyyy-MM-dd')
                   .format(DateFormat('dd-MM-yyyy').parse(e['chqDate']));
             }
             if (e['chequeReceviedOn'] != null) {
-              e['chequeReceviedOn'] = DateFormat('yyyy-dd-MMThh:mm:ss').format(
+              e['chequeReceviedOn'] = DateFormat('yyyy-MM-dd').format(
                   DateFormat('dd-MM-yyyy').parse(e['chequeReceviedOn']));
             }
             return e;
@@ -1416,6 +1483,7 @@ class EdiRoBookingController extends GetxController {
                 LoadingDialog.callDataSaved(
                     msg: map["infoClientPDC"]["message"],
                     callback: () {
+                      getFillPDC();
                       clearFillPdc();
                     });
               } else {
@@ -1581,7 +1649,7 @@ class EdiRoBookingController extends GetxController {
       var payload = {
         "bookingNo": bookingNo1TEC.text ?? "0",
         "grpPDC": false,
-        "pdc": "",
+        "pdc": selectedPdc?.key ?? "",
         "lstPDCChannels": [],
         "lstSpots": lstDgvSpots.map((e) {
           return e.toJson();
