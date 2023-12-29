@@ -172,6 +172,7 @@ class CommercialMasterAutoIdDetailsView extends StatelessWidget {
                                             },
                                                     "Language", 0.15,
                                                     searchReq: true,
+                                                    isEnable: controllerX.isEnable.value,
                                                     selected: controllerX
                                                         .selectLanguage?.value),
                                           ),
@@ -339,6 +340,7 @@ class CommercialMasterAutoIdDetailsView extends StatelessWidget {
                                               // FocusScope.of(context).nextFocus();
                                             }, "Location", 0.38,
                                                     searchReq: true,
+                                                    isEnable: controllerX.isEnable1.value,
                                                     selected: controllerX
                                                         .selectLocation?.value),
                                           ),
