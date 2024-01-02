@@ -338,7 +338,7 @@ class CommercialMasterAutoIdDetailsController extends GetxController {
     } else if (selectClient?.value == null || selectClient?.value?.value == "" ) {
       LoadingDialog.callInfoMessage("Please select client");
     } else if (selectLanguage?.value == null || selectLanguage?.value?.value == "") {
-      LoadingDialog.callInfoMessage("Please select client");
+      LoadingDialog.callInfoMessage("Please select language");
     } else {
       try {
         LoadingDialog.call();
