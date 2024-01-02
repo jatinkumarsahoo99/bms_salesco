@@ -327,16 +327,18 @@ class CommercialMasterAutoIdDetailsController extends GetxController {
   }
 
   void save() {
-    if (selectCensorship == null) {
+    if (selectCensorship == null || selectCensorship?.value == null ||  selectCensorship?.value?.key == "" ||
+        selectCensorship?.value?.value == "" ) {
       LoadingDialog.callInfoMessage("Please select censorship");
-    } else if (selectRevenue == null) {
+    } else if (selectRevenue == null || selectRevenue?.value == null ||
+        selectRevenue?.value?.value == "" ) {
       LoadingDialog.callInfoMessage("Please select revenue");
-    } else if (selectBrand?.value == null) {
+    } else if (selectBrand?.value == null || selectBrand?.value?.value == "") {
       LoadingDialog.callInfoMessage("Please select brand");
-    } else if (selectClient?.value == null) {
+    } else if (selectClient?.value == null || selectClient?.value?.value == "" ) {
       LoadingDialog.callInfoMessage("Please select client");
-    } else if (selectLanguage?.value == null) {
-      LoadingDialog.callInfoMessage("Please select client");
+    } else if (selectLanguage?.value == null || selectLanguage?.value?.value == "") {
+      LoadingDialog.callInfoMessage("Please select language");
     } else {
       try {
         LoadingDialog.call();
@@ -371,7 +373,7 @@ class CommercialMasterAutoIdDetailsController extends GetxController {
           // "eventtypecode": "string",
           // "eventsubtype": "string",
 
-          "agencytapeid": "",
+          "agencytapeid": commercialDetails?.lstShowACID![0].clockId ?? "",
           // "languagecode": sele,
           "clockid": commercialDetails?.lstShowACID![0].clockId ?? "",
           // "eom": commercialDetails?.lstShowACID![0].acid??"",
@@ -391,7 +393,7 @@ class CommercialMasterAutoIdDetailsController extends GetxController {
           "providerName": commercialDetails?.lstShowACID![0].provider ?? "",
           "tapeType": commercialDetails?.lstShowACID![0].tapeType ?? "",
         };
-        Get.find<ConnectorControl>().POSTMETHOD(
+        /*Get.find<ConnectorControl>().POSTMETHOD(
             api: ApiFactory.COMMERCIAL_MASTER_SAVE(),
             json: postMap,
             fun: (map) {
@@ -417,7 +419,7 @@ class CommercialMasterAutoIdDetailsController extends GetxController {
               } else {
                 LoadingDialog.callInfoMessage(map.toString());
               }
-            });
+            });*/
       }catch(e){
         closeDialogIfOpen();
         LoadingDialog.callInfoMessage("Something went wrong");
