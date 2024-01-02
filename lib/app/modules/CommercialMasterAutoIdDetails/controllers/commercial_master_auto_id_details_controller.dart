@@ -393,7 +393,7 @@ class CommercialMasterAutoIdDetailsController extends GetxController {
           "providerName": commercialDetails?.lstShowACID![0].provider ?? "",
           "tapeType": commercialDetails?.lstShowACID![0].tapeType ?? "",
         };
-        /*Get.find<ConnectorControl>().POSTMETHOD(
+        Get.find<ConnectorControl>().POSTMETHOD(
             api: ApiFactory.COMMERCIAL_MASTER_SAVE(),
             json: postMap,
             fun: (map) {
@@ -419,7 +419,7 @@ class CommercialMasterAutoIdDetailsController extends GetxController {
               } else {
                 LoadingDialog.callInfoMessage(map.toString());
               }
-            });*/
+            });
       }catch(e){
         closeDialogIfOpen();
         LoadingDialog.callInfoMessage("Something went wrong");
