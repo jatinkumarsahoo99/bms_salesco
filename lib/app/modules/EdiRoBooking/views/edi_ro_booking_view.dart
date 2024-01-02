@@ -607,7 +607,22 @@ class EdiRoBookingView extends StatelessWidget {
                                   'selected',
                                   'isSpotsAvailable'
                                 ],
-                                mapData: controller.lstDgvSpotsList.value,
+                                mapData:
+                                    controller.lstDgvSpotsList.value.map((e) {
+                                  if (e['fctok'] != null) {
+                                    e['fctok'] = num.parse(e['fctok']);
+                                  }
+                                  if (e['dealOK'] != null) {
+                                    e['dealOK'] = num.parse(e['dealOK']);
+                                  }
+                                  if (e['nO_SPOT'] != null) {
+                                    e['nO_SPOT'] = num.parse(e['nO_SPOT']);
+                                  }
+                                  if (e['okSpot'] != null) {
+                                    e['okSpot'] = num.parse(e['okSpot']);
+                                  }
+                                  return e;
+                                }).toList(),
                                 hideCode: false,
                                 formatDate: false,
                                 exportFileName: "EDI R.O. Booking",
@@ -665,6 +680,8 @@ class EdiRoBookingView extends StatelessWidget {
                                       .containsKey(controller
                                           .dgvDealEntriesGrid.hashCode
                                           .toString())) {
+                                    print(controller.dgvDealEntriesGrid.hashCode
+                                        .toString());
                                     await controller.clearFirstDataTableFilter(
                                         controller.dgvDealEntriesGrid!);
                                   }
@@ -787,8 +804,7 @@ class EdiRoBookingView extends StatelessWidget {
                             Get.find<MainController>()
                                 .permissionList!
                                 .lastWhere((element) =>
-                                    element.appFormName ==
-                                    "frmnewbookingstatus");
+                                    element.appFormName == "frmXMLROEntry");
                         if (controllerX.buttons != null) {
                           return Wrap(
                             spacing: 5,
@@ -822,34 +838,6 @@ class EdiRoBookingView extends StatelessWidget {
                                   showIcon: false,
                                 ),
                               },
-                              // FormButtonWrapper(
-                              //   btnText: "Info",
-                              //   callback: () {
-                              //     infoDilogBox();
-                              //   },
-                              //   showIcon: false,
-                              // ),
-                              // FormButtonWrapper(
-                              //   btnText: "Check All",
-                              //   callback: () {
-                              //     controller.checkAll();
-                              //   },
-                              //   showIcon: false,
-                              // ),
-                              // FormButtonWrapper(
-                              //   btnText: "MG Spots",
-                              //   callback: () {
-                              //     mgSpotsDilogBox();
-                              //   },
-                              //   showIcon: false,
-                              // ),
-                              // FormButtonWrapper(
-                              //   btnText: "Tape Id",
-                              //   callback: () {
-                              //     controller.tapId();
-                              //   },
-                              //   showIcon: false,
-                              // ),
                               colorBox(
                                   "NO Tape", Colors.pink[300], Colors.white),
                               colorBox("Kill Date", Colors.white, Colors.black),

@@ -651,12 +651,15 @@ class EdiRoBookingController extends GetxController {
 
   spotFpcStart(locationCode, channelCode, telicastDate) {
     try {
-      var date = DateFormat("MM-dd-yyyy")
-          .format(DateFormat("dd/MM/yyyy").parse(telicastDate ?? "10/01/2023"));
+      var date = telicastDate.contains('/')
+          ? DateFormat("MM-dd-yyyy").format(
+              DateFormat("dd/MM/yyyy").parse(telicastDate ?? "10/01/2023"))
+          : DateFormat("MM-dd-yyyy").format(
+              DateFormat("dd-MM-yyyy").parse(telicastDate ?? "10-01-2023"));
       LoadingDialog.call();
       Get.find<ConnectorControl>().GETMETHODCALL(
           api: ApiFactory.EDI_RO_SPOT_FPC_START(
-              locationCode ?? "", channelCode ?? "", date ?? ""),
+              locationCode ?? "", channelCode ?? "", date),
           fun: (map) {
             Get.back();
             if (map != null &&
@@ -1294,9 +1297,8 @@ class EdiRoBookingController extends GetxController {
       Get.find<MainController>().filters1[gridController!.hashCode.toString()] =
           RxList([]);
     }
-    print(gridController!.currentCell);
 
-    if (gridController!.currentCell != null) {
+    if (gridController!.hashCode != null) {
       Get.find<MainController>()
           .filters1[gridController!.hashCode.toString()]!
           .add(RowFilter(
@@ -1523,7 +1525,21 @@ class EdiRoBookingController extends GetxController {
     try {
       LoadingDialog.call();
       var payload = {
-        "lstSpots": lstDgvSpotsList,
+        "lstSpots": lstDgvSpotsList.map((e) {
+          if (e['fctok'] != null) {
+            e['fctok'] = e['fctok'].toString();
+          }
+          if (e['dealOK'] != null) {
+            e['dealOK'] = e['dealOK'].toString();
+          }
+          if (e['nO_SPOT'] != null) {
+            e['nO_SPOT'] = e['nO_SPOT'].toString();
+          }
+          if (e['okSpot'] != null) {
+            e['okSpot'] = e['okSpot'].toString();
+          }
+          return e;
+        }).toList(),
       };
       Get.find<ConnectorControl>().POSTMETHOD(
           api: ApiFactory.EDI_RO_CHECK_ALL,
@@ -1644,57 +1660,63 @@ class EdiRoBookingController extends GetxController {
   }
 
   save() {
-    try {
-      LoadingDialog.call();
-      var payload = {
-        "bookingNo": bookingNo1TEC.text ?? "0",
-        "grpPDC": false,
-        "pdc": selectedPdc?.key ?? "",
-        "lstPDCChannels": [],
-        "lstSpots": lstDgvSpots.map((e) {
-          return e.toJson();
-        }).toList(),
-        "lstMakeGood": makeGoodReportList.value ?? [],
-        "locationCode": selectedLoactions!.key ?? "",
-        "channelCode": selectedChannel!.key ?? "",
-        "brandCode": selectedBrand!.key ?? "",
-        "spot": spotsBookedTEC.text ?? "",
-        "chkGSTValidate": true,
-        "executiveCode": selectedExecutives!.key ?? "",
-        "dealMaxSpent": maxSpendTEC.text ?? "",
-        "totalBookedAmount": bookedAmountTEC.text ?? "",
-        "totalValAmount": valAmountTEC.text ?? "",
-        "amount": amtBookedTEC.text,
-        "agencyCode": selectedAgency!.key ?? "",
-        "position": selectedPositions!.key ?? "",
-        "bookingMonth": bookingNo1TEC.text ?? "0",
-        "clientCode": selectedClient!.key ?? "",
-        "dtpBookingDate": bkDate.text ?? "",
-        "dtpEffDate": effectiveDate.text ?? "",
-        "agncyCode": selectedAgency!.key ?? "",
-        "cboRORefNo": selectedRoRefNo!.value ?? "",
-        "payRoute": payRouteTEC.text ?? "",
-        "duration": durBookedTEC.text,
-        "zoneCode": zoneTEC.text,
-        "dealNo": selectedDealNo!.key ?? "",
-        "loggedUser": Get.find<MainController>().user?.logincode ?? "",
-        "fileName": selectedFile!.value ?? "",
-        "gstPlantsId": selectedGstPlant!.value ?? "",
-        "gstRegN": gstNoTEC.text
-      };
-      Get.find<ConnectorControl>().POSTMETHOD(
-          api: ApiFactory.EDI_RO_SAVED_EDI_BOOKING,
-          json: payload,
-          fun: (map) {
-            Get.back();
-            if (map != null &&
-                map['infoSave'] != null &&
-                map.containsKey('infoSave')) {
-              LoadingDialog.callInfoMessage(map['infoSave']['message']);
-            }
-          });
-    } catch (e) {
-      print(e.toString());
+    if (selectedBrand == null) {
+      LoadingDialog.showErrorDialog("Please select brand.");
+    } else {
+      try {
+        LoadingDialog.call();
+        var payload = {
+          "bookingNo": bookingNo1TEC.text ?? "0",
+          "grpPDC": false,
+          "pdc": selectedPdc?.key ?? "",
+          "lstPDCChannels": [],
+          "lstSpots": lstDgvSpots.map((e) {
+            return e.toJson();
+          }).toList(),
+          "lstMakeGood": makeGoodReportList.value ?? [],
+          "locationCode": selectedLoactions!.key ?? "",
+          "channelCode": selectedChannel!.key ?? "",
+          "brandCode": selectedBrand!.key ?? "",
+          "spot": spotsBookedTEC.text ?? "",
+          "chkGSTValidate": true,
+          "executiveCode": selectedExecutives!.key ?? "",
+          "dealMaxSpent": maxSpendTEC.text ?? "",
+          "totalBookedAmount": bookedAmountTEC.text ?? "",
+          "totalValAmount": valAmountTEC.text ?? "",
+          "amount": amtBookedTEC.text,
+          "agencyCode": selectedAgency!.key ?? "",
+          "position": selectedPositions!.key ?? "",
+          "bookingMonth": bookingNo1TEC.text ?? "0",
+          "clientCode": selectedClient!.key ?? "",
+          "dtpBookingDate": bkDate.text ?? "",
+          "dtpEffDate": effectiveDate.text ?? "",
+          "agncyCode": selectedAgency!.key ?? "",
+          "cboRORefNo": selectedRoRefNo!.value ?? "",
+          "payRoute": payRouteTEC.text ?? "",
+          "duration": durBookedTEC.text,
+          "zoneCode": zoneTEC.text,
+          "dealNo": selectedDealNo!.key ?? "",
+          "loggedUser": Get.find<MainController>().user?.logincode ?? "",
+          "fileName": selectedFile!.value ?? "",
+          "gstPlantsId": selectedGstPlant!.value ?? "",
+          "gstRegN": gstNoTEC.text
+        };
+        Get.find<ConnectorControl>().POSTMETHOD(
+            api: ApiFactory.EDI_RO_SAVED_EDI_BOOKING,
+            json: payload,
+            fun: (map) {
+              Get.back();
+              if (map != null &&
+                  map['infoSave'] != null &&
+                  map.containsKey('infoSave')) {
+                LoadingDialog.recordExists(map['infoSave']['message'], () {
+                  Get.back();
+                });
+              }
+            });
+      } catch (e) {
+        print(e.toString());
+      }
     }
   }
 
