@@ -44,6 +44,9 @@ class CommercialMasterAutoIdDetailsController extends GetxController {
   FocusNode eomFocus = FocusNode();
   RxList<DropDownValue> secTypeList = RxList([]);
 
+  Rx<bool> isEnable = Rx<bool>(true);
+  Rx<bool> isEnable1 = Rx<bool>(true);
+
   Rxn<DropDownValue>? selectClient = Rxn<DropDownValue>();
   Rxn<DropDownValue>? selectBrand = Rxn<DropDownValue>();
   Rxn<DropDownValue>? selectLanguage = Rxn<DropDownValue>();
@@ -180,6 +183,8 @@ class CommercialMasterAutoIdDetailsController extends GetxController {
               value:
               commercialDetails?.lstShowACID![0].languageName ?? "");
 
+
+
           selectLocation?.value = DropDownValue(
               key: commercialDetails?.lstShowACID![0].locationCode ?? "",
               value:
@@ -211,6 +216,24 @@ class CommercialMasterAutoIdDetailsController extends GetxController {
               value: commercialDetails?.lstShowACID![0].brandName);
 
           agencyId_.text = commercialDetails?.lstShowACID![0].clockId??"";
+
+
+          if(commercialDetails?.lstShowACID![0].languageName == null ||
+              commercialDetails?.lstShowACID![0].languageName.toString().trim() == ""){
+            isEnable.value = true;
+          }else{
+            isEnable.value = false;
+          }
+          isEnable.refresh();
+
+
+          if(commercialDetails?.lstShowACID![0].locationName == null ||
+              commercialDetails?.lstShowACID![0].locationName.toString().trim() == ""){
+            isEnable1.value = true;
+          }else{
+            isEnable1.value = false;
+          }
+          isEnable1.refresh();
 
           // getRevenueLeave(commercialDetails?.lstShowACID![0].revenueCode ?? "");
 
