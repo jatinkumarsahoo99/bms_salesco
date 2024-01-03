@@ -49,6 +49,7 @@ class ReleseOrderRescheduleTapeIDController extends GetxController {
     // fetchChannel();
     fetchUserSetting1();
     fromDateTC.text = df1.format(now);
+    toDateTC.text = df1.format(now);
     super.onInit();
   }
 
