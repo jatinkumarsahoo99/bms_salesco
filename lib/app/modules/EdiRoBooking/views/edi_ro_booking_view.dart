@@ -558,7 +558,7 @@ class EdiRoBookingView extends StatelessWidget {
                         )
                       : SizedBox(
                           height: Get.height * 0.30,
-                          child: DataGridShowOnlyKeys(
+                          child: DataGridFromMap3(
                             mode: PlutoGridMode.selectWithOneTap,
                             onSelected: (event) {},
                             mapData: controller.lstDgvDealEntriesList.value,
@@ -583,6 +583,12 @@ class EdiRoBookingView extends StatelessWidget {
                                   event.cell.row.sortIdx,
                                   showMessage: true);
                             },
+                            columnAutoResize: false,
+                            widthSpecificColumn: Get.find<HomeController>()
+                                .getGridWidthByKey(
+                                    userGridSettingList:
+                                        controller.userGridSetting1,
+                                    key: "tbl1"),
                           ),
                         ),
                 ),
@@ -620,6 +626,9 @@ class EdiRoBookingView extends StatelessWidget {
                                   }
                                   if (e['okSpot'] != null) {
                                     e['okSpot'] = num.parse(e['okSpot']);
+                                  }
+                                  if (e['groupcode'] != null) {
+                                    e['groupcode'] = num.parse(e['groupcode']);
                                   }
                                   return e;
                                 }).toList(),
@@ -714,23 +723,23 @@ class EdiRoBookingView extends StatelessWidget {
                                           .toString() ==
                                       'program') {
                                     event.row.cells['noProgram']?.value = 1;
-                                    event.row.cells['dealOK']?.value = "0";
-                                    event.row.cells['fctok']?.value = "0";
-                                    event.row.cells['okSpot']?.value = "0";
+                                    event.row.cells['dealOK']?.value = 0;
+                                    event.row.cells['fctok']?.value = 0;
+                                    event.row.cells['okSpot']?.value = 0;
 
                                     controller
                                             .lstDgvSpotsList[event.row.sortIdx]
                                         ['noProgram'] = 1;
                                     controller
                                             .lstDgvSpotsList[event.row.sortIdx]
-                                        ['dealOK'] = "0";
+                                        ['dealOK'] = 0;
                                     controller
                                             .lstDgvSpotsList[event.row.sortIdx]
-                                        ['fctok'] = "0";
+                                        ['fctok'] = 0;
                                     controller
                                             .lstDgvSpotsList[event.row.sortIdx]
-                                        ['okSpot'] = "0";
-                                    controller.lstDgvSpotsList.refresh();
+                                        ['okSpot'] = 0;
+                                    // controller.lstDgvSpotsList.refresh();
                                   } else if (event.cell.column.field
                                           .toString() ==
                                       'spoT_RATE') {
@@ -748,6 +757,11 @@ class EdiRoBookingView extends StatelessWidget {
                                 },
                                 doPasccal: true,
                                 columnAutoResize: false,
+                                widthSpecificColumn: Get.find<HomeController>()
+                                    .getGridWidthByKey(
+                                        userGridSettingList:
+                                            controller.userGridSetting1,
+                                        key: "tbl2"),
                                 keyMapping: const {
                                   "station": "STATION",
                                   "acT_DT": "ACT_DT",
@@ -916,6 +930,17 @@ class EdiRoBookingView extends StatelessWidget {
       case "Save":
         // enterNewPdcDilogBox();
         maincontroller.save();
+
+        break;
+      case "Exit":
+        Get.find<HomeController>().postUserGridSetting1(listStateManager: [
+          maincontroller.dgvDealEntriesGrid,
+          maincontroller.dvgSpotGrid,
+        ], tableNamesList: [
+          'tbl1',
+          'tbl2',
+          'tbl3',
+        ]);
 
         break;
       case "Docs":
@@ -1307,6 +1332,11 @@ class EdiRoBookingView extends StatelessWidget {
 
                     print(maincontroller.makeGoodReportList);
                   },
+                  columnAutoResize: false,
+                  widthSpecificColumn: Get.find<HomeController>()
+                      .getGridWidthByKey(
+                          userGridSettingList: maincontroller.userGridSetting1,
+                          key: "tbl3"),
                 ),
               ),
             ),

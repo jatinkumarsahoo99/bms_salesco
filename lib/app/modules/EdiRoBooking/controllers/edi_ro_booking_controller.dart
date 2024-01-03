@@ -1538,6 +1538,9 @@ class EdiRoBookingController extends GetxController {
           if (e['okSpot'] != null) {
             e['okSpot'] = e['okSpot'].toString();
           }
+          if (e['groupcode'] != null) {
+            e['groupcode'] = e['groupcode'].toString();
+          }
           return e;
         }).toList(),
       };
