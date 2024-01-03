@@ -933,14 +933,20 @@ class EdiRoBookingView extends StatelessWidget {
 
         break;
       case "Exit":
-        Get.find<HomeController>().postUserGridSetting1(listStateManager: [
-          maincontroller.dgvDealEntriesGrid,
-          maincontroller.dvgSpotGrid,
-        ], tableNamesList: [
-          'tbl1',
-          'tbl2',
-          'tbl3',
-        ]);
+        print("Im a Exit");
+        try {
+          Get.find<HomeController>().postUserGridSetting1(listStateManager: [
+            maincontroller.dgvDealEntriesGrid,
+            maincontroller.dvgSpotGrid,
+            maincontroller.mgSpotTabelGrid,
+          ], tableNamesList: [
+            'tbl1',
+            'tbl2',
+            'tbl3',
+          ]);
+        } catch (e) {
+          print("Exit Error ===>" + e.toString());
+        }
 
         break;
       case "Docs":
