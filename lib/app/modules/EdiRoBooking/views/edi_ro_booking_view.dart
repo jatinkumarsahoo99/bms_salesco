@@ -933,7 +933,7 @@ class EdiRoBookingView extends StatelessWidget {
 
         break;
       case "Exit":
-        print("Im a Exit");
+        print("Im in Exit");
         try {
           Get.find<HomeController>().postUserGridSetting1(listStateManager: [
             maincontroller.dgvDealEntriesGrid,
@@ -1134,9 +1134,9 @@ class EdiRoBookingView extends StatelessWidget {
       autofocus: true,
       onKey: (node, event) {
         if (event.logicalKey == LogicalKeyboardKey.escape) {
+          print("true");
           maincontroller.drgabbleDialog.value = null;
         }
-
         return KeyEventResult.ignored;
       },
       child: Card(
