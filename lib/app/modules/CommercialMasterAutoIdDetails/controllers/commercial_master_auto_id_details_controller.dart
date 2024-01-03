@@ -25,7 +25,8 @@ class CommercialMasterAutoIdDetailsController extends GetxController {
   TextEditingController eom_ = TextEditingController();
 
   TextEditingController caption_ = TextEditingController();
-  TextEditingController endDate_ = TextEditingController();
+  TextEditingController endDate_ = TextEditingController(text: (DateFormat("dd-MM-yyyy").format(DateTime(DateTime.now().year+1,DateTime.now().month,DateTime.now().day))).toString());
+  // TextEditingController endDate_ = TextEditingController();
   RxString duration = RxString("00:00:00:00");
   RxString client = RxString("");
   RxString brand = RxString("");
@@ -72,7 +73,7 @@ class CommercialMasterAutoIdDetailsController extends GetxController {
       Get.to(NoDataFoundPage());
     }
     getLoad();
-    getDataFromACID();
+
     super.onInit();
     eomFocus.addListener(() {
       if (!eomFocus.hasFocus) {}
@@ -112,6 +113,7 @@ class CommercialMasterAutoIdDetailsController extends GetxController {
         fun: (Map map) {
           loadModel?.value =
               ComercialMasterAutoIdLoadModel.fromJson(map as Map<String, dynamic>);
+          getDataFromACID();
         });
   }
 
@@ -147,22 +149,22 @@ class CommercialMasterAutoIdDetailsController extends GetxController {
         fun: (Map map) {
           commercialDetails =
               CommercialMasterDetailsModel.fromJson(map as Map<String, dynamic>);
-          caption_.text = commercialDetails?.lstShowACID![0].commercialCaption ?? "";
-          client.value = commercialDetails?.lstShowACID![0].clientName ?? "";
-          tapeType.value = commercialDetails?.lstShowACID![0].tapeType ?? "";
-          temitory.value = commercialDetails?.lstShowACID![0].territory ?? "";
-          revenue.value = commercialDetails?.lstShowACID![0].revenue ?? "";
-          censorship.value = commercialDetails?.lstShowACID![0].censorship ?? "";
-          location.value = commercialDetails?.lstShowACID![0].locationName ?? "";
-          brand.value = commercialDetails?.lstShowACID![0].brand ?? "";
-          secType.value = commercialDetails?.lstShowACID![0].secType ?? "";
+          caption_.text = commercialDetails?.lstShowACID?[0].commercialCaption ?? "";
+          client.value = commercialDetails?.lstShowACID?[0].clientName ?? "";
+          tapeType.value = commercialDetails?.lstShowACID?[0].tapeType ?? "";
+          temitory.value = commercialDetails?.lstShowACID?[0].territory ?? "";
+          revenue.value = commercialDetails?.lstShowACID?[0].revenue ?? "";
+          censorship.value = commercialDetails?.lstShowACID?[0].censorship ?? "";
+          location.value = commercialDetails?.lstShowACID?[0].locationName ?? "";
+          brand.value = commercialDetails?.lstShowACID?[0].brand ?? "";
+          secType.value = commercialDetails?.lstShowACID?[0].secType ?? "";
           language.value =
-              commercialDetails?.lstShowACID![0].languageName ?? "";
+              commercialDetails?.lstShowACID?[0].languageName ?? "";
           duration1.value =
-              (commercialDetails?.lstShowACID![0].commercialDuration ?? "").toString();
-          providers.value = commercialDetails?.lstShowACID![0].provider ?? "";
-          ACID.value = commercialDetails?.lstShowACID![0].acid.toString() ?? "";
-          som_.text = commercialDetails?.lstShowACID![0].txtSOM ?? "";
+              (commercialDetails?.lstShowACID?[0].commercialDuration ?? "").toString();
+          providers.value = commercialDetails?.lstShowACID?[0].provider ?? "";
+          ACID.value = commercialDetails?.lstShowACID?[0].acid.toString() ?? "";
+          som_.text = commercialDetails?.lstShowACID?[0].txtSOM ?? "";
           eom_.text = Utils.convertToTimeFromDouble(
               value: num.tryParse(commercialDetails
                   ?.lstShowACID![0].txtEOMDurationInSeconds
@@ -175,17 +177,56 @@ class CommercialMasterAutoIdDetailsController extends GetxController {
                   .toString() ??
                   "0") ??
                   0);
-          tapeId_.text = commercialDetails?.lstShowACID![0].tapeid ?? "";
+          tapeId_.text = commercialDetails?.lstShowACID?[0].tapeid ?? "";
           tapeId_.text = Aes.decrypt((Get.parameters["exportTapeCode"] ?? "").toString())??"";
           // agencyId_.text = commercialDetails?.lstShowACID![0].agencyId ?? "";
           selectLanguage?.value = DropDownValue(
-              key: commercialDetails?.lstShowACID![0].languagecode ?? "",
+              key: commercialDetails?.lstShowACID?[0].languagecode ?? "",
               value:
-              commercialDetails?.lstShowACID![0].languageName ?? "");
+              commercialDetails?.lstShowACID?[0].languageName ?? "");
+
+
+          for(DropDownValue element in loadModel?.value?.loadData?.lstLanguage??[]){
+            if(element.key == (commercialDetails?.lstShowACID?[0].languagecode ??"").toString()  ){
+              selectLanguage?.value = DropDownValue(
+                  key: element.key ?? "",
+                  value: element.value ?? "");
+              break;
+            }
+          }
+
+          for(DropDownValue element in loadModel?.value?.loadData?.location??[]){
+            if(element.key == (commercialDetails?.lstShowACID?[0].locationCode ??"").toString()  ){
+              print(">>>>locationjks${commercialDetails?.lstShowACID?[0].locationCode ??""}");
+              selectLocation?.value = DropDownValue(
+                  key: element.key ?? "",
+                  value: element.value ?? "");
+              selectLocation?.refresh();
+              break;
+            }
+          }
+
+          for(DropDownValue element in loadModel?.value?.loadData?.lstCensorship??[]){
+            if(element.key == (commercialDetails?.lstShowACID?[0].censorshipCode ??"").toString()  ){
+              selectCensorship?.value = DropDownValue(
+                  key: element.key ?? "",
+                  value: element.value ?? "");
+              break;
+            }
+          }
+
+          for(DropDownValue element in loadModel?.value?.loadData?.lstRevenuetype??[]){
+            if(element.key == (commercialDetails?.lstShowACID?[0].revenueCode ??"").toString()  ){
+              selectRevenue?.value = DropDownValue(
+                  key: element.key ?? "",
+                  value: element.value ?? "");
+              break;
+            }
+          }
 
 
 
-          selectLocation?.value = DropDownValue(
+          /*selectLocation?.value = DropDownValue(
               key: commercialDetails?.lstShowACID![0].locationCode ?? "",
               value:
               commercialDetails?.lstShowACID![0].locationName ?? "");
@@ -198,28 +239,29 @@ class CommercialMasterAutoIdDetailsController extends GetxController {
           selectRevenue?.value = DropDownValue(
               key: commercialDetails?.lstShowACID![0].revenueCode ?? "",
               value:
-              commercialDetails?.lstShowACID![0].revenue ?? "");
+              commercialDetails?.lstShowACID![0].revenue ?? "");*/
 
 
           selectSectype?.value = DropDownValue(
-              key: (commercialDetails?.lstShowACID![0].secTypeCode ?? "").toString(),
+              key: (commercialDetails?.lstShowACID?[0].secTypeCode ?? "").toString(),
               value:
-              commercialDetails?.lstShowACID![0].secType ?? "");
+              ((commercialDetails?.lstShowACID?[0].secType == "NA" ||
+                  commercialDetails?.lstShowACID?[0].secType == null)? "":(commercialDetails?.lstShowACID?[0].secType ?? "")));
 
           // htmlBody.value = commercialDetails?.lstShowACID![0].mailBody ?? "";
           selectClient?.value = DropDownValue(
-              key: commercialDetails?.lstShowACID![0].clientCode,
-              value: commercialDetails?.lstShowACID![0].clientName);
+              key: commercialDetails?.lstShowACID?[0].clientCode,
+              value: commercialDetails?.lstShowACID?[0].clientName);
 
           selectBrand?.value = DropDownValue(
-              key: commercialDetails?.lstShowACID![0].brandcode,
-              value: commercialDetails?.lstShowACID![0].brandName);
+              key: commercialDetails?.lstShowACID?[0].brandcode,
+              value: commercialDetails?.lstShowACID?[0].brandName);
 
-          agencyId_.text = commercialDetails?.lstShowACID![0].clockId??"";
+          agencyId_.text = commercialDetails?.lstShowACID?[0].clockId??"";
 
 
-          if(commercialDetails?.lstShowACID![0].languageName == null ||
-              commercialDetails?.lstShowACID![0].languageName.toString().trim() == ""){
+          if(commercialDetails?.lstShowACID?[0].languageName == null ||
+              commercialDetails?.lstShowACID?[0].languageName.toString().trim() == ""){
             isEnable.value = true;
           }else{
             isEnable.value = false;
@@ -227,17 +269,19 @@ class CommercialMasterAutoIdDetailsController extends GetxController {
           isEnable.refresh();
 
 
-          if(commercialDetails?.lstShowACID![0].locationName == null ||
-              commercialDetails?.lstShowACID![0].locationName.toString().trim() == ""){
+          if(commercialDetails?.lstShowACID?[0].locationName == null ||
+              commercialDetails?.lstShowACID?[0].locationName.toString().trim() == ""){
             isEnable1.value = true;
           }else{
             isEnable1.value = false;
           }
           isEnable1.refresh();
-
+          update(['all']);
           // getRevenueLeave(commercialDetails?.lstShowACID![0].revenueCode ?? "");
 
           clientFocus.requestFocus();
+
+
 
           /* selectClientFromApi(
               commercialDetails?.lstShowACID![0].clientCode ?? "");
@@ -283,16 +327,18 @@ class CommercialMasterAutoIdDetailsController extends GetxController {
   }
 
   void save() {
-    if (selectCensorship == null) {
+    if (selectCensorship == null || selectCensorship?.value == null ||  selectCensorship?.value?.key == "" ||
+        selectCensorship?.value?.value == "" ) {
       LoadingDialog.callInfoMessage("Please select censorship");
-    } else if (selectRevenue == null) {
+    } else if (selectRevenue == null || selectRevenue?.value == null ||
+        selectRevenue?.value?.value == "" ) {
       LoadingDialog.callInfoMessage("Please select revenue");
-    } else if (selectBrand?.value == null) {
+    } else if (selectBrand?.value == null || selectBrand?.value?.value == "") {
       LoadingDialog.callInfoMessage("Please select brand");
-    } else if (selectClient?.value == null) {
+    } else if (selectClient?.value == null || selectClient?.value?.value == "" ) {
       LoadingDialog.callInfoMessage("Please select client");
-    } else if (selectLanguage?.value == null) {
-      LoadingDialog.callInfoMessage("Please select client");
+    } else if (selectLanguage?.value == null || selectLanguage?.value?.value == "") {
+      LoadingDialog.callInfoMessage("Please select language");
     } else {
       try {
         LoadingDialog.call();
@@ -327,7 +373,7 @@ class CommercialMasterAutoIdDetailsController extends GetxController {
           // "eventtypecode": "string",
           // "eventsubtype": "string",
 
-          "agencytapeid": "",
+          "agencytapeid": commercialDetails?.lstShowACID![0].clockId ?? "",
           // "languagecode": sele,
           "clockid": commercialDetails?.lstShowACID![0].clockId ?? "",
           // "eom": commercialDetails?.lstShowACID![0].acid??"",
@@ -337,7 +383,11 @@ class CommercialMasterAutoIdDetailsController extends GetxController {
           "languageName": selectLanguage?.value?.value ?? "",
           "censorshipName": selectCensorship?.value?.value ?? "",
           "revenuetype": selectRevenue?.value?.value ?? "",
-          "sectype": selectSectype?.value?.value ?? "",
+
+          "sectype":(selectSectype?.value?.key == "NA" ||
+              selectSectype?.value?.key == "" ||
+              selectSectype?.value?.key.toString().trim() == "0" )? null: (selectSectype?.value?.key),
+          "sectypeText":selectSectype?.value?.value ?? "",
           "locationCode": selectLocation?.value?.key ?? "",
           "location": selectLocation?.value?.value ?? "",
           "providerName": commercialDetails?.lstShowACID![0].provider ?? "",
