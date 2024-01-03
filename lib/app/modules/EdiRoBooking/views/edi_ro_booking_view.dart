@@ -621,6 +621,9 @@ class EdiRoBookingView extends StatelessWidget {
                                   if (e['okSpot'] != null) {
                                     e['okSpot'] = num.parse(e['okSpot']);
                                   }
+                                  if (e['groupcode'] != null) {
+                                    e['groupcode'] = num.parse(e['groupcode']);
+                                  }
                                   return e;
                                 }).toList(),
                                 hideCode: false,
