@@ -1299,7 +1299,7 @@ class EdiRoBookingController extends GetxController {
           RxList([]);
     }
 
-    if (gridController!.currentCell != null) {
+    if (gridController!.hashCode != null) {
       Get.find<MainController>()
           .filters1[gridController!.hashCode.toString()]!
           .add(RowFilter(
