@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:html';
 import 'dart:html' as html;
 import 'package:bms_salesco/app/controller/HomeController.dart';
@@ -748,7 +749,7 @@ class EdiRoBookingView extends StatelessWidget {
                                     await controller.doubleClickFilterGrid1(
                                         controller.dgvDealEntriesGrid,
                                         'costPer10Sec',
-                                        event.cell.value.toString());
+                                        num.parse(event.cell.value.toString()));
                                   } else if (event.cell.column.field
                                           .toString() ==
                                       'tapE_ID') {
@@ -1096,9 +1097,9 @@ class EdiRoBookingView extends StatelessWidget {
                                   await maincontroller.doubleClickFilterGrid1(
                                       maincontroller.dgvDealEntriesGrid,
                                       'costPer10Sec',
-                                      maincontroller.dvgSpotGrid!.rows[0]
-                                          .cells['spoT_RATE']!.value
-                                          .toString());
+                                      num.parse(maincontroller.dvgSpotGrid!
+                                          .rows[0].cells['spoT_RATE']!.value
+                                          .toString()));
                                 } else {
                                   LoadingDialog.showErrorDialog(
                                       'Spot not found.');

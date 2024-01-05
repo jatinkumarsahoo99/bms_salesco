@@ -1290,6 +1290,7 @@ class EdiRoBookingController extends GetxController {
 
   Future<void> doubleClickFilterGrid1(gridController, field, value) async {
     print("Hashcode======================> ${gridController!.hashCode}");
+
     if (Get.find<MainController>()
         .filters1
         .containsKey(gridController!.hashCode.toString())) {
@@ -1298,7 +1299,7 @@ class EdiRoBookingController extends GetxController {
           RxList([]);
     }
 
-    if (gridController!.hashCode != null) {
+    if (gridController!.currentCell != null) {
       Get.find<MainController>()
           .filters1[gridController!.hashCode.toString()]!
           .add(RowFilter(
