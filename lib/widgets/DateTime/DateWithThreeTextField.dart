@@ -17,25 +17,25 @@ class DateWithThreeTextField extends StatefulWidget {
   final String formatting;
   final bool titleInLeft;
 
-  const DateWithThreeTextField(
-      {Key? key,
-      required this.title,
-      required this.mainTextController,
-      this.splitType = "-",
-      this.day = 31,
-      this.month = 12,
-      this.year = 2022,
-      this.monthWithFullName = false,
-      this.isEnable = true,
-      this.widthRation = .15,
-      this.onFocusChange,
-      this.startDate,
-      this.hideTitle = false,
-      this.endDate,
-      this.formatting = "yyyy/MM/dd",
-      this.intailDate,
-      this.titleInLeft = false})
-      : super(key: key);
+  const DateWithThreeTextField({
+    Key? key,
+    required this.title,
+    required this.mainTextController,
+    this.splitType = "-",
+    this.day = 31,
+    this.month = 12,
+    this.year = 2022,
+    this.monthWithFullName = false,
+    this.isEnable = true,
+    this.widthRation = .15,
+    this.onFocusChange,
+    this.startDate,
+    this.hideTitle = false,
+    this.endDate,
+    this.formatting = "yyyy/MM/dd",
+    this.intailDate,
+    this.titleInLeft = false,
+  }) : super(key: key);
 
   @override
   State<DateWithThreeTextField> createState() => _DateWithThreeTextFieldState();

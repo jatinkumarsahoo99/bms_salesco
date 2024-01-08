@@ -162,6 +162,7 @@ class EdiRoBookingController extends GetxController {
 
   RxBool isEnable = RxBool(true);
   RxBool isBrandEnable = RxBool(true);
+  var fileNameFN = FocusNode(), brandFN = FocusNode(), effDateFN = FocusNode();
 
   @override
   void onInit() {
@@ -572,6 +573,7 @@ class EdiRoBookingController extends GetxController {
           confirm: FormButtonWrapper(
             btnText: "Done",
             callback: () {
+              brandFN.requestFocus();
               Get.back();
             },
           ),
