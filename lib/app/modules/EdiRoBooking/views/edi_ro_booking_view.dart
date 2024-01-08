@@ -271,11 +271,14 @@ class EdiRoBookingView extends StatelessWidget {
                                 ),
                                 Row(
                                   children: [
-                                    DateWithThreeTextField(
-                                      title: "Bk. Date  ",
-                                      mainTextController: controller.bkDate,
-                                      widthRation: .08,
-                                      titleInLeft: true,
+                                    FocusTraversalOrder(
+                                      order: const NumericFocusOrder(6),
+                                      child: DateWithThreeTextField(
+                                        title: "Bk. Date  ",
+                                        mainTextController: controller.bkDate,
+                                        widthRation: .08,
+                                        titleInLeft: true,
+                                      ),
                                     ),
                                     const SizedBox(
                                       width: 2,
@@ -310,45 +313,57 @@ class EdiRoBookingView extends StatelessWidget {
                                     // mainAxisAlignment:
                                     //     MainAxisAlignment.spaceBetween,
                                     children: [
-                                      InputFields.formField1(
-                                        hintTxt: "Booking No",
-                                        controller: controller.bookingNo1TEC,
-                                        width: 0.054,
-                                        titleInLeft: true,
+                                      FocusTraversalOrder(
+                                        order: const NumericFocusOrder(7),
+                                        child: InputFields.formField1(
+                                          hintTxt: "Booking No",
+                                          controller: controller.bookingNo1TEC,
+                                          width: 0.054,
+                                          titleInLeft: true,
+                                        ),
                                       ),
                                       const SizedBox(
                                         width: 5,
                                       ),
-                                      InputFields.formField1(
-                                        hintTxt: "",
-                                        controller: controller.bookingNo2TEC,
-                                        width: 0.02,
-                                        titleInLeft: true,
+                                      FocusTraversalOrder(
+                                        order: const NumericFocusOrder(8),
+                                        child: InputFields.formField1(
+                                          hintTxt: "",
+                                          controller: controller.bookingNo2TEC,
+                                          width: 0.02,
+                                          titleInLeft: true,
+                                        ),
                                       ),
                                       const SizedBox(
                                         width: 5,
                                       ),
-                                      InputFields.formField1(
-                                        hintTxt: "",
-                                        controller: controller.bookingNo3TEC,
-                                        width: 0.055,
-                                        titleInLeft: true,
+                                      FocusTraversalOrder(
+                                        order: const NumericFocusOrder(9),
+                                        child: InputFields.formField1(
+                                          hintTxt: "",
+                                          controller: controller.bookingNo3TEC,
+                                          width: 0.055,
+                                          titleInLeft: true,
+                                        ),
                                       ),
                                     ],
                                   ),
                                 ),
                                 Obx(
-                                  () => DropDownField.formDropDown1WidthMap(
-                                    controller.executives.value,
-                                    (data) {
-                                      controller.selectedExecutives = data;
-                                    },
-                                    "Executive",
-                                    .136,
-                                    selected: controller.selectedExecutives,
-                                    autoFocus: true,
-                                    dialogHeight: 250,
-                                    titleInLeft: true,
+                                  () => FocusTraversalOrder(
+                                    order: const NumericFocusOrder(13),
+                                    child: DropDownField.formDropDown1WidthMap(
+                                      controller.executives.value,
+                                      (data) {
+                                        controller.selectedExecutives = data;
+                                      },
+                                      "Executive",
+                                      .136,
+                                      selected: controller.selectedExecutives,
+                                      autoFocus: true,
+                                      dialogHeight: 250,
+                                      titleInLeft: true,
+                                    ),
                                   ),
                                 ),
                               ],
@@ -491,18 +506,21 @@ class EdiRoBookingView extends StatelessWidget {
                                           showTitle: false,
                                         ),
                                         Obx(
-                                          () => DropDownField
-                                              .formDropDown1WidthMap(
-                                            controller.positions.value,
-                                            (data) {
-                                              controller.selectedPositions =
-                                                  data;
-                                            },
-                                            "Position",
-                                            .125,
-                                            selected:
-                                                controller.selectedPositions,
-                                            autoFocus: true,
+                                          () => FocusTraversalOrder(
+                                            order: const NumericFocusOrder(10),
+                                            child: DropDownField
+                                                .formDropDown1WidthMap(
+                                              controller.positions.value,
+                                              (data) {
+                                                controller.selectedPositions =
+                                                    data;
+                                              },
+                                              "Position",
+                                              .125,
+                                              selected:
+                                                  controller.selectedPositions,
+                                              autoFocus: true,
+                                            ),
                                           ),
                                         ),
                                         InputFields.formField3(
@@ -517,28 +535,34 @@ class EdiRoBookingView extends StatelessWidget {
                                           controller: controller.preBAmtTEC,
                                           width: 0.05,
                                         ),
-                                        Container(
-                                          width: Get.width * 0.115,
-                                          child: FormButtonWrapper(
-                                            showIcon: true,
-                                            iconDataM:
-                                                Icons.video_collection_rounded,
-                                            btnText: "Show Programs",
-                                            callback: () {
-                                              showProgramDilogBox();
-                                            },
+                                        FocusTraversalOrder(
+                                          order: const NumericFocusOrder(11),
+                                          child: Container(
+                                            width: Get.width * 0.115,
+                                            child: FormButtonWrapper(
+                                              showIcon: true,
+                                              iconDataM: Icons
+                                                  .video_collection_rounded,
+                                              btnText: "Show Programs",
+                                              callback: () {
+                                                showProgramDilogBox();
+                                              },
+                                            ),
                                           ),
                                         ),
-                                        Container(
-                                          width: Get.width * 0.115,
-                                          child: FormButtonWrapper(
-                                            showIcon: true,
-                                            iconDataM:
-                                                Icons.done_outline_rounded,
-                                            btnText: "Mark Done",
-                                            callback: () {
-                                              controller.onMarkAsDone();
-                                            },
+                                        FocusTraversalOrder(
+                                          order: const NumericFocusOrder(12),
+                                          child: Container(
+                                            width: Get.width * 0.115,
+                                            child: FormButtonWrapper(
+                                              showIcon: true,
+                                              iconDataM:
+                                                  Icons.done_outline_rounded,
+                                              btnText: "Mark Done",
+                                              callback: () {
+                                                controller.onMarkAsDone();
+                                              },
+                                            ),
                                           ),
                                         ),
                                       ])))),
