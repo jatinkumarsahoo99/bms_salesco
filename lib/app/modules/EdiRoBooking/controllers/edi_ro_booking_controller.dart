@@ -571,7 +571,7 @@ class EdiRoBookingController extends GetxController {
     if (showGstPopUp) {
       showGstPopUp = false;
       Get.defaultDialog(
-          barrierDismissible: false,
+          // barrierDismissible: false,
           radius: 05,
           title: "GST Plant",
           confirm: FormButtonWrapper(
@@ -589,7 +589,6 @@ class EdiRoBookingController extends GetxController {
             autofocus: true,
             onKey: (node, event) {
               print("object111");
-
               if (event.logicalKey == LogicalKeyboardKey.escape) {
                 print("object");
                 Get.back();
@@ -1601,58 +1600,63 @@ class EdiRoBookingController extends GetxController {
   }
 
   checkAll() {
-    try {
-      LoadingDialog.call();
-      var payload = {
-        "lstSpots": lstDgvSpotsList.map((e) {
-          if (e['fctok'] != null) {
-            e['fctok'] = e['fctok'].toString();
-          }
-          if (e['dealOK'] != null) {
-            e['dealOK'] = e['dealOK'].toString();
-          }
-          if (e['nO_SPOT'] != null) {
-            e['nO_SPOT'] = e['nO_SPOT'].toString();
-          }
-          if (e['okSpot'] != null) {
-            e['okSpot'] = e['okSpot'].toString();
-          }
-          if (e['groupcode'] != null) {
-            e['groupcode'] = e['groupcode'].toString();
-          }
-          return e;
-        }).toList(),
-      };
-      Get.find<ConnectorControl>().POSTMETHOD(
-          api: ApiFactory.EDI_RO_CHECK_ALL,
-          json: payload,
-          fun: (map) {
-            Get.back();
-            if (map != null &&
-                map['infoCheckAll'] != null &&
-                map.containsKey('infoCheckAll')) {
-              selectedBrand = brand.firstWhereOrNull((element) {
-                var result =
-                    element.key == map['infoCheckAll']['brandCodeSelected'];
-                return result;
-              });
-              lstDgvSpotsList.value.clear();
-              lstDgvSpotsList.value = map['infoCheckAll']['lstSpots'];
-              tapIdTabelList.clear();
-              tempList.clear();
-              tapIdTabelList.value = map['infoCheckAll']['brandLeave'];
-              tempList.addAll(tapIdTabelList.value);
-              isBrandEnable.value = false;
-              if (map['infoCheckAll']['message'] != null) {
-                LoadingDialog.callInfoMessage(map['infoCheckAll']['message']);
-              } else {
-                dealLeave();
-                checkAllDealUtil();
-              }
+    if (lstDgvSpotsList.isEmpty) {
+      LoadingDialog.showErrorDialog(
+          'Object reference not set to an instance of an object.');
+    } else {
+      try {
+        LoadingDialog.call();
+        var payload = {
+          "lstSpots": lstDgvSpotsList.map((e) {
+            if (e['fctok'] != null) {
+              e['fctok'] = e['fctok'].toString();
             }
-          });
-    } catch (e) {
-      print(e.toString());
+            if (e['dealOK'] != null) {
+              e['dealOK'] = e['dealOK'].toString();
+            }
+            if (e['nO_SPOT'] != null) {
+              e['nO_SPOT'] = e['nO_SPOT'].toString();
+            }
+            if (e['okSpot'] != null) {
+              e['okSpot'] = e['okSpot'].toString();
+            }
+            if (e['groupcode'] != null) {
+              e['groupcode'] = e['groupcode'].toString();
+            }
+            return e;
+          }).toList(),
+        };
+        Get.find<ConnectorControl>().POSTMETHOD(
+            api: ApiFactory.EDI_RO_CHECK_ALL,
+            json: payload,
+            fun: (map) {
+              Get.back();
+              if (map != null &&
+                  map['infoCheckAll'] != null &&
+                  map.containsKey('infoCheckAll')) {
+                selectedBrand = brand.firstWhereOrNull((element) {
+                  var result =
+                      element.key == map['infoCheckAll']['brandCodeSelected'];
+                  return result;
+                });
+                lstDgvSpotsList.value.clear();
+                lstDgvSpotsList.value = map['infoCheckAll']['lstSpots'];
+                tapIdTabelList.clear();
+                tempList.clear();
+                tapIdTabelList.value = map['infoCheckAll']['brandLeave'];
+                tempList.addAll(tapIdTabelList.value);
+                isBrandEnable.value = false;
+                if (map['infoCheckAll']['message'] != null) {
+                  LoadingDialog.callInfoMessage(map['infoCheckAll']['message']);
+                } else {
+                  dealLeave();
+                  checkAllDealUtil();
+                }
+              }
+            });
+      } catch (e) {
+        print(e.toString());
+      }
     }
   }
 
