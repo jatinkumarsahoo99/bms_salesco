@@ -5,7 +5,7 @@ class SameDayCollectionModel {
   String? locationCode;
   String? channelCode;
   String? bookingNumber;
-  int? bookingDetailCode;
+  num? bookingDetailCode;
   String? clientname;
   String? agencyname;
   String? brandname;
@@ -14,10 +14,10 @@ class SameDayCollectionModel {
   String? scheduleDate;
   String? scheduleTime;
   String? dealTime;
-  int? spotAmount;
-  int? tapeDuration;
-  int? rate;
-  int? valuationrate;
+  num? spotAmount;
+  num? tapeDuration;
+  num? rate;
+  num? valuationrate;
   String? zoneName;
 
   SameDayCollectionModel(

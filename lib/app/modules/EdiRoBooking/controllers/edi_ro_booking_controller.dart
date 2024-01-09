@@ -634,16 +634,72 @@ class EdiRoBookingController extends GetxController {
                 map['infoShowLink'] != null &&
                 map.containsKey('infoShowLink')) {
               if (map['infoShowLink']['message'] != null) {
-                LoadingDialog.showErrorDialog(
-                    map['infoShowLink']['message'].toString());
+                LoadingDialog.recordExists(
+                    map['infoShowLink']['message'].toString(), () {
+                  Get.back();
+                  showDefaultLink();
+                }, cancel: () {
+                  Get.back();
+                });
+              } else {
+                showDefaultLink();
               }
-              lstDgvSpotsList.value = map['infoShowLink']['lstDgvSpots'];
-              spotsAllTEC.text = map['infoShowLink']['allSpots'];
-              durAllTEC.text = map['infoShowLink']['allDuration'];
-              amtAllTEC.text = map['infoShowLink']['allAmount'];
-              durBalanceTEC.text = map['infoShowLink']['balanceDuration'];
-              spotsBalanceTEC.text = map['infoShowLink']['balanceSpots'];
-              amtBalanceTEC.text = map['infoShowLink']['balanceAmount'];
+            }
+          });
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  showDefaultLink() {
+    try {
+      LoadingDialog.call();
+      var payload = {
+        "dealNo": selectedDealNo?.key,
+        "locationCode": selectedLoactions?.key,
+        "channelCode": selectedChannel?.key,
+        "agencyCode": selectedAgency?.key,
+        "roRefNo": selectedRoRefNo?.value,
+        "lstDgvDealEntries": lstDgvLinkedDealsList.value.map((e) {
+          if (e['programname'] == null) {
+            e['programname'] = "";
+          }
+          if (e['programCategoryName'] == null) {
+            e['programCategoryName'] = "";
+          }
+          return e;
+        }).toList(),
+        "lstXmlDt": lstXmlDtList.value,
+        "duration": durAllTEC.text,
+        "spots": spotsAllTEC.text,
+        "amount": amtAllTEC.text
+      };
+      Get.find<ConnectorControl>().POSTMETHOD(
+          api: ApiFactory.EDI_RO_SHOW_YES_DEFAULT_LINK,
+          json: payload,
+          fun: (map) {
+            Get.back();
+            print(map);
+            if (map != null &&
+                map['infoShowLink'] != null &&
+                map.containsKey('infoShowLink')) {
+              if (map['infoShowLink']['message'] != null) {
+                LoadingDialog.recordExists(
+                    map['infoShowLink']['message'].toString(), () {
+                  showDefaultLink();
+                  Get.back();
+                }, cancel: () {
+                  Get.back();
+                });
+              } else {
+                lstDgvSpotsList.value = map['infoShowLink']['lstDgvSpots'];
+                spotsAllTEC.text = map['infoShowLink']['allSpots'];
+                durAllTEC.text = map['infoShowLink']['allDuration'];
+                amtAllTEC.text = map['infoShowLink']['allAmount'];
+                durBalanceTEC.text = map['infoShowLink']['balanceDuration'];
+                spotsBalanceTEC.text = map['infoShowLink']['balanceSpots'];
+                amtBalanceTEC.text = map['infoShowLink']['balanceAmount'];
+              }
             }
           });
     } catch (e) {
@@ -1567,7 +1623,6 @@ class EdiRoBookingController extends GetxController {
               tapIdTabelList.value = map['infoCheckAll']['brandLeave'];
               tempList.addAll(tapIdTabelList.value);
               isBrandEnable.value = false;
-              update(["initData"]);
               if (map['infoCheckAll']['message'] != null) {
                 LoadingDialog.callInfoMessage(map['infoCheckAll']['message']);
               } else {
@@ -1583,9 +1638,24 @@ class EdiRoBookingController extends GetxController {
 
   checkAllDealUtil() {
     try {
-      LoadingDialog.call();
+      // LoadingDialog.call();
       var payload = {
-        "lstDealEntires": lstDgvDealEntriesList ?? [],
+        "lstDealEntires": lstDgvDealEntriesList.map((e) {
+              if (e['fromdate'] != null) {
+                e['fromdate'] = dateConvertToyyyy(e['fromdate']);
+              }
+              if (e['todate'] != null) {
+                e['todate'] = dateConvertToyyyy(e['todate']);
+              }
+              if (e['startdate'] != null) {
+                e['startdate'] = dateConvertToyyyy(e['startdate']);
+              }
+              if (e['enddate'] != null) {
+                e['enddate'] = dateConvertToyyyy(e['enddate']);
+              }
+              return e;
+            }).toList() ??
+            [],
         "lstSpots": lstDgvSpotsList ?? [],
         "lstTapeIds": tapIdTabelList ?? [],
         "locationCode": selectedLoactions!.key ?? "",
@@ -1598,7 +1668,7 @@ class EdiRoBookingController extends GetxController {
           api: ApiFactory.EDI_RO_CHECK_ALL_DEAL_UTIL,
           json: payload,
           fun: (map) {
-            Get.back();
+            // Get.back();
             if (map != null &&
                 map['infoCheckAllDealUtility'] != null &&
                 map.containsKey('infoCheckAllDealUtility')) {
@@ -1658,6 +1728,7 @@ class EdiRoBookingController extends GetxController {
               valAmountTEC.text =
                   map['infoCheckAllProgramFCT']['totalValAmount'].toString() ??
                       "";
+              // update(["initData"]);
             }
           });
     } catch (e) {
@@ -2770,6 +2841,16 @@ class EdiRoBookingController extends GetxController {
       default:
         return 0;
     }
+  }
+
+  String convertDate(String date) {
+    return (DateFormat('dd/MM/yyyy')
+        .format(DateFormat('yyyy-MM-ddTHH:mm:ss').parse(date)));
+  }
+
+  String dateConvertToyyyy(String date) {
+    return (DateFormat('yyyy-MM-ddTHH:mm:ss')
+        .format(DateFormat('dd/MM/yyyy').parse(date)));
   }
 
   @override

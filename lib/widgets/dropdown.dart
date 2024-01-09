@@ -2728,8 +2728,9 @@ class DropDownField {
                                                 SizeDefine.fontSizeInputField,
                                           ),
                                           onChanged: ((value) {
-                                            tempList.clear();
                                             if (value.isNotEmpty) {
+                                              tempList.clear();
+
                                               for (var i = 0;
                                                   i < items.length;
                                                   i++) {
@@ -2742,7 +2743,9 @@ class DropDownField {
                                                 }
                                               }
                                             } else {
+                                              tempList.clear();
                                               tempList.addAll(items);
+                                              tempList.refresh();
                                             }
                                           }),
                                           inputFormatters: [

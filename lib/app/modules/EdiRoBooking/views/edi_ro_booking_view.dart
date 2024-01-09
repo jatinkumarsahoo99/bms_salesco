@@ -20,6 +20,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 // import 'package:pluto_grid/pluto_grid.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:bms_salesco/widgets/PlutoGrid/pluto_grid.dart';
@@ -627,7 +628,26 @@ class EdiRoBookingView extends StatelessWidget {
                             child: DataGridFromMap3(
                               mode: PlutoGridMode.selectWithOneTap,
                               onSelected: (event) {},
-                              mapData: controller.lstDgvDealEntriesList.value,
+                              mapData: controller.lstDgvDealEntriesList.value
+                                  .map((e) {
+                                if (e['fromdate'] != null) {
+                                  e['fromdate'] =
+                                      controller.convertDate(e['fromdate']);
+                                }
+                                if (e['todate'] != null) {
+                                  e['todate'] =
+                                      controller.convertDate(e['todate']);
+                                }
+                                if (e['startdate'] != null) {
+                                  e['startdate'] =
+                                      controller.convertDate(e['startdate']);
+                                }
+                                if (e['enddate'] != null) {
+                                  e['enddate'] =
+                                      controller.convertDate(e['enddate']);
+                                }
+                                return e;
+                              }).toList(),
                               hideCode: false,
                               exportFileName: "EDI R.O. Booking",
                               onload: (load) {

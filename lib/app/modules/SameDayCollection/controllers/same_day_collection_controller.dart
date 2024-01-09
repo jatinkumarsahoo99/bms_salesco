@@ -231,11 +231,16 @@ class SameDayCollectionController extends GetxController {
   void handleCheckAndUncheck() {
     checkedAll.value = !checkedAll.value;
     if (dataTableList.isNotEmpty) {
-      dataTableList.value = dataTableList.value.map((e) {
-        e.cancel = checkedAll.value;
-        return e;
-      }).toList();
-      dataTableList.refresh();
+      for (var i = 0; i < manager!.refRows.length; i++) {
+        dataTableList.value[manager!.refRows[i].sortIdx].cancel =
+            checkedAll.value;
+        manager!.changeCellValue(
+          manager!.refRows[i].cells['cancel']!,
+          checkedAll.value.toString(),
+          callOnChangedEvent: false,
+          force: true,
+        );
+      }
     }
   }
 }
