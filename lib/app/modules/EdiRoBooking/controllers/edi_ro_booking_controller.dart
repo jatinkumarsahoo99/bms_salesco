@@ -509,19 +509,22 @@ class EdiRoBookingController extends GetxController {
 
               //GST Plants
               gstNoTEC.text =
-                  roBookingDealLeave!.infoLeaveOnDealNumber!.gstRegNo! ?? "";
-              roBookingDealLeave!.infoLeaveOnDealNumber!.gstPlantList!
-                  .forEach((e) {
-                gstPlant.add(DropDownValue(
-                    key: e.plantid.toString() ?? "", value: e.column1 ?? ""));
-              });
-              selectedGstPlant = gstPlant.firstWhereOrNull(
-                (element) {
-                  var result = element.key ==
-                      roBookingDealLeave!.infoLeaveOnDealNumber!.gstPlantId!;
-                  return result;
-                },
-              );
+                  roBookingDealLeave?.infoLeaveOnDealNumber?.gstRegNo ?? "";
+              if (roBookingDealLeave?.infoLeaveOnDealNumber?.gstPlantList !=
+                  null) {
+                roBookingDealLeave!.infoLeaveOnDealNumber!.gstPlantList!
+                    .forEach((e) {
+                  gstPlant.add(DropDownValue(
+                      key: e.plantid.toString() ?? "", value: e.column1 ?? ""));
+                });
+                selectedGstPlant = gstPlant.firstWhereOrNull(
+                  (element) {
+                    var result = element.key ==
+                        roBookingDealLeave!.infoLeaveOnDealNumber!.gstPlantId!;
+                    return result;
+                  },
+                );
+              }
 
               isShowLink.value = true;
               //LD Button
@@ -568,34 +571,51 @@ class EdiRoBookingController extends GetxController {
     if (showGstPopUp) {
       showGstPopUp = false;
       Get.defaultDialog(
+          barrierDismissible: false,
           radius: 05,
           title: "GST Plant",
           confirm: FormButtonWrapper(
             btnText: "Done",
             callback: () {
-              brandFN.requestFocus();
-              Get.back();
+              if (selectedGstPlant == null) {
+                LoadingDialog.showErrorDialog('Please select GST Plant');
+              } else {
+                brandFN.requestFocus();
+                Get.back();
+              }
             },
           ),
-          content: SizedBox(
-            height: Get.height / 6,
-            width: Get.width / 4,
-            child: Column(
-              children: [
-                DropDownField.formDropDown1WidthMap(
-                  gstPlant.value,
-                  (value) => {selectedGstPlant = value},
-                  "GST Plant",
-                  0.20,
-                  selected: selectedGstPlant,
-                  autoFocus: true,
-                ),
-                InputFields.formField1(
-                  hintTxt: "GST Reg#",
-                  controller: gstNoTEC,
-                  width: 0.20,
-                )
-              ],
+          content: Focus(
+            autofocus: true,
+            onKey: (node, event) {
+              print("object111");
+
+              if (event.logicalKey == LogicalKeyboardKey.escape) {
+                print("object");
+                Get.back();
+              }
+              return KeyEventResult.ignored;
+            },
+            child: SizedBox(
+              height: Get.height / 6,
+              width: Get.width / 4,
+              child: Column(
+                children: [
+                  DropDownField.formDropDown1WidthMap(
+                    gstPlant.value,
+                    (value) => {selectedGstPlant = value},
+                    "GST Plant",
+                    0.20,
+                    selected: selectedGstPlant,
+                    autoFocus: true,
+                  ),
+                  InputFields.formField1(
+                    hintTxt: "GST Reg#",
+                    controller: gstNoTEC,
+                    width: 0.20,
+                  )
+                ],
+              ),
             ),
           ));
     }

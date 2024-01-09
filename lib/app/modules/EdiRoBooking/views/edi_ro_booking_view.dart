@@ -167,6 +167,7 @@ class EdiRoBookingView extends StatelessWidget {
                                           DropDownField.formDropDown1WidthMap(
                                               controller.dealNo.value, (data) {
                                         controller.selectedDealNo = data;
+
                                         controller.dealLeave();
                                       }, "Deal No.   ", .100,
                                               dialogHeight: 250,
