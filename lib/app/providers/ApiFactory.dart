@@ -60,7 +60,8 @@ class ApiFactory {
 */
 ///////////////////////XML Download API////////////////////////
   static String EXPORT_TO_XML = "$BASE_URL_COMMON/api/Common/ConvertTableToXml";
-  static String EXPORT_TO_EXCEL = "$BASE_URL_COMMON/api/Common/ConvertJsonToExcel";
+  static String EXPORT_TO_EXCEL =
+      "$BASE_URL_COMMON/api/Common/ConvertJsonToExcel";
   static String CONVERT_TO_PDF =
       "$BASE_URL_COMMON/api/Common/ConvertTableToPDF";
 
@@ -216,12 +217,14 @@ class ApiFactory {
       "$BASE_URL/api/EDIRoBooking/OnLeaveLocation?LocationCode=$locationCode";
   static String EDI_RO_LEAVE_FILE_NAME_CLAGDETAILS(
           locationName, channelName, clientName, agencyName, effectiveFrom) =>
-      "$BASE_URL/api/EDIRoBooking/OnLeaveFileNameClagdetails?LocationName=$locationName&ChannelName=${Uri.encodeQueryComponent(channelName)}&ClientName=$clientName&AgencyName=$agencyName&EffectiveFrom=$effectiveFrom";
+      "$BASE_URL/api/EDIRoBooking/OnLeaveFileNameClagdetails?LocationName=${Uri.encodeQueryComponent(locationName)}&ChannelName=${Uri.encodeQueryComponent(channelName)}&ClientName=${Uri.encodeQueryComponent(clientName)}&AgencyName=${Uri.encodeQueryComponent(agencyName)}&EffectiveFrom=$effectiveFrom";
   static String EDI_RO_AGENCY_LEAVE =
       "$BASE_URL/api/EDIRoBooking/OnAgencyLeave";
   static String EDI_RO_MARK_AS_DONE(fileName) =>
       "$BASE_URL/api/EDIRoBooking/OnMarkAsDone?FileName=$fileName";
   static String EDI_RO_SHOW_LINK = "$BASE_URL/api/EDIRoBooking/ShowLink";
+  static String EDI_RO_SHOW_YES_DEFAULT_LINK =
+      "$BASE_URL/api/EDIRoBooking/ShowYesDefaultLink";
 
   static String EDI_RO_LEAVE_DEAL_NO(
     effDate,
@@ -1137,7 +1140,6 @@ class ApiFactory {
   static String COMMERCIAL_CREATION_SAVE() =>
       "$BASE_URL/api/CommercialMasterAuto/PostSave";
 
-
   ///////////////////////// COMERCIAL MASTER AUTO ID/////////
   static String COMMERCIAL_MASTER_GET_LOAD() =>
       "$BASE_URL/api/CommercialMasterAutoId/GetLoad";
@@ -1161,7 +1163,6 @@ class ApiFactory {
       "$BASE_URL/api/CommercialMasterAutoId/GetEOMSelect?EOM=$som&SOM=$eom";
   static String COMMERCIAL_MASTER_SAVE() =>
       "$BASE_URL/api/CommercialMasterAutoId/PostSave";
-
 
   ///////////////////////// End: COMERCIAL CREATION AUTO ////////////
   ///
