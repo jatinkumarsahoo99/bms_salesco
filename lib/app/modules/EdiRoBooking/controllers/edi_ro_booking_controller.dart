@@ -600,7 +600,7 @@ class EdiRoBookingController extends GetxController {
               width: Get.width / 4,
               child: Column(
                 children: [
-                  DropDownField.formDropDown1WidthMap3(
+                  DropDownField.formDropDown1WidthMap(
                     gstPlant.value,
                     (value) => {selectedGstPlant = value},
                     "GST Plant",
