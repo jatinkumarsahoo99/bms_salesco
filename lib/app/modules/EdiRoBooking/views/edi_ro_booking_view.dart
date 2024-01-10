@@ -81,7 +81,7 @@ class EdiRoBookingView extends StatelessWidget {
                               children: [
                                 FocusTraversalOrder(
                                   order: const NumericFocusOrder(1),
-                                  child: DropDownField.formDropDown1WidthMap(
+                                  child: DropDownField.formDropDown1WidthMap3(
                                     controller.fileNames.value,
                                     (data) {
                                       controller.selectedFile = data;
@@ -96,7 +96,7 @@ class EdiRoBookingView extends StatelessWidget {
                                     inkWellFocusNode: controller.fileNameFN,
                                   ),
                                 ),
-                                DropDownField.formDropDown1WidthMap(
+                                DropDownField.formDropDown1WidthMap3(
                                     controller.strRoRefNo.value, (data) {
                                   controller.selectedRoRefNo = data;
                                 }, "RO Ref No", .32,
@@ -121,7 +121,7 @@ class EdiRoBookingView extends StatelessWidget {
                                     ),
                                   ),
                                 ),
-                                DropDownField.formDropDown1WidthMap(
+                                DropDownField.formDropDown1WidthMap3(
                                     controller.loactions.value, (data) {
                                   controller.selectedLoactions = data;
                                   controller.locationLeave(data.key);
@@ -129,14 +129,14 @@ class EdiRoBookingView extends StatelessWidget {
                                     selected: controller.selectedLoactions,
                                     isEnable: controller.isEnable.value,
                                     titleInLeft: true),
-                                DropDownField.formDropDown1WidthMap(
+                                DropDownField.formDropDown1WidthMap3(
                                     controller.channel.value, (data) {
                                   controller.selectedChannel = data;
                                 }, "Channel   ", .17,
                                     isEnable: controller.isEnable.value,
                                     selected: controller.selectedChannel,
                                     titleInLeft: true),
-                                DropDownField.formDropDown1WidthMap(
+                                DropDownField.formDropDown1WidthMap3(
                                   controller.client.value,
                                   (data) {
                                     controller.selectedClient = data;
@@ -147,7 +147,7 @@ class EdiRoBookingView extends StatelessWidget {
                                   isEnable: controller.isEnable.value,
                                   titleInLeft: true,
                                 ),
-                                DropDownField.formDropDown1WidthMap(
+                                DropDownField.formDropDown1WidthMap3(
                                   controller.agency.value,
                                   (data) {
                                     // controller.agencyLeave();
@@ -164,12 +164,13 @@ class EdiRoBookingView extends StatelessWidget {
                                     FocusTraversalOrder(
                                       order: const NumericFocusOrder(2),
                                       child:
-                                          DropDownField.formDropDown1WidthMap(
+                                          DropDownField.formDropDown1WidthMap3(
                                               controller.dealNo.value, (data) {
                                         controller.selectedDealNo = data;
 
                                         controller.dealLeave();
-                                      }, "Deal No.   ", .100,
+                                      },
+                                              "Deal No.   ", .100,
                                               dialogHeight: 250,
                                               selected:
                                                   controller.selectedDealNo,
@@ -190,8 +191,8 @@ class EdiRoBookingView extends StatelessWidget {
                                     Obx(
                                       () => FocusTraversalOrder(
                                         order: const NumericFocusOrder(3),
-                                        child:
-                                            DropDownField.formDropDown1WidthMap(
+                                        child: DropDownField
+                                            .formDropDown1WidthMap3(
                                           controller.brand.value,
                                           (data) {
                                             controller.selectedBrand = data;
@@ -354,7 +355,7 @@ class EdiRoBookingView extends StatelessWidget {
                                 Obx(
                                   () => FocusTraversalOrder(
                                     order: const NumericFocusOrder(13),
-                                    child: DropDownField.formDropDown1WidthMap(
+                                    child: DropDownField.formDropDown1WidthMap3(
                                       controller.executives.value,
                                       (data) {
                                         controller.selectedExecutives = data;
@@ -511,7 +512,7 @@ class EdiRoBookingView extends StatelessWidget {
                                           () => FocusTraversalOrder(
                                             order: const NumericFocusOrder(10),
                                             child: DropDownField
-                                                .formDropDown1WidthMap(
+                                                .formDropDown1WidthMap3(
                                               controller.positions.value,
                                               (data) {
                                                 controller.selectedPositions =
@@ -960,7 +961,7 @@ class EdiRoBookingView extends StatelessWidget {
                                 Obx(
                                   () => Visibility(
                                     visible: controller.isEnterNewPDC.value,
-                                    child: DropDownField.formDropDown1WidthMap(
+                                    child: DropDownField.formDropDown1WidthMap3(
                                       controller.newPdcList.value,
                                       (data) {
                                         controller.selectedPdc = data;
