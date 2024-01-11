@@ -1752,6 +1752,55 @@ class EdiRoBookingController extends GetxController {
               valAmountTEC.text =
                   map['infoCheckAllProgramFCT']['totalValAmount'].toString() ??
                       "";
+              lstDgvSpotsList.value = map['infoCheckAllProgramFCT']
+                      ['getTimeAvailable']['lstSpot'] ??
+                  [];
+              spotsBookedTEC.text = map['infoCheckAllProgramFCT']
+                      ['getTimeAvailable']['txtSpots']
+                  .toString();
+              durBookedTEC.text = map['infoCheckAllProgramFCT']
+                      ['getTimeAvailable']['txtDuration']
+                  .toString();
+              amtBookedTEC.text = map['infoCheckAllProgramFCT']
+                      ['getTimeAvailable']['txtAmount']
+                  .toString();
+              amtValAmmountTEC.text = map['infoCheckAllProgramFCT']
+                      ['getTimeAvailable']['txtValAmount']
+                  .toString();
+              //Spot Blance
+              var spotBlance = num.parse(spotsBalanceTEC.text) -
+                  num.parse(spotsBookedTEC.text);
+              spotsBalanceTEC.text = spotBlance.toString();
+              //Dur Blance
+              var durBlance =
+                  num.parse(durBalanceTEC.text) - num.parse(durBookedTEC.text);
+              durBalanceTEC.text = durBlance.toString();
+              //Amt Blance
+              var amtBlance =
+                  num.parse(amtBalanceTEC.text) - num.parse(amtBookedTEC.text);
+              amtBalanceTEC.text = amtBlance.toString();
+              if (map['infoCheckAllProgramFCT']['getTimeAvailable']
+                      ['message'] !=
+                  null) {
+                showGstPopUp = true;
+                gstDilogBox();
+                LoadingDialog.callInfoMessage(map['infoCheckAllProgramFCT']
+                    ['getTimeAvailable']['message']);
+              }
+
+              //Val Ammount & Booked Ammount
+              num bookedSum = 0;
+              num valSum = 0;
+              for (var i = 0; i < dgvDealEntriesGrid!.refRows.length; i++) {
+                bookedSum += num.parse(dgvDealEntriesGrid!
+                    .refRows[i].cells['totalBookedAmt']!.value
+                    .toString());
+                valSum += num.parse(dgvDealEntriesGrid!
+                    .refRows[i].cells['totalValAmt']!.value
+                    .toString());
+              }
+              bookedAmountTEC.text = bookedSum.toString();
+              valAmountTEC.text = valSum.toString();
               // update(["initData"]);
             }
           });
