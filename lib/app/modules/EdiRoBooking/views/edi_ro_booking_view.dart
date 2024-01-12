@@ -21,6 +21,7 @@ import 'package:flutter/services.dart';
 
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+
 // import 'package:pluto_grid/pluto_grid.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:bms_salesco/widgets/PlutoGrid/pluto_grid.dart';
@@ -38,6 +39,7 @@ class EdiRoBookingView extends StatelessWidget {
   EdiRoBookingView({Key? key}) : super(key: key);
   var maincontroller =
       Get.put<EdiRoBookingController>(EdiRoBookingController());
+
   @override
   Widget build(BuildContext context) {
     return GetBuilder<EdiRoBookingController>(
@@ -692,10 +694,10 @@ class EdiRoBookingView extends StatelessWidget {
                               )
                             : Container(
                                 child: DataGridFromMap3(
-                                  mode: PlutoGridMode.selectWithOneTap,
-                                  onSelected: (event) {
-                                    controller.isSelectingChange.value = false;
-                                  },
+                                  mode: PlutoGridMode.normal,
+                                  // onSelected: (event) {
+                                  //   controller.isSelectingChange.value = false;
+                                  // },
                                   editKeys: const ['noProgram'],
                                   hideKeys: const [
                                     'backColor',
@@ -745,6 +747,13 @@ class EdiRoBookingView extends StatelessWidget {
                                         PlutoGridSelectingMode.row);
                                     load.stateManager.setCurrentCell(
                                         load.stateManager.firstCell, 0);
+                                    load.stateManager.onSelectCellCallback =
+                                        () {
+                                      if(controller.isSelectingChange.value) {
+                                        controller.isSelectingChange.value =
+                                        false;
+                                      }
+                                    };
                                     controller.dvgSpotGrid = load.stateManager;
                                   },
                                   colorCallback: (colorEvent) {
