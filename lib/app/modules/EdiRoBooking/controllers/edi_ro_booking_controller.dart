@@ -1662,7 +1662,7 @@ class EdiRoBookingController extends GetxController {
 
   checkAllDealUtil() {
     try {
-      // LoadingDialog.call();
+      LoadingDialog.call();
       var payload = {
         "lstDealEntires": lstDgvDealEntriesList.map((e) {
               if (e['fromdate'] != null) {
@@ -1692,7 +1692,7 @@ class EdiRoBookingController extends GetxController {
           api: ApiFactory.EDI_RO_CHECK_ALL_DEAL_UTIL,
           json: payload,
           fun: (map) {
-            // Get.back();
+            Get.back();
             if (map != null &&
                 map['infoCheckAllDealUtility'] != null &&
                 map.containsKey('infoCheckAllDealUtility')) {
@@ -1752,6 +1752,7 @@ class EdiRoBookingController extends GetxController {
               valAmountTEC.text =
                   map['infoCheckAllProgramFCT']['totalValAmount'].toString() ??
                       "";
+
               lstDgvSpotsList.value = map['infoCheckAllProgramFCT']
                       ['getTimeAvailable']['lstSpot'] ??
                   [];
@@ -1768,39 +1769,47 @@ class EdiRoBookingController extends GetxController {
                       ['getTimeAvailable']['txtValAmount']
                   .toString();
               //Spot Blance
-              var spotBlance = num.parse(spotsBalanceTEC.text) -
-                  num.parse(spotsBookedTEC.text);
+              var spotBlance =
+                  num.parse(spotsAllTEC.text) - num.parse(spotsBookedTEC.text);
               spotsBalanceTEC.text = spotBlance.toString();
               //Dur Blance
               var durBlance =
-                  num.parse(durBalanceTEC.text) - num.parse(durBookedTEC.text);
+                  num.parse(durAllTEC.text) - num.parse(durBookedTEC.text);
               durBalanceTEC.text = durBlance.toString();
               //Amt Blance
               var amtBlance =
-                  num.parse(amtBalanceTEC.text) - num.parse(amtBookedTEC.text);
+                  num.parse(amtAllTEC.text) - num.parse(amtBookedTEC.text);
               amtBalanceTEC.text = amtBlance.toString();
-              if (map['infoCheckAllProgramFCT']['getTimeAvailable']
-                      ['message'] !=
-                  null) {
-                showGstPopUp = true;
-                gstDilogBox();
-                LoadingDialog.callInfoMessage(map['infoCheckAllProgramFCT']
-                    ['getTimeAvailable']['message']);
-              }
-
               //Val Ammount & Booked Ammount
               num bookedSum = 0;
               num valSum = 0;
               for (var i = 0; i < dgvDealEntriesGrid!.refRows.length; i++) {
+                print(i);
                 bookedSum += num.parse(dgvDealEntriesGrid!
                     .refRows[i].cells['totalBookedAmt']!.value
                     .toString());
                 valSum += num.parse(dgvDealEntriesGrid!
                     .refRows[i].cells['totalValAmt']!.value
                     .toString());
+                print(bookedSum);
+                print(valSum);
               }
+              print("Booked===> ${bookedSum.toString()}");
+              print("Val===> ${valSum.toString()}");
+
               bookedAmountTEC.text = bookedSum.toString();
               valAmountTEC.text = valSum.toString();
+
+              if (num.parse(spotsBalanceTEC.text) > 0) {
+                showGstPopUp = true;
+                gstDilogBox();
+                LoadingDialog.callInfoMessage(
+                    'All spots are not booked.\nPlease cross check data before saving....');
+              } else {
+                showGstPopUp = true;
+                gstDilogBox();
+                LoadingDialog.callInfoMessage('All spots are booked.');
+              }
               // update(["initData"]);
             }
           });

@@ -1012,7 +1012,9 @@ class EdiRoBookingView extends StatelessWidget {
         infoDilogBox();
         break;
       case "Check All":
-        maincontroller.checkAll();
+        if (num.parse(maincontroller.spotsBalanceTEC.text) > 0) {
+          maincontroller.checkAll();
+        }
         break;
       case "MG Spots":
         mgSpotsDilogBox();
