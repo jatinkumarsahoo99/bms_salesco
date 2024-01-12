@@ -570,34 +570,41 @@ class EdiRoBookingView extends StatelessWidget {
                                       ])))),
                       Column(
                         children: [
-                          Card(
-                              child: Padding(
-                                  padding: EdgeInsets.all(4),
-                                  child: SizedBox(
-                                      width: Get.width * 0.07,
-                                      child: Wrap(
-                                        children: [
-                                          InputFields.formField3(
-                                            hintTxt: "Max Spend",
-                                            isEnable: false,
-                                            controller: controller.maxSpendTEC,
-                                            width: 0.05,
-                                          ),
-                                          InputFields.formField3(
-                                            hintTxt: "Booked Amount",
-                                            isEnable: false,
-                                            controller:
-                                                controller.bookedAmountTEC,
-                                            width: 0.05,
-                                          ),
-                                          InputFields.formField3(
-                                            hintTxt: "Val Amount",
-                                            isEnable: false,
-                                            controller: controller.valAmountTEC,
-                                            width: 0.05,
-                                          ),
-                                        ],
-                                      )))),
+                          GetBuilder(
+                              init: controller,
+                              id: "totalAmount",
+                              builder: (controller) {
+                                return Card(
+                                    child: Padding(
+                                        padding: EdgeInsets.all(4),
+                                        child: SizedBox(
+                                            width: Get.width * 0.07,
+                                            child: Wrap(
+                                              children: [
+                                                InputFields.formField3(
+                                                  hintTxt: "Max Spend",
+                                                  isEnable: false,
+                                                  controller:
+                                                      controller.maxSpendTEC,
+                                                  width: 0.05,
+                                                ),
+                                                InputFields.formField3(
+                                                  hintTxt: "Booked Amount",
+                                                  isEnable: false,
+                                                  controller: controller
+                                                      .bookedAmountTEC,
+                                                  width: 0.05,
+                                                ),
+                                                InputFields.formField3(
+                                                  hintTxt: "Val Amount",
+                                                  isEnable: false,
+                                                  controller:
+                                                      controller.valAmountTEC,
+                                                  width: 0.05,
+                                                ),
+                                              ],
+                                            ))));
+                              }),
                           const SizedBox(
                             height: 8,
                           ),
@@ -1012,7 +1019,7 @@ class EdiRoBookingView extends StatelessWidget {
         infoDilogBox();
         break;
       case "Check All":
-        if (num.parse(maincontroller.spotsBalanceTEC.text) > 0) {
+        if (maincontroller.isCheckAll) {
           maincontroller.checkAll();
         }
         break;
