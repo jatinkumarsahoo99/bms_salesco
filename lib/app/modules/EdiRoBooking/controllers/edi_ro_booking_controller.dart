@@ -83,6 +83,8 @@ class EdiRoBookingController extends GetxController {
   var linkDealName = "".obs;
   bool showGstPopUp = true;
   bool pdcDetailsPopUP = true;
+  bool isCheckAll = true;
+
   var extraButtons = ['Info', 'Check All', 'MG Spots', 'Tape Id'];
 
   var isShowLink = false.obs;
@@ -1745,6 +1747,7 @@ class EdiRoBookingController extends GetxController {
             if (map != null &&
                 map['infoCheckAllProgramFCT'] != null &&
                 map.containsKey('infoCheckAllProgramFCT')) {
+              isCheckAll = false;
               bookedAmountTEC.text = map['infoCheckAllProgramFCT']
                           ['totalBookedAmount']
                       .toString() ??
@@ -1784,15 +1787,12 @@ class EdiRoBookingController extends GetxController {
               num bookedSum = 0;
               num valSum = 0;
               for (var i = 0; i < dgvDealEntriesGrid!.refRows.length; i++) {
-                print(i);
                 bookedSum += num.parse(dgvDealEntriesGrid!
                     .refRows[i].cells['totalBookedAmt']!.value
                     .toString());
                 valSum += num.parse(dgvDealEntriesGrid!
                     .refRows[i].cells['totalValAmt']!.value
                     .toString());
-                print(bookedSum);
-                print(valSum);
               }
               print("Booked===> ${bookedSum.toString()}");
               print("Val===> ${valSum.toString()}");
@@ -1801,16 +1801,21 @@ class EdiRoBookingController extends GetxController {
               valAmountTEC.text = valSum.toString();
 
               if (num.parse(spotsBalanceTEC.text) > 0) {
-                showGstPopUp = true;
-                gstDilogBox();
+                if (selectedGstPlant == null) {
+                  showGstPopUp = true;
+                  gstDilogBox();
+                }
+
                 LoadingDialog.callInfoMessage(
                     'All spots are not booked.\nPlease cross check data before saving....');
               } else {
-                showGstPopUp = true;
-                gstDilogBox();
+                if (selectedGstPlant == null) {
+                  showGstPopUp = true;
+                  gstDilogBox();
+                }
                 LoadingDialog.callInfoMessage('All spots are booked.');
               }
-              // update(["initData"]);
+              update(["totalAmount"]);
             }
           });
     } catch (e) {
@@ -1857,7 +1862,7 @@ class EdiRoBookingController extends GetxController {
           "dealNo": selectedDealNo!.key ?? "",
           "loggedUser": Get.find<MainController>().user?.logincode ?? "",
           "fileName": selectedFile!.value ?? "",
-          "gstPlantsId": selectedGstPlant!.value ?? "",
+          "gstPlantsId": selectedGstPlant?.value ?? "",
           "gstRegN": gstNoTEC.text
         };
         Get.find<ConnectorControl>().POSTMETHOD(
