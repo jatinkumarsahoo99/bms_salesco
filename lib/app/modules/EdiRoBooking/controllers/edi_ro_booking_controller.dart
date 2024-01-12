@@ -6,7 +6,11 @@ import 'package:bms_salesco/app/modules/CommonDocs/views/common_docs_view.dart';
 import 'package:bms_salesco/app/modules/EdiRoBooking/bindings/edi_ro_booking_check_all_deal_utility.dart';
 import 'package:bms_salesco/app/modules/EdiRoBooking/bindings/edi_ro_booking_model.dart';
 import 'package:bms_salesco/app/modules/EdiRoBooking/bindings/edit_ro_init_data.dart';
+import 'package:bms_salesco/app/providers/SizeDefine.dart';
+import 'package:bms_salesco/widgets/CheckBoxWidget.dart';
+import 'package:bms_salesco/widgets/DateTime/DateWithThreeTextField.dart';
 import 'package:bms_salesco/widgets/LoadingDialog.dart';
+import 'package:bms_salesco/widgets/gridFromMap.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -83,6 +87,8 @@ class EdiRoBookingController extends GetxController {
   var linkDealName = "".obs;
   bool showGstPopUp = true;
   bool pdcDetailsPopUP = true;
+  bool isCheckAll = true;
+
   var extraButtons = ['Info', 'Check All', 'MG Spots', 'Tape Id'];
 
   var isShowLink = false.obs;
@@ -1662,7 +1668,7 @@ class EdiRoBookingController extends GetxController {
 
   checkAllDealUtil() {
     try {
-      // LoadingDialog.call();
+      LoadingDialog.call();
       var payload = {
         "lstDealEntires": lstDgvDealEntriesList.map((e) {
               if (e['fromdate'] != null) {
@@ -1692,7 +1698,7 @@ class EdiRoBookingController extends GetxController {
           api: ApiFactory.EDI_RO_CHECK_ALL_DEAL_UTIL,
           json: payload,
           fun: (map) {
-            // Get.back();
+            Get.back();
             if (map != null &&
                 map['infoCheckAllDealUtility'] != null &&
                 map.containsKey('infoCheckAllDealUtility')) {
@@ -1745,6 +1751,7 @@ class EdiRoBookingController extends GetxController {
             if (map != null &&
                 map['infoCheckAllProgramFCT'] != null &&
                 map.containsKey('infoCheckAllProgramFCT')) {
+              isCheckAll = false;
               bookedAmountTEC.text = map['infoCheckAllProgramFCT']
                           ['totalBookedAmount']
                       .toString() ??
@@ -1752,7 +1759,67 @@ class EdiRoBookingController extends GetxController {
               valAmountTEC.text =
                   map['infoCheckAllProgramFCT']['totalValAmount'].toString() ??
                       "";
-              // update(["initData"]);
+
+              lstDgvSpotsList.value = map['infoCheckAllProgramFCT']
+                      ['getTimeAvailable']['lstSpot'] ??
+                  [];
+              spotsBookedTEC.text = map['infoCheckAllProgramFCT']
+                      ['getTimeAvailable']['txtSpots']
+                  .toString();
+              durBookedTEC.text = map['infoCheckAllProgramFCT']
+                      ['getTimeAvailable']['txtDuration']
+                  .toString();
+              amtBookedTEC.text = map['infoCheckAllProgramFCT']
+                      ['getTimeAvailable']['txtAmount']
+                  .toString();
+              amtValAmmountTEC.text = map['infoCheckAllProgramFCT']
+                      ['getTimeAvailable']['txtValAmount']
+                  .toString();
+              //Spot Blance
+              var spotBlance =
+                  num.parse(spotsAllTEC.text) - num.parse(spotsBookedTEC.text);
+              spotsBalanceTEC.text = spotBlance.toString();
+              //Dur Blance
+              var durBlance =
+                  num.parse(durAllTEC.text) - num.parse(durBookedTEC.text);
+              durBalanceTEC.text = durBlance.toString();
+              //Amt Blance
+              var amtBlance =
+                  num.parse(amtAllTEC.text) - num.parse(amtBookedTEC.text);
+              amtBalanceTEC.text = amtBlance.toString();
+              //Val Ammount & Booked Ammount
+              num bookedSum = 0;
+              num valSum = 0;
+              for (var i = 0; i < dgvDealEntriesGrid!.refRows.length; i++) {
+                bookedSum += num.parse(dgvDealEntriesGrid!
+                    .refRows[i].cells['totalBookedAmt']!.value
+                    .toString());
+                valSum += num.parse(dgvDealEntriesGrid!
+                    .refRows[i].cells['totalValAmt']!.value
+                    .toString());
+              }
+              print("Booked===> ${bookedSum.toString()}");
+              print("Val===> ${valSum.toString()}");
+
+              bookedAmountTEC.text = bookedSum.toString();
+              valAmountTEC.text = valSum.toString();
+
+              if (num.parse(spotsBalanceTEC.text) > 0) {
+                if (selectedGstPlant == null) {
+                  showGstPopUp = true;
+                  gstDilogBox();
+                }
+
+                LoadingDialog.callInfoMessage(
+                    'All spots are not booked.\nPlease cross check data before saving....');
+              } else {
+                if (selectedGstPlant == null) {
+                  showGstPopUp = true;
+                  gstDilogBox();
+                }
+                LoadingDialog.callInfoMessage('All spots are booked.');
+              }
+              update(["totalAmount"]);
             }
           });
     } catch (e) {
@@ -1799,7 +1866,7 @@ class EdiRoBookingController extends GetxController {
           "dealNo": selectedDealNo!.key ?? "",
           "loggedUser": Get.find<MainController>().user?.logincode ?? "",
           "fileName": selectedFile!.value ?? "",
-          "gstPlantsId": selectedGstPlant!.value ?? "",
+          "gstPlantsId": selectedGstPlant?.value ?? "",
           "gstRegN": gstNoTEC.text
         };
         Get.find<ConnectorControl>().POSTMETHOD(
@@ -2875,6 +2942,308 @@ class EdiRoBookingController extends GetxController {
   String dateConvertToyyyy(String date) {
     return (DateFormat('yyyy-MM-ddTHH:mm:ss')
         .format(DateFormat('dd/MM/yyyy').parse(date)));
+  }
+
+  showProgramDilogBox() {
+    drgabbleDialog.value = Focus(
+      autofocus: true,
+      onKey: (node, event) {
+        if (event.logicalKey == LogicalKeyboardKey.escape) {
+          drgabbleDialog.value = null;
+        }
+
+        return KeyEventResult.ignored;
+      },
+      child: Card(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
+        margin: EdgeInsets.zero,
+        color: Colors.white,
+        child: Container(
+            height: Get.height * .50,
+            width: Get.width * .20,
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 3),
+                  child: Align(
+                    alignment: Alignment.topRight,
+                    child: IconButton(
+                      onPressed: () {
+                        drgabbleDialog.value = null;
+                      },
+                      icon: const Icon(Icons.close),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Container(
+                    decoration:
+                        BoxDecoration(border: Border.all(color: Colors.grey)),
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: programList.length,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: EdgeInsets.all(8),
+                          child: Obx(
+                            () => GestureDetector(
+                              onTap: () {
+                                selectedIndex.value = index;
+                              },
+                              onDoubleTap: () async {
+                                selectedIndex.value = index;
+
+                                if (lstDgvSpotsList.isNotEmpty) {
+                                  // Down Grid
+                                  if (Get.find<MainController>()
+                                      .filters1
+                                      .containsKey(
+                                          dvgSpotGrid.hashCode.toString())) {
+                                    await clearFirstDataTableFilter(
+                                        dvgSpotGrid!);
+                                  }
+                                  for (var element in dvgSpotGrid!.rows) {
+                                    dvgSpotGrid?.setCurrentCell(
+                                        element.cells['spoT_RATE'],
+                                        element.sortIdx);
+                                    break;
+                                  }
+
+                                  await doubleClickFilterGrid1(dvgSpotGrid,
+                                      'program', programList[index].toString());
+
+                                  // UP Grid
+                                  if (Get.find<MainController>()
+                                      .filters1
+                                      .containsKey(dgvDealEntriesGrid.hashCode
+                                          .toString())) {
+                                    await clearFirstDataTableFilter(
+                                        dgvDealEntriesGrid!);
+                                  }
+
+                                  for (var element
+                                      in dgvDealEntriesGrid!.rows) {
+                                    dgvDealEntriesGrid?.setCurrentCell(
+                                        element.cells['costPer10Sec'],
+                                        element.sortIdx);
+                                    break;
+                                  }
+                                  await doubleClickFilterGrid1(
+                                      dgvDealEntriesGrid,
+                                      'costPer10Sec',
+                                      num.parse(dvgSpotGrid!
+                                          .rows[0].cells['spoT_RATE']!.value
+                                          .toString()));
+                                } else {
+                                  LoadingDialog.showErrorDialog(
+                                      'Spot not found.');
+                                }
+                              },
+                              child: Container(
+                                color: (selectedIndex.value == index)
+                                    ? Colors.deepPurpleAccent
+                                    : Colors.white,
+                                child: Text(
+                                  programList[index].toString(),
+                                  style: TextStyle(
+                                      fontSize: SizeDefine.dropDownFontSize),
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+              ],
+            )),
+      ),
+    );
+  }
+
+  mgSpotsDilogBox() {
+    valueKey = ValueKey("mgSpotsDilogBox");
+
+    drgabbleDialog.value = Card(
+      // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(2)),
+      color: Colors.white,
+      // margin: const EdgeInsets.all(0),
+      child: SizedBox(
+        height: Get.height * .65,
+        width: Get.width * .80,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  DateWithThreeTextField(
+                    title: "From Date",
+                    mainTextController: mgStartDateTEC,
+                    widthRation: .12,
+                  ),
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  DateWithThreeTextField(
+                    title: "To Date",
+                    mainTextController: mgEndDateTEC,
+                    widthRation: .12,
+                  ),
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  FormButton(
+                    btnText: "Show",
+                    callback: () {
+                      showMakeGood();
+                    },
+                    showIcon: false,
+                  ),
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  FormButton(
+                    btnText: "Back",
+                    callback: () {
+                      drgabbleDialog.value = null;
+                    },
+                    showIcon: false,
+                  ),
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  FormButton(
+                    btnText: "Import & Mark",
+                    callback: () {
+                      pickFile();
+                    },
+                    showIcon: false,
+                  ),
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  Obx(() {
+                    return CheckBoxWidget1(
+                      title: "Select All",
+                      value: controllsEnable.value,
+                      onChanged: (val) {
+                        controllsEnable.value = !(controllsEnable.value);
+
+                        for (var i = 0; i < makeGoodReportList.length; i++) {
+                          makeGoodReportList
+                                  .value[mgSpotTabelGrid!.refRows[i].sortIdx]
+                              ['selectRow'] = controllsEnable.value;
+                          mgSpotTabelGrid!.changeCellValue(
+                            mgSpotTabelGrid!
+                                .getRowByIdx(i)!
+                                .cells['selectRow']!,
+                            controllsEnable.value.toString(),
+                            callOnChangedEvent: false,
+                            force: true,
+                            notify: true,
+                          );
+                          print(makeGoodReportList);
+                          makeGoodReportList.refresh();
+                        }
+                      },
+                    );
+                  }),
+                ],
+              ),
+            ),
+            Expanded(
+              child: Obx(
+                () => DataGridFromMap3(
+                  mapData: makeGoodReportList.value.map((e) {
+                    e['selectRow'] = (e['selectRow'] ?? false).toString();
+
+                    return e;
+                  }).toList(),
+                  hideCode: false,
+                  formatDate: false,
+                  exportFileName: "EDI R.O. Booking",
+                  onload: (load) {
+                    mgSpotTabelGrid = load.stateManager;
+                    load.stateManager
+                        .setSelectingMode(PlutoGridSelectingMode.row);
+                    load.stateManager
+                        .setCurrentCell(load.stateManager.firstCell, 0);
+                  },
+                  colorCallback: (row) => (row.row.cells
+                          .containsValue(mgSpotTabelGrid?.currentCell))
+                      ? Colors.deepPurple.shade200
+                      : Colors.white,
+                  checkBoxColumnKey: ['selectRow'],
+                  checkBoxStrComparison: "true",
+                  uncheckCheckBoxStr: "false",
+                  actionIconKey: ['selectRow'],
+                  actionOnPress: (position, isSpaceCalled) {
+                    if (isSpaceCalled) {
+                      mgLastSelectedIdx = position.rowIdx ?? 0;
+                      mgSpotTabelGrid!.changeCellValue(
+                        mgSpotTabelGrid!.currentCell!,
+                        (mgSpotTabelGrid?.currentCell?.value == "true")
+                            .toString(),
+                        force: true,
+                        callOnChangedEvent: true,
+                        notify: true,
+                      );
+                    }
+                  },
+                  onEdit: (row) {
+                    mgLastSelectedIdx = row.rowIdx;
+                    makeGoodReportList[row.rowIdx]['selectRow'] =
+                        (row.value.toString()) == "true";
+
+                    print(makeGoodReportList);
+                  },
+                  columnAutoResize: false,
+                  widthSpecificColumn: Get.find<HomeController>()
+                      .getGridWidthByKey(
+                          userGridSettingList: userGridSetting1, key: "tbl3"),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+    // }
+  }
+
+  keyBoardHander(RawKeyEvent raw, BuildContext context) {
+    // print("Raw is.>>>" + raw.toString());
+    if (raw is RawKeyDownEvent &&
+        raw.isAltPressed &&
+        raw.character?.toLowerCase() == "p") {
+      print("Open Show Program Alt + p ");
+      showProgramDilogBox();
+    }
+    if (raw is RawKeyDownEvent &&
+        raw.isAltPressed &&
+        raw.character?.toLowerCase() == "m") {
+      print("Mark as Done Alt + m ");
+      onMarkAsDone();
+    }
+    if (raw is RawKeyDownEvent &&
+        raw.isAltPressed &&
+        raw.character?.toLowerCase() == "c") {
+      print("Check All Alt + c ");
+      checkAll();
+    }
+    if (raw is RawKeyDownEvent &&
+        raw.isAltPressed &&
+        raw.character?.toLowerCase() == "g") {
+      print("MG Spots Alt + g ");
+      mgSpotsDilogBox();
+    }
   }
 
   @override

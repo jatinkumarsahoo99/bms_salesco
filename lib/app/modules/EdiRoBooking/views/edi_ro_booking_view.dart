@@ -21,7 +21,6 @@ import 'package:flutter/services.dart';
 
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-
 // import 'package:pluto_grid/pluto_grid.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:bms_salesco/widgets/PlutoGrid/pluto_grid.dart';
@@ -39,7 +38,6 @@ class EdiRoBookingView extends StatelessWidget {
   EdiRoBookingView({Key? key}) : super(key: key);
   var maincontroller =
       Get.put<EdiRoBookingController>(EdiRoBookingController());
-
   @override
   Widget build(BuildContext context) {
     return GetBuilder<EdiRoBookingController>(
@@ -50,965 +48,990 @@ class EdiRoBookingView extends StatelessWidget {
           // if (controller.initData == null) {
           //   return PleaseWaitCard();
           // }
-          return Scaffold(
-            floatingActionButton:
-                Obx(() => controller.drgabbleDialog.value != null
-                    ? DraggableFab(
-                        key: maincontroller.valueKey,
-                        // initPosition: Offset(
-                        //     context.devicewidth / 3, context.deviceheight / 3),
-                        child: controller.drgabbleDialog.value!,
-                      )
-                    : const SizedBox()),
-            backgroundColor: Colors.grey[50],
-            body: FocusTraversalGroup(
-              policy: OrderedTraversalPolicy(),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Card(
-                        elevation: 3,
-                        child: Padding(
-                          padding: const EdgeInsets.all(4.0),
-                          child: SizedBox(
-                            width: Get.width * 0.45,
-                            child: Wrap(
-                              spacing: Get.width * 0.005,
-                              runSpacing: 5,
-                              crossAxisAlignment: WrapCrossAlignment.end,
-                              alignment: WrapAlignment.spaceBetween,
-                              children: [
-                                FocusTraversalOrder(
-                                  order: const NumericFocusOrder(1),
-                                  child: DropDownField.formDropDown1WidthMap(
-                                    controller.fileNames.value,
-                                    (data) {
-                                      controller.selectedFile = data;
-                                      controller.effectiveDateLeave();
-                                    },
-                                    "Filename  ",
-                                    .404,
-                                    selected: controller.selectedFile,
-                                    isEnable: controller.isEnable.value,
-                                    autoFocus: true,
-                                    titleInLeft: true,
-                                    inkWellFocusNode: controller.fileNameFN,
-                                  ),
-                                ),
-                                DropDownField.formDropDown1WidthMap(
-                                    controller.strRoRefNo.value, (data) {
-                                  controller.selectedRoRefNo = data;
-                                }, "RO Ref No", .32,
-                                    selected: controller.selectedRoRefNo,
-                                    isEnable: controller.isEnable.value,
-                                    titleInLeft: true),
-                                Obx(
-                                  () => FocusTraversalOrder(
-                                    order: const NumericFocusOrder(4),
-                                    child: SizedBox(
-                                      width: Get.width * 0.08,
-                                      child: FormButtonWrapper(
-                                        btnText: "Show & Link",
-                                        callback: () {
-                                          controller.effDateFN.requestFocus();
-
-                                          controller.showLink();
-                                        },
-                                        showIcon: false,
-                                        isEnabled: controller.isShowLink.value,
-                                      ),
+          return RawKeyboardListener(
+            focusNode: new FocusNode(),
+            onKey: (RawKeyEvent raw) {
+              controller.keyBoardHander(raw, context);
+            },
+            child: Scaffold(
+              floatingActionButton:
+                  Obx(() => controller.drgabbleDialog.value != null
+                      ? DraggableFab(
+                          key: maincontroller.valueKey,
+                          // initPosition: Offset(
+                          //     context.devicewidth / 3, context.deviceheight / 3),
+                          child: controller.drgabbleDialog.value!,
+                        )
+                      : const SizedBox()),
+              backgroundColor: Colors.grey[50],
+              body: FocusTraversalGroup(
+                policy: OrderedTraversalPolicy(),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Card(
+                          elevation: 3,
+                          child: Padding(
+                            padding: const EdgeInsets.all(4.0),
+                            child: SizedBox(
+                              width: Get.width * 0.45,
+                              child: Wrap(
+                                spacing: Get.width * 0.005,
+                                runSpacing: 5,
+                                crossAxisAlignment: WrapCrossAlignment.end,
+                                alignment: WrapAlignment.spaceBetween,
+                                children: [
+                                  FocusTraversalOrder(
+                                    order: const NumericFocusOrder(1),
+                                    child: DropDownField.formDropDown1WidthMap(
+                                      controller.fileNames.value,
+                                      (data) {
+                                        controller.selectedFile = data;
+                                        controller.effectiveDateLeave();
+                                      },
+                                      "Filename  ",
+                                      .404,
+                                      selected: controller.selectedFile,
+                                      isEnable: controller.isEnable.value,
+                                      autoFocus: true,
+                                      titleInLeft: true,
+                                      inkWellFocusNode: controller.fileNameFN,
                                     ),
                                   ),
-                                ),
-                                DropDownField.formDropDown1WidthMap(
-                                    controller.loactions.value, (data) {
-                                  controller.selectedLoactions = data;
-                                  controller.locationLeave(data.key);
-                                }, "Location   ", .17,
-                                    selected: controller.selectedLoactions,
-                                    isEnable: controller.isEnable.value,
-                                    titleInLeft: true),
-                                DropDownField.formDropDown1WidthMap(
-                                    controller.channel.value, (data) {
-                                  controller.selectedChannel = data;
-                                }, "Channel   ", .17,
-                                    isEnable: controller.isEnable.value,
-                                    selected: controller.selectedChannel,
-                                    titleInLeft: true),
-                                DropDownField.formDropDown1WidthMap(
-                                  controller.client.value,
-                                  (data) {
-                                    controller.selectedClient = data;
-                                  },
-                                  "Client        ",
-                                  .17,
-                                  selected: controller.selectedClient,
-                                  isEnable: controller.isEnable.value,
-                                  titleInLeft: true,
-                                ),
-                                DropDownField.formDropDown1WidthMap(
-                                  controller.agency.value,
-                                  (data) {
-                                    // controller.agencyLeave();
-                                  },
-                                  "Agency  ",
-                                  .17,
-                                  titleInLeft: true,
-                                  selected: controller.selectedAgency,
-                                  isEnable: controller.isEnable.value,
-                                ),
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    FocusTraversalOrder(
-                                      order: const NumericFocusOrder(2),
-                                      child:
-                                          DropDownField.formDropDown1WidthMap(
-                                              controller.dealNo.value, (data) {
-                                        controller.selectedDealNo = data;
+                                  DropDownField.formDropDown1WidthMap(
+                                      controller.strRoRefNo.value, (data) {
+                                    controller.selectedRoRefNo = data;
+                                  }, "RO Ref No", .32,
+                                      selected: controller.selectedRoRefNo,
+                                      isEnable: controller.isEnable.value,
+                                      titleInLeft: true),
+                                  Obx(
+                                    () => FocusTraversalOrder(
+                                      order: const NumericFocusOrder(4),
+                                      child: SizedBox(
+                                        width: Get.width * 0.08,
+                                        child: FormButtonWrapper(
+                                          btnText: "Show & Link",
+                                          callback: () {
+                                            controller.effDateFN.requestFocus();
 
-                                        controller.dealLeave();
-                                      }, "Deal No.   ", .100,
-                                              dialogHeight: 250,
-                                              selected:
-                                                  controller.selectedDealNo,
-                                              titleInLeft: true),
-                                    ),
-                                    const SizedBox(
-                                      width: 5,
-                                    ),
-                                    InputFields.formField1(
-                                        hintTxt: "",
-                                        controller: controller.dealTypeTEC,
-                                        width: 0.100,
-                                        isEnable: false,
-                                        showTitle: false),
-                                    const SizedBox(
-                                      width: 5,
-                                    ),
-                                    Obx(
-                                      () => FocusTraversalOrder(
-                                        order: const NumericFocusOrder(3),
-                                        child:
-                                            DropDownField.formDropDown1WidthMap(
-                                          controller.brand.value,
-                                          (data) {
-                                            controller.selectedBrand = data;
-                                            controller.brandLeave(data.key);
+                                            controller.showLink();
                                           },
-                                          "Brand",
-                                          .17,
-                                          titleInLeft: true,
-                                          autoFocus: true,
-                                          selected: controller.selectedBrand,
-                                          isEnable:
-                                              controller.isBrandEnable.value,
-                                          inkWellFocusNode: controller.brandFN,
+                                          showIcon: false,
+                                          isEnabled:
+                                              controller.isShowLink.value,
                                         ),
                                       ),
                                     ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    DateWithThreeTextField(
-                                      title: "Start Date",
-                                      mainTextController:
-                                          controller.startDateTEC,
-                                      widthRation: .110,
-                                      isEnable: false,
-                                      titleInLeft: true,
-                                    ),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    DateWithThreeTextField(
-                                      title: "End Date",
-                                      mainTextController: controller.endDateTEC,
-                                      widthRation: .110,
-                                      isEnable: false,
-                                      titleInLeft: true,
-                                    ),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    InputFields.formField3(
-                                      hintTxt: "Zone ",
-                                      isEnable: false,
-                                      controller: controller.zoneTEC,
-                                      width: 0.105,
-                                      titleInLeft: true,
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(
-                                  width: 20,
-                                  height: 1,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      Card(
-                        child: Padding(
-                          padding: EdgeInsets.all(4),
-                          child: SizedBox(
-                            width: Get.width * 0.18,
-                            child: Wrap(
-                              spacing: Get.width * 0.005,
-                              runSpacing: 5,
-                              children: [
-                                FocusTraversalOrder(
-                                  order: const NumericFocusOrder(5),
-                                  child: DateWithThreeTextField(
-                                    title: "Eff Date   ",
-                                    mainTextController:
-                                        controller.effectiveDate,
-                                    widthRation: .08,
-                                    titleInLeft: true,
-                                    onFocusChange: (date) {},
                                   ),
-                                ),
-                                Row(
-                                  children: [
-                                    FocusTraversalOrder(
-                                      order: const NumericFocusOrder(6),
-                                      child: DateWithThreeTextField(
-                                        title: "Bk. Date  ",
-                                        mainTextController: controller.bkDate,
-                                        widthRation: .08,
-                                        titleInLeft: true,
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      width: 2,
-                                    ),
-                                    InputFields.formField1(
-                                      hintTxt: "",
-                                      isEnable: false,
-                                      controller: controller.payRouteCodeTEC,
-                                      width: 0.055,
-                                      showTitle: false,
-                                      titleInLeft: true,
-                                    ),
-                                  ],
-                                ),
-                                InputFields.formField3(
-                                  hintTxt: "Pay Route ",
-                                  isEnable: false,
-                                  controller: controller.payRouteTEC,
-                                  width: 0.137,
-                                  titleInLeft: true,
-                                ),
-                                InputFields.formField3(
-                                  hintTxt: "Pay Mode ",
-                                  isEnable: false,
-                                  controller: controller.payModeTEC,
-                                  width: 0.137,
-                                  titleInLeft: true,
-                                ),
-                                SizedBox(
-                                  width: Get.width * 0.18,
-                                  child: Row(
-                                    // mainAxisAlignment:
-                                    //     MainAxisAlignment.spaceBetween,
+                                  DropDownField.formDropDown1WidthMap(
+                                      controller.loactions.value, (data) {
+                                    controller.selectedLoactions = data;
+                                    controller.locationLeave(data.key);
+                                  }, "Location   ", .17,
+                                      selected: controller.selectedLoactions,
+                                      isEnable: controller.isEnable.value,
+                                      titleInLeft: true),
+                                  DropDownField.formDropDown1WidthMap(
+                                      controller.channel.value, (data) {
+                                    controller.selectedChannel = data;
+                                  }, "Channel   ", .17,
+                                      isEnable: controller.isEnable.value,
+                                      selected: controller.selectedChannel,
+                                      titleInLeft: true),
+                                  DropDownField.formDropDown1WidthMap(
+                                    controller.client.value,
+                                    (data) {
+                                      controller.selectedClient = data;
+                                    },
+                                    "Client        ",
+                                    .17,
+                                    selected: controller.selectedClient,
+                                    isEnable: controller.isEnable.value,
+                                    titleInLeft: true,
+                                  ),
+                                  DropDownField.formDropDown1WidthMap(
+                                    controller.agency.value,
+                                    (data) {
+                                      // controller.agencyLeave();
+                                    },
+                                    "Agency  ",
+                                    .17,
+                                    titleInLeft: true,
+                                    selected: controller.selectedAgency,
+                                    isEnable: controller.isEnable.value,
+                                  ),
+                                  Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       FocusTraversalOrder(
-                                        order: const NumericFocusOrder(7),
-                                        child: InputFields.formField1(
-                                          hintTxt: "Booking No",
-                                          controller: controller.bookingNo1TEC,
-                                          width: 0.054,
-                                          titleInLeft: true,
-                                        ),
+                                        order: const NumericFocusOrder(2),
+                                        child:
+                                            DropDownField.formDropDown1WidthMap(
+                                                controller.dealNo.value,
+                                                (data) {
+                                          controller.selectedDealNo = data;
+
+                                          controller.dealLeave();
+                                        }, "Deal No.   ", .100,
+                                                dialogHeight: 250,
+                                                selected:
+                                                    controller.selectedDealNo,
+                                                titleInLeft: true),
                                       ),
                                       const SizedBox(
                                         width: 5,
                                       ),
-                                      FocusTraversalOrder(
-                                        order: const NumericFocusOrder(8),
-                                        child: InputFields.formField1(
+                                      InputFields.formField1(
                                           hintTxt: "",
-                                          controller: controller.bookingNo2TEC,
-                                          width: 0.02,
-                                          titleInLeft: true,
-                                        ),
-                                      ),
+                                          controller: controller.dealTypeTEC,
+                                          width: 0.100,
+                                          isEnable: false,
+                                          showTitle: false),
                                       const SizedBox(
                                         width: 5,
                                       ),
-                                      FocusTraversalOrder(
-                                        order: const NumericFocusOrder(9),
-                                        child: InputFields.formField1(
-                                          hintTxt: "",
-                                          controller: controller.bookingNo3TEC,
-                                          width: 0.055,
-                                          titleInLeft: true,
+                                      Obx(
+                                        () => FocusTraversalOrder(
+                                          order: const NumericFocusOrder(3),
+                                          child: DropDownField
+                                              .formDropDown1WidthMap(
+                                            controller.brand.value,
+                                            (data) {
+                                              controller.selectedBrand = data;
+                                              controller.brandLeave(data.key);
+                                            },
+                                            "Brand",
+                                            .17,
+                                            titleInLeft: true,
+                                            autoFocus: true,
+                                            selected: controller.selectedBrand,
+                                            isEnable:
+                                                controller.isBrandEnable.value,
+                                            inkWellFocusNode:
+                                                controller.brandFN,
+                                          ),
                                         ),
                                       ),
                                     ],
                                   ),
-                                ),
-                                Obx(
-                                  () => FocusTraversalOrder(
-                                    order: const NumericFocusOrder(13),
-                                    child: DropDownField.formDropDown1WidthMap(
-                                      controller.executives.value,
-                                      (data) {
-                                        controller.selectedExecutives = data;
-                                      },
-                                      "Executive",
-                                      .136,
-                                      selected: controller.selectedExecutives,
-                                      autoFocus: true,
-                                      dialogHeight: 250,
-                                      titleInLeft: true,
-                                    ),
+                                  Row(
+                                    children: [
+                                      DateWithThreeTextField(
+                                        title: "Start Date",
+                                        mainTextController:
+                                            controller.startDateTEC,
+                                        widthRation: .110,
+                                        isEnable: false,
+                                        titleInLeft: true,
+                                      ),
+                                      const SizedBox(
+                                        width: 10,
+                                      ),
+                                      DateWithThreeTextField(
+                                        title: "End Date",
+                                        mainTextController:
+                                            controller.endDateTEC,
+                                        widthRation: .110,
+                                        isEnable: false,
+                                        titleInLeft: true,
+                                      ),
+                                      const SizedBox(
+                                        width: 10,
+                                      ),
+                                      InputFields.formField3(
+                                        hintTxt: "Zone ",
+                                        isEnable: false,
+                                        controller: controller.zoneTEC,
+                                        width: 0.105,
+                                        titleInLeft: true,
+                                      ),
+                                    ],
                                   ),
-                                ),
-                              ],
+                                  const SizedBox(
+                                    width: 20,
+                                    height: 1,
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      Card(
+                        Card(
                           child: Padding(
-                              padding: EdgeInsets.all(4),
-                              child: SizedBox(
-                                  width: Get.width * 0.24,
-                                  child: Wrap(
-                                      crossAxisAlignment:
-                                          WrapCrossAlignment.end,
-                                      spacing: Get.width * 0.005,
-                                      runSpacing: 5,
+                            padding: EdgeInsets.all(4),
+                            child: SizedBox(
+                              width: Get.width * 0.18,
+                              child: Wrap(
+                                spacing: Get.width * 0.005,
+                                runSpacing: 5,
+                                children: [
+                                  FocusTraversalOrder(
+                                    order: const NumericFocusOrder(5),
+                                    child: DateWithThreeTextField(
+                                      title: "Eff Date   ",
+                                      mainTextController:
+                                          controller.effectiveDate,
+                                      widthRation: .08,
+                                      titleInLeft: true,
+                                      onFocusChange: (date) {},
+                                    ),
+                                  ),
+                                  Row(
+                                    children: [
+                                      FocusTraversalOrder(
+                                        order: const NumericFocusOrder(6),
+                                        child: DateWithThreeTextField(
+                                          title: "Bk. Date  ",
+                                          mainTextController: controller.bkDate,
+                                          widthRation: .08,
+                                          titleInLeft: true,
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        width: 2,
+                                      ),
+                                      InputFields.formField1(
+                                        hintTxt: "",
+                                        isEnable: false,
+                                        controller: controller.payRouteCodeTEC,
+                                        width: 0.055,
+                                        showTitle: false,
+                                        titleInLeft: true,
+                                      ),
+                                    ],
+                                  ),
+                                  InputFields.formField3(
+                                    hintTxt: "Pay Route ",
+                                    isEnable: false,
+                                    controller: controller.payRouteTEC,
+                                    width: 0.137,
+                                    titleInLeft: true,
+                                  ),
+                                  InputFields.formField3(
+                                    hintTxt: "Pay Mode ",
+                                    isEnable: false,
+                                    controller: controller.payModeTEC,
+                                    width: 0.137,
+                                    titleInLeft: true,
+                                  ),
+                                  SizedBox(
+                                    width: Get.width * 0.18,
+                                    child: Row(
+                                      // mainAxisAlignment:
+                                      //     MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Container(
-                                          alignment: Alignment.centerRight,
-                                          width: Get.width * 0.05,
-                                          child: Text(
-                                            "All",
-                                            style: TextStyle(
-                                                fontSize:
-                                                    SizeDefine.labelSize1),
+                                        FocusTraversalOrder(
+                                          order: const NumericFocusOrder(7),
+                                          child: InputFields.formField1(
+                                            hintTxt: "Booking No",
+                                            controller:
+                                                controller.bookingNo1TEC,
+                                            width: 0.054,
+                                            titleInLeft: true,
                                           ),
                                         ),
                                         const SizedBox(
-                                          width: 13,
-                                        ),
-                                        Container(
-                                          alignment: Alignment.centerRight,
-                                          width: Get.width * 0.05,
-                                          child: Text(
-                                            "Booked",
-                                            style: TextStyle(
-                                                fontSize:
-                                                    SizeDefine.labelSize1),
-                                          ),
-                                        ),
-                                        Container(
-                                          alignment: Alignment.centerRight,
-                                          width: Get.width * 0.05,
-                                          child: Text(
-                                            "Balance",
-                                            style: TextStyle(
-                                                fontSize:
-                                                    SizeDefine.labelSize1),
-                                          ),
-                                        ),
-                                        Container(
-                                          alignment: Alignment.centerRight,
-                                          width: Get.width * 0.05,
-                                          child: Text(
-                                            "Val Amount",
-                                            style: TextStyle(
-                                                fontSize:
-                                                    SizeDefine.labelSize1),
-                                          ),
-                                        ),
-                                        InputFields.formField3(
-                                          hintTxt: "Spots",
-                                          isEnable: false,
-                                          controller: controller.spotsAllTEC,
-                                          width: 0.05,
-                                          titleInLeft: true,
-                                        ),
-                                        InputFields.formField1(
-                                          hintTxt: "",
-                                          isEnable: false,
-                                          controller: controller.spotsBookedTEC,
-                                          width: 0.05,
-                                          showTitle: false,
-                                        ),
-                                        InputFields.formField1(
-                                          hintTxt: "",
-                                          isEnable: false,
-                                          controller:
-                                              controller.spotsBalanceTEC,
-                                          width: 0.05,
-                                          showTitle: false,
-                                        ),
-                                        // Container(
-                                        //   alignment: Alignment.center,
-                                        //   width: Get.width * 0.05,
-                                        // ),
-                                        InputFields.formField3(
-                                          hintTxt: "Dur    ",
-                                          isEnable: false,
-                                          controller: controller.durAllTEC,
-                                          width: 0.05,
-                                          titleInLeft: true,
-                                        ),
-                                        InputFields.formField1(
-                                          hintTxt: "",
-                                          isEnable: false,
-                                          controller: controller.durBookedTEC,
-                                          width: 0.05,
-                                          showTitle: false,
-                                        ),
-                                        InputFields.formField1(
-                                          hintTxt: "",
-                                          isEnable: false,
-                                          controller: controller.durBalanceTEC,
-                                          width: 0.05,
-                                          showTitle: false,
-                                        ),
-                                        // Container(
-                                        //   alignment: Alignment.center,
-                                        //   width: Get.width * 0.05,
-                                        // ),
-                                        InputFields.formField3(
-                                          hintTxt: "Amt   ",
-                                          isEnable: false,
-                                          controller: controller.amtAllTEC,
-                                          width: 0.05,
-                                          titleInLeft: true,
-                                        ),
-                                        InputFields.formField1(
-                                          hintTxt: "",
-                                          isEnable: false,
-                                          controller: controller.amtBookedTEC,
-                                          width: 0.05,
-                                          showTitle: false,
-                                        ),
-                                        InputFields.formField1(
-                                          hintTxt: "",
-                                          isEnable: false,
-                                          controller: controller.amtBalanceTEC,
-                                          width: 0.05,
-                                          showTitle: false,
-                                        ),
-                                        InputFields.formField1(
-                                          hintTxt: "",
-                                          isEnable: false,
-                                          controller:
-                                              controller.amtValAmmountTEC,
-                                          width: 0.05,
-                                          showTitle: false,
-                                        ),
-                                        Obx(
-                                          () => FocusTraversalOrder(
-                                            order: const NumericFocusOrder(10),
-                                            child: DropDownField
-                                                .formDropDown1WidthMap(
-                                              controller.positions.value,
-                                              (data) {
-                                                controller.selectedPositions =
-                                                    data;
-                                              },
-                                              "Position",
-                                              .125,
-                                              selected:
-                                                  controller.selectedPositions,
-                                              autoFocus: true,
-                                            ),
-                                          ),
-                                        ),
-                                        InputFields.formField3(
-                                          hintTxt: "Pre. V Amt",
-                                          isEnable: false,
-                                          controller: controller.preVAmtTEC,
-                                          width: 0.05,
-                                        ),
-                                        InputFields.formField3(
-                                          hintTxt: "Pre. B Amt",
-                                          isEnable: false,
-                                          controller: controller.preBAmtTEC,
-                                          width: 0.05,
+                                          width: 5,
                                         ),
                                         FocusTraversalOrder(
-                                          order: const NumericFocusOrder(11),
-                                          child: Container(
-                                            width: Get.width * 0.115,
-                                            child: FormButtonWrapper(
-                                              showIcon: true,
-                                              iconDataM: Icons
-                                                  .video_collection_rounded,
-                                              btnText: "Show Programs",
-                                              callback: () {
-                                                showProgramDilogBox();
-                                              },
-                                            ),
+                                          order: const NumericFocusOrder(8),
+                                          child: InputFields.formField1(
+                                            hintTxt: "",
+                                            controller:
+                                                controller.bookingNo2TEC,
+                                            width: 0.02,
+                                            titleInLeft: true,
                                           ),
+                                        ),
+                                        const SizedBox(
+                                          width: 5,
                                         ),
                                         FocusTraversalOrder(
-                                          order: const NumericFocusOrder(12),
-                                          child: Container(
-                                            width: Get.width * 0.115,
-                                            child: FormButtonWrapper(
-                                              showIcon: true,
-                                              iconDataM:
-                                                  Icons.done_outline_rounded,
-                                              btnText: "Mark Done",
-                                              callback: () {
-                                                controller.onMarkAsDone();
-                                              },
-                                            ),
+                                          order: const NumericFocusOrder(9),
+                                          child: InputFields.formField1(
+                                            hintTxt: "",
+                                            controller:
+                                                controller.bookingNo3TEC,
+                                            width: 0.055,
+                                            titleInLeft: true,
                                           ),
                                         ),
-                                      ])))),
-                      Column(
-                        children: [
-                          Card(
-                              child: Padding(
-                                  padding: EdgeInsets.all(4),
-                                  child: SizedBox(
-                                      width: Get.width * 0.07,
-                                      child: Wrap(
+                                      ],
+                                    ),
+                                  ),
+                                  Obx(
+                                    () => FocusTraversalOrder(
+                                      order: const NumericFocusOrder(13),
+                                      child:
+                                          DropDownField.formDropDown1WidthMap(
+                                        controller.executives.value,
+                                        (data) {
+                                          controller.selectedExecutives = data;
+                                        },
+                                        "Executive",
+                                        .136,
+                                        selected: controller.selectedExecutives,
+                                        autoFocus: true,
+                                        dialogHeight: 250,
+                                        titleInLeft: true,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        Card(
+                            child: Padding(
+                                padding: EdgeInsets.all(4),
+                                child: SizedBox(
+                                    width: Get.width * 0.24,
+                                    child: Wrap(
+                                        crossAxisAlignment:
+                                            WrapCrossAlignment.end,
+                                        spacing: Get.width * 0.005,
+                                        runSpacing: 5,
                                         children: [
-                                          InputFields.formField3(
-                                            hintTxt: "Max Spend",
-                                            isEnable: false,
-                                            controller: controller.maxSpendTEC,
-                                            width: 0.05,
+                                          Container(
+                                            alignment: Alignment.centerRight,
+                                            width: Get.width * 0.05,
+                                            child: Text(
+                                              "All",
+                                              style: TextStyle(
+                                                  fontSize:
+                                                      SizeDefine.labelSize1),
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            width: 13,
+                                          ),
+                                          Container(
+                                            alignment: Alignment.centerRight,
+                                            width: Get.width * 0.05,
+                                            child: Text(
+                                              "Booked",
+                                              style: TextStyle(
+                                                  fontSize:
+                                                      SizeDefine.labelSize1),
+                                            ),
+                                          ),
+                                          Container(
+                                            alignment: Alignment.centerRight,
+                                            width: Get.width * 0.05,
+                                            child: Text(
+                                              "Balance",
+                                              style: TextStyle(
+                                                  fontSize:
+                                                      SizeDefine.labelSize1),
+                                            ),
+                                          ),
+                                          Container(
+                                            alignment: Alignment.centerRight,
+                                            width: Get.width * 0.05,
+                                            child: Text(
+                                              "Val Amount",
+                                              style: TextStyle(
+                                                  fontSize:
+                                                      SizeDefine.labelSize1),
+                                            ),
                                           ),
                                           InputFields.formField3(
-                                            hintTxt: "Booked Amount",
+                                            hintTxt: "Spots",
+                                            isEnable: false,
+                                            controller: controller.spotsAllTEC,
+                                            width: 0.05,
+                                            titleInLeft: true,
+                                          ),
+                                          InputFields.formField1(
+                                            hintTxt: "",
                                             isEnable: false,
                                             controller:
-                                                controller.bookedAmountTEC,
+                                                controller.spotsBookedTEC,
+                                            width: 0.05,
+                                            showTitle: false,
+                                          ),
+                                          InputFields.formField1(
+                                            hintTxt: "",
+                                            isEnable: false,
+                                            controller:
+                                                controller.spotsBalanceTEC,
+                                            width: 0.05,
+                                            showTitle: false,
+                                          ),
+                                          // Container(
+                                          //   alignment: Alignment.center,
+                                          //   width: Get.width * 0.05,
+                                          // ),
+                                          InputFields.formField3(
+                                            hintTxt: "Dur    ",
+                                            isEnable: false,
+                                            controller: controller.durAllTEC,
+                                            width: 0.05,
+                                            titleInLeft: true,
+                                          ),
+                                          InputFields.formField1(
+                                            hintTxt: "",
+                                            isEnable: false,
+                                            controller: controller.durBookedTEC,
+                                            width: 0.05,
+                                            showTitle: false,
+                                          ),
+                                          InputFields.formField1(
+                                            hintTxt: "",
+                                            isEnable: false,
+                                            controller:
+                                                controller.durBalanceTEC,
+                                            width: 0.05,
+                                            showTitle: false,
+                                          ),
+                                          // Container(
+                                          //   alignment: Alignment.center,
+                                          //   width: Get.width * 0.05,
+                                          // ),
+                                          InputFields.formField3(
+                                            hintTxt: "Amt   ",
+                                            isEnable: false,
+                                            controller: controller.amtAllTEC,
+                                            width: 0.05,
+                                            titleInLeft: true,
+                                          ),
+                                          InputFields.formField1(
+                                            hintTxt: "",
+                                            isEnable: false,
+                                            controller: controller.amtBookedTEC,
+                                            width: 0.05,
+                                            showTitle: false,
+                                          ),
+                                          InputFields.formField1(
+                                            hintTxt: "",
+                                            isEnable: false,
+                                            controller:
+                                                controller.amtBalanceTEC,
+                                            width: 0.05,
+                                            showTitle: false,
+                                          ),
+                                          InputFields.formField1(
+                                            hintTxt: "",
+                                            isEnable: false,
+                                            controller:
+                                                controller.amtValAmmountTEC,
+                                            width: 0.05,
+                                            showTitle: false,
+                                          ),
+                                          Obx(
+                                            () => FocusTraversalOrder(
+                                              order:
+                                                  const NumericFocusOrder(10),
+                                              child: DropDownField
+                                                  .formDropDown1WidthMap(
+                                                controller.positions.value,
+                                                (data) {
+                                                  controller.selectedPositions =
+                                                      data;
+                                                },
+                                                "Position",
+                                                .125,
+                                                selected: controller
+                                                    .selectedPositions,
+                                                autoFocus: true,
+                                              ),
+                                            ),
+                                          ),
+                                          InputFields.formField3(
+                                            hintTxt: "Pre. V Amt",
+                                            isEnable: false,
+                                            controller: controller.preVAmtTEC,
                                             width: 0.05,
                                           ),
                                           InputFields.formField3(
-                                            hintTxt: "Val Amount",
+                                            hintTxt: "Pre. B Amt",
                                             isEnable: false,
-                                            controller: controller.valAmountTEC,
+                                            controller: controller.preBAmtTEC,
                                             width: 0.05,
                                           ),
-                                        ],
-                                      )))),
-                          const SizedBox(
-                            height: 8,
-                          ),
-                          Obx(
-                            () => Visibility(
-                              visible: controller.lDButton.value,
-                              child: FormButtonWrapper(
-                                btnText: controller.linkDealName.value,
-                                callback: () {
-                                  controller.showDilogBox();
-                                },
-                                showIcon: false,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  Obx(
-                    () => controller.lstDgvDealEntriesList.value.isEmpty
-                        ? Container(
-                            height: Get.height * 0.30,
-                            decoration: BoxDecoration(
-                                border: Border.all(color: Colors.grey)),
-                          )
-                        : SizedBox(
-                            height: Get.height * 0.30,
-                            child: DataGridFromMap3(
-                              mode: PlutoGridMode.selectWithOneTap,
-                              onSelected: (event) {},
-                              mapData: controller.lstDgvDealEntriesList.value
-                                  .map((e) {
-                                if (e['fromdate'] != null) {
-                                  e['fromdate'] =
-                                      controller.convertDate(e['fromdate']);
-                                }
-                                if (e['todate'] != null) {
-                                  e['todate'] =
-                                      controller.convertDate(e['todate']);
-                                }
-                                if (e['startdate'] != null) {
-                                  e['startdate'] =
-                                      controller.convertDate(e['startdate']);
-                                }
-                                if (e['enddate'] != null) {
-                                  e['enddate'] =
-                                      controller.convertDate(e['enddate']);
-                                }
-                                return e;
-                              }).toList(),
-                              hideCode: false,
-                              exportFileName: "EDI R.O. Booking",
-                              onload: (load) {
-                                controller.dgvDealEntriesGrid =
-                                    load.stateManager;
-                                load.stateManager.setSelectingMode(
-                                    PlutoGridSelectingMode.row);
-                                load.stateManager.setCurrentCell(
-                                    load.stateManager.firstCell, 0);
-                              },
-                              colorCallback: (row) => row.row.cells
-                                      .containsValue(controller
-                                          .dgvDealEntriesGrid?.currentCell)
-                                  ? Colors.deepPurple.shade100
-                                  : Colors.white,
-                              onRowDoubleTap: (event) {
-                                controller.dgvDealEntriesGrid
-                                    ?.setCurrentCell(event.cell, event.rowIdx);
-
-                                controller.dealSpotsValidation(
-                                    event.cell.row.sortIdx,
-                                    showMessage: true);
-                              },
-                              columnAutoResize: false,
-                              widthSpecificColumn: Get.find<HomeController>()
-                                  .getGridWidthByKey(
-                                      userGridSettingList:
-                                          controller.userGridSetting1,
-                                      key: "tbl1"),
-                            ),
-                          ),
-                  ),
-                  const SizedBox(
-                    height: 1,
-                  ),
-                  Obx(() => Expanded(
-                        child: controller.lstDgvSpotsList.value.isEmpty
-                            ? Container(
-                                decoration: BoxDecoration(
-                                    border: Border.all(color: Colors.grey)),
-                              )
-                            : Container(
-                                child: DataGridFromMap3(
-                                  mode: PlutoGridMode.normal,
-                                  // onSelected: (event) {
-                                  //   controller.isSelectingChange.value = false;
-                                  // },
-                                  editKeys: const ['noProgram'],
-                                  hideKeys: const [
-                                    'backColor',
-                                    'selected',
-                                    'isSpotsAvailable'
-                                  ],
-                                  mapData:
-                                      controller.lstDgvSpotsList.value.map((e) {
-                                    if (e['fctok'] != null) {
-                                      e['fctok'] = num.parse(e['fctok']);
-                                    }
-                                    if (e['dealOK'] != null) {
-                                      e['dealOK'] = num.parse(e['dealOK']);
-                                    }
-                                    if (e['nO_SPOT'] != null) {
-                                      e['nO_SPOT'] = num.parse(e['nO_SPOT']);
-                                    }
-                                    if (e['okSpot'] != null) {
-                                      e['okSpot'] = num.parse(e['okSpot']);
-                                    }
-                                    if (e['groupcode'] != null) {
-                                      e['groupcode'] =
-                                          num.parse(e['groupcode']);
-                                    }
-                                    return e;
-                                  }).toList(),
-                                  hideCode: false,
-                                  formatDate: false,
-                                  exportFileName: "EDI R.O. Booking",
-                                  onload: (load) {
-                                    load.stateManager.setCurrentCell(
-                                        load.stateManager
-                                            .getRowByIdx(
-                                                controller.lastSelectedIdx)!
-                                            .cells['program'],
-                                        controller.lastSelectedIdx);
-                                    load.stateManager.moveCurrentCellByRowIdx(
-                                        controller.lastSelectedIdx,
-                                        PlutoMoveDirection.down);
-                                    load.stateManager.scroll.vertical!
-                                        .animateTo(
-                                            controller.lastSelectedOffect,
-                                            curve: Curves.ease,
-                                            duration:
-                                                Duration(milliseconds: 2));
-                                    load.stateManager.setSelectingMode(
-                                        PlutoGridSelectingMode.row);
-                                    load.stateManager.setCurrentCell(
-                                        load.stateManager.firstCell, 0);
-                                    load.stateManager.onSelectCellCallback =
-                                        () {
-                                      if(controller.isSelectingChange.value) {
-                                        controller.isSelectingChange.value =
-                                        false;
-                                      }
-                                    };
-                                    controller.dvgSpotGrid = load.stateManager;
-                                  },
-                                  colorCallback: (colorEvent) {
-                                    controller.coloerEvents = colorEvent;
-                                    if (colorEvent.row.cells.containsValue(
-                                        controller.dvgSpotGrid?.currentCell)) {
-                                      return Colors.deepPurple.shade100;
-                                    }
-                                    if (controller.lstDgvSpotsList[colorEvent
-                                                .rowIdx]['isSpotsAvailable'] !=
-                                            null &&
-                                        controller.lstDgvSpotsList[colorEvent
-                                            .rowIdx]['isSpotsAvailable'] &&
-                                        controller.isSelectingChange.value) {
-                                      return Colors.deepPurple.shade100;
-                                    }
-
-                                    return controller.getColor(
-                                      controller
-                                          .lstDgvSpotsList[colorEvent.rowIdx],
-                                      colorEvent.rowIdx,
-                                    );
-                                  },
-                                  onRowDoubleTap: (event) async {
-                                    controller.lastSelectedOffect = controller
-                                        .dvgSpotGrid!.scroll.verticalOffset;
-                                    controller.lastSelectedIdx = event.rowIdx;
-                                    //Down Grid Set
-                                    controller.dvgSpotGrid?.setCurrentCell(
-                                        event.cell, event.rowIdx);
-                                    //Clear
-                                    if (Get.find<MainController>()
-                                        .filters1
-                                        .containsKey(controller
-                                            .dgvDealEntriesGrid.hashCode
-                                            .toString())) {
-                                      print(controller
-                                          .dgvDealEntriesGrid.hashCode
-                                          .toString());
-                                      await controller
-                                          .clearFirstDataTableFilter(
-                                              controller.dgvDealEntriesGrid!);
-                                    }
-                                    //Up Grid Set
-                                    for (var element in controller
-                                        .dgvDealEntriesGrid!.rows) {
-                                      if (element
-                                              .cells['costPer10Sec']?.value ==
-                                          event.cell.value) {
-                                        controller.dgvDealEntriesGrid
-                                            ?.setCurrentCell(
-                                                element.cells['costPer10Sec'],
-                                                element.sortIdx);
-                                        break;
-                                      }
-                                    }
-
-                                    // print(event.cell.row.sortIdx);
-                                    // print(event.cell.value);
-                                    // print(event.cell.column.field);
-                                    // print(event.row.cells['acT_DT']?.value);
-
-                                    if (event.cell.column.field.toString() ==
-                                        'fpcstart') {
-                                      controller.spotFpcStart(
-                                          controller.selectedLoactions?.key,
-                                          controller.selectedChannel?.key,
-                                          event.row.cells['acT_DT']?.value
-                                              .toString());
-                                    } else if (event.cell.column.field
-                                            .toString() ==
-                                        'program') {
-                                      event.row.cells['noProgram']?.value = 1;
-                                      event.row.cells['dealOK']?.value = 0;
-                                      event.row.cells['fctok']?.value = 0;
-                                      event.row.cells['okSpot']?.value = 0;
-
-                                      controller.lstDgvSpotsList[
-                                          event.row.sortIdx]['noProgram'] = 1;
-                                      controller.lstDgvSpotsList[
-                                          event.row.sortIdx]['dealOK'] = 0;
-                                      controller.lstDgvSpotsList[
-                                          event.row.sortIdx]['fctok'] = 0;
-                                      controller.lstDgvSpotsList[
-                                          event.row.sortIdx]['okSpot'] = 0;
-                                      // controller.lstDgvSpotsList.refresh();
-                                    } else if (event.cell.column.field
-                                            .toString() ==
-                                        'spoT_RATE') {
-                                      await controller.doubleClickFilterGrid(
-                                          controller.dvgSpotGrid);
-                                      await controller.doubleClickFilterGrid1(
-                                          controller.dgvDealEntriesGrid,
-                                          'costPer10Sec',
-                                          num.parse(
-                                              event.cell.value.toString()));
-                                    } else if (event.cell.column.field
-                                            .toString() ==
-                                        'tapE_ID') {
-                                      controller.tapeIdDilogBox();
-                                    }
-                                  },
-                                  doPasccal: true,
-                                  columnAutoResize: false,
-                                  widthSpecificColumn:
-                                      Get.find<HomeController>()
-                                          .getGridWidthByKey(
-                                              userGridSettingList:
-                                                  controller.userGridSetting1,
-                                              key: "tbl2"),
-                                  keyMapping: const {
-                                    "station": "STATION",
-                                    "acT_DT": "ACT_DT",
-                                    "stime": "STIME",
-                                    "etime": "ETIME",
-                                    "program": "PROGRAM",
-                                    "fpcstart": "FPCSTART",
-                                    "fpcprogram": "FPCPROGRAM",
-                                    "tapE_ID": "TAPE_ID",
-                                    "commercialcaption": "COMMERCIALCAPTION",
-                                    "dur": "DUR",
-                                    "commercialduration": "COMMERCIALCAPTION",
-                                    "brand": "BRAND",
-                                    "commCaption": "CommCaption",
-                                    "pmtType": "PMTType",
-                                    "schD_ID": "SCHD_ID",
-                                    "spoT_STATUS": "SPOT_STATUS",
-                                    "dealno": "DEALNO",
-                                    "dealrow": "DEALROW",
-                                    "amount": "AMOUNT",
-                                    "spoT_RATE": "SPOT_RATE",
-                                    "fctok": "FCTOK",
-                                    "dealOK": "DealOK",
-                                    "clienT_NAME": "CLIENT_NAME",
-                                    "endTime": "EndTime",
-                                    "nO_SPOT": "NO_SPOT",
-                                    "okSpot": "OKSpot",
-                                    "programcategoryname":
-                                        "PROGRAMCATEGORYNAME",
-                                    "groupcode": "GROUPCODE",
-                                    "rO_NUM": "RO_NUM",
-                                    "rO_DATE": "RO_DATE",
-                                    "statioN_ID": "STATION_ID",
-                                    "clienT_ID": "CLIENT_ID",
-                                    "noProgram": "NoProgram",
-                                    "brandName": "BrandName",
-                                    "branD_ID": "BRAND_ID",
-                                    "sEgmentNumber": "SEgmentNumber",
-                                    "programCode": "ProgramCode",
-                                    "pEndTime": "PEndTime",
-                                  },
-                                ),
-                              ),
-                      )),
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  Align(
-                    alignment: Alignment.topLeft,
-                    child: GetBuilder<HomeController>(
-                        id: "buttons",
-                        init: Get.find<HomeController>(),
-                        builder: (controllerX) {
-                          PermissionModel formPermissions =
-                              Get.find<MainController>()
-                                  .permissionList!
-                                  .lastWhere((element) =>
-                                      element.appFormName == "frmXMLROEntry");
-                          if (controllerX.buttons != null) {
-                            return Wrap(
-                              spacing: 5,
-                              runSpacing: 15,
-                              alignment: WrapAlignment.end,
-                              children: [
-                                for (var btn in controllerX.buttons!) ...{
-                                  if (btn["name"].toString() == "Search" ||
-                                      btn["name"].toString() == "Delete")
-                                    ...{}
-                                  else ...{
-                                    FormButtonWrapper(
-                                      btnText: btn["name"],
-                                      callback: Utils.btnAccessHandler2(
-                                                  btn['name'],
-                                                  controllerX,
-                                                  formPermissions) ==
-                                              null
-                                          ? null
-                                          : () => formHandler(
-                                                btn['name'],
+                                          FocusTraversalOrder(
+                                            order: const NumericFocusOrder(11),
+                                            child: Container(
+                                              width: Get.width * 0.115,
+                                              child: FormButtonWrapper(
+                                                showIcon: true,
+                                                iconDataM: Icons
+                                                    .video_collection_rounded,
+                                                btnText: "Show Programs",
+                                                callback: () {
+                                                  controller
+                                                      .showProgramDilogBox();
+                                                },
                                               ),
-                                      showIcon: false,
-                                    ),
+                                            ),
+                                          ),
+                                          FocusTraversalOrder(
+                                            order: const NumericFocusOrder(12),
+                                            child: Container(
+                                              width: Get.width * 0.115,
+                                              child: FormButtonWrapper(
+                                                showIcon: true,
+                                                iconDataM:
+                                                    Icons.done_outline_rounded,
+                                                btnText: "Mark Done",
+                                                callback: () {
+                                                  controller.onMarkAsDone();
+                                                },
+                                              ),
+                                            ),
+                                          ),
+                                        ])))),
+                        Column(
+                          children: [
+                            GetBuilder(
+                                init: controller,
+                                id: "totalAmount",
+                                builder: (controller) {
+                                  return Card(
+                                      child: Padding(
+                                          padding: EdgeInsets.all(4),
+                                          child: SizedBox(
+                                              width: Get.width * 0.07,
+                                              child: Wrap(
+                                                children: [
+                                                  InputFields.formField3(
+                                                    hintTxt: "Max Spend",
+                                                    isEnable: false,
+                                                    controller:
+                                                        controller.maxSpendTEC,
+                                                    width: 0.05,
+                                                  ),
+                                                  InputFields.formField3(
+                                                    hintTxt: "Booked Amount",
+                                                    isEnable: false,
+                                                    controller: controller
+                                                        .bookedAmountTEC,
+                                                    width: 0.05,
+                                                  ),
+                                                  InputFields.formField3(
+                                                    hintTxt: "Val Amount",
+                                                    isEnable: false,
+                                                    controller:
+                                                        controller.valAmountTEC,
+                                                    width: 0.05,
+                                                  ),
+                                                ],
+                                              ))));
+                                }),
+                            const SizedBox(
+                              height: 8,
+                            ),
+                            Obx(
+                              () => Visibility(
+                                visible: controller.lDButton.value,
+                                child: FormButtonWrapper(
+                                  btnText: controller.linkDealName.value,
+                                  callback: () {
+                                    controller.showDilogBox();
+                                  },
+                                  showIcon: false,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    Obx(
+                      () => controller.lstDgvDealEntriesList.value.isEmpty
+                          ? Container(
+                              height: Get.height * 0.30,
+                              decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.grey)),
+                            )
+                          : SizedBox(
+                              height: Get.height * 0.30,
+                              child: DataGridFromMap3(
+                                mode: PlutoGridMode.selectWithOneTap,
+                                onSelected: (event) {},
+                                mapData: controller.lstDgvDealEntriesList.value
+                                    .map((e) {
+                                  if (e['fromdate'] != null) {
+                                    e['fromdate'] =
+                                        controller.convertDate(e['fromdate']);
                                   }
+                                  if (e['todate'] != null) {
+                                    e['todate'] =
+                                        controller.convertDate(e['todate']);
+                                  }
+                                  if (e['startdate'] != null) {
+                                    e['startdate'] =
+                                        controller.convertDate(e['startdate']);
+                                  }
+                                  if (e['enddate'] != null) {
+                                    e['enddate'] =
+                                        controller.convertDate(e['enddate']);
+                                  }
+                                  return e;
+                                }).toList(),
+                                hideCode: false,
+                                exportFileName: "EDI R.O. Booking",
+                                onload: (load) {
+                                  controller.dgvDealEntriesGrid =
+                                      load.stateManager;
+                                  load.stateManager.setSelectingMode(
+                                      PlutoGridSelectingMode.row);
+                                  load.stateManager.setCurrentCell(
+                                      load.stateManager.firstCell, 0);
                                 },
-                                for (var btn
-                                    in maincontroller.extraButtons) ...{
-                                  FormButtonWrapper(
-                                    btnText: btn,
-                                    callback: () => formHandler(btn),
-                                    showIcon: false,
-                                  ),
+                                colorCallback: (row) => row.row.cells
+                                        .containsValue(controller
+                                            .dgvDealEntriesGrid?.currentCell)
+                                    ? Colors.deepPurple.shade100
+                                    : Colors.white,
+                                onRowDoubleTap: (event) {
+                                  controller.dgvDealEntriesGrid?.setCurrentCell(
+                                      event.cell, event.rowIdx);
+
+                                  controller.dealSpotsValidation(
+                                      event.cell.row.sortIdx,
+                                      showMessage: true);
                                 },
-                                colorBox(
-                                    "NO Tape", Colors.pink[300], Colors.white),
-                                colorBox(
-                                    "Kill Date", Colors.white, Colors.black),
-                                colorBox(
-                                    "Language", Colors.red[700], Colors.white),
-                                colorBox("Revenue Type", Colors.yellow[700],
-                                    Colors.white),
-                                colorBox(
-                                    "Campaign", Colors.white, Colors.black),
-                                Obx(
-                                  () => Visibility(
-                                    visible: controller.isEnterNewPDC.value,
-                                    child: DropDownField.formDropDown1WidthMap(
-                                      controller.newPdcList.value,
-                                      (data) {
-                                        controller.selectedPdc = data;
-                                      },
-                                      "",
-                                      .10,
-                                      dialogHeight: 150,
-                                      showtitle: false,
-                                      selected: controller.selectedPdc,
-                                    ),
+                                columnAutoResize: false,
+                                widthSpecificColumn: Get.find<HomeController>()
+                                    .getGridWidthByKey(
+                                        userGridSettingList:
+                                            controller.userGridSetting1,
+                                        key: "tbl1"),
+                              ),
+                            ),
+                    ),
+                    const SizedBox(
+                      height: 1,
+                    ),
+                    Obx(() => Expanded(
+                          child: controller.lstDgvSpotsList.value.isEmpty
+                              ? Container(
+                                  decoration: BoxDecoration(
+                                      border: Border.all(color: Colors.grey)),
+                                )
+                              : Container(
+                                  child: DataGridFromMap3(
+                                    mode: PlutoGridMode.selectWithOneTap,
+                                    onSelected: (event) {
+                                      controller.isSelectingChange.value =
+                                          false;
+                                    },
+                                    editKeys: const ['noProgram'],
+                                    hideKeys: const [
+                                      'backColor',
+                                      'selected',
+                                      'isSpotsAvailable'
+                                    ],
+                                    mapData: controller.lstDgvSpotsList.value
+                                        .map((e) {
+                                      if (e['fctok'] != null) {
+                                        e['fctok'] = num.parse(e['fctok']);
+                                      }
+                                      if (e['dealOK'] != null) {
+                                        e['dealOK'] = num.parse(e['dealOK']);
+                                      }
+                                      if (e['nO_SPOT'] != null) {
+                                        e['nO_SPOT'] = num.parse(e['nO_SPOT']);
+                                      }
+                                      if (e['okSpot'] != null) {
+                                        e['okSpot'] = num.parse(e['okSpot']);
+                                      }
+                                      if (e['groupcode'] != null) {
+                                        e['groupcode'] =
+                                            num.parse(e['groupcode']);
+                                      }
+                                      return e;
+                                    }).toList(),
+                                    hideCode: false,
+                                    formatDate: false,
+                                    exportFileName: "EDI R.O. Booking",
+                                    onload: (load) {
+                                      load.stateManager.setCurrentCell(
+                                          load.stateManager
+                                              .getRowByIdx(
+                                                  controller.lastSelectedIdx)!
+                                              .cells['program'],
+                                          controller.lastSelectedIdx);
+                                      load.stateManager.moveCurrentCellByRowIdx(
+                                          controller.lastSelectedIdx,
+                                          PlutoMoveDirection.down);
+                                      load.stateManager.scroll.vertical!
+                                          .animateTo(
+                                              controller.lastSelectedOffect,
+                                              curve: Curves.ease,
+                                              duration:
+                                                  Duration(milliseconds: 2));
+                                      load.stateManager.setSelectingMode(
+                                          PlutoGridSelectingMode.row);
+                                      load.stateManager.setCurrentCell(
+                                          load.stateManager.firstCell, 0);
+                                      controller.dvgSpotGrid =
+                                          load.stateManager;
+                                    },
+                                    colorCallback: (colorEvent) {
+                                      controller.coloerEvents = colorEvent;
+                                      if (colorEvent.row.cells.containsValue(
+                                          controller
+                                              .dvgSpotGrid?.currentCell)) {
+                                        return Colors.deepPurple.shade100;
+                                      }
+                                      if (controller.lstDgvSpotsList[
+                                                      colorEvent.rowIdx]
+                                                  ['isSpotsAvailable'] !=
+                                              null &&
+                                          controller.lstDgvSpotsList[colorEvent
+                                              .rowIdx]['isSpotsAvailable'] &&
+                                          controller.isSelectingChange.value) {
+                                        return Colors.deepPurple.shade100;
+                                      }
+
+                                      return controller.getColor(
+                                        controller
+                                            .lstDgvSpotsList[colorEvent.rowIdx],
+                                        colorEvent.rowIdx,
+                                      );
+                                    },
+                                    onRowDoubleTap: (event) async {
+                                      controller.lastSelectedOffect = controller
+                                          .dvgSpotGrid!.scroll.verticalOffset;
+                                      controller.lastSelectedIdx = event.rowIdx;
+                                      //Down Grid Set
+                                      controller.dvgSpotGrid?.setCurrentCell(
+                                          event.cell, event.rowIdx);
+                                      //Clear
+                                      if (Get.find<MainController>()
+                                          .filters1
+                                          .containsKey(controller
+                                              .dgvDealEntriesGrid.hashCode
+                                              .toString())) {
+                                        print(controller
+                                            .dgvDealEntriesGrid.hashCode
+                                            .toString());
+                                        await controller
+                                            .clearFirstDataTableFilter(
+                                                controller.dgvDealEntriesGrid!);
+                                      }
+                                      //Up Grid Set
+                                      for (var element in controller
+                                          .dgvDealEntriesGrid!.rows) {
+                                        if (element
+                                                .cells['costPer10Sec']?.value ==
+                                            event.cell.value) {
+                                          controller.dgvDealEntriesGrid
+                                              ?.setCurrentCell(
+                                                  element.cells['costPer10Sec'],
+                                                  element.sortIdx);
+                                          break;
+                                        }
+                                      }
+
+                                      // print(event.cell.row.sortIdx);
+                                      // print(event.cell.value);
+                                      // print(event.cell.column.field);
+                                      // print(event.row.cells['acT_DT']?.value);
+
+                                      if (event.cell.column.field.toString() ==
+                                          'fpcstart') {
+                                        controller.spotFpcStart(
+                                            controller.selectedLoactions?.key,
+                                            controller.selectedChannel?.key,
+                                            event.row.cells['acT_DT']?.value
+                                                .toString());
+                                      } else if (event.cell.column.field
+                                              .toString() ==
+                                          'program') {
+                                        event.row.cells['noProgram']?.value = 1;
+                                        event.row.cells['dealOK']?.value = 0;
+                                        event.row.cells['fctok']?.value = 0;
+                                        event.row.cells['okSpot']?.value = 0;
+
+                                        controller.lstDgvSpotsList[
+                                            event.row.sortIdx]['noProgram'] = 1;
+                                        controller.lstDgvSpotsList[
+                                            event.row.sortIdx]['dealOK'] = 0;
+                                        controller.lstDgvSpotsList[
+                                            event.row.sortIdx]['fctok'] = 0;
+                                        controller.lstDgvSpotsList[
+                                            event.row.sortIdx]['okSpot'] = 0;
+                                        // controller.lstDgvSpotsList.refresh();
+                                      } else if (event.cell.column.field
+                                              .toString() ==
+                                          'spoT_RATE') {
+                                        await controller.doubleClickFilterGrid(
+                                            controller.dvgSpotGrid);
+                                        await controller.doubleClickFilterGrid1(
+                                            controller.dgvDealEntriesGrid,
+                                            'costPer10Sec',
+                                            num.parse(
+                                                event.cell.value.toString()));
+                                      } else if (event.cell.column.field
+                                              .toString() ==
+                                          'tapE_ID') {
+                                        controller.tapeIdDilogBox();
+                                      }
+                                    },
+                                    doPasccal: true,
+                                    columnAutoResize: false,
+                                    widthSpecificColumn:
+                                        Get.find<HomeController>()
+                                            .getGridWidthByKey(
+                                                userGridSettingList:
+                                                    controller.userGridSetting1,
+                                                key: "tbl2"),
+                                    keyMapping: const {
+                                      "station": "STATION",
+                                      "acT_DT": "ACT_DT",
+                                      "stime": "STIME",
+                                      "etime": "ETIME",
+                                      "program": "PROGRAM",
+                                      "fpcstart": "FPCSTART",
+                                      "fpcprogram": "FPCPROGRAM",
+                                      "tapE_ID": "TAPE_ID",
+                                      "commercialcaption": "COMMERCIALCAPTION",
+                                      "dur": "DUR",
+                                      "commercialduration": "COMMERCIALCAPTION",
+                                      "brand": "BRAND",
+                                      "commCaption": "CommCaption",
+                                      "pmtType": "PMTType",
+                                      "schD_ID": "SCHD_ID",
+                                      "spoT_STATUS": "SPOT_STATUS",
+                                      "dealno": "DEALNO",
+                                      "dealrow": "DEALROW",
+                                      "amount": "AMOUNT",
+                                      "spoT_RATE": "SPOT_RATE",
+                                      "fctok": "FCTOK",
+                                      "dealOK": "DealOK",
+                                      "clienT_NAME": "CLIENT_NAME",
+                                      "endTime": "EndTime",
+                                      "nO_SPOT": "NO_SPOT",
+                                      "okSpot": "OKSpot",
+                                      "programcategoryname":
+                                          "PROGRAMCATEGORYNAME",
+                                      "groupcode": "GROUPCODE",
+                                      "rO_NUM": "RO_NUM",
+                                      "rO_DATE": "RO_DATE",
+                                      "statioN_ID": "STATION_ID",
+                                      "clienT_ID": "CLIENT_ID",
+                                      "noProgram": "NoProgram",
+                                      "brandName": "BrandName",
+                                      "branD_ID": "BRAND_ID",
+                                      "sEgmentNumber": "SEgmentNumber",
+                                      "programCode": "ProgramCode",
+                                      "pEndTime": "PEndTime",
+                                    },
                                   ),
                                 ),
-                                Obx(
-                                  () => Visibility(
-                                    visible: controller.isEnterNewPDC.value,
-                                    child: FormButtonWrapper(
-                                      btnText: "Enter new PDC",
-                                      callback: () {
-                                        // maincontroller.getFillPDC();
-                                        controller.pdcActivityPeriodTEC.text =
-                                            controller.bookingNo1TEC.text;
-                                        enterNewPdcDilogBox();
-                                      },
+                        )),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: GetBuilder<HomeController>(
+                          id: "buttons",
+                          init: Get.find<HomeController>(),
+                          builder: (controllerX) {
+                            PermissionModel formPermissions =
+                                Get.find<MainController>()
+                                    .permissionList!
+                                    .lastWhere((element) =>
+                                        element.appFormName == "frmXMLROEntry");
+                            if (controllerX.buttons != null) {
+                              return Wrap(
+                                spacing: 5,
+                                runSpacing: 15,
+                                alignment: WrapAlignment.end,
+                                children: [
+                                  for (var btn in controllerX.buttons!) ...{
+                                    if (btn["name"].toString() == "Search" ||
+                                        btn["name"].toString() == "Delete")
+                                      ...{}
+                                    else ...{
+                                      FormButtonWrapper(
+                                        btnText: btn["name"],
+                                        callback: Utils.btnAccessHandler2(
+                                                    btn['name'],
+                                                    controllerX,
+                                                    formPermissions) ==
+                                                null
+                                            ? null
+                                            : () => formHandler(
+                                                  btn['name'],
+                                                ),
+                                        showIcon: false,
+                                      ),
+                                    }
+                                  },
+                                  for (var btn
+                                      in maincontroller.extraButtons) ...{
+                                    FormButtonWrapper(
+                                      btnText: btn,
+                                      callback: () => formHandler(btn),
                                       showIcon: false,
                                     ),
+                                  },
+                                  colorBox("NO Tape", Colors.pink[300],
+                                      Colors.white),
+                                  colorBox(
+                                      "Kill Date", Colors.white, Colors.black),
+                                  colorBox("Language", Colors.red[700],
+                                      Colors.white),
+                                  colorBox("Revenue Type", Colors.yellow[700],
+                                      Colors.white),
+                                  colorBox(
+                                      "Campaign", Colors.white, Colors.black),
+                                  Obx(
+                                    () => Visibility(
+                                      visible: controller.isEnterNewPDC.value,
+                                      child:
+                                          DropDownField.formDropDown1WidthMap(
+                                        controller.newPdcList.value,
+                                        (data) {
+                                          controller.selectedPdc = data;
+                                        },
+                                        "",
+                                        .10,
+                                        dialogHeight: 150,
+                                        showtitle: false,
+                                        selected: controller.selectedPdc,
+                                      ),
+                                    ),
                                   ),
-                                ),
-                              ],
+                                  Obx(
+                                    () => Visibility(
+                                      visible: controller.isEnterNewPDC.value,
+                                      child: FormButtonWrapper(
+                                        btnText: "Enter new PDC",
+                                        callback: () {
+                                          // maincontroller.getFillPDC();
+                                          controller.pdcActivityPeriodTEC.text =
+                                              controller.bookingNo1TEC.text;
+                                          enterNewPdcDilogBox();
+                                        },
+                                        showIcon: false,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              );
+                            }
+                            return Container(
+                              child: Text("No"),
                             );
-                          }
-                          return Container(
-                            child: Text("No"),
-                          );
-                        }),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                ],
+                          }),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                  ],
+                ),
               ),
             ),
           );
@@ -1021,10 +1044,12 @@ class EdiRoBookingView extends StatelessWidget {
         infoDilogBox();
         break;
       case "Check All":
-        maincontroller.checkAll();
+        if (maincontroller.isCheckAll) {
+          maincontroller.checkAll();
+        }
         break;
       case "MG Spots":
-        mgSpotsDilogBox();
+        maincontroller.mgSpotsDilogBox();
         break;
       case "Tape Id":
         maincontroller.tapId();
@@ -1112,134 +1137,6 @@ class EdiRoBookingView extends StatelessWidget {
   //   }
   // }
 
-  showProgramDilogBox() {
-    maincontroller.drgabbleDialog.value = Focus(
-      autofocus: true,
-      onKey: (node, event) {
-        if (event.logicalKey == LogicalKeyboardKey.escape) {
-          maincontroller.drgabbleDialog.value = null;
-        }
-
-        return KeyEventResult.ignored;
-      },
-      child: Card(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
-        margin: EdgeInsets.zero,
-        color: Colors.white,
-        child: Container(
-            height: Get.height * .50,
-            width: Get.width * .20,
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 3),
-                  child: Align(
-                    alignment: Alignment.topRight,
-                    child: IconButton(
-                      onPressed: () {
-                        maincontroller.drgabbleDialog.value = null;
-                      },
-                      icon: const Icon(Icons.close),
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: Container(
-                    decoration:
-                        BoxDecoration(border: Border.all(color: Colors.grey)),
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: maincontroller.programList.length,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: EdgeInsets.all(8),
-                          child: Obx(
-                            () => GestureDetector(
-                              onTap: () {
-                                maincontroller.selectedIndex.value = index;
-                              },
-                              onDoubleTap: () async {
-                                maincontroller.selectedIndex.value = index;
-
-                                if (maincontroller.lstDgvSpotsList.isNotEmpty) {
-                                  // Down Grid
-                                  if (Get.find<MainController>()
-                                      .filters1
-                                      .containsKey(maincontroller
-                                          .dvgSpotGrid.hashCode
-                                          .toString())) {
-                                    await maincontroller
-                                        .clearFirstDataTableFilter(
-                                            maincontroller.dvgSpotGrid!);
-                                  }
-                                  for (var element
-                                      in maincontroller.dvgSpotGrid!.rows) {
-                                    maincontroller.dvgSpotGrid?.setCurrentCell(
-                                        element.cells['spoT_RATE'],
-                                        element.sortIdx);
-                                    break;
-                                  }
-
-                                  await maincontroller.doubleClickFilterGrid1(
-                                      maincontroller.dvgSpotGrid,
-                                      'program',
-                                      maincontroller.programList[index]
-                                          .toString());
-
-                                  // UP Grid
-                                  if (Get.find<MainController>()
-                                      .filters1
-                                      .containsKey(maincontroller
-                                          .dgvDealEntriesGrid.hashCode
-                                          .toString())) {
-                                    await maincontroller
-                                        .clearFirstDataTableFilter(
-                                            maincontroller.dgvDealEntriesGrid!);
-                                  }
-
-                                  for (var element in maincontroller
-                                      .dgvDealEntriesGrid!.rows) {
-                                    maincontroller.dgvDealEntriesGrid
-                                        ?.setCurrentCell(
-                                            element.cells['costPer10Sec'],
-                                            element.sortIdx);
-                                    break;
-                                  }
-                                  await maincontroller.doubleClickFilterGrid1(
-                                      maincontroller.dgvDealEntriesGrid,
-                                      'costPer10Sec',
-                                      num.parse(maincontroller.dvgSpotGrid!
-                                          .rows[0].cells['spoT_RATE']!.value
-                                          .toString()));
-                                } else {
-                                  LoadingDialog.showErrorDialog(
-                                      'Spot not found.');
-                                }
-                              },
-                              child: Container(
-                                color: (maincontroller.selectedIndex.value ==
-                                        index)
-                                    ? Colors.deepPurpleAccent
-                                    : Colors.white,
-                                child: Text(
-                                  maincontroller.programList[index].toString(),
-                                  style: TextStyle(
-                                      fontSize: SizeDefine.dropDownFontSize),
-                                ),
-                              ),
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                ),
-              ],
-            )),
-      ),
-    );
-  }
-
   infoDilogBox() {
     maincontroller.valueKey = ValueKey("infoDilogBox");
     maincontroller.drgabbleDialog.value = Focus(
@@ -1300,169 +1197,6 @@ class EdiRoBookingView extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  mgSpotsDilogBox() {
-    maincontroller.valueKey = ValueKey("mgSpotsDilogBox");
-
-    maincontroller.drgabbleDialog.value = Card(
-      // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(2)),
-      color: Colors.white,
-      // margin: const EdgeInsets.all(0),
-      child: SizedBox(
-        height: Get.height * .65,
-        width: Get.width * .80,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  const SizedBox(
-                    width: 5,
-                  ),
-                  DateWithThreeTextField(
-                    title: "From Date",
-                    mainTextController: maincontroller.mgStartDateTEC,
-                    widthRation: .12,
-                  ),
-                  const SizedBox(
-                    width: 5,
-                  ),
-                  DateWithThreeTextField(
-                    title: "To Date",
-                    mainTextController: maincontroller.mgEndDateTEC,
-                    widthRation: .12,
-                  ),
-                  const SizedBox(
-                    width: 5,
-                  ),
-                  FormButton(
-                    btnText: "Show",
-                    callback: () {
-                      maincontroller.showMakeGood();
-                    },
-                    showIcon: false,
-                  ),
-                  const SizedBox(
-                    width: 5,
-                  ),
-                  FormButton(
-                    btnText: "Back",
-                    callback: () {
-                      maincontroller.drgabbleDialog.value = null;
-                    },
-                    showIcon: false,
-                  ),
-                  const SizedBox(
-                    width: 5,
-                  ),
-                  FormButton(
-                    btnText: "Import & Mark",
-                    callback: () {
-                      maincontroller.pickFile();
-                    },
-                    showIcon: false,
-                  ),
-                  const SizedBox(
-                    width: 5,
-                  ),
-                  Obx(() {
-                    return CheckBoxWidget1(
-                      title: "Select All",
-                      value: maincontroller.controllsEnable.value,
-                      onChanged: (val) {
-                        maincontroller.controllsEnable.value =
-                            !(maincontroller.controllsEnable.value);
-
-                        for (var i = 0;
-                            i < maincontroller.makeGoodReportList.length;
-                            i++) {
-                          maincontroller.makeGoodReportList.value[maincontroller
-                                  .mgSpotTabelGrid!
-                                  .refRows[i]
-                                  .sortIdx]['selectRow'] =
-                              maincontroller.controllsEnable.value;
-                          maincontroller.mgSpotTabelGrid!.changeCellValue(
-                            maincontroller.mgSpotTabelGrid!
-                                .getRowByIdx(i)!
-                                .cells['selectRow']!,
-                            maincontroller.controllsEnable.value.toString(),
-                            callOnChangedEvent: false,
-                            force: true,
-                            notify: true,
-                          );
-                          print(maincontroller.makeGoodReportList);
-                          maincontroller.makeGoodReportList.refresh();
-                        }
-                      },
-                    );
-                  }),
-                ],
-              ),
-            ),
-            Expanded(
-              child: Obx(
-                () => DataGridFromMap3(
-                  mapData: maincontroller.makeGoodReportList.value.map((e) {
-                    e['selectRow'] = (e['selectRow'] ?? false).toString();
-
-                    return e;
-                  }).toList(),
-                  hideCode: false,
-                  formatDate: false,
-                  exportFileName: "EDI R.O. Booking",
-                  onload: (load) {
-                    maincontroller.mgSpotTabelGrid = load.stateManager;
-                    load.stateManager
-                        .setSelectingMode(PlutoGridSelectingMode.row);
-                    load.stateManager
-                        .setCurrentCell(load.stateManager.firstCell, 0);
-                  },
-                  colorCallback: (row) => (row.row.cells.containsValue(
-                          maincontroller.mgSpotTabelGrid?.currentCell))
-                      ? Colors.deepPurple.shade200
-                      : Colors.white,
-                  checkBoxColumnKey: ['selectRow'],
-                  checkBoxStrComparison: "true",
-                  uncheckCheckBoxStr: "false",
-                  actionIconKey: ['selectRow'],
-                  actionOnPress: (position, isSpaceCalled) {
-                    if (isSpaceCalled) {
-                      maincontroller.mgLastSelectedIdx = position.rowIdx ?? 0;
-                      maincontroller.mgSpotTabelGrid!.changeCellValue(
-                        maincontroller.mgSpotTabelGrid!.currentCell!,
-                        (maincontroller.mgSpotTabelGrid?.currentCell?.value ==
-                                "true")
-                            .toString(),
-                        force: true,
-                        callOnChangedEvent: true,
-                        notify: true,
-                      );
-                    }
-                  },
-                  onEdit: (row) {
-                    maincontroller.mgLastSelectedIdx = row.rowIdx;
-                    maincontroller.makeGoodReportList[row.rowIdx]['selectRow'] =
-                        (row.value.toString()) == "true";
-
-                    print(maincontroller.makeGoodReportList);
-                  },
-                  columnAutoResize: false,
-                  widthSpecificColumn: Get.find<HomeController>()
-                      .getGridWidthByKey(
-                          userGridSettingList: maincontroller.userGridSetting1,
-                          key: "tbl3"),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-    // }
   }
 
   enterNewPdcDilogBox() {
