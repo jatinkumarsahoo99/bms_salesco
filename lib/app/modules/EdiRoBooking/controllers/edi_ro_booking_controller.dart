@@ -6,7 +6,11 @@ import 'package:bms_salesco/app/modules/CommonDocs/views/common_docs_view.dart';
 import 'package:bms_salesco/app/modules/EdiRoBooking/bindings/edi_ro_booking_check_all_deal_utility.dart';
 import 'package:bms_salesco/app/modules/EdiRoBooking/bindings/edi_ro_booking_model.dart';
 import 'package:bms_salesco/app/modules/EdiRoBooking/bindings/edit_ro_init_data.dart';
+import 'package:bms_salesco/app/providers/SizeDefine.dart';
+import 'package:bms_salesco/widgets/CheckBoxWidget.dart';
+import 'package:bms_salesco/widgets/DateTime/DateWithThreeTextField.dart';
 import 'package:bms_salesco/widgets/LoadingDialog.dart';
+import 'package:bms_salesco/widgets/gridFromMap.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -2938,6 +2942,308 @@ class EdiRoBookingController extends GetxController {
   String dateConvertToyyyy(String date) {
     return (DateFormat('yyyy-MM-ddTHH:mm:ss')
         .format(DateFormat('dd/MM/yyyy').parse(date)));
+  }
+
+  showProgramDilogBox() {
+    drgabbleDialog.value = Focus(
+      autofocus: true,
+      onKey: (node, event) {
+        if (event.logicalKey == LogicalKeyboardKey.escape) {
+          drgabbleDialog.value = null;
+        }
+
+        return KeyEventResult.ignored;
+      },
+      child: Card(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
+        margin: EdgeInsets.zero,
+        color: Colors.white,
+        child: Container(
+            height: Get.height * .50,
+            width: Get.width * .20,
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 3),
+                  child: Align(
+                    alignment: Alignment.topRight,
+                    child: IconButton(
+                      onPressed: () {
+                        drgabbleDialog.value = null;
+                      },
+                      icon: const Icon(Icons.close),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Container(
+                    decoration:
+                        BoxDecoration(border: Border.all(color: Colors.grey)),
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: programList.length,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: EdgeInsets.all(8),
+                          child: Obx(
+                            () => GestureDetector(
+                              onTap: () {
+                                selectedIndex.value = index;
+                              },
+                              onDoubleTap: () async {
+                                selectedIndex.value = index;
+
+                                if (lstDgvSpotsList.isNotEmpty) {
+                                  // Down Grid
+                                  if (Get.find<MainController>()
+                                      .filters1
+                                      .containsKey(
+                                          dvgSpotGrid.hashCode.toString())) {
+                                    await clearFirstDataTableFilter(
+                                        dvgSpotGrid!);
+                                  }
+                                  for (var element in dvgSpotGrid!.rows) {
+                                    dvgSpotGrid?.setCurrentCell(
+                                        element.cells['spoT_RATE'],
+                                        element.sortIdx);
+                                    break;
+                                  }
+
+                                  await doubleClickFilterGrid1(dvgSpotGrid,
+                                      'program', programList[index].toString());
+
+                                  // UP Grid
+                                  if (Get.find<MainController>()
+                                      .filters1
+                                      .containsKey(dgvDealEntriesGrid.hashCode
+                                          .toString())) {
+                                    await clearFirstDataTableFilter(
+                                        dgvDealEntriesGrid!);
+                                  }
+
+                                  for (var element
+                                      in dgvDealEntriesGrid!.rows) {
+                                    dgvDealEntriesGrid?.setCurrentCell(
+                                        element.cells['costPer10Sec'],
+                                        element.sortIdx);
+                                    break;
+                                  }
+                                  await doubleClickFilterGrid1(
+                                      dgvDealEntriesGrid,
+                                      'costPer10Sec',
+                                      num.parse(dvgSpotGrid!
+                                          .rows[0].cells['spoT_RATE']!.value
+                                          .toString()));
+                                } else {
+                                  LoadingDialog.showErrorDialog(
+                                      'Spot not found.');
+                                }
+                              },
+                              child: Container(
+                                color: (selectedIndex.value == index)
+                                    ? Colors.deepPurpleAccent
+                                    : Colors.white,
+                                child: Text(
+                                  programList[index].toString(),
+                                  style: TextStyle(
+                                      fontSize: SizeDefine.dropDownFontSize),
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+              ],
+            )),
+      ),
+    );
+  }
+
+  mgSpotsDilogBox() {
+    valueKey = ValueKey("mgSpotsDilogBox");
+
+    drgabbleDialog.value = Card(
+      // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(2)),
+      color: Colors.white,
+      // margin: const EdgeInsets.all(0),
+      child: SizedBox(
+        height: Get.height * .65,
+        width: Get.width * .80,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  DateWithThreeTextField(
+                    title: "From Date",
+                    mainTextController: mgStartDateTEC,
+                    widthRation: .12,
+                  ),
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  DateWithThreeTextField(
+                    title: "To Date",
+                    mainTextController: mgEndDateTEC,
+                    widthRation: .12,
+                  ),
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  FormButton(
+                    btnText: "Show",
+                    callback: () {
+                      showMakeGood();
+                    },
+                    showIcon: false,
+                  ),
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  FormButton(
+                    btnText: "Back",
+                    callback: () {
+                      drgabbleDialog.value = null;
+                    },
+                    showIcon: false,
+                  ),
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  FormButton(
+                    btnText: "Import & Mark",
+                    callback: () {
+                      pickFile();
+                    },
+                    showIcon: false,
+                  ),
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  Obx(() {
+                    return CheckBoxWidget1(
+                      title: "Select All",
+                      value: controllsEnable.value,
+                      onChanged: (val) {
+                        controllsEnable.value = !(controllsEnable.value);
+
+                        for (var i = 0; i < makeGoodReportList.length; i++) {
+                          makeGoodReportList
+                                  .value[mgSpotTabelGrid!.refRows[i].sortIdx]
+                              ['selectRow'] = controllsEnable.value;
+                          mgSpotTabelGrid!.changeCellValue(
+                            mgSpotTabelGrid!
+                                .getRowByIdx(i)!
+                                .cells['selectRow']!,
+                            controllsEnable.value.toString(),
+                            callOnChangedEvent: false,
+                            force: true,
+                            notify: true,
+                          );
+                          print(makeGoodReportList);
+                          makeGoodReportList.refresh();
+                        }
+                      },
+                    );
+                  }),
+                ],
+              ),
+            ),
+            Expanded(
+              child: Obx(
+                () => DataGridFromMap3(
+                  mapData: makeGoodReportList.value.map((e) {
+                    e['selectRow'] = (e['selectRow'] ?? false).toString();
+
+                    return e;
+                  }).toList(),
+                  hideCode: false,
+                  formatDate: false,
+                  exportFileName: "EDI R.O. Booking",
+                  onload: (load) {
+                    mgSpotTabelGrid = load.stateManager;
+                    load.stateManager
+                        .setSelectingMode(PlutoGridSelectingMode.row);
+                    load.stateManager
+                        .setCurrentCell(load.stateManager.firstCell, 0);
+                  },
+                  colorCallback: (row) => (row.row.cells
+                          .containsValue(mgSpotTabelGrid?.currentCell))
+                      ? Colors.deepPurple.shade200
+                      : Colors.white,
+                  checkBoxColumnKey: ['selectRow'],
+                  checkBoxStrComparison: "true",
+                  uncheckCheckBoxStr: "false",
+                  actionIconKey: ['selectRow'],
+                  actionOnPress: (position, isSpaceCalled) {
+                    if (isSpaceCalled) {
+                      mgLastSelectedIdx = position.rowIdx ?? 0;
+                      mgSpotTabelGrid!.changeCellValue(
+                        mgSpotTabelGrid!.currentCell!,
+                        (mgSpotTabelGrid?.currentCell?.value == "true")
+                            .toString(),
+                        force: true,
+                        callOnChangedEvent: true,
+                        notify: true,
+                      );
+                    }
+                  },
+                  onEdit: (row) {
+                    mgLastSelectedIdx = row.rowIdx;
+                    makeGoodReportList[row.rowIdx]['selectRow'] =
+                        (row.value.toString()) == "true";
+
+                    print(makeGoodReportList);
+                  },
+                  columnAutoResize: false,
+                  widthSpecificColumn: Get.find<HomeController>()
+                      .getGridWidthByKey(
+                          userGridSettingList: userGridSetting1, key: "tbl3"),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+    // }
+  }
+
+  keyBoardHander(RawKeyEvent raw, BuildContext context) {
+    // print("Raw is.>>>" + raw.toString());
+    if (raw is RawKeyDownEvent &&
+        raw.isAltPressed &&
+        raw.character?.toLowerCase() == "p") {
+      print("Open Show Program Alt + p ");
+      showProgramDilogBox();
+    }
+    if (raw is RawKeyDownEvent &&
+        raw.isAltPressed &&
+        raw.character?.toLowerCase() == "m") {
+      print("Mark as Done Alt + m ");
+      onMarkAsDone();
+    }
+    if (raw is RawKeyDownEvent &&
+        raw.isAltPressed &&
+        raw.character?.toLowerCase() == "c") {
+      print("Check All Alt + c ");
+      checkAll();
+    }
+    if (raw is RawKeyDownEvent &&
+        raw.isAltPressed &&
+        raw.character?.toLowerCase() == "g") {
+      print("MG Spots Alt + g ");
+      mgSpotsDilogBox();
+    }
   }
 
   @override
