@@ -771,6 +771,13 @@ class EdiRoBookingView extends StatelessWidget {
                                           PlutoGridSelectingMode.row);
                                       load.stateManager.setCurrentCell(
                                           load.stateManager.firstCell, 0);
+                                      load.stateManager.onSelectCellCallback =
+                                          () {
+                                        if(controller.isSelectingChange.value) {
+                                          controller.isSelectingChange.value =
+                                          false;
+                                        }
+                                      };
                                       controller.dvgSpotGrid =
                                           load.stateManager;
                                     },
