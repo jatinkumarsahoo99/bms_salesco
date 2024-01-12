@@ -3236,7 +3236,9 @@ class EdiRoBookingController extends GetxController {
         raw.isAltPressed &&
         raw.character?.toLowerCase() == "c") {
       print("Check All Alt + c ");
-      checkAll();
+      if (isCheckAll) {
+        checkAll();
+      }
     }
     if (raw is RawKeyDownEvent &&
         raw.isAltPressed &&

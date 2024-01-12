@@ -653,8 +653,7 @@ class EdiRoBookingView extends StatelessWidget {
                           : SizedBox(
                               height: Get.height * 0.30,
                               child: DataGridFromMap3(
-                                mode: PlutoGridMode.selectWithOneTap,
-                                onSelected: (event) {},
+                                mode: PlutoGridMode.normal,
                                 mapData: controller.lstDgvDealEntriesList.value
                                     .map((e) {
                                   if (e['fromdate'] != null) {
