@@ -717,11 +717,11 @@ class EdiRoBookingView extends StatelessWidget {
                                 )
                               : Container(
                                   child: DataGridFromMap3(
-                                    mode: PlutoGridMode.selectWithOneTap,
-                                    onSelected: (event) {
-                                      controller.isSelectingChange.value =
-                                          false;
-                                    },
+                                    mode: PlutoGridMode.normal,
+                                    // onSelected: (event) {
+                                    //   controller.isSelectingChange.value =
+                                    //       false;
+                                    // },
                                     editKeys: const ['noProgram'],
                                     hideKeys: const [
                                       'backColor',
@@ -773,9 +773,10 @@ class EdiRoBookingView extends StatelessWidget {
                                           load.stateManager.firstCell, 0);
                                       load.stateManager.onSelectCellCallback =
                                           () {
-                                        if(controller.isSelectingChange.value) {
+                                        if (controller
+                                            .isSelectingChange.value) {
                                           controller.isSelectingChange.value =
-                                          false;
+                                              false;
                                         }
                                       };
                                       controller.dvgSpotGrid =

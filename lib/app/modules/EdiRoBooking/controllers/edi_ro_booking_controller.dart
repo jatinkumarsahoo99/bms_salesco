@@ -6,6 +6,7 @@ import 'package:bms_salesco/app/modules/CommonDocs/views/common_docs_view.dart';
 import 'package:bms_salesco/app/modules/EdiRoBooking/bindings/edi_ro_booking_check_all_deal_utility.dart';
 import 'package:bms_salesco/app/modules/EdiRoBooking/bindings/edi_ro_booking_model.dart';
 import 'package:bms_salesco/app/modules/EdiRoBooking/bindings/edit_ro_init_data.dart';
+import 'package:bms_salesco/app/modules/EdiRoBooking/bindings/program_fct.dart';
 import 'package:bms_salesco/app/providers/SizeDefine.dart';
 import 'package:bms_salesco/widgets/CheckBoxWidget.dart';
 import 'package:bms_salesco/widgets/DateTime/DateWithThreeTextField.dart';
@@ -112,6 +113,8 @@ class EdiRoBookingController extends GetxController {
   var roMsg = "".obs;
   var lstDgvDealEntries = <LstDealEntries>[].obs;
   var lstDgvSpots = <LstSpots>[].obs;
+  var lstDgvSpots2 = <LstSpot>[].obs;
+
   var makeGoodReportList = [].obs;
   int mgLastSelectedIdx = 0;
 
@@ -129,6 +132,7 @@ class EdiRoBookingController extends GetxController {
   RoBookingLeaveFileName? roBookingLeaveFileName;
   RoBookingDealLeave? roBookingDealLeave;
   RoBookingCheckAllDealUtility? roBookingCheckAllDealUtility;
+  InfoCheckAllProgramFct? roBookingProgramFCT;
 
   var fileNames = RxList<DropDownValue>();
   var loactions = RxList<DropDownValue>();
@@ -1751,29 +1755,33 @@ class EdiRoBookingController extends GetxController {
             if (map != null &&
                 map['infoCheckAllProgramFCT'] != null &&
                 map.containsKey('infoCheckAllProgramFCT')) {
+              roBookingProgramFCT = InfoCheckAllProgramFct.fromJson(map);
               isCheckAll = false;
-              bookedAmountTEC.text = map['infoCheckAllProgramFCT']
-                          ['totalBookedAmount']
-                      .toString() ??
-                  "";
-              valAmountTEC.text =
-                  map['infoCheckAllProgramFCT']['totalValAmount'].toString() ??
-                      "";
+              bookedAmountTEC.text = roBookingProgramFCT!
+                  .infoCheckAllProgramFct!.totalBookedAmount
+                  .toString();
+
+              valAmountTEC.text = roBookingProgramFCT!
+                  .infoCheckAllProgramFct!.totalValAmount
+                  .toString();
 
               lstDgvSpotsList.value = map['infoCheckAllProgramFCT']
                       ['getTimeAvailable']['lstSpot'] ??
                   [];
-              spotsBookedTEC.text = map['infoCheckAllProgramFCT']
-                      ['getTimeAvailable']['txtSpots']
+              lstDgvSpots2.value = roBookingProgramFCT!
+                  .infoCheckAllProgramFct!.getTimeAvailable!.lstSpot!;
+              spotsBookedTEC.text = roBookingProgramFCT!
+                  .infoCheckAllProgramFct!.getTimeAvailable!.txtSpots!
                   .toString();
-              durBookedTEC.text = map['infoCheckAllProgramFCT']
-                      ['getTimeAvailable']['txtDuration']
+
+              durBookedTEC.text = roBookingProgramFCT!
+                  .infoCheckAllProgramFct!.getTimeAvailable!.txtDuration!
                   .toString();
-              amtBookedTEC.text = map['infoCheckAllProgramFCT']
-                      ['getTimeAvailable']['txtAmount']
+              amtBookedTEC.text = roBookingProgramFCT!
+                  .infoCheckAllProgramFct!.getTimeAvailable!.txtAmount!
                   .toString();
-              amtValAmmountTEC.text = map['infoCheckAllProgramFCT']
-                      ['getTimeAvailable']['txtValAmount']
+              amtValAmmountTEC.text = roBookingProgramFCT!
+                  .infoCheckAllProgramFct!.getTimeAvailable!.txtValAmount!
                   .toString();
               //Spot Blance
               var spotBlance =
@@ -1834,39 +1842,39 @@ class EdiRoBookingController extends GetxController {
       try {
         LoadingDialog.call();
         var payload = {
-          "bookingNo": bookingNo1TEC.text ?? "0",
+          "bookingNo": bookingNo2TEC.text ?? "0",
           "grpPDC": false,
           "pdc": selectedPdc?.key ?? "",
           "lstPDCChannels": [],
-          "lstSpots": lstDgvSpots.map((e) {
+          "lstSpots": lstDgvSpots2.map((e) {
             return e.toJson();
           }).toList(),
           "lstMakeGood": makeGoodReportList.value ?? [],
-          "locationCode": selectedLoactions!.key ?? "",
-          "channelCode": selectedChannel!.key ?? "",
-          "brandCode": selectedBrand!.key ?? "",
+          "locationCode": selectedLoactions?.key ?? "",
+          "channelCode": selectedChannel?.key ?? "",
+          "brandCode": selectedBrand?.key ?? "",
           "spot": spotsBookedTEC.text ?? "",
           "chkGSTValidate": true,
-          "executiveCode": selectedExecutives!.key ?? "",
+          "executiveCode": selectedExecutives?.key ?? "",
           "dealMaxSpent": maxSpendTEC.text ?? "",
           "totalBookedAmount": bookedAmountTEC.text ?? "",
           "totalValAmount": valAmountTEC.text ?? "",
           "amount": amtBookedTEC.text,
-          "agencyCode": selectedAgency!.key ?? "",
-          "position": selectedPositions!.key ?? "",
+          "agencyCode": selectedAgency?.key ?? "",
+          "position": selectedPositions?.key ?? "",
           "bookingMonth": bookingNo1TEC.text ?? "0",
-          "clientCode": selectedClient!.key ?? "",
+          "clientCode": selectedClient?.key ?? "",
           "dtpBookingDate": bkDate.text ?? "",
           "dtpEffDate": effectiveDate.text ?? "",
-          "agncyCode": selectedAgency!.key ?? "",
-          "cboRORefNo": selectedRoRefNo!.value ?? "",
+          "agncyCode": selectedAgency?.key ?? "",
+          "cboRORefNo": selectedRoRefNo?.value ?? "",
           "payRoute": payRouteTEC.text ?? "",
           "duration": durBookedTEC.text,
           "zoneCode": zoneTEC.text,
-          "dealNo": selectedDealNo!.key ?? "",
+          "dealNo": selectedDealNo?.key ?? "",
           "loggedUser": Get.find<MainController>().user?.logincode ?? "",
-          "fileName": selectedFile!.value ?? "",
-          "gstPlantsId": selectedGstPlant?.value ?? "",
+          "fileName": selectedFile?.value ?? "",
+          "gstPlantsId": selectedGstPlant?.key ?? "",
           "gstRegN": gstNoTEC.text
         };
         Get.find<ConnectorControl>().POSTMETHOD(
@@ -1877,9 +1885,7 @@ class EdiRoBookingController extends GetxController {
               if (map != null &&
                   map['infoSave'] != null &&
                   map.containsKey('infoSave')) {
-                LoadingDialog.recordExists(map['infoSave']['message'], () {
-                  Get.back();
-                });
+                LoadingDialog.showErrorDialog(map['infoSave']['message']);
               }
             });
       } catch (e) {
@@ -1887,6 +1893,25 @@ class EdiRoBookingController extends GetxController {
       }
     }
   }
+
+  //  exportToExcel1() {
+  //   LoadingDialog.call();
+  //   Get.find<ConnectorControl>().GETMETHODCALL(
+  //       responseType: ResponseType.bytes,
+  //       api: ApiFactory.MOVIE_PLANNER_EXPORT_FPC_DOWNLOAD1(
+  //         location: selectedLocationId.text,
+  //         channel: selectedChannelId.text,
+  //         date: DateFormat('yyyy-MM-dd')
+  //             .format(DateFormat("dd-MM-yyyy").parse(selectedDate.text)),
+  //         isOptBMSProgram: selectedType.value == "Prog" ? true : false,
+  //         isOptViewProg: selectedType.value == "Prog" ? false : true,
+  //       ),
+  //       fun: (map) async {
+  //         Get.back();
+  //         ExportData().exportFilefromByte(map,
+  //             "${selectedLocation.text}${selectedChannel.text}${DateFormat('yyyy-MM-dd').format(DateFormat("dd-MM-yyyy").parse(selectedDate.text))}.xlsx");
+  //       });
+  // }
 
   Future dealSpotsValidation(int rowIndex, {bool showMessage = false}) async {
     int spotRowIndex = 0;
@@ -2893,11 +2918,6 @@ class EdiRoBookingController extends GetxController {
       }
     }
   }
-
-  // int weekNumber(DateTime date) {
-  //   int dayOfYear = int.parse(DateFormat("D").format(date));
-  //   return ((dayOfYear - date.weekday + 10) / 7).floor();
-  // }
 
   convertToDouble(String timeString) {
     List<String> timeComponents = timeString.split(':');

@@ -120,23 +120,23 @@ class TapeIDCampaignView extends GetView<TapeIDCampaignController> {
                           controller.startDate = tempDate
                               .subtract(Duration(days: (tempDate.day) - 1));
 
-                          controller.endDate = DateTime(
-                            controller.startDate.year,
-                            controller.startDate.month + 1,
-                            0,
-                          );
+                          // controller.endDate = DateTime(
+                          //   controller.startDate.year,
+                          //   controller.startDate.month + 1,
+                          //   0,
+                          // );
                           print(controller.startDate.toString());
                           print(controller.endDate.toString());
                           // controller.endDateTC.text = h;
-                          controller.update(['toDate']);
-                          WidgetsBinding.instance
-                              .addPostFrameCallback((timeStamp) {
-                            controller.endDateTC.text = h;
-                            controller.generateActivityMonth();
-                          });
+                          // controller.update(['toDate']);
+                          // WidgetsBinding.instance
+                          //     .addPostFrameCallback((timeStamp) {
+                          //   controller.endDateTC.text = h;
+                          //   controller.generateActivityMonth();
+                          // });
                         },
-                        startDate: DateTime.now()
-                            .subtract(Duration(days: (DateTime.now().day) - 1)),
+                        // startDate: DateTime.now()
+                        //     .subtract(Duration(days: (DateTime.now().day) - 1)),
                       ),
                       GetBuilder(
                         init: controller,
@@ -420,9 +420,10 @@ class TapeIDCampaignView extends GetView<TapeIDCampaignController> {
                                 }
                                 if (e['createdDate'] != null &&
                                     e['createdDate'].toString().contains("T")) {
-                                  e['createdDate'] = DateFormat('dd-MM-yyyy')
-                                      .format(DateFormat('yyyy-MM-ddThh:mm:ss')
-                                          .parse(e['createdDate']));
+                                  e['createdDate'] =
+                                      DateFormat('dd-MM-yyyy HH:mm:ss').format(
+                                          DateFormat('yyyy-MM-ddThh:mm:ss')
+                                              .parse(e['createdDate']));
                                 }
                                 return e;
                               }).toList(),
@@ -457,9 +458,10 @@ class TapeIDCampaignView extends GetView<TapeIDCampaignController> {
                                 }
                                 if (e['createdDate'] != null &&
                                     e['createdDate'].toString().contains("T")) {
-                                  e['createdDate'] = DateFormat('dd-MM-yyyy')
-                                      .format(DateFormat('yyyy-MM-ddThh:mm:ss')
-                                          .parse(e['createdDate']));
+                                  e['createdDate'] =
+                                      DateFormat('dd-MM-yyyy HH:mm:ss').format(
+                                          DateFormat('yyyy-MM-ddThh:mm:ss')
+                                              .parse(e['createdDate']));
                                 }
                                 return e;
                               }).toList(),
