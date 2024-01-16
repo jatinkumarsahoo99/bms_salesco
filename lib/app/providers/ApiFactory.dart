@@ -266,6 +266,8 @@ class ApiFactory {
       "$BASE_URL/api/EDIRoBooking/CheckAllDealUtil";
   static String EDI_RO_CHECK_ALL_PROGRAM_FCT =
       "$BASE_URL/api/EDIRoBooking/CheckAllProgramFCT";
+  static String EDI_RO_GET_EXCEL_FILE_DOWNLOAD =
+      "$BASE_URL/api/EDIRoBooking/GetExcelFileDownload";
 ///////////////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////// Create Break Pattern ///////////////////////////////////////////

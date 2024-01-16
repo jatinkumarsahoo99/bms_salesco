@@ -7,6 +7,7 @@ import 'package:bms_salesco/app/modules/EdiRoBooking/bindings/edi_ro_booking_che
 import 'package:bms_salesco/app/modules/EdiRoBooking/bindings/edi_ro_booking_model.dart';
 import 'package:bms_salesco/app/modules/EdiRoBooking/bindings/edit_ro_init_data.dart';
 import 'package:bms_salesco/app/modules/EdiRoBooking/bindings/program_fct.dart';
+import 'package:bms_salesco/app/providers/ExportData.dart';
 import 'package:bms_salesco/app/providers/SizeDefine.dart';
 import 'package:bms_salesco/widgets/CheckBoxWidget.dart';
 import 'package:bms_salesco/widgets/DateTime/DateWithThreeTextField.dart';
@@ -1864,8 +1865,10 @@ class EdiRoBookingController extends GetxController {
           "position": selectedPositions?.key ?? "",
           "bookingMonth": bookingNo1TEC.text ?? "0",
           "clientCode": selectedClient?.key ?? "",
-          "dtpBookingDate": bkDate.text ?? "",
-          "dtpEffDate": effectiveDate.text ?? "",
+          "dtpBookingDate": DateFormat('yyyy-MM-ddTHH:mm:ss')
+              .format(DateFormat('dd-MM-yyyy').parse(bkDate.text)),
+          "dtpEffDate": DateFormat('yyyy-MM-ddTHH:mm:ss')
+              .format(DateFormat('dd-MM-yyyy').parse(effectiveDate.text)),
           "agncyCode": selectedAgency?.key ?? "",
           "cboRORefNo": selectedRoRefNo?.value ?? "",
           "payRoute": payRouteTEC.text ?? "",
@@ -1885,12 +1888,47 @@ class EdiRoBookingController extends GetxController {
               if (map != null &&
                   map['infoSave'] != null &&
                   map.containsKey('infoSave')) {
-                LoadingDialog.showErrorDialog(map['infoSave']['message']);
+                if (map['infoSave']['message']
+                    .contains('XML Ro entry done successfully.')) {
+                  print("1");
+                  LoadingDialog.callDataSaved(
+                      msg: map['infoSave']['message'],
+                      callback: () {
+                        exportToExcel();
+                      });
+                } else {
+                  print("2");
+                  LoadingDialog.showErrorDialog(map['infoSave']['message']);
+                }
               }
             });
       } catch (e) {
         print(e.toString());
       }
+    }
+  }
+
+  exportToExcel() {
+    try {
+      LoadingDialog.call();
+      var payload = {
+        "lstSpots": lstDgvSpots2.map((e) {
+          return e.toJson();
+        }).toList(),
+        "refNo": selectedRoRefNo?.value ?? "",
+      };
+      Get.find<ConnectorControl>().POSTMETHOD(
+          api: ApiFactory.EDI_RO_GET_EXCEL_FILE_DOWNLOAD,
+          json: payload,
+          fun: (map) {
+            Get.back();
+            if (map != null) {
+              ExportData().exportFilefromByte(
+                  map, "${selectedRoRefNo?.value ?? ""}.xlsx");
+            }
+          });
+    } catch (e) {
+      print(e.toString());
     }
   }
 
