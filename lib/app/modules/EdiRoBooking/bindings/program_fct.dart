@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 class InfoCheckAllProgramFct {
   InfoCheckAllProgramFct1? infoCheckAllProgramFct;
 
@@ -229,7 +231,7 @@ class LstSpot {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> _data = <String, dynamic>{};
     _data["station"] = station;
-    _data["acT_DT"] = acTDt;
+    _data["acT_DT"] = dateConvertToyyyy(acTDt ?? "");
     _data["stime"] = stime;
     _data["etime"] = etime;
     _data["program"] = program;
@@ -271,4 +273,9 @@ class LstSpot {
     _data["isSpotsAvailable"] = isSpotsAvailable;
     return _data;
   }
+}
+
+String dateConvertToyyyy(String date) {
+  return (DateFormat('yyyy-MM-ddTHH:mm:ss')
+      .format(DateFormat('dd-MM-yyyy').parse(date)));
 }
