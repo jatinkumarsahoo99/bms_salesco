@@ -90,7 +90,7 @@ class PlutoBodyRowsState extends PlutoStateWithChange<PlutoBodyRows> {
       radius: scrollbarConfig.scrollbarRadius,
       radiusWhileDragging: scrollbarConfig.scrollbarRadiusWhileDragging,
       child: Padding(
-        padding: EdgeInsets.only(bottom: Const.plutoGridscrollBarPaddingHeight),
+        padding: const EdgeInsets.only(bottom: Const.plutoGridscrollBarPaddingHeight),
         child: SingleChildScrollView(
           controller: _horizontalScroll,
           scrollDirection: Axis.horizontal,
