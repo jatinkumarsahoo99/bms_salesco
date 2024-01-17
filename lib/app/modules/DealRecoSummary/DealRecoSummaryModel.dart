@@ -147,6 +147,10 @@ class Gentare {
     data['utilisedTime'] = this.utilisedTime;
     data['booked'] = this.booked;
     data['valuationrate'] = this.valuationrate;
+    data['dealvalamount'] = this.dealvalamount;
+    data['bookedValAmount'] = this.bookedValAmount;
+    data['balanceAmount'] = this.balanceAmount;
+    data['balanceValAmount'] = this.balanceValAmount;
     data['fromdate'] = (Utils.toDateFormat4(this.fromdate));
     data['todate'] = (Utils.toDateFormat4(this.todate));
     data['balance'] = this.balance;
@@ -164,10 +168,6 @@ class Gentare {
     data['bandcode'] = this.bandcode;
     data['networkname'] = this.networkname;
     data['paymentMode'] = this.paymentMode;
-    data['dealvalamount'] = this.dealvalamount;
-    data['bookedValAmount'] = this.bookedValAmount;
-    data['balanceAmount'] = this.balanceAmount;
-    data['balanceValAmount'] = this.balanceValAmount;
     return data;
   }
 }
