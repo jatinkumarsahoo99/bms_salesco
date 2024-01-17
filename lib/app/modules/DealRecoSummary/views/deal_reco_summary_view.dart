@@ -31,7 +31,7 @@ class DealRecoSummaryView extends GetView<DealRecoSummaryController> {
         child: SizedBox(
           // width: size.width * 0.74,
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: EdgeInsets.only(bottom: 8.0, left: 8, right: 8),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -40,9 +40,6 @@ class DealRecoSummaryView extends GetView<DealRecoSummaryController> {
                   centerTitle: true,
                   backgroundColor: Colors.deepPurple,
                 ),*/
-                SizedBox(
-                  height: 5,
-                ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: FocusTraversalGroup(
@@ -252,8 +249,12 @@ class DealRecoSummaryView extends GetView<DealRecoSummaryController> {
                                       child: FormButtonWrapper(
                                         btnText: "Exit",
                                         callback: () {
-                                          Get.delete<
-                                              DealRecoSummaryController>();
+                                          // Get.delete<DealRecoSummaryController>();
+                                          Get.find<HomeController>()
+                                              .postUserGridSetting1(
+                                                  listStateManager: [
+                                                controllerX.stateManager
+                                              ]);
                                         },
                                         showIcon: false,
                                       ),
