@@ -17,6 +17,7 @@ class Const {
   static GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
   static const instrumentationKey = 'b15b7ae4-ff42-4746-862c-d0c852787f55';
   static const appVersion = '1.0.4';
+  static const double plutoGridscrollBarPaddingHeight = 20;
 
   static List<SystemEnviroment> systemEnviroments = [
     SystemEnviroment(value: "Data Migration", url: ""),
