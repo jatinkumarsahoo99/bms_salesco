@@ -4,6 +4,7 @@ import 'dart:js' as js;
 import 'dart:html' as html;
 
 import '../app/providers/ApiFactory.dart';
+import '../app/providers/Utils.dart';
 class NoDataFoundPage extends StatelessWidget {
   const NoDataFoundPage({Key? key}) : super(key: key);
 
@@ -42,14 +43,47 @@ class NoDataFoundPage extends StatelessWidget {
             //   padding: EdgeInsets.symmetric(horizontal: 35, vertical: 20),
             // )
             (html.window.top != html.window.self)
-                ? RichText(
-              textAlign: TextAlign.center,
-              text: TextSpan(
-                text:
-                'You are not authorized to access this page. Please contact support team',
-                // style: Theme.of(context).textTheme.bodyLarge,
-                style: TextStyle(fontSize: 18),
-              ),
+                ?  Column(
+              children: [
+                RichText(
+                  textAlign: TextAlign.center,
+                  text: TextSpan(
+                    text:
+                    'You are not authorized to access this page. Please contact support team.',
+                    // style: Theme.of(context).textTheme.bodyLarge,
+                    style: TextStyle(fontSize: 18),
+                  ),
+                ),
+                SizedBox(height: 5,),
+                RichText(
+                  textAlign: TextAlign.center,
+                  text: TextSpan(
+                    text:
+                    '',
+                    // style: Theme.of(context).textTheme.bodyLarge,
+                    style: TextStyle(fontSize: 18),
+                    children: <InlineSpan>[
+                      WidgetSpan(
+                        alignment: PlaceholderAlignment.baseline,
+                        baseline: TextBaseline.alphabetic,
+                        child: LinkButton(
+                            urlLabel: "Click here",
+                            context: context,
+                            function: () {
+                              // js.context.callMethod('fromFlutter', ['Flutter is calling upon JavaScript!']);
+                              print("Click here to exit");
+                              if (html.window.location.href.contains("loginCode")) {
+                                Utils.callJSToExit(param: "exit|${Utils.getFormName()}");
+                              }
+                            }),
+                      ),
+                      TextSpan(
+                        text: ' to go home',
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             )
                 : RichText(
               textAlign: TextAlign.center,
