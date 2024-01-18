@@ -255,116 +255,127 @@ class EdiRoBookingController extends GetxController {
                 map['infoFileNameLeave'] != null &&
                 map.containsKey('infoFileNameLeave')) {
               roBookingLeaveFileName = RoBookingLeaveFileName.fromJson(map);
+              if (roBookingLeaveFileName!
+                      .infoFileNameLeave!.headerData!.message ==
+                  null) {
+                isEnable.value = false;
+                //RO Ref No.
+                strRoRefNo.clear();
+                roBookingLeaveFileName!.infoFileNameLeave!.strRoRefNo!
+                    .forEach((e) {
+                  strRoRefNo.add(DropDownValue(key: '', value: e));
+                  selectedRoRefNo = DropDownValue(key: '', value: e);
+                });
 
-              isEnable.value = false;
-              //RO Ref No.
-              strRoRefNo.clear();
-              roBookingLeaveFileName!.infoFileNameLeave!.strRoRefNo!
-                  .forEach((e) {
-                strRoRefNo.add(DropDownValue(key: '', value: e));
-                selectedRoRefNo = DropDownValue(key: '', value: e);
-              });
-
-              //Location
-              selectedLoactions = loactions.firstWhereOrNull((element) {
-                var result = element.key ==
-                    roBookingLeaveFileName!
-                        .infoFileNameLeave!.headerData!.locationCode;
-                return result;
-              });
-              pdcLoactionTEC.text = selectedLoactions!.value.toString();
-
-              // Channel
-              channel.clear();
-              roBookingLeaveFileName!.infoFileNameLeave!.headerData!.lstChannel!
-                  .forEach((e) {
-                channel.add(
-                    DropDownValue(key: e.channelCode, value: e.channelName));
-              });
-              selectedChannel = channel.firstWhereOrNull(
-                (element) {
+                //Location
+                selectedLoactions = loactions.firstWhereOrNull((element) {
                   var result = element.key ==
                       roBookingLeaveFileName!
-                          .infoFileNameLeave!.headerData!.channelCode;
-
+                          .infoFileNameLeave!.headerData!.locationCode;
                   return result;
-                },
-              );
-              pdcChannelTEC.text = selectedChannel!.value.toString();
-              //Client
-              client.clear();
-              roBookingLeaveFileName!.infoFileNameLeave!.headerData!.lstClients!
-                  .forEach((e) {
-                client
-                    .add(DropDownValue(key: e.clientCode, value: e.clientName));
-              });
+                });
+                pdcLoactionTEC.text = selectedLoactions!.value.toString();
 
-              selectedClient = client.firstWhereOrNull(
-                (element) {
-                  var result = element.key ==
-                      roBookingLeaveFileName!
-                          .infoFileNameLeave!.headerData!.clientcode;
-                  return result;
-                },
-              );
-              pdcClientTEC.text = selectedClient!.value.toString();
-              //Agency
-              agency.clear();
-              roBookingLeaveFileName!
-                  .infoFileNameLeave!.headerData!.lstAgencies!
-                  .forEach((e) {
-                agency
-                    .add(DropDownValue(key: e.agencyCode, value: e.agencyName));
-              });
-              selectedAgency = agency.firstWhereOrNull(
-                (element) {
-                  var result = element.key ==
-                      roBookingLeaveFileName!
-                          .infoFileNameLeave!.headerData!.agencyCode;
-                  return result;
-                },
-              );
+                // Channel
+                channel.clear();
+                roBookingLeaveFileName!
+                    .infoFileNameLeave!.headerData!.lstChannel!
+                    .forEach((e) {
+                  channel.add(
+                      DropDownValue(key: e.channelCode, value: e.channelName));
+                });
+                selectedChannel = channel.firstWhereOrNull(
+                  (element) {
+                    var result = element.key ==
+                        roBookingLeaveFileName!
+                            .infoFileNameLeave!.headerData!.channelCode;
 
-              pdcAgencyTEC.text = selectedAgency!.value.toString();
-              //Brand
-              brand.clear();
-              roBookingLeaveFileName!.infoFileNameLeave!.headerData!.lstBrands!
-                  .forEach((e) {
-                brand.add(DropDownValue(key: e.brandcode, value: e.brandname));
-              });
-              //Executives
-              executives.clear();
-              roBookingLeaveFileName!
-                  .infoFileNameLeave!.headerData!.executivesSelectedValue!
-                  .forEach((e) {
-                executives.add(DropDownValue(
-                    key: e.personnelCode, value: e.personnelName));
-              });
+                    return result;
+                  },
+                );
+                pdcChannelTEC.text = selectedChannel!.value.toString();
+                //Client
+                client.clear();
+                roBookingLeaveFileName!
+                    .infoFileNameLeave!.headerData!.lstClients!
+                    .forEach((e) {
+                  client.add(
+                      DropDownValue(key: e.clientCode, value: e.clientName));
+                });
 
-              selectedExecutives = DropDownValue(
-                  key: executives[0].key, value: executives[0].value);
-              // Show Programs
-              programList.clear();
-              roBookingLeaveFileName!
-                  .infoFileNameLeave!.lstLoadXml!.lstShowPrograms!
-                  .forEach((e) {
-                programList.add(e);
-              });
-              //Deal No
-              dealNo.clear();
-              roBookingLeaveFileName!
-                  .infoFileNameLeave!.headerData!.lstDealNumbers!
-                  .forEach((e) {
-                dealNo.add(DropDownValue(key: e.code, value: e.name));
-              });
-              //Lst Xml Dt
-              lstXmlDtList.value = roBookingLeaveFileName!
-                  .infoFileNameLeave!.lstLoadXml!.lstXmlDt!;
-              roMsg.value = roBookingLeaveFileName!
-                      .infoFileNameLeave!.headerData!.message ??
-                  "";
-              leaveFileNameClagdetails();
-              update(["initData"]);
+                selectedClient = client.firstWhereOrNull(
+                  (element) {
+                    var result = element.key ==
+                        roBookingLeaveFileName!
+                            .infoFileNameLeave!.headerData!.clientcode;
+                    return result;
+                  },
+                );
+                pdcClientTEC.text = selectedClient!.value.toString();
+                //Agency
+                agency.clear();
+                roBookingLeaveFileName!
+                    .infoFileNameLeave!.headerData!.lstAgencies!
+                    .forEach((e) {
+                  agency.add(
+                      DropDownValue(key: e.agencyCode, value: e.agencyName));
+                });
+                selectedAgency = agency.firstWhereOrNull(
+                  (element) {
+                    var result = element.key ==
+                        roBookingLeaveFileName!
+                            .infoFileNameLeave!.headerData!.agencyCode;
+                    return result;
+                  },
+                );
+
+                pdcAgencyTEC.text = selectedAgency!.value.toString();
+                //Brand
+                brand.clear();
+                roBookingLeaveFileName!
+                    .infoFileNameLeave!.headerData!.lstBrands!
+                    .forEach((e) {
+                  brand
+                      .add(DropDownValue(key: e.brandcode, value: e.brandname));
+                });
+                //Executives
+                executives.clear();
+                roBookingLeaveFileName!
+                    .infoFileNameLeave!.headerData!.executivesSelectedValue!
+                    .forEach((e) {
+                  executives.add(DropDownValue(
+                      key: e.personnelCode, value: e.personnelName));
+                });
+
+                selectedExecutives = DropDownValue(
+                    key: executives[0].key, value: executives[0].value);
+                // Show Programs
+                programList.clear();
+                roBookingLeaveFileName!
+                    .infoFileNameLeave!.lstLoadXml!.lstShowPrograms!
+                    .forEach((e) {
+                  programList.add(e);
+                });
+                //Deal No
+                dealNo.clear();
+                roBookingLeaveFileName!
+                    .infoFileNameLeave!.headerData!.lstDealNumbers!
+                    .forEach((e) {
+                  dealNo.add(DropDownValue(key: e.code, value: e.name));
+                });
+                //Lst Xml Dt
+                lstXmlDtList.value = roBookingLeaveFileName!
+                    .infoFileNameLeave!.lstLoadXml!.lstXmlDt!;
+                roMsg.value = roBookingLeaveFileName!
+                        .infoFileNameLeave!.headerData!.message ??
+                    "";
+                leaveFileNameClagdetails();
+                update(["initData"]);
+              } else {
+                LoadingDialog.showErrorDialog(roBookingLeaveFileName!
+                    .infoFileNameLeave!.headerData!.message
+                    .toString());
+              }
             } else {
               LoadingDialog.showErrorDialog('No data found.');
             }
@@ -1912,7 +1923,7 @@ class EdiRoBookingController extends GetxController {
     try {
       LoadingDialog.call();
       var payload = {
-        "lstSpots": lstDgvSpots.map((e) {
+        "lstSpots": lstDgvSpots2.map((e) {
           return e.toJson();
         }).toList(),
         "refNo": selectedRoRefNo?.value ?? "",
@@ -1931,25 +1942,6 @@ class EdiRoBookingController extends GetxController {
       print(e.toString());
     }
   }
-
-  //  exportToExcel1() {
-  //   LoadingDialog.call();
-  //   Get.find<ConnectorControl>().GETMETHODCALL(
-  //       responseType: ResponseType.bytes,
-  //       api: ApiFactory.MOVIE_PLANNER_EXPORT_FPC_DOWNLOAD1(
-  //         location: selectedLocationId.text,
-  //         channel: selectedChannelId.text,
-  //         date: DateFormat('yyyy-MM-dd')
-  //             .format(DateFormat("dd-MM-yyyy").parse(selectedDate.text)),
-  //         isOptBMSProgram: selectedType.value == "Prog" ? true : false,
-  //         isOptViewProg: selectedType.value == "Prog" ? false : true,
-  //       ),
-  //       fun: (map) async {
-  //         Get.back();
-  //         ExportData().exportFilefromByte(map,
-  //             "${selectedLocation.text}${selectedChannel.text}${DateFormat('yyyy-MM-dd').format(DateFormat("dd-MM-yyyy").parse(selectedDate.text))}.xlsx");
-  //       });
-  // }
 
   Future dealSpotsValidation(int rowIndex, {bool showMessage = false}) async {
     int spotRowIndex = 0;

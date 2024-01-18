@@ -1072,9 +1072,7 @@ class EdiRoBookingView extends StatelessWidget {
 
         break;
       case "Save":
-        // enterNewPdcDilogBox();
-        // maincontroller.save();
-        maincontroller.exportToExcel();
+        maincontroller.save();
 
         break;
       case "Exit":
