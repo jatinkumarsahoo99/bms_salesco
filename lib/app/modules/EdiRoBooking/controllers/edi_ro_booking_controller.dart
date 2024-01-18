@@ -1917,16 +1917,14 @@ class EdiRoBookingController extends GetxController {
         }).toList(),
         "refNo": selectedRoRefNo?.value ?? "",
       };
-      Get.find<ConnectorControl>().GETMETHODCALL(
-          api:
-              'https://api-programming-bms-dev.zeeconnect.in/api/MoviePlanner/GetExcelFPCDownload?Locationcode=ZAZEE00001&channelcode=ZAFLI00001&Date=2024-01-18&OptBMSProgram=true&OptViewProg=false',
-          // ApiFactory.EDI_RO_GET_EXCEL_FILE_DOWNLOAD,
-          // json: payload,
+      Get.find<ConnectorControl>().POSTMETHOD_BYTES(
+          api: ApiFactory.EDI_RO_GET_EXCEL_FILE_DOWNLOAD,
+          json: payload,
           fun: (map) {
             Get.back();
             if (map != null) {
-              ExportData()
-                  .exportFilefromByte(map, "${selectedRoRefNo?.value ?? ""}");
+              ExportData().exportFilefromByte(
+                  map, ((selectedRoRefNo?.value ?? "") + ".xlsx"));
             }
           });
     } catch (e) {
