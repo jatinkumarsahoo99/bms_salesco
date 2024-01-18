@@ -1912,7 +1912,7 @@ class EdiRoBookingController extends GetxController {
     try {
       LoadingDialog.call();
       var payload = {
-        "lstSpots": lstDgvSpots2.map((e) {
+        "lstSpots": lstDgvSpots.map((e) {
           return e.toJson();
         }).toList(),
         "refNo": selectedRoRefNo?.value ?? "",

@@ -1073,7 +1073,8 @@ class EdiRoBookingView extends StatelessWidget {
         break;
       case "Save":
         // enterNewPdcDilogBox();
-        maincontroller.save();
+        // maincontroller.save();
+        maincontroller.exportToExcel();
 
         break;
       case "Exit":
@@ -1098,7 +1099,7 @@ class EdiRoBookingView extends StatelessWidget {
           title: "Documents",
           content: CommonDocsView(
             documentKey:
-                "RObooking${maincontroller.selectedLoactions!.key}${maincontroller.selectedChannel!.key}${maincontroller.bookingNo1TEC.text}${maincontroller.bookingNo2TEC.text}",
+                "RObooking ${maincontroller.selectedLoactions!.key}${maincontroller.selectedChannel!.key}${maincontroller.bookingNo1TEC.text}${maincontroller.bookingNo2TEC.text}",
           ),
         ).then((value) {
           Get.delete<CommonDocsController>(tag: "commonDocs");
