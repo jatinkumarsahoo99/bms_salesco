@@ -275,14 +275,17 @@
 <script>
     window.addEventListener('load', function(ev) {
       // Download main.dart.js
+      var loading = document.querySelector('#loading');
       _flutter.loader.loadEntrypoint({
       entrypointUrl: "main.dart.js?v=" + serviceWorkerVersion,
         serviceWorker: {
           serviceWorkerVersion: serviceWorkerVersion,
         }
       }).then(function(engineInitializer) {
+      loading.classList.add('main_done');
         return engineInitializer.initializeEngine();
       }).then(function(appRunner) {
+      loading.classList.add('init_done');
         return appRunner.runApp();
       });
     });
