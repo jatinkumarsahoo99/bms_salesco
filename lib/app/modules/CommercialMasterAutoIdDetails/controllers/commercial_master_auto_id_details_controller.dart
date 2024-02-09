@@ -48,7 +48,8 @@ class CommercialMasterAutoIdDetailsController extends GetxController {
   Rx<bool> isEnable = Rx<bool>(true);
   Rx<bool> isEnable1 = Rx<bool>(true);
 
-  Rxn<DropDownValue>? selectClient = Rxn<DropDownValue>();
+  // Rxn<DropDownValue>? selectClient = Rxn<DropDownValue>();
+  DropDownValue? selectClient;
   Rxn<DropDownValue>? selectBrand = Rxn<DropDownValue>();
   Rxn<DropDownValue>? selectLanguage = Rxn<DropDownValue>();
   Rxn<DropDownValue>? selectLocation = Rxn<DropDownValue>();
@@ -249,7 +250,7 @@ class CommercialMasterAutoIdDetailsController extends GetxController {
                   commercialDetails?.lstShowACID?[0].secType == null)? "":(commercialDetails?.lstShowACID?[0].secType ?? "")));
 
           // htmlBody.value = commercialDetails?.lstShowACID![0].mailBody ?? "";
-          selectClient?.value = DropDownValue(
+          selectClient = DropDownValue(
               key: commercialDetails?.lstShowACID?[0].clientCode,
               value: commercialDetails?.lstShowACID?[0].clientName);
 
@@ -296,7 +297,7 @@ class CommercialMasterAutoIdDetailsController extends GetxController {
         fun: (Map map) {
           if (map.containsKey("lstClientMaster")) {
             if (map["lstClientMaster"] != null) {
-              selectClient?.value = DropDownValue(
+              selectClient = DropDownValue(
                   key: map["lstClientMaster"][0]["clientcode"],
                   value: map["lstClientMaster"][0]["Clientname"]);
               clientFocus.requestFocus();
@@ -335,7 +336,7 @@ class CommercialMasterAutoIdDetailsController extends GetxController {
       LoadingDialog.callInfoMessage("Please select revenue");
     } else if (selectBrand?.value == null || selectBrand?.value?.value == "") {
       LoadingDialog.callInfoMessage("Please select brand");
-    } else if (selectClient?.value == null || selectClient?.value?.value == "" ) {
+    } else if (selectClient?.value == null || selectClient?.value == "" ) {
       LoadingDialog.callInfoMessage("Please select client");
     } else if (selectLanguage?.value == null || selectLanguage?.value?.value == "") {
       LoadingDialog.callInfoMessage("Please select language");
