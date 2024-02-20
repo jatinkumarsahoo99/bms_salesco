@@ -678,14 +678,14 @@ class CommercialMasterAutoIdDetailsView extends StatelessWidget {
                               init: Get.find<HomeController>(),
                               builder: (controller) {
                                 print("Data is???" +
-                                    Routes.COMMERCIAL_CREATION_AUTO.replaceAll(
+                                    Routes.COMMERCIAL_MASTER_AUTO_ID.replaceAll(
                                         "/", ""));
                                 int? index = Get
                                     .find<MainController>()
                                     .permissionList!
                                     .indexWhere((element) {
                                   return element.appFormName ==
-                                      Routes.COMMERCIAL_CREATION_AUTO
+                                      Routes.COMMERCIAL_MASTER_AUTO_ID
                                           .replaceAll("/", "");
                                 });
                                 if (index == null || index == -1) {
@@ -705,7 +705,6 @@ class CommercialMasterAutoIdDetailsView extends StatelessWidget {
                                       for (var btn in controller.buttons!)
                                         FormButtonWrapper(
                                           btnText: btn["name"],
-                                          // isEnabled: btn['isDisabled'],
                                           callback: Utils.btnAccessHandler2(
                                               btn['name'],
                                               controller, formPermissions) ==
