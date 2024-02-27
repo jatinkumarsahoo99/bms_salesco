@@ -165,13 +165,14 @@ class CommercialMasterAutoIdDetailsController extends GetxController {
               (commercialDetails?.lstShowACID?[0].commercialDuration ?? "").toString();
           providers.value = commercialDetails?.lstShowACID?[0].provider ?? "";
           ACID.value = commercialDetails?.lstShowACID?[0].acid.toString() ?? "";
-          som_.text = commercialDetails?.lstShowACID?[0].txtSOM ?? "";
-          eom_.text = Utils.convertToTimeFromDouble(
+          som_.text = commercialDetails?.lstShowACID?[0].som ?? "";
+          eom_.text = commercialDetails?.lstShowACID?[0].eom ?? "";
+          /*eom_.text = Utils.convertToTimeFromDouble(
               value: num.tryParse(commercialDetails
                   ?.lstShowACID![0].txtEOMDurationInSeconds
                   .toString() ??
                   "0") ??
-                  0);
+                  0);*/
           duration.value = Utils.convertToTimeFromDouble(
               value: num.tryParse(commercialDetails
                   ?.lstShowACID![0].txtDurationInSeconds
