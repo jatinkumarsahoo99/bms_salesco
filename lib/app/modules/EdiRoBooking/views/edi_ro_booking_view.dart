@@ -117,7 +117,6 @@ class EdiRoBookingView extends StatelessWidget {
                                           btnText: "Show & Link",
                                           callback: () {
                                             controller.effDateFN.requestFocus();
-
                                             controller.showLink();
                                           },
                                           showIcon: false,

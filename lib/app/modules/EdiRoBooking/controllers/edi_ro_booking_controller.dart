@@ -1884,7 +1884,7 @@ class EdiRoBookingController extends GetxController {
           "cboRORefNo": selectedRoRefNo?.value ?? "",
           "payRoute": payRouteTEC.text ?? "",
           "duration": durBookedTEC.text,
-          "zoneCode": zoneTEC.text,
+          "zoneCode": zoneCode.value,
           "dealNo": selectedDealNo?.key ?? "",
           "loggedUser": Get.find<MainController>().user?.logincode ?? "",
           "fileName": selectedFile?.value ?? "",
@@ -3114,7 +3114,6 @@ class EdiRoBookingController extends GetxController {
 
   mgSpotsDilogBox() {
     valueKey = ValueKey("mgSpotsDilogBox");
-
     drgabbleDialog.value = Card(
       // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(2)),
       color: Colors.white,
@@ -3296,6 +3295,27 @@ class EdiRoBookingController extends GetxController {
       print("MG Spots Alt + g ");
       mgSpotsDilogBox();
     }
+    if (raw is RawKeyDownEvent &&
+        raw.isAltPressed &&
+        raw.character?.toLowerCase() == "s") {
+      print("MG Spots Alt + s ");
+      effDateFN.requestFocus();
+      showLink();
+    }
+  }
+
+  String getFirstDayOfMonth() {
+    var now = DateTime.now();
+    var firstDayOfMonth = DateTime(now.year, now.month, 1);
+    print("First day===> $firstDayOfMonth");
+    return DateFormat('yyyy-MM-dd').format(firstDayOfMonth);
+  }
+
+  mgSpotDate() {
+    var now = DateTime.now();
+    var firstDayOfMonth = DateTime(now.year, now.month, 1);
+    var date = DateFormat('dd-MM-yyyy').format(firstDayOfMonth);
+    mgStartDateTEC.text = date;
   }
 
   @override
@@ -3303,6 +3323,8 @@ class EdiRoBookingController extends GetxController {
     super.onReady();
     getInitData();
     fetchUserSetting1();
+    mgSpotDate();
+    // getFirstDayOfMonth();
   }
 
   @override
