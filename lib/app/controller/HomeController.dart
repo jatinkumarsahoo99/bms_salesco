@@ -10,6 +10,7 @@ import 'package:get/get.dart';
 import 'package:bms_salesco/widgets/PlutoGrid/pluto_grid.dart';
 import '../data/DrawerModel.dart';
 import '../data/PermissionModel.dart';
+import '../data/user_data_settings_model.dart';
 import '../providers/Aes.dart';
 import '../providers/ApiFactory.dart';
 import '../providers/Utils.dart';
@@ -216,6 +217,20 @@ class HomeController extends GetxController {
       print(">>>>>>>>>>>>" + e.toString());
       return gridWidths;
     }
+  }
+
+
+  Future<UserDataSettings> fetchUserSetting2({String? formName}) {
+    Completer<UserDataSettings> completer = Completer();
+    Get.find<ConnectorControl>().GETMETHODCALL(
+      api:
+      "${ApiFactory.FETCH_USER_SETTING}?formName=${(formName?.replaceAll(" ", "")) ?? Get.find<MainController>().formName.replaceAll(" ", "")}",
+      fun: (map) {
+        var userSettings = UserDataSettings.fromJson(map);
+        return completer.complete(userSettings);
+      },
+    );
+    return completer.future;
   }
 
   void postUserGridSetting(
