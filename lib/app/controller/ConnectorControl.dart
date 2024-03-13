@@ -125,20 +125,7 @@ class ConnectorControl extends GetConnect {
         }
       }
     } on DioError catch (e) {
-      print("Connector Response Error>>" + jsonEncode(e.response?.headers.map));
-      /*print("(e.response?.headers.map.containsKey(\"www-authenticate\"))!"+((e.response?.headers.map.containsKey("www-authenticate"))!).toString());
-      print("Status Code"+((e.response?.statusCode!).toString()));
-      print("value"+(e.response?.headers.map["www-authenticate"]![0])!);*/
-      /*if (e.response?.statusCode == 401 &&
-          (e.response?.headers.map.containsKey("www-authenticate"))! &&
-          e.response?.headers.map["www-authenticate"]?.length == 2 &&
-          (e.response?.headers.map["www-authenticate"]![0]
-              .contains("invalid_token"))! &&
-          (e.response?.headers.map["www-authenticate"]![1]
-              .contains("The token expired at"))!) {*/
       if (e.response?.statusCode == 401) {
-        //Snack.callError("Token Expired. We are regenerating new token",
-//            widthRatio: 0.5);
         updateToken(() {
           GETMETHODCALL(api: api, fun: fun, failed: failed);
         });
@@ -150,6 +137,16 @@ class ConnectorControl extends GetConnect {
           LoadingDialog.showErrorDialog(e.response?.data["status"]);
         }
       } else {
+        if (Get.isDialogOpen ?? false) {
+          Get.back();
+        }
+        if (Const.errorCode.containsKey(e.response?.statusCode)) {
+          LoadingDialog.showErrorDialog(
+              Const.errorCode[e.response?.statusCode] ?? "");
+        } else {
+          LoadingDialog.showErrorDialog(
+              "${e.response?.statusCode.toString()} - Something went wrong please contact support team");
+        }
         switch (e.type) {
           case DioErrorType.connectionTimeout:
           case DioErrorType.cancel:
@@ -172,12 +169,7 @@ class ConnectorControl extends GetConnect {
       required Function failed,
       required String employeId}) async {
     try {
-      /* Map<String, dynamic> map = {
-        "grant_type": "client_credentials",
-        "client_id": Const.CLIENT_ID,
-        "client_secret": Const.CLIENT_SECRET,
-        "resource": Const.API_RESOURCE,
-      };*/
+
       Map<String, dynamic> map = {"code": employeId};
       service.Response response = await dio.post(
         ApiFactory.MS_TOKEN_BACKEND,
@@ -194,17 +186,36 @@ class ConnectorControl extends GetConnect {
         failed(failedMap);
       }
     } on DioError catch (e) {
-      log("Connector Response Error>>" + jsonEncode(e.message));
-      switch (e.type) {
-        case DioErrorType.connectionTimeout:
-        case DioErrorType.cancel:
-        case DioErrorType.sendTimeout:
-        case DioErrorType.receiveTimeout:
-        case DioErrorType.unknown:
-          failed(failedMap);
-          break;
-        case DioErrorType.badResponse:
-          failed(e.response?.data);
+     if ([400, 403].contains(e.response?.statusCode)) {
+        if (Get.isDialogOpen ?? false) {
+          Get.back();
+        }
+        if (e.response?.data is Map && e.response?.data.containsKey("status")) {
+          LoadingDialog.showErrorDialog(e.response?.data["status"]);
+        }
+      } else {
+        if (Get.isDialogOpen ?? false) {
+          Get.back();
+        }
+        if (Const.errorCode.containsKey(e.response?.statusCode)) {
+          LoadingDialog.showErrorDialog(
+              Const.errorCode[e.response?.statusCode] ?? "");
+        } else {
+          LoadingDialog.showErrorDialog(
+              "${e.response?.statusCode
+                  .toString()} - Something went wrong please contact support team");
+        }
+        switch (e.type) {
+          case DioErrorType.connectionTimeout:
+          case DioErrorType.cancel:
+          case DioErrorType.sendTimeout:
+          case DioErrorType.receiveTimeout:
+          case DioErrorType.unknown:
+            failed(failedMap);
+            break;
+          case DioErrorType.badResponse:
+            failed(e.response?.data);
+        }
       }
     }
   }
@@ -237,16 +248,40 @@ class ConnectorControl extends GetConnect {
         fun(failedMap);
       }
     } on DioError catch (e) {
-      switch (e.type) {
-        case DioErrorType.connectionTimeout:
-        case DioErrorType.cancel:
-        case DioErrorType.sendTimeout:
-        case DioErrorType.receiveTimeout:
-        case DioErrorType.unknown:
-          fun(failedMap);
-          break;
-        case DioErrorType.badResponse:
-          fun(e.response?.data);
+      if (e.response?.statusCode == 401) {
+        updateToken(() {
+          GETMETHODCALL(api: api, fun: fun,);
+        });
+      } else if ([400, 403].contains(e.response?.statusCode)) {
+        if (Get.isDialogOpen ?? false) {
+          Get.back();
+        }
+        if (e.response?.data is Map && e.response?.data.containsKey("status")) {
+          LoadingDialog.showErrorDialog(e.response?.data["status"]);
+        }
+      } else {
+        if (Get.isDialogOpen ?? false) {
+          Get.back();
+        }
+        if (Const.errorCode.containsKey(e.response?.statusCode)) {
+          LoadingDialog.showErrorDialog(
+              Const.errorCode[e.response?.statusCode] ?? "");
+        } else {
+          LoadingDialog.showErrorDialog(
+              "${e.response?.statusCode
+                  .toString()} - Something went wrong please contact support team");
+        }
+        switch (e.type) {
+          case DioErrorType.connectionTimeout:
+          case DioErrorType.cancel:
+          case DioErrorType.sendTimeout:
+          case DioErrorType.receiveTimeout:
+          case DioErrorType.unknown:
+            fun(failedMap);
+            break;
+          case DioErrorType.badResponse:
+            fun(e.response?.data);
+        }
       }
     }
   }
@@ -290,34 +325,28 @@ class ConnectorControl extends GetConnect {
         fun(failedMap);
       }
     } on DioError catch (e) {
-      /*if (e.response?.statusCode == 401 &&
-          (e.response?.headers.map.containsKey("www-authenticate"))! &&
-          e.response?.headers.map["www-authenticate"]?.length == 2 &&
-          (e.response?.headers.map["www-authenticate"]![0]
-              .contains("invalid_token"))! &&
-          (e.response?.headers.map["www-authenticate"]![1]
-              .contains("The token expired at"))!) {*/
       if (e.response?.statusCode == 401) {
-        //Snack.callError("Token Expired. We are regenerating new token",
-//            widthRatio: 0.5);
         updateToken(() {
-          POSTMETHOD(api: api, json: json, fun: fun);
+          POSTMETHOD(api: api, fun: fun,json: json);
         });
       } else if ([400, 403].contains(e.response?.statusCode)) {
         if (Get.isDialogOpen ?? false) {
           Get.back();
         }
         if (e.response?.data is Map && e.response?.data.containsKey("status")) {
-          if (e.response?.data["status"] is num) {
-            LoadingDialog.showErrorDialog(
-                (e.response?.data["title"]).toString());
-          } else {
-            LoadingDialog.showErrorDialog(
-                (e.response?.data["status"]).toString());
-          }
-          // LoadingDialog.showErrorDialog((e.response?.data["status"]));
+          LoadingDialog.showErrorDialog(e.response?.data["status"]);
         }
       } else {
+        if (Get.isDialogOpen ?? false) {
+          Get.back();
+        }
+        if (Const.errorCode.containsKey(e.response?.statusCode)) {
+          LoadingDialog.showErrorDialog(
+              Const.errorCode[e.response?.statusCode] ?? "");
+        } else {
+          LoadingDialog.showErrorDialog(
+              "${e.response?.statusCode.toString()} - Something went wrong please contact support team");
+        }
         switch (e.type) {
           case DioErrorType.connectionTimeout:
           case DioErrorType.cancel:
@@ -372,34 +401,28 @@ class ConnectorControl extends GetConnect {
         fun(failedMap);
       }
     } on DioError catch (e) {
-      /*if (e.response?.statusCode == 401 &&
-          (e.response?.headers.map.containsKey("www-authenticate"))! &&
-          e.response?.headers.map["www-authenticate"]?.length == 2 &&
-          (e.response?.headers.map["www-authenticate"]![0]
-              .contains("invalid_token"))! &&
-          (e.response?.headers.map["www-authenticate"]![1]
-              .contains("The token expired at"))!) {*/
       if (e.response?.statusCode == 401) {
-        //Snack.callError("Token Expired. We are regenerating new token",
-//            widthRatio: 0.5);
         updateToken(() {
-          POSTMETHOD(api: api, json: json, fun: fun);
+          POSTMETHOD_BYTES(api: api, fun: fun, json: json);
         });
       } else if ([400, 403].contains(e.response?.statusCode)) {
         if (Get.isDialogOpen ?? false) {
           Get.back();
         }
         if (e.response?.data is Map && e.response?.data.containsKey("status")) {
-          if (e.response?.data["status"] is num) {
-            LoadingDialog.showErrorDialog(
-                (e.response?.data["title"]).toString());
-          } else {
-            LoadingDialog.showErrorDialog(
-                (e.response?.data["status"]).toString());
-          }
-          // LoadingDialog.showErrorDialog((e.response?.data["status"]));
+          LoadingDialog.showErrorDialog(e.response?.data["status"]);
         }
       } else {
+        if (Get.isDialogOpen ?? false) {
+          Get.back();
+        }
+        if (Const.errorCode.containsKey(e.response?.statusCode)) {
+          LoadingDialog.showErrorDialog(
+              Const.errorCode[e.response?.statusCode] ?? "");
+        } else {
+          LoadingDialog.showErrorDialog(
+              "${e.response?.statusCode.toString()} - Something went wrong please contact support team");
+        }
         switch (e.type) {
           case DioErrorType.connectionTimeout:
           case DioErrorType.cancel:
@@ -451,20 +474,28 @@ class ConnectorControl extends GetConnect {
         fun(failedMap);
       }
     } on DioError catch (e) {
-      /*if (e.response?.statusCode == 401 &&
-          (e.response?.headers.map.containsKey("www-authenticate"))! &&
-          e.response?.headers.map["www-authenticate"]?.length == 2 &&
-          (e.response?.headers.map["www-authenticate"]![0]
-              .contains("invalid_token"))! &&
-          (e.response?.headers.map["www-authenticate"]![1]
-              .contains("The token expired at"))!) {*/
       if (e.response?.statusCode == 401) {
-        //Snack.callError("Token Expired. We are regenerating new token",
-//            widthRatio: 0.5);
         updateToken(() {
-          POSTMETHOD(api: api, json: json, fun: fun);
+          GET_METHOD_WITH_PARAM(api: api, fun: fun,);
         });
+      } else if ([400, 403].contains(e.response?.statusCode)) {
+        if (Get.isDialogOpen ?? false) {
+          Get.back();
+        }
+        if (e.response?.data is Map && e.response?.data.containsKey("status")) {
+          LoadingDialog.showErrorDialog(e.response?.data["status"]);
+        }
       } else {
+        if (Get.isDialogOpen ?? false) {
+          Get.back();
+        }
+        if (Const.errorCode.containsKey(e.response?.statusCode)) {
+          LoadingDialog.showErrorDialog(
+              Const.errorCode[e.response?.statusCode] ?? "");
+        } else {
+          LoadingDialog.showErrorDialog(
+              "${e.response?.statusCode.toString()} - Something went wrong please contact support team");
+        }
         switch (e.type) {
           case DioErrorType.connectionTimeout:
           case DioErrorType.cancel:
@@ -514,20 +545,28 @@ class ConnectorControl extends GetConnect {
         fun(failedMap);
       }
     } on DioError catch (e) {
-      /*if (e.response?.statusCode == 401 &&
-          (e.response?.headers.map.containsKey("www-authenticate"))! &&
-          e.response?.headers.map["www-authenticate"]?.length == 2 &&
-          (e.response?.headers.map["www-authenticate"]![0]
-              .contains("invalid_token"))! &&
-          (e.response?.headers.map["www-authenticate"]![1]
-              .contains("The token expired at"))!) {*/
       if (e.response?.statusCode == 401) {
-        //Snack.callError("Token Expired. We are regenerating new token",
-//            widthRatio: 0.5);
         updateToken(() {
-          POSTMETHOD(api: api, json: json, fun: fun);
+          DELETEMETHOD(api: api, fun: fun,);
         });
+      } else if ([400, 403].contains(e.response?.statusCode)) {
+        if (Get.isDialogOpen ?? false) {
+          Get.back();
+        }
+        if (e.response?.data is Map && e.response?.data.containsKey("status")) {
+          LoadingDialog.showErrorDialog(e.response?.data["status"]);
+        }
       } else {
+        if (Get.isDialogOpen ?? false) {
+          Get.back();
+        }
+        if (Const.errorCode.containsKey(e.response?.statusCode)) {
+          LoadingDialog.showErrorDialog(
+              Const.errorCode[e.response?.statusCode] ?? "");
+        } else {
+          LoadingDialog.showErrorDialog(
+              "${e.response?.statusCode.toString()} - Something went wrong please contact support team");
+        }
         switch (e.type) {
           case DioErrorType.connectionTimeout:
           case DioErrorType.cancel:
@@ -586,20 +625,28 @@ class ConnectorControl extends GetConnect {
         fun(failedMap);
       }
     } on DioError catch (e) {
-      /* if (e.response?.statusCode == 401 &&
-          (e.response?.headers.map.containsKey("www-authenticate"))! &&
-          e.response?.headers.map["www-authenticate"]?.length == 2 &&
-          (e.response?.headers.map["www-authenticate"]![0]
-              .contains("invalid_token"))! &&
-          (e.response?.headers.map["www-authenticate"]![1]
-              .contains("The token expired at"))!) {*/
       if (e.response?.statusCode == 401) {
-        //Snack.callError("Token Expired. We are regenerating new token",
-//            widthRatio: 0.5);
         updateToken(() {
-          POSTMETHOD_FORMDATA(api: api, json: json, fun: fun, timeout: timeout);
+          POSTMETHOD_FORMDATA(api: api, fun: fun,  json: json);
         });
+      } else if ([400, 403].contains(e.response?.statusCode)) {
+        if (Get.isDialogOpen ?? false) {
+          Get.back();
+        }
+        if (e.response?.data is Map && e.response?.data.containsKey("status")) {
+          LoadingDialog.showErrorDialog(e.response?.data["status"]);
+        }
       } else {
+        if (Get.isDialogOpen ?? false) {
+          Get.back();
+        }
+        if (Const.errorCode.containsKey(e.response?.statusCode)) {
+          LoadingDialog.showErrorDialog(
+              Const.errorCode[e.response?.statusCode] ?? "");
+        } else {
+          LoadingDialog.showErrorDialog(
+              "${e.response?.statusCode.toString()} - Something went wrong please contact support team");
+        }
         switch (e.type) {
           case DioErrorType.connectionTimeout:
           case DioErrorType.cancel:
@@ -657,21 +704,28 @@ class ConnectorControl extends GetConnect {
         fun(failedMap);
       }
     } on DioError catch (e) {
-      /*if (e.response?.statusCode == 401 &&
-          (e.response?.headers.map.containsKey("www-authenticate"))! &&
-          e.response?.headers.map["www-authenticate"]?.length == 2 &&
-          (e.response?.headers.map["www-authenticate"]![0]
-              .contains("invalid_token"))! &&
-          (e.response?.headers.map["www-authenticate"]![1]
-              .contains("The token expired at"))!) {*/
       if (e.response?.statusCode == 401) {
-        //Snack.callError("Token Expired. We are regenerating new token",
-//            widthRatio: 0.5);
         updateToken(() {
-          POSTMETHOD_FORMDATAWITHTYPE(
-              api: api, json: json, fun: fun, timeout: timeout);
+          POSTMETHOD_FORMDATAWITHTYPE(api: api, fun: fun, json: json,timeout: timeout);
         });
+      } else if ([400, 403].contains(e.response?.statusCode)) {
+        if (Get.isDialogOpen ?? false) {
+          Get.back();
+        }
+        if (e.response?.data is Map && e.response?.data.containsKey("status")) {
+          LoadingDialog.showErrorDialog(e.response?.data["status"]);
+        }
       } else {
+        if (Get.isDialogOpen ?? false) {
+          Get.back();
+        }
+        if (Const.errorCode.containsKey(e.response?.statusCode)) {
+          LoadingDialog.showErrorDialog(
+              Const.errorCode[e.response?.statusCode] ?? "");
+        } else {
+          LoadingDialog.showErrorDialog(
+              "${e.response?.statusCode.toString()} - Something went wrong please contact support team");
+        }
         switch (e.type) {
           case DioErrorType.connectionTimeout:
           case DioErrorType.cancel:
@@ -738,10 +792,26 @@ class ConnectorControl extends GetConnect {
       }
       if (e.response?.statusCode == 401) {
         updateToken(() {
-          POSTMETHOD_FORMDATAWITHTYPE(
-              api: api, json: json, fun: fun, timeout: timeout);
+          POSTMETHOD_FORMDATAWITHTYPE1(api: api, fun: fun, failed: failed, json: json,timeout: timeout);
         });
+      } else if ([400, 403].contains(e.response?.statusCode)) {
+        if (Get.isDialogOpen ?? false) {
+          Get.back();
+        }
+        if (e.response?.data is Map && e.response?.data.containsKey("status")) {
+          LoadingDialog.showErrorDialog(e.response?.data["status"]);
+        }
       } else {
+        if (Get.isDialogOpen ?? false) {
+          Get.back();
+        }
+        if (Const.errorCode.containsKey(e.response?.statusCode)) {
+          LoadingDialog.showErrorDialog(
+              Const.errorCode[e.response?.statusCode] ?? "");
+        } else {
+          LoadingDialog.showErrorDialog(
+              "${e.response?.statusCode.toString()} - Something went wrong please contact support team");
+        }
         switch (e.type) {
           case DioErrorType.connectionTimeout:
           case DioErrorType.cancel:
@@ -802,20 +872,29 @@ class ConnectorControl extends GetConnect {
         fun(failedMap);
       }
     } on DioError catch (e) {
-      /* if (e.response?.statusCode == 401 &&
-          (e.response?.headers.map.containsKey("www-authenticate"))! &&
-          e.response?.headers.map["www-authenticate"]?.length == 2 &&
-          (e.response?.headers.map["www-authenticate"]![0]
-              .contains("invalid_token"))! &&
-          (e.response?.headers.map["www-authenticate"]![1]
-              .contains("The token expired at"))!) {*/
       if (e.response?.statusCode == 401) {
-        //Snack.callError("Token Expired. We are regenerating new token",
-//            widthRatio: 0.5);
         updateToken(() {
-          POSTMETHOD_FORMDATA(api: api, json: json, fun: fun, timeout: timeout);
+          POSTMETHOD_FORMDATA_HEADER(api: api, json: json, fun: fun, timeout: timeout);
         });
+      } else if ([400, 403].contains(e.response?.statusCode)) {
+        if (Get.isDialogOpen ?? false) {
+          Get.back();
+        }
+        if (e.response?.data is Map && e.response?.data.containsKey("status")) {
+          LoadingDialog.showErrorDialog(e.response?.data["status"]);
+        }
       } else {
+        if (Get.isDialogOpen ?? false) {
+          Get.back();
+        }
+        if (Const.errorCode.containsKey(e.response?.statusCode)) {
+          LoadingDialog.showErrorDialog(
+              Const.errorCode[e.response?.statusCode] ?? "");
+        } else {
+          LoadingDialog.showErrorDialog(
+              "${e.response?.statusCode.toString()} - Something went wrong please contact support team");
+        }
+
         switch (e.type) {
           case DioErrorType.connectionTimeout:
           case DioErrorType.cancel:
@@ -879,24 +958,29 @@ class ConnectorControl extends GetConnect {
         }
       }
     } on DioError catch (e) {
-      print("Connector Response Error>>" + jsonEncode(e.response?.headers.map));
-      /*print("(e.response?.headers.map.containsKey(\"www-authenticate\"))!"+((e.response?.headers.map.containsKey("www-authenticate"))!).toString());
-      print("Status Code"+((e.response?.statusCode!).toString()));
-      print("value"+(e.response?.headers.map["www-authenticate"]![0])!);*/
-      /*if (e.response?.statusCode == 401 &&
-          (e.response?.headers.map.containsKey("www-authenticate"))! &&
-          e.response?.headers.map["www-authenticate"]?.length == 2 &&
-          (e.response?.headers.map["www-authenticate"]![0]
-              .contains("invalid_token"))! &&
-          (e.response?.headers.map["www-authenticate"]![1]
-              .contains("The token expired at"))!) {*/
       if (e.response?.statusCode == 401) {
-        //Snack.callError("Token Expired. We are regenerating new token",
-//            widthRatio: 0.5);
         updateToken(() {
-          GETMETHODCALL(api: api, fun: fun, failed: failed);
+          GET_METHOD_CALL_HEADER(api: api, fun: fun,responseType: responseType);
         });
+      } else if ([400, 403].contains(e.response?.statusCode)) {
+        if (Get.isDialogOpen ?? false) {
+          Get.back();
+        }
+        if (e.response?.data is Map && e.response?.data.containsKey("status")) {
+          LoadingDialog.showErrorDialog(e.response?.data["status"]);
+        }
       } else {
+        if (Get.isDialogOpen ?? false) {
+          Get.back();
+        }
+        if (Const.errorCode.containsKey(e.response?.statusCode)) {
+          LoadingDialog.showErrorDialog(
+              Const.errorCode[e.response?.statusCode] ?? "");
+        } else {
+          LoadingDialog.showErrorDialog(
+              "${e.response?.statusCode.toString()} - Something went wrong please contact support team");
+        }
+
         switch (e.type) {
           case DioErrorType.connectionTimeout:
           case DioErrorType.cancel:

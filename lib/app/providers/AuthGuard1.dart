@@ -23,6 +23,7 @@ import '../modules/CommercialMasterAutoIdDetails/views/commercial_master_auto_id
 import '../modules/CommonSearch/views/common_search_view.dart';
 import '../modules/DealWorkflowDefinition/views/workflow_definition_view.dart';
 import '../modules/CommercialCreationAutoDetails/views/CommercialCreationAutoDetailsView.dart';
+import '../modules/GenerateBookingAHMD/views/GenerateBookingAHMDView.dart';
 import '../modules/GeoProgramUpdate/views/geo_program_update_view.dart';
 import '../modules/InternationalSalesReport/views/international_sales_report_view.dart';
 import '../modules/MarkROsFlag/views/mark_r_os_flag_view.dart';
@@ -269,6 +270,9 @@ class _AuthGuardState extends State<AuthGuard> with WidgetsBindingObserver {
               break;
             case Routes.BOOKING_STATUS_REPORT:
               currentWidget = BookingStatusReportView();
+              break;
+            case Routes.GENERATE_BOOKING_AHMD:
+              currentWidget = GenerateBookingAHMDView();
               break;
             case Routes.DEAL_UTIL_PERIODIC:
               currentWidget = SearchPage(

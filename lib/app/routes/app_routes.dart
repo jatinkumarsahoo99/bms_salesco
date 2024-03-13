@@ -61,6 +61,7 @@ abstract class Routes {
   static const COMMERCIAL_MASTER_AUTO_ID = _Paths.COMMERCIAL_MASTER_AUTO_ID;
   static const COMMERCIAL_MASTER_AUTO_ID_DETAILS =
       _Paths.COMMERCIAL_MASTER_AUTO_ID_DETAILS;
+  static const GENERATE_BOOKING_AHMD = _Paths.GENERATE_BOOKING_AHMD;
 }
 
 abstract class RoutesList {
@@ -108,6 +109,7 @@ abstract class RoutesList {
     _Paths.E_D_I_MAPPING,
     _Paths.COMMERCIAL_MASTER_AUTO_ID_DETAILS,
     _Paths.COMMERCIAL_MASTER_AUTO_ID,
+    _Paths.GENERATE_BOOKING_AHMD,
   ];
 
   /* static final RoutesList _instance = RoutesList._();
@@ -171,4 +173,5 @@ abstract class _Paths {
   static const COMMERCIAL_MASTER_AUTO_ID = '/frmCommercialMasterAutoCreate_New';
   static const COMMERCIAL_MASTER_AUTO_ID_DETAILS =
       '/commercial-master-auto-id-details';
+  static const GENERATE_BOOKING_AHMD = '/frmGenerateBookingReport';
 }
