@@ -3198,8 +3198,8 @@ class EdiRoBookingController extends GetxController {
                             force: true,
                             notify: true,
                           );
-                          print(makeGoodReportList);
-                          makeGoodReportList.refresh();
+                          print(makeGoodReportList[i]['selectRow'].runtimeType);
+                          // makeGoodReportList.refresh();
                         }
                       },
                     );
@@ -3210,11 +3210,11 @@ class EdiRoBookingController extends GetxController {
             Expanded(
               child: Obx(
                 () => DataGridFromMap3(
-                  mapData: makeGoodReportList.value.map((e) {
-                    e['selectRow'] = (e['selectRow'] ?? false).toString();
-
-                    return e;
-                  }).toList(),
+                  mapData: makeGoodReportList.value,
+                  // .map((e) {
+                  //   e['selectRow'] = (e['selectRow'] ?? false).toString();
+                  //   return e;
+                  // }).toList(),
                   hideCode: false,
                   formatDate: false,
                   exportFileName: "EDI R.O. Booking",
@@ -3251,7 +3251,7 @@ class EdiRoBookingController extends GetxController {
                     makeGoodReportList[row.rowIdx]['selectRow'] =
                         (row.value.toString()) == "true";
 
-                    print(makeGoodReportList);
+                    print(makeGoodReportList[0]['selectRow'].runtimeType);
                   },
                   columnAutoResize: false,
                   widthSpecificColumn: Get.find<HomeController>()

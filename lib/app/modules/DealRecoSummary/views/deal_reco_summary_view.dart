@@ -86,6 +86,15 @@ class DealRecoSummaryView extends GetView<DealRecoSummaryController> {
                                 controllerX.clientList.value ?? [],
                                 (value) {
                                   controllerX.selectedClient = value;
+                                  if (controllerX.selectedClient?.value !=
+                                      null) {
+                                    controllerX.selectedAgency =
+                                        Rxn<DropDownValue>(null);
+                                    controllerX.selectedDealNo = null;
+                                    controllerX.selectedAgency?.refresh();
+                                    controllerX.fetchAgency();
+                                    controllerX.fetchADealNo();
+                                  }
                                   // controllerX.fetchAgency();
                                   // controllerX.fetchADealNo();
                                 },
@@ -95,19 +104,19 @@ class DealRecoSummaryView extends GetView<DealRecoSummaryController> {
                                 selected: controllerX.selectedClient,
                                 dialogHeight: Get.height * .4,
                                 inkWellFocusNode: controllerX.clientNode,
-                                onFocusChange: (val) {
-                                  if (!val) {
-                                    if (controllerX.selectedClient?.value !=
-                                        null) {
-                                      controllerX.selectedAgency =
-                                          Rxn<DropDownValue>(null);
-                                      controllerX.selectedDealNo = null;
-                                      controllerX.selectedAgency?.refresh();
-                                      controllerX.fetchAgency();
-                                      controllerX.fetchADealNo();
-                                    }
-                                  }
-                                },
+                                // onFocusChange: (val) {
+                                //   if (!val) {
+                                //     if (controllerX.selectedClient?.value !=
+                                //         null) {
+                                //       controllerX.selectedAgency =
+                                //           Rxn<DropDownValue>(null);
+                                //       controllerX.selectedDealNo = null;
+                                //       controllerX.selectedAgency?.refresh();
+                                //       controllerX.fetchAgency();
+                                //       controllerX.fetchADealNo();
+                                //     }
+                                //   }
+                                // },
                                 autoFocus: false,
                               ),
                             ),
@@ -145,6 +154,7 @@ class DealRecoSummaryView extends GetView<DealRecoSummaryController> {
                                       controllerX.dealNoList.value ?? [],
                                       (value) {
                                         controllerX.selectedDealNo = value;
+                                        controllerX.leaveDealNo();
                                       },
                                       "DealNo",
                                       .1,
@@ -152,12 +162,12 @@ class DealRecoSummaryView extends GetView<DealRecoSummaryController> {
                                       selected: controllerX.selectedDealNo,
                                       inkWellFocusNode:
                                           controllerX.dealNoFocusNode,
-                                      onFocusChange: (sta) {
-                                        // print("fta"+sta.toString());
-                                        if (!sta) {
-                                          controllerX.leaveDealNo();
-                                        }
-                                      },
+                                      // onFocusChange: (sta) {
+                                      //   // print("fta"+sta.toString());
+                                      //   if (!sta) {
+                                      //     // controllerX.leaveDealNo();
+                                      //   }
+                                      // },
                                       dialogHeight: Get.height * .3,
                                       autoFocus: false,
                                     ),

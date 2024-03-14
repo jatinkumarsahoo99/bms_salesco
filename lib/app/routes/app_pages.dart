@@ -52,7 +52,7 @@ class AppPages {
 
   static const INITIAL = kReleaseMode
       ? Routes.HOME
-      : (Routes.GENERATE_BOOKING_AHMD +
+      : (Routes.EDI_RO_BOOKING +
           "?personalNo=R9vVPL7er1Os%2FusemWG%2FIw%3D%3D&loginCode=0iGe3vK5h2KGjfSKZTpmsQ%3D%3D&formName=MaVLyYQSV0sP95yVJGhW0vfdaf7cuMlussE5gq0FEi0%3D");
 
   static final routes = [
@@ -283,7 +283,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.GENERATE_BOOKING_AHMD,
-      page: () =>  AuthGuard(childName: _Paths.GENERATE_BOOKING_AHMD),
+      page: () => AuthGuard(childName: _Paths.GENERATE_BOOKING_AHMD),
       // binding: GenerateBookingAHMDBinding(),
     ),
   ];
