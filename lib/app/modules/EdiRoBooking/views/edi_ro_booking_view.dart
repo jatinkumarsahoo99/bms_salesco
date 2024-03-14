@@ -828,7 +828,7 @@ class EdiRoBookingView extends StatelessWidget {
                                         return controller.getColor(
                                           controller.lstDgvSpotsList[
                                               colorEvent.rowIdx],
-                                          colorEvent.rowIdx,
+                                          colorEvent.row,
                                         );
                                       },
                                       onRowDoubleTap: (event) async {

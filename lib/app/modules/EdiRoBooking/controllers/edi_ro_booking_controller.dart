@@ -1429,17 +1429,59 @@ class EdiRoBookingController extends GetxController {
     gridController!.setFilter((element) => _filterRows.contains(element));
   }
 
-  Color getColor(Map<String, dynamic> dr, int index) {
-    if (dr.containsKey("noProgram") && dr["noProgram"].toString() == "1") {
+  Color getColor(Map<String, dynamic> dr, PlutoRow colorEvent) {
+    // if (dr.containsKey("noProgram") && dr["noProgram"].toString() == "1") {
+    //   return Colors.red;
+    // } else if (dr.containsKey("dur") &&
+    //     dr.containsKey("commercialduration") &&
+    //     dr["dur"].toString() != dr["commercialduration"].toString()) {
+    //   // if (blnDurationMismatch.value) {
+    //   //   blnDurationMismatch.value = false;
+    //   //   LoadingDialog.callErrorMessage(
+    //   //       "Duration mismatch!\nRequested duration is not equal to tape duration!");
+    //   // }
+    //   return const Color.fromRGBO(255, 230, 230, 1);
+    // }
+    //Month
+    // if (intMonth.value != 0) {
+    //   var months =
+    //       DateFormat('MM').format(DateFormat('dd-MM-yyyy').parse(dr['acT_DT']));
+    //   if (dr.containsKey("acT_DT") && int.parse(months) != intMonth.value) {
+    //     // LoadingDialog.callErrorMessage(
+    //     //     "Month / Year mismatch!\nMultiple Month / Year not allowed!");
+    //     return const Color.fromRGBO(255, 230, 230, 1);
+    //   }
+    // } else {
+    //   var months =
+    //       DateFormat('MM').format(DateFormat('dd-MM-yyyy').parse(dr['acT_DT']));
+    //   intMonth.value = int.parse(months);
+    // }
+    //Year
+    // if (intYear.value != 0) {
+    //   var year = DateFormat('yyyy')
+    //       .format(DateFormat('dd-MM-yyyy').parse(dr['acT_DT']));
+    //   if (dr.containsKey("acT_DT") && int.parse(year) != intYear.value) {
+    //     // LoadingDialog.callErrorMessage(
+    //     //     "Month / Year mismatch!\nMultiple Month / Year not allowed!");
+    //     return const Color.fromRGBO(255, 230, 230, 1);
+    //   }
+    // } else {
+    //   var year = DateFormat('yyyy')
+    //       .format(DateFormat('dd-MM-yyyy').parse(dr['acT_DT']));
+    //   intYear.value = int.parse(year);
+    // }
+    // if (dr.containsKey("isSpotsAvailable") && dr['isSpotsAvailable']) {
+    //   return Colors.deepPurple.shade100;
+    // }
+
+    //////////////////////////////////////////////////////////////////////////
+    if (colorEvent.cells["tcStatus"]?.value != null &&
+        colorEvent.cells["tcStatus"]?.value.toString() == "1") {
       return Colors.red;
-    } else if (dr.containsKey("dur") &&
-        dr.containsKey("commercialduration") &&
-        dr["dur"].toString() != dr["commercialduration"].toString()) {
-      // if (blnDurationMismatch.value) {
-      //   blnDurationMismatch.value = false;
-      //   LoadingDialog.callErrorMessage(
-      //       "Duration mismatch!\nRequested duration is not equal to tape duration!");
-      // }
+    } else if (colorEvent.cells["dur"]?.value != null &&
+        colorEvent.cells["commercialduration"]?.value != null &&
+        colorEvent.cells["dur"]?.value.toString() !=
+            colorEvent.cells["commercialduration"]?.value.toString()) {
       return const Color.fromRGBO(255, 230, 230, 1);
     }
 
@@ -1447,10 +1489,8 @@ class EdiRoBookingController extends GetxController {
     if (intMonth.value != 0) {
       var months =
           DateFormat('MM').format(DateFormat('dd-MM-yyyy').parse(dr['acT_DT']));
-      if (dr.containsKey("acT_DT") && int.parse(months) != intMonth.value) {
-        // LoadingDialog.callErrorMessage(
-        //     "Month / Year mismatch!\nMultiple Month / Year not allowed!");
-
+      if (colorEvent.cells["acT_DT"]?.value != null &&
+          int.parse(months) != intMonth.value) {
         return const Color.fromRGBO(255, 230, 230, 1);
       }
     } else {
@@ -1463,10 +1503,8 @@ class EdiRoBookingController extends GetxController {
     if (intYear.value != 0) {
       var year = DateFormat('yyyy')
           .format(DateFormat('dd-MM-yyyy').parse(dr['acT_DT']));
-      if (dr.containsKey("acT_DT") && int.parse(year) != intYear.value) {
-        // LoadingDialog.callErrorMessage(
-        //     "Month / Year mismatch!\nMultiple Month / Year not allowed!");
-
+      if (colorEvent.cells["acT_DT"]?.value &&
+          int.parse(year) != intYear.value) {
         return const Color.fromRGBO(255, 230, 230, 1);
       }
     } else {
@@ -1475,11 +1513,7 @@ class EdiRoBookingController extends GetxController {
       intYear.value = int.parse(year);
     }
 
-    // if (dr.containsKey("isSpotsAvailable") && dr['isSpotsAvailable']) {
-    //   return Colors.deepPurple.shade100;
-    // }
-
-    return Colors.white; // Return null if no color conditions are met.
+    return Colors.white;
   }
 
   fillGridAddData() {
