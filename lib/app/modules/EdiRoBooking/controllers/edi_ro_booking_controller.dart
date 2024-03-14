@@ -3333,8 +3333,10 @@ class EdiRoBookingController extends GetxController {
         raw.isAltPressed &&
         raw.character?.toLowerCase() == "s") {
       print("MG Spots Alt + s ");
-      effDateFN.requestFocus();
-      showLink();
+      if (selectedDealNo != null) {
+        effDateFN.requestFocus();
+        showLink();
+      }
     }
   }
 
