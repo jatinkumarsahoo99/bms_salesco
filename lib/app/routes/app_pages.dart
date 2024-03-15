@@ -20,6 +20,8 @@ import '../modules/DealWorkflowDefinition/bindings/workflow_definition_binding.d
 import '../modules/Design/bindings/design_binding.dart';
 import '../modules/Design/views/design_view.dart';
 import '../modules/EDI_Mapping/bindings/e_d_i_mapping_binding.dart';
+import '../modules/GenerateBookingAHMD/bindings/generate_booking_a_h_m_d_binding.dart';
+import '../modules/GenerateBookingAHMD/views/GenerateBookingAHMDView.dart';
 import '../modules/GeoProgramUpdate/bindings/geo_program_update_binding.dart';
 import '../modules/InternationalSalesReport/bindings/international_sales_report_binding.dart';
 import '../modules/MakeGoodReport/bindings/make_good_report_binding.dart';
@@ -278,6 +280,11 @@ class AppPages {
           AuthGuard(childName: _Paths.COMMERCIAL_MASTER_AUTO_ID_DETAILS),
       // page: () =>  CommercialMasterAutoIdDetailsView(),
       // binding: CommercialMasterAutoIdDetailsBinding(),
+    ),
+    GetPage(
+      name: _Paths.GENERATE_BOOKING_AHMD,
+      page: () => AuthGuard(childName: _Paths.GENERATE_BOOKING_AHMD),
+      // binding: GenerateBookingAHMDBinding(),
     ),
   ];
 }

@@ -17,6 +17,17 @@ class Const {
   static GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
   static const instrumentationKey = 'b15b7ae4-ff42-4746-862c-d0c852787f55';
   static const appVersion = '1.0.4';
+  static const double plutoGridscrollBarPaddingHeight = 20;
+
+  static Map<int, String> errorCode = {
+    400: "400 - Bad Request",
+    403: "403 - Forbidden Access",
+    413: "413 - Unable to process large request",
+    500: "500 - Something went wrong. Please try again later",
+    502: "502 - The request is not completed. Please try again later",
+    504: "504 - The request is timed out. Please try again later"
+  };
+
 
   static List<SystemEnviroment> systemEnviroments = [
     SystemEnviroment(value: "Data Migration", url: ""),

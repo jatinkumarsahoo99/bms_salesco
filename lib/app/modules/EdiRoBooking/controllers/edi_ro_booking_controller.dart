@@ -6,7 +6,13 @@ import 'package:bms_salesco/app/modules/CommonDocs/views/common_docs_view.dart';
 import 'package:bms_salesco/app/modules/EdiRoBooking/bindings/edi_ro_booking_check_all_deal_utility.dart';
 import 'package:bms_salesco/app/modules/EdiRoBooking/bindings/edi_ro_booking_model.dart';
 import 'package:bms_salesco/app/modules/EdiRoBooking/bindings/edit_ro_init_data.dart';
+import 'package:bms_salesco/app/modules/EdiRoBooking/bindings/program_fct.dart';
+import 'package:bms_salesco/app/providers/ExportData.dart';
+import 'package:bms_salesco/app/providers/SizeDefine.dart';
+import 'package:bms_salesco/widgets/CheckBoxWidget.dart';
+import 'package:bms_salesco/widgets/DateTime/DateWithThreeTextField.dart';
 import 'package:bms_salesco/widgets/LoadingDialog.dart';
+import 'package:bms_salesco/widgets/gridFromMap.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -83,6 +89,8 @@ class EdiRoBookingController extends GetxController {
   var linkDealName = "".obs;
   bool showGstPopUp = true;
   bool pdcDetailsPopUP = true;
+  bool isCheckAll = true;
+
   var extraButtons = ['Info', 'Check All', 'MG Spots', 'Tape Id'];
 
   var isShowLink = false.obs;
@@ -106,6 +114,8 @@ class EdiRoBookingController extends GetxController {
   var roMsg = "".obs;
   var lstDgvDealEntries = <LstDealEntries>[].obs;
   var lstDgvSpots = <LstSpots>[].obs;
+  var lstDgvSpots2 = <LstSpot>[].obs;
+
   var makeGoodReportList = [].obs;
   int mgLastSelectedIdx = 0;
 
@@ -123,6 +133,7 @@ class EdiRoBookingController extends GetxController {
   RoBookingLeaveFileName? roBookingLeaveFileName;
   RoBookingDealLeave? roBookingDealLeave;
   RoBookingCheckAllDealUtility? roBookingCheckAllDealUtility;
+  InfoCheckAllProgramFct? roBookingProgramFCT;
 
   var fileNames = RxList<DropDownValue>();
   var loactions = RxList<DropDownValue>();
@@ -244,116 +255,127 @@ class EdiRoBookingController extends GetxController {
                 map['infoFileNameLeave'] != null &&
                 map.containsKey('infoFileNameLeave')) {
               roBookingLeaveFileName = RoBookingLeaveFileName.fromJson(map);
+              if (roBookingLeaveFileName!
+                      .infoFileNameLeave!.headerData!.message ==
+                  null) {
+                isEnable.value = false;
+                //RO Ref No.
+                strRoRefNo.clear();
+                roBookingLeaveFileName!.infoFileNameLeave!.strRoRefNo!
+                    .forEach((e) {
+                  strRoRefNo.add(DropDownValue(key: '', value: e));
+                  selectedRoRefNo = DropDownValue(key: '', value: e);
+                });
 
-              isEnable.value = false;
-              //RO Ref No.
-              strRoRefNo.clear();
-              roBookingLeaveFileName!.infoFileNameLeave!.strRoRefNo!
-                  .forEach((e) {
-                strRoRefNo.add(DropDownValue(key: '', value: e));
-                selectedRoRefNo = DropDownValue(key: '', value: e);
-              });
-
-              //Location
-              selectedLoactions = loactions.firstWhereOrNull((element) {
-                var result = element.key ==
-                    roBookingLeaveFileName!
-                        .infoFileNameLeave!.headerData!.locationCode;
-                return result;
-              });
-              pdcLoactionTEC.text = selectedLoactions!.value.toString();
-
-              // Channel
-              channel.clear();
-              roBookingLeaveFileName!.infoFileNameLeave!.headerData!.lstChannel!
-                  .forEach((e) {
-                channel.add(
-                    DropDownValue(key: e.channelCode, value: e.channelName));
-              });
-              selectedChannel = channel.firstWhereOrNull(
-                (element) {
+                //Location
+                selectedLoactions = loactions.firstWhereOrNull((element) {
                   var result = element.key ==
                       roBookingLeaveFileName!
-                          .infoFileNameLeave!.headerData!.channelCode;
-
+                          .infoFileNameLeave!.headerData!.locationCode;
                   return result;
-                },
-              );
-              pdcChannelTEC.text = selectedChannel!.value.toString();
-              //Client
-              client.clear();
-              roBookingLeaveFileName!.infoFileNameLeave!.headerData!.lstClients!
-                  .forEach((e) {
-                client
-                    .add(DropDownValue(key: e.clientCode, value: e.clientName));
-              });
+                });
+                pdcLoactionTEC.text = selectedLoactions!.value.toString();
 
-              selectedClient = client.firstWhereOrNull(
-                (element) {
-                  var result = element.key ==
-                      roBookingLeaveFileName!
-                          .infoFileNameLeave!.headerData!.clientcode;
-                  return result;
-                },
-              );
-              pdcClientTEC.text = selectedClient!.value.toString();
-              //Agency
-              agency.clear();
-              roBookingLeaveFileName!
-                  .infoFileNameLeave!.headerData!.lstAgencies!
-                  .forEach((e) {
-                agency
-                    .add(DropDownValue(key: e.agencyCode, value: e.agencyName));
-              });
-              selectedAgency = agency.firstWhereOrNull(
-                (element) {
-                  var result = element.key ==
-                      roBookingLeaveFileName!
-                          .infoFileNameLeave!.headerData!.agencyCode;
-                  return result;
-                },
-              );
+                // Channel
+                channel.clear();
+                roBookingLeaveFileName!
+                    .infoFileNameLeave!.headerData!.lstChannel!
+                    .forEach((e) {
+                  channel.add(
+                      DropDownValue(key: e.channelCode, value: e.channelName));
+                });
+                selectedChannel = channel.firstWhereOrNull(
+                  (element) {
+                    var result = element.key ==
+                        roBookingLeaveFileName!
+                            .infoFileNameLeave!.headerData!.channelCode;
 
-              pdcAgencyTEC.text = selectedAgency!.value.toString();
-              //Brand
-              brand.clear();
-              roBookingLeaveFileName!.infoFileNameLeave!.headerData!.lstBrands!
-                  .forEach((e) {
-                brand.add(DropDownValue(key: e.brandcode, value: e.brandname));
-              });
-              //Executives
-              executives.clear();
-              roBookingLeaveFileName!
-                  .infoFileNameLeave!.headerData!.executivesSelectedValue!
-                  .forEach((e) {
-                executives.add(DropDownValue(
-                    key: e.personnelCode, value: e.personnelName));
-              });
+                    return result;
+                  },
+                );
+                pdcChannelTEC.text = selectedChannel!.value.toString();
+                //Client
+                client.clear();
+                roBookingLeaveFileName!
+                    .infoFileNameLeave!.headerData!.lstClients!
+                    .forEach((e) {
+                  client.add(
+                      DropDownValue(key: e.clientCode, value: e.clientName));
+                });
 
-              selectedExecutives = DropDownValue(
-                  key: executives[0].key, value: executives[0].value);
-              // Show Programs
-              programList.clear();
-              roBookingLeaveFileName!
-                  .infoFileNameLeave!.lstLoadXml!.lstShowPrograms!
-                  .forEach((e) {
-                programList.add(e);
-              });
-              //Deal No
-              dealNo.clear();
-              roBookingLeaveFileName!
-                  .infoFileNameLeave!.headerData!.lstDealNumbers!
-                  .forEach((e) {
-                dealNo.add(DropDownValue(key: e.code, value: e.name));
-              });
-              //Lst Xml Dt
-              lstXmlDtList.value = roBookingLeaveFileName!
-                  .infoFileNameLeave!.lstLoadXml!.lstXmlDt!;
-              roMsg.value = roBookingLeaveFileName!
-                      .infoFileNameLeave!.headerData!.message ??
-                  "";
-              leaveFileNameClagdetails();
-              update(["initData"]);
+                selectedClient = client.firstWhereOrNull(
+                  (element) {
+                    var result = element.key ==
+                        roBookingLeaveFileName!
+                            .infoFileNameLeave!.headerData!.clientcode;
+                    return result;
+                  },
+                );
+                pdcClientTEC.text = selectedClient!.value.toString();
+                //Agency
+                agency.clear();
+                roBookingLeaveFileName!
+                    .infoFileNameLeave!.headerData!.lstAgencies!
+                    .forEach((e) {
+                  agency.add(
+                      DropDownValue(key: e.agencyCode, value: e.agencyName));
+                });
+                selectedAgency = agency.firstWhereOrNull(
+                  (element) {
+                    var result = element.key ==
+                        roBookingLeaveFileName!
+                            .infoFileNameLeave!.headerData!.agencyCode;
+                    return result;
+                  },
+                );
+
+                pdcAgencyTEC.text = selectedAgency!.value.toString();
+                //Brand
+                brand.clear();
+                roBookingLeaveFileName!
+                    .infoFileNameLeave!.headerData!.lstBrands!
+                    .forEach((e) {
+                  brand
+                      .add(DropDownValue(key: e.brandcode, value: e.brandname));
+                });
+                //Executives
+                executives.clear();
+                roBookingLeaveFileName!
+                    .infoFileNameLeave!.headerData!.executivesSelectedValue!
+                    .forEach((e) {
+                  executives.add(DropDownValue(
+                      key: e.personnelCode, value: e.personnelName));
+                });
+
+                selectedExecutives = DropDownValue(
+                    key: executives[0].key, value: executives[0].value);
+                // Show Programs
+                programList.clear();
+                roBookingLeaveFileName!
+                    .infoFileNameLeave!.lstLoadXml!.lstShowPrograms!
+                    .forEach((e) {
+                  programList.add(e);
+                });
+                //Deal No
+                dealNo.clear();
+                roBookingLeaveFileName!
+                    .infoFileNameLeave!.headerData!.lstDealNumbers!
+                    .forEach((e) {
+                  dealNo.add(DropDownValue(key: e.code, value: e.name));
+                });
+                //Lst Xml Dt
+                lstXmlDtList.value = roBookingLeaveFileName!
+                    .infoFileNameLeave!.lstLoadXml!.lstXmlDt!;
+                roMsg.value = roBookingLeaveFileName!
+                        .infoFileNameLeave!.headerData!.message ??
+                    "";
+                leaveFileNameClagdetails();
+                update(["initData"]);
+              } else {
+                LoadingDialog.showErrorDialog(roBookingLeaveFileName!
+                    .infoFileNameLeave!.headerData!.message
+                    .toString());
+              }
             } else {
               LoadingDialog.showErrorDialog('No data found.');
             }
@@ -509,19 +531,22 @@ class EdiRoBookingController extends GetxController {
 
               //GST Plants
               gstNoTEC.text =
-                  roBookingDealLeave!.infoLeaveOnDealNumber!.gstRegNo! ?? "";
-              roBookingDealLeave!.infoLeaveOnDealNumber!.gstPlantList!
-                  .forEach((e) {
-                gstPlant.add(DropDownValue(
-                    key: e.plantid.toString() ?? "", value: e.column1 ?? ""));
-              });
-              selectedGstPlant = gstPlant.firstWhereOrNull(
-                (element) {
-                  var result = element.key ==
-                      roBookingDealLeave!.infoLeaveOnDealNumber!.gstPlantId!;
-                  return result;
-                },
-              );
+                  roBookingDealLeave?.infoLeaveOnDealNumber?.gstRegNo ?? "";
+              if (roBookingDealLeave?.infoLeaveOnDealNumber?.gstPlantList !=
+                  null) {
+                roBookingDealLeave!.infoLeaveOnDealNumber!.gstPlantList!
+                    .forEach((e) {
+                  gstPlant.add(DropDownValue(
+                      key: e.plantid.toString() ?? "", value: e.column1 ?? ""));
+                });
+                selectedGstPlant = gstPlant.firstWhereOrNull(
+                  (element) {
+                    var result = element.key ==
+                        roBookingDealLeave!.infoLeaveOnDealNumber!.gstPlantId!;
+                    return result;
+                  },
+                );
+              }
 
               isShowLink.value = true;
               //LD Button
@@ -568,34 +593,50 @@ class EdiRoBookingController extends GetxController {
     if (showGstPopUp) {
       showGstPopUp = false;
       Get.defaultDialog(
+          // barrierDismissible: false,
           radius: 05,
           title: "GST Plant",
           confirm: FormButtonWrapper(
             btnText: "Done",
             callback: () {
-              brandFN.requestFocus();
-              Get.back();
+              if (selectedGstPlant == null) {
+                LoadingDialog.showErrorDialog('Please select GST Plant');
+              } else {
+                brandFN.requestFocus();
+                Get.back();
+              }
             },
           ),
-          content: SizedBox(
-            height: Get.height / 6,
-            width: Get.width / 4,
-            child: Column(
-              children: [
-                DropDownField.formDropDown1WidthMap(
-                  gstPlant.value,
-                  (value) => {selectedGstPlant = value},
-                  "GST Plant",
-                  0.20,
-                  selected: selectedGstPlant,
-                  autoFocus: true,
-                ),
-                InputFields.formField1(
-                  hintTxt: "GST Reg#",
-                  controller: gstNoTEC,
-                  width: 0.20,
-                )
-              ],
+          content: Focus(
+            autofocus: true,
+            onKey: (node, event) {
+              print("object111");
+              if (event.logicalKey == LogicalKeyboardKey.escape) {
+                print("object");
+                Get.back();
+              }
+              return KeyEventResult.ignored;
+            },
+            child: SizedBox(
+              height: Get.height / 6,
+              width: Get.width / 4,
+              child: Column(
+                children: [
+                  DropDownField.formDropDown1WidthMap(
+                    gstPlant.value,
+                    (value) => {selectedGstPlant = value},
+                    "GST Plant",
+                    0.20,
+                    selected: selectedGstPlant,
+                    autoFocus: true,
+                  ),
+                  InputFields.formField1(
+                    hintTxt: "GST Reg#",
+                    controller: gstNoTEC,
+                    width: 0.20,
+                  )
+                ],
+              ),
             ),
           ));
     }
@@ -1388,17 +1429,59 @@ class EdiRoBookingController extends GetxController {
     gridController!.setFilter((element) => _filterRows.contains(element));
   }
 
-  Color getColor(Map<String, dynamic> dr, int index) {
-    if (dr.containsKey("noProgram") && dr["noProgram"].toString() == "1") {
+  Color getColor(Map<String, dynamic> dr, PlutoRow colorEvent) {
+    // if (dr.containsKey("noProgram") && dr["noProgram"].toString() == "1") {
+    //   return Colors.red;
+    // } else if (dr.containsKey("dur") &&
+    //     dr.containsKey("commercialduration") &&
+    //     dr["dur"].toString() != dr["commercialduration"].toString()) {
+    //   // if (blnDurationMismatch.value) {
+    //   //   blnDurationMismatch.value = false;
+    //   //   LoadingDialog.callErrorMessage(
+    //   //       "Duration mismatch!\nRequested duration is not equal to tape duration!");
+    //   // }
+    //   return const Color.fromRGBO(255, 230, 230, 1);
+    // }
+    //Month
+    // if (intMonth.value != 0) {
+    //   var months =
+    //       DateFormat('MM').format(DateFormat('dd-MM-yyyy').parse(dr['acT_DT']));
+    //   if (dr.containsKey("acT_DT") && int.parse(months) != intMonth.value) {
+    //     // LoadingDialog.callErrorMessage(
+    //     //     "Month / Year mismatch!\nMultiple Month / Year not allowed!");
+    //     return const Color.fromRGBO(255, 230, 230, 1);
+    //   }
+    // } else {
+    //   var months =
+    //       DateFormat('MM').format(DateFormat('dd-MM-yyyy').parse(dr['acT_DT']));
+    //   intMonth.value = int.parse(months);
+    // }
+    //Year
+    // if (intYear.value != 0) {
+    //   var year = DateFormat('yyyy')
+    //       .format(DateFormat('dd-MM-yyyy').parse(dr['acT_DT']));
+    //   if (dr.containsKey("acT_DT") && int.parse(year) != intYear.value) {
+    //     // LoadingDialog.callErrorMessage(
+    //     //     "Month / Year mismatch!\nMultiple Month / Year not allowed!");
+    //     return const Color.fromRGBO(255, 230, 230, 1);
+    //   }
+    // } else {
+    //   var year = DateFormat('yyyy')
+    //       .format(DateFormat('dd-MM-yyyy').parse(dr['acT_DT']));
+    //   intYear.value = int.parse(year);
+    // }
+    // if (dr.containsKey("isSpotsAvailable") && dr['isSpotsAvailable']) {
+    //   return Colors.deepPurple.shade100;
+    // }
+
+    //////////////////////////////////////////////////////////////////////////
+    if (colorEvent.cells["tcStatus"]?.value != null &&
+        colorEvent.cells["tcStatus"]?.value.toString() == "1") {
       return Colors.red;
-    } else if (dr.containsKey("dur") &&
-        dr.containsKey("commercialduration") &&
-        dr["dur"].toString() != dr["commercialduration"].toString()) {
-      // if (blnDurationMismatch.value) {
-      //   blnDurationMismatch.value = false;
-      //   LoadingDialog.callErrorMessage(
-      //       "Duration mismatch!\nRequested duration is not equal to tape duration!");
-      // }
+    } else if (colorEvent.cells["dur"]?.value != null &&
+        colorEvent.cells["commercialduration"]?.value != null &&
+        colorEvent.cells["dur"]?.value.toString() !=
+            colorEvent.cells["commercialduration"]?.value.toString()) {
       return const Color.fromRGBO(255, 230, 230, 1);
     }
 
@@ -1406,10 +1489,8 @@ class EdiRoBookingController extends GetxController {
     if (intMonth.value != 0) {
       var months =
           DateFormat('MM').format(DateFormat('dd-MM-yyyy').parse(dr['acT_DT']));
-      if (dr.containsKey("acT_DT") && int.parse(months) != intMonth.value) {
-        // LoadingDialog.callErrorMessage(
-        //     "Month / Year mismatch!\nMultiple Month / Year not allowed!");
-
+      if (colorEvent.cells["acT_DT"]?.value != null &&
+          int.parse(months) != intMonth.value) {
         return const Color.fromRGBO(255, 230, 230, 1);
       }
     } else {
@@ -1422,10 +1503,8 @@ class EdiRoBookingController extends GetxController {
     if (intYear.value != 0) {
       var year = DateFormat('yyyy')
           .format(DateFormat('dd-MM-yyyy').parse(dr['acT_DT']));
-      if (dr.containsKey("acT_DT") && int.parse(year) != intYear.value) {
-        // LoadingDialog.callErrorMessage(
-        //     "Month / Year mismatch!\nMultiple Month / Year not allowed!");
-
+      if (colorEvent.cells["acT_DT"]?.value &&
+          int.parse(year) != intYear.value) {
         return const Color.fromRGBO(255, 230, 230, 1);
       }
     } else {
@@ -1434,11 +1513,7 @@ class EdiRoBookingController extends GetxController {
       intYear.value = int.parse(year);
     }
 
-    // if (dr.containsKey("isSpotsAvailable") && dr['isSpotsAvailable']) {
-    //   return Colors.deepPurple.shade100;
-    // }
-
-    return Colors.white; // Return null if no color conditions are met.
+    return Colors.white;
   }
 
   fillGridAddData() {
@@ -1581,64 +1656,69 @@ class EdiRoBookingController extends GetxController {
   }
 
   checkAll() {
-    try {
-      LoadingDialog.call();
-      var payload = {
-        "lstSpots": lstDgvSpotsList.map((e) {
-          if (e['fctok'] != null) {
-            e['fctok'] = e['fctok'].toString();
-          }
-          if (e['dealOK'] != null) {
-            e['dealOK'] = e['dealOK'].toString();
-          }
-          if (e['nO_SPOT'] != null) {
-            e['nO_SPOT'] = e['nO_SPOT'].toString();
-          }
-          if (e['okSpot'] != null) {
-            e['okSpot'] = e['okSpot'].toString();
-          }
-          if (e['groupcode'] != null) {
-            e['groupcode'] = e['groupcode'].toString();
-          }
-          return e;
-        }).toList(),
-      };
-      Get.find<ConnectorControl>().POSTMETHOD(
-          api: ApiFactory.EDI_RO_CHECK_ALL,
-          json: payload,
-          fun: (map) {
-            Get.back();
-            if (map != null &&
-                map['infoCheckAll'] != null &&
-                map.containsKey('infoCheckAll')) {
-              selectedBrand = brand.firstWhereOrNull((element) {
-                var result =
-                    element.key == map['infoCheckAll']['brandCodeSelected'];
-                return result;
-              });
-              lstDgvSpotsList.value.clear();
-              lstDgvSpotsList.value = map['infoCheckAll']['lstSpots'];
-              tapIdTabelList.clear();
-              tempList.clear();
-              tapIdTabelList.value = map['infoCheckAll']['brandLeave'];
-              tempList.addAll(tapIdTabelList.value);
-              isBrandEnable.value = false;
-              if (map['infoCheckAll']['message'] != null) {
-                LoadingDialog.callInfoMessage(map['infoCheckAll']['message']);
-              } else {
-                dealLeave();
-                checkAllDealUtil();
-              }
+    if (lstDgvSpotsList.isEmpty) {
+      LoadingDialog.showErrorDialog(
+          'Object reference not set to an instance of an object.');
+    } else {
+      try {
+        LoadingDialog.call();
+        var payload = {
+          "lstSpots": lstDgvSpotsList.map((e) {
+            if (e['fctok'] != null) {
+              e['fctok'] = e['fctok'].toString();
             }
-          });
-    } catch (e) {
-      print(e.toString());
+            if (e['dealOK'] != null) {
+              e['dealOK'] = e['dealOK'].toString();
+            }
+            if (e['nO_SPOT'] != null) {
+              e['nO_SPOT'] = e['nO_SPOT'].toString();
+            }
+            if (e['okSpot'] != null) {
+              e['okSpot'] = e['okSpot'].toString();
+            }
+            if (e['groupcode'] != null) {
+              e['groupcode'] = e['groupcode'].toString();
+            }
+            return e;
+          }).toList(),
+        };
+        Get.find<ConnectorControl>().POSTMETHOD(
+            api: ApiFactory.EDI_RO_CHECK_ALL,
+            json: payload,
+            fun: (map) {
+              Get.back();
+              if (map != null &&
+                  map['infoCheckAll'] != null &&
+                  map.containsKey('infoCheckAll')) {
+                selectedBrand = brand.firstWhereOrNull((element) {
+                  var result =
+                      element.key == map['infoCheckAll']['brandCodeSelected'];
+                  return result;
+                });
+                lstDgvSpotsList.value.clear();
+                lstDgvSpotsList.value = map['infoCheckAll']['lstSpots'];
+                tapIdTabelList.clear();
+                tempList.clear();
+                tapIdTabelList.value = map['infoCheckAll']['brandLeave'];
+                tempList.addAll(tapIdTabelList.value);
+                isBrandEnable.value = false;
+                if (map['infoCheckAll']['message'] != null) {
+                  LoadingDialog.callInfoMessage(map['infoCheckAll']['message']);
+                } else {
+                  dealLeave();
+                  checkAllDealUtil();
+                }
+              }
+            });
+      } catch (e) {
+        print(e.toString());
+      }
     }
   }
 
   checkAllDealUtil() {
     try {
-      // LoadingDialog.call();
+      LoadingDialog.call();
       var payload = {
         "lstDealEntires": lstDgvDealEntriesList.map((e) {
               if (e['fromdate'] != null) {
@@ -1668,7 +1748,7 @@ class EdiRoBookingController extends GetxController {
           api: ApiFactory.EDI_RO_CHECK_ALL_DEAL_UTIL,
           json: payload,
           fun: (map) {
-            // Get.back();
+            Get.back();
             if (map != null &&
                 map['infoCheckAllDealUtility'] != null &&
                 map.containsKey('infoCheckAllDealUtility')) {
@@ -1721,14 +1801,79 @@ class EdiRoBookingController extends GetxController {
             if (map != null &&
                 map['infoCheckAllProgramFCT'] != null &&
                 map.containsKey('infoCheckAllProgramFCT')) {
-              bookedAmountTEC.text = map['infoCheckAllProgramFCT']
-                          ['totalBookedAmount']
-                      .toString() ??
-                  "";
-              valAmountTEC.text =
-                  map['infoCheckAllProgramFCT']['totalValAmount'].toString() ??
-                      "";
-              // update(["initData"]);
+              roBookingProgramFCT = InfoCheckAllProgramFct.fromJson(map);
+              isCheckAll = false;
+              bookedAmountTEC.text = roBookingProgramFCT!
+                  .infoCheckAllProgramFct!.totalBookedAmount
+                  .toString();
+
+              valAmountTEC.text = roBookingProgramFCT!
+                  .infoCheckAllProgramFct!.totalValAmount
+                  .toString();
+
+              lstDgvSpotsList.value = map['infoCheckAllProgramFCT']
+                      ['getTimeAvailable']['lstSpot'] ??
+                  [];
+              lstDgvSpots2.value = roBookingProgramFCT!
+                  .infoCheckAllProgramFct!.getTimeAvailable!.lstSpot!;
+              spotsBookedTEC.text = roBookingProgramFCT!
+                  .infoCheckAllProgramFct!.getTimeAvailable!.txtSpots!
+                  .toString();
+
+              durBookedTEC.text = roBookingProgramFCT!
+                  .infoCheckAllProgramFct!.getTimeAvailable!.txtDuration!
+                  .toString();
+              amtBookedTEC.text = roBookingProgramFCT!
+                  .infoCheckAllProgramFct!.getTimeAvailable!.txtAmount!
+                  .toString();
+              amtValAmmountTEC.text = roBookingProgramFCT!
+                  .infoCheckAllProgramFct!.getTimeAvailable!.txtValAmount!
+                  .toString();
+              //Spot Blance
+              var spotBlance =
+                  num.parse(spotsAllTEC.text) - num.parse(spotsBookedTEC.text);
+              spotsBalanceTEC.text = spotBlance.toString();
+              //Dur Blance
+              var durBlance =
+                  num.parse(durAllTEC.text) - num.parse(durBookedTEC.text);
+              durBalanceTEC.text = durBlance.toString();
+              //Amt Blance
+              var amtBlance =
+                  num.parse(amtAllTEC.text) - num.parse(amtBookedTEC.text);
+              amtBalanceTEC.text = amtBlance.toString();
+              //Val Ammount & Booked Ammount
+              num bookedSum = 0;
+              num valSum = 0;
+              for (var i = 0; i < dgvDealEntriesGrid!.refRows.length; i++) {
+                bookedSum += num.parse(dgvDealEntriesGrid!
+                    .refRows[i].cells['totalBookedAmt']!.value
+                    .toString());
+                valSum += num.parse(dgvDealEntriesGrid!
+                    .refRows[i].cells['totalValAmt']!.value
+                    .toString());
+              }
+              print("Booked===> ${bookedSum.toString()}");
+              print("Val===> ${valSum.toString()}");
+
+              bookedAmountTEC.text = bookedSum.toString();
+              valAmountTEC.text = valSum.toString();
+
+              if (num.parse(spotsBalanceTEC.text) > 0) {
+                if (selectedGstPlant == null) {
+                  showGstPopUp = true;
+                  gstDilogBox();
+                }
+
+                LoadingDialog.callInfoMessage(
+                    'All spots are not booked.\nPlease cross check data before saving....');
+              } else {
+                if (selectedGstPlant == null) {
+                  showGstPopUp = true;
+                  gstDilogBox();
+                }
+                LoadingDialog.callInfoMessage('All spots are booked.');
+              }
+              update(["totalAmount"]);
             }
           });
     } catch (e) {
@@ -1743,39 +1888,41 @@ class EdiRoBookingController extends GetxController {
       try {
         LoadingDialog.call();
         var payload = {
-          "bookingNo": bookingNo1TEC.text ?? "0",
+          "bookingNo": bookingNo2TEC.text ?? "0",
           "grpPDC": false,
           "pdc": selectedPdc?.key ?? "",
           "lstPDCChannels": [],
-          "lstSpots": lstDgvSpots.map((e) {
+          "lstSpots": lstDgvSpots2.map((e) {
             return e.toJson();
           }).toList(),
           "lstMakeGood": makeGoodReportList.value ?? [],
-          "locationCode": selectedLoactions!.key ?? "",
-          "channelCode": selectedChannel!.key ?? "",
-          "brandCode": selectedBrand!.key ?? "",
+          "locationCode": selectedLoactions?.key ?? "",
+          "channelCode": selectedChannel?.key ?? "",
+          "brandCode": selectedBrand?.key ?? "",
           "spot": spotsBookedTEC.text ?? "",
           "chkGSTValidate": true,
-          "executiveCode": selectedExecutives!.key ?? "",
+          "executiveCode": selectedExecutives?.key ?? "",
           "dealMaxSpent": maxSpendTEC.text ?? "",
           "totalBookedAmount": bookedAmountTEC.text ?? "",
           "totalValAmount": valAmountTEC.text ?? "",
           "amount": amtBookedTEC.text,
-          "agencyCode": selectedAgency!.key ?? "",
-          "position": selectedPositions!.key ?? "",
+          "agencyCode": selectedAgency?.key ?? "",
+          "position": selectedPositions?.key ?? "",
           "bookingMonth": bookingNo1TEC.text ?? "0",
-          "clientCode": selectedClient!.key ?? "",
-          "dtpBookingDate": bkDate.text ?? "",
-          "dtpEffDate": effectiveDate.text ?? "",
-          "agncyCode": selectedAgency!.key ?? "",
-          "cboRORefNo": selectedRoRefNo!.value ?? "",
+          "clientCode": selectedClient?.key ?? "",
+          "dtpBookingDate": DateFormat('yyyy-MM-ddTHH:mm:ss')
+              .format(DateFormat('dd-MM-yyyy').parse(bkDate.text)),
+          "dtpEffDate": DateFormat('yyyy-MM-ddTHH:mm:ss')
+              .format(DateFormat('dd-MM-yyyy').parse(effectiveDate.text)),
+          "agncyCode": selectedAgency?.key ?? "",
+          "cboRORefNo": selectedRoRefNo?.value ?? "",
           "payRoute": payRouteTEC.text ?? "",
           "duration": durBookedTEC.text,
-          "zoneCode": zoneTEC.text,
-          "dealNo": selectedDealNo!.key ?? "",
+          "zoneCode": zoneCode.value,
+          "dealNo": selectedDealNo?.key ?? "",
           "loggedUser": Get.find<MainController>().user?.logincode ?? "",
-          "fileName": selectedFile!.value ?? "",
-          "gstPlantsId": selectedGstPlant!.value ?? "",
+          "fileName": selectedFile?.value ?? "",
+          "gstPlantsId": selectedGstPlant?.key ?? "",
           "gstRegN": gstNoTEC.text
         };
         Get.find<ConnectorControl>().POSTMETHOD(
@@ -1786,14 +1933,47 @@ class EdiRoBookingController extends GetxController {
               if (map != null &&
                   map['infoSave'] != null &&
                   map.containsKey('infoSave')) {
-                LoadingDialog.recordExists(map['infoSave']['message'], () {
-                  Get.back();
-                });
+                if (map['infoSave']['message']
+                    .contains('XML Ro entry done successfully.')) {
+                  print("1");
+                  LoadingDialog.callDataSaved(
+                      msg: map['infoSave']['message'],
+                      callback: () {
+                        exportToExcel();
+                      });
+                } else {
+                  print("2");
+                  LoadingDialog.showErrorDialog(map['infoSave']['message']);
+                }
               }
             });
       } catch (e) {
         print(e.toString());
       }
+    }
+  }
+
+  exportToExcel() {
+    try {
+      LoadingDialog.call();
+      var payload = {
+        "lstSpots": lstDgvSpots2.map((e) {
+          return e.toJson();
+        }).toList(),
+        "refNo": selectedRoRefNo?.value ?? "",
+      };
+      Get.find<ConnectorControl>().POSTMETHOD_BYTES(
+          api: ApiFactory.EDI_RO_GET_EXCEL_FILE_DOWNLOAD,
+          json: payload,
+          fun: (map) {
+            Get.back();
+            if (map != null) {
+              ExportData().exportFilefromByte(
+                  map, ((selectedRoRefNo?.value ?? "") + ".xlsx"));
+            }
+          });
+    } catch (e) {
+      print(e.toString());
     }
   }
 
@@ -2803,11 +2983,6 @@ class EdiRoBookingController extends GetxController {
     }
   }
 
-  // int weekNumber(DateTime date) {
-  //   int dayOfYear = int.parse(DateFormat("D").format(date));
-  //   return ((dayOfYear - date.weekday + 10) / 7).floor();
-  // }
-
   convertToDouble(String timeString) {
     List<String> timeComponents = timeString.split(':');
     int hours = int.parse(timeComponents[0]);
@@ -2853,11 +3028,339 @@ class EdiRoBookingController extends GetxController {
         .format(DateFormat('dd/MM/yyyy').parse(date)));
   }
 
+  showProgramDilogBox() {
+    drgabbleDialog.value = Focus(
+      autofocus: true,
+      onKey: (node, event) {
+        if (event.logicalKey == LogicalKeyboardKey.escape) {
+          drgabbleDialog.value = null;
+        }
+
+        return KeyEventResult.ignored;
+      },
+      child: Card(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
+        margin: EdgeInsets.zero,
+        color: Colors.white,
+        child: Container(
+            height: Get.height * .50,
+            width: Get.width * .20,
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 3),
+                  child: Align(
+                    alignment: Alignment.topRight,
+                    child: IconButton(
+                      onPressed: () {
+                        drgabbleDialog.value = null;
+                      },
+                      icon: const Icon(Icons.close),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Container(
+                    decoration:
+                        BoxDecoration(border: Border.all(color: Colors.grey)),
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: programList.length,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: EdgeInsets.all(8),
+                          child: Obx(
+                            () => GestureDetector(
+                              onTap: () {
+                                selectedIndex.value = index;
+                              },
+                              onDoubleTap: () async {
+                                selectedIndex.value = index;
+
+                                if (lstDgvSpotsList.isNotEmpty) {
+                                  // Down Grid
+                                  if (Get.find<MainController>()
+                                      .filters1
+                                      .containsKey(
+                                          dvgSpotGrid.hashCode.toString())) {
+                                    await clearFirstDataTableFilter(
+                                        dvgSpotGrid!);
+                                  }
+                                  for (var element in dvgSpotGrid!.rows) {
+                                    dvgSpotGrid?.setCurrentCell(
+                                        element.cells['spoT_RATE'],
+                                        element.sortIdx);
+                                    break;
+                                  }
+
+                                  await doubleClickFilterGrid1(dvgSpotGrid,
+                                      'program', programList[index].toString());
+
+                                  // UP Grid
+                                  if (Get.find<MainController>()
+                                      .filters1
+                                      .containsKey(dgvDealEntriesGrid.hashCode
+                                          .toString())) {
+                                    await clearFirstDataTableFilter(
+                                        dgvDealEntriesGrid!);
+                                  }
+
+                                  for (var element
+                                      in dgvDealEntriesGrid!.rows) {
+                                    dgvDealEntriesGrid?.setCurrentCell(
+                                        element.cells['costPer10Sec'],
+                                        element.sortIdx);
+                                    break;
+                                  }
+                                  await doubleClickFilterGrid1(
+                                      dgvDealEntriesGrid,
+                                      'costPer10Sec',
+                                      num.parse(dvgSpotGrid!
+                                          .rows[0].cells['spoT_RATE']!.value
+                                          .toString()));
+                                } else {
+                                  LoadingDialog.showErrorDialog(
+                                      'Spot not found.');
+                                }
+                              },
+                              child: Container(
+                                color: (selectedIndex.value == index)
+                                    ? Colors.deepPurpleAccent
+                                    : Colors.white,
+                                child: Text(
+                                  programList[index].toString(),
+                                  style: TextStyle(
+                                      fontSize: SizeDefine.dropDownFontSize),
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+              ],
+            )),
+      ),
+    );
+  }
+
+  mgSpotsDilogBox() {
+    valueKey = ValueKey("mgSpotsDilogBox");
+    drgabbleDialog.value = Card(
+      // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(2)),
+      color: Colors.white,
+      // margin: const EdgeInsets.all(0),
+      child: SizedBox(
+        height: Get.height * .65,
+        width: Get.width * .80,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  DateWithThreeTextField(
+                    title: "From Date",
+                    mainTextController: mgStartDateTEC,
+                    widthRation: .12,
+                  ),
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  DateWithThreeTextField(
+                    title: "To Date",
+                    mainTextController: mgEndDateTEC,
+                    widthRation: .12,
+                  ),
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  FormButton(
+                    btnText: "Show",
+                    callback: () {
+                      showMakeGood();
+                    },
+                    showIcon: false,
+                  ),
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  FormButton(
+                    btnText: "Back",
+                    callback: () {
+                      drgabbleDialog.value = null;
+                    },
+                    showIcon: false,
+                  ),
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  FormButton(
+                    btnText: "Import & Mark",
+                    callback: () {
+                      pickFile();
+                    },
+                    showIcon: false,
+                  ),
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  Obx(() {
+                    return CheckBoxWidget1(
+                      title: "Select All",
+                      value: controllsEnable.value,
+                      onChanged: (val) {
+                        controllsEnable.value = !(controllsEnable.value);
+
+                        for (var i = 0; i < makeGoodReportList.length; i++) {
+                          makeGoodReportList
+                                  .value[mgSpotTabelGrid!.refRows[i].sortIdx]
+                              ['selectRow'] = controllsEnable.value;
+                          mgSpotTabelGrid!.changeCellValue(
+                            mgSpotTabelGrid!
+                                .getRowByIdx(i)!
+                                .cells['selectRow']!,
+                            controllsEnable.value.toString(),
+                            callOnChangedEvent: false,
+                            force: true,
+                            notify: true,
+                          );
+                          print(makeGoodReportList[i]['selectRow'].runtimeType);
+                          // makeGoodReportList.refresh();
+                        }
+                      },
+                    );
+                  }),
+                ],
+              ),
+            ),
+            Expanded(
+              child: Obx(
+                () => DataGridFromMap3(
+                  mapData: makeGoodReportList.value,
+                  // .map((e) {
+                  //   e['selectRow'] = (e['selectRow'] ?? false).toString();
+                  //   return e;
+                  // }).toList(),
+                  hideCode: false,
+                  formatDate: false,
+                  exportFileName: "EDI R.O. Booking",
+                  onload: (load) {
+                    mgSpotTabelGrid = load.stateManager;
+                    load.stateManager
+                        .setSelectingMode(PlutoGridSelectingMode.row);
+                    load.stateManager
+                        .setCurrentCell(load.stateManager.firstCell, 0);
+                  },
+                  colorCallback: (row) => (row.row.cells
+                          .containsValue(mgSpotTabelGrid?.currentCell))
+                      ? Colors.deepPurple.shade200
+                      : Colors.white,
+                  checkBoxColumnKey: ['selectRow'],
+                  checkBoxStrComparison: "true",
+                  uncheckCheckBoxStr: "false",
+                  actionIconKey: ['selectRow'],
+                  actionOnPress: (position, isSpaceCalled) {
+                    if (isSpaceCalled) {
+                      mgLastSelectedIdx = position.rowIdx ?? 0;
+                      mgSpotTabelGrid!.changeCellValue(
+                        mgSpotTabelGrid!.currentCell!,
+                        (mgSpotTabelGrid?.currentCell?.value == "true")
+                            .toString(),
+                        force: true,
+                        callOnChangedEvent: true,
+                        notify: true,
+                      );
+                    }
+                  },
+                  onEdit: (row) {
+                    mgLastSelectedIdx = row.rowIdx;
+                    makeGoodReportList[row.rowIdx]['selectRow'] =
+                        (row.value.toString()) == "true";
+
+                    print(makeGoodReportList[0]['selectRow'].runtimeType);
+                  },
+                  columnAutoResize: false,
+                  widthSpecificColumn: Get.find<HomeController>()
+                      .getGridWidthByKey(
+                          userGridSettingList: userGridSetting1, key: "tbl3"),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+    // }
+  }
+
+  keyBoardHander(RawKeyEvent raw, BuildContext context) {
+    // print("Raw is.>>>" + raw.toString());
+    if (raw is RawKeyDownEvent &&
+        raw.isAltPressed &&
+        raw.character?.toLowerCase() == "p") {
+      print("Open Show Program Alt + p ");
+      showProgramDilogBox();
+    }
+    if (raw is RawKeyDownEvent &&
+        raw.isAltPressed &&
+        raw.character?.toLowerCase() == "m") {
+      print("Mark as Done Alt + m ");
+      onMarkAsDone();
+    }
+    if (raw is RawKeyDownEvent &&
+        raw.isAltPressed &&
+        raw.character?.toLowerCase() == "c") {
+      print("Check All Alt + c ");
+      if (isCheckAll) {
+        checkAll();
+      }
+    }
+    if (raw is RawKeyDownEvent &&
+        raw.isAltPressed &&
+        raw.character?.toLowerCase() == "g") {
+      print("MG Spots Alt + g ");
+      mgSpotsDilogBox();
+    }
+    if (raw is RawKeyDownEvent &&
+        raw.isAltPressed &&
+        raw.character?.toLowerCase() == "s") {
+      print("MG Spots Alt + s ");
+      if (selectedDealNo != null) {
+        effDateFN.requestFocus();
+        showLink();
+      }
+    }
+  }
+
+  String getFirstDayOfMonth() {
+    var now = DateTime.now();
+    var firstDayOfMonth = DateTime(now.year, now.month, 1);
+    print("First day===> $firstDayOfMonth");
+    return DateFormat('yyyy-MM-dd').format(firstDayOfMonth);
+  }
+
+  mgSpotDate() {
+    var now = DateTime.now();
+    var firstDayOfMonth = DateTime(now.year, now.month, 1);
+    var date = DateFormat('dd-MM-yyyy').format(firstDayOfMonth);
+    mgStartDateTEC.text = date;
+  }
+
   @override
   void onReady() {
     super.onReady();
     getInitData();
     fetchUserSetting1();
+    mgSpotDate();
+    // getFirstDayOfMonth();
   }
 
   @override

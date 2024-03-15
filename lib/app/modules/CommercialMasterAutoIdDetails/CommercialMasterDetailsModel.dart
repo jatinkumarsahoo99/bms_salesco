@@ -52,6 +52,8 @@ class LstShowACID {
   String? tapeType;
   String? endDate;
   String? txtSOM;
+  String? som;
+  String? eom;
   int? txtDurationInSeconds;
   int? txtEOMDurationInSeconds;
   String? tapeid;
@@ -122,6 +124,8 @@ class LstShowACID {
     tapeType = json['tapeType'];
     endDate = json['endDate'];
     txtSOM = json['txtSOM'];
+    som = json['som'];
+    eom = json['eom'];
     txtDurationInSeconds = json['txtDurationInSeconds'];
     txtEOMDurationInSeconds = json['txtEOMDurationInSeconds'];
     tapeid = json['tapeid'];

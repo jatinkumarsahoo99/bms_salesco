@@ -17,7 +17,7 @@ dependencies:
   dropdown_search: ^5.0.3
   time_range_picker: 2.0.1
   encrypt:
-  flutter_file_saver: ^0.6.1+1
+  flutter_file_saver: 0.6.2
   excel:
 #  pluto_grid_export: ^1.0.3
   url_launcher:

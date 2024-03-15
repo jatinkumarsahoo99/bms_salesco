@@ -266,6 +266,8 @@ class ApiFactory {
       "$BASE_URL/api/EDIRoBooking/CheckAllDealUtil";
   static String EDI_RO_CHECK_ALL_PROGRAM_FCT =
       "$BASE_URL/api/EDIRoBooking/CheckAllProgramFCT";
+  static String EDI_RO_GET_EXCEL_FILE_DOWNLOAD =
+      "$BASE_URL/api/EDIRoBooking/GetExcelFileDownload";
 ///////////////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////// Create Break Pattern ///////////////////////////////////////////
@@ -1336,4 +1338,19 @@ class ApiFactory {
       "$BASE_URL/api/AmagiSpotsReplacement/GetDeallocateHold";
   static String AMAGI_SPOT_REPLACEMENT_GET_PivotOnLoadLocalTable() =>
       "$BASE_URL/api/AmagiSpotsReplacement/GetPivotOnLocalTable";
+  ////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////// GENERATE BOOKING ACTIVITY AHDM ////////////////////////////////
+  static String get GENERATE_BOOKING_REPORT_INIT =>
+      "$BASE_URL/api/GenerateBookingReport/GetFromLoad";
+
+  static String get GENERATE_BOOKING_CHANNEL_LEAVE =>
+      "$BASE_URL/api/GenerateBookingReport/GetChannel?LocationCode=";
+
+  static String get GENERATE_BOOKING_GET_DETAILS =>
+      "$BASE_URL/api/GenerateBookingReport/GetRetrieve";
+
+///////////////////////////////End: GENERATE BOOKING ACTIVITY AHDM ////////////////////////////////
+
 }

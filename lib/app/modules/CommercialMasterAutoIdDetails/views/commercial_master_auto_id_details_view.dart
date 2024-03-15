@@ -80,31 +80,26 @@ class CommercialMasterAutoIdDetailsView extends StatelessWidget {
                                             Padding(
                                               padding: const EdgeInsets.only(
                                                   left: 5),
-                                              child: Obx(
-                                                    () =>
-                                                    DropDownField
-                                                        .formDropDownSearchAPI2(
-                                                        GlobalKey(), context,
-                                                        title: "Client",
-                                                        autoFocus: true,
-                                                        inkwellFocus: controllerX
-                                                            .clientFocus,
-                                                        customInData: "lstClientMaster",
-                                                        url: ApiFactory
-                                                            .COMMERCIAL_MASTER_CLIENT_LIST(),
-                                                        parseKeyForKey: "clientcode",
-                                                        parseKeyForValue: "Clientname",
-                                                        onchanged: (data) {
-                                                          controllerX
-                                                              .selectClient
-                                                              ?.value = data;
-                                                        },
-                                                        selectedValue:
-                                                        controllerX.selectClient
-                                                            ?.value,
-                                                        width: (Get.width *
-                                                            0.60) + 20),
-                                              ),
+                                              child:  DropDownField
+                                                  .formDropDownSearchAPI2(
+                                                  GlobalKey(), context,
+                                                  title: "Client",
+                                                  autoFocus: true,
+                                                  inkwellFocus: controllerX
+                                                      .clientFocus,
+                                                  customInData: "lstClientMaster",
+                                                  url: ApiFactory
+                                                      .COMMERCIAL_MASTER_CLIENT_LIST(),
+                                                  parseKeyForKey: "clientcode",
+                                                  parseKeyForValue: "Clientname",
+                                                  onchanged: (data) {
+                                                    controllerX
+                                                        .selectClient= data;
+                                                  },
+                                                  selectedValue:
+                                                  controllerX.selectClient,
+                                                  width: (Get.width *
+                                                      0.60) + 20),
                                             ),
                                             SizedBox(
                                               height: 4,
@@ -122,9 +117,7 @@ class CommercialMasterAutoIdDetailsView extends StatelessWidget {
                                                       url: ApiFactory
                                                           .COMMERCIAL_MASTER_BRAND_LIST(
                                                         controllerX
-                                                            .selectClient?.value
-                                                            ?.key ??
-                                                            "",
+                                                            .selectClient?.key ?? "",
                                                       ),
                                                       parseKeyForKey: "Brandcode",
                                                       parseKeyForValue: "Brandname",
@@ -685,14 +678,14 @@ class CommercialMasterAutoIdDetailsView extends StatelessWidget {
                               init: Get.find<HomeController>(),
                               builder: (controller) {
                                 print("Data is???" +
-                                    Routes.COMMERCIAL_CREATION_AUTO.replaceAll(
+                                    Routes.COMMERCIAL_MASTER_AUTO_ID.replaceAll(
                                         "/", ""));
                                 int? index = Get
                                     .find<MainController>()
                                     .permissionList!
                                     .indexWhere((element) {
                                   return element.appFormName ==
-                                      Routes.COMMERCIAL_CREATION_AUTO
+                                      Routes.COMMERCIAL_MASTER_AUTO_ID
                                           .replaceAll("/", "");
                                 });
                                 if (index == null || index == -1) {
@@ -712,7 +705,6 @@ class CommercialMasterAutoIdDetailsView extends StatelessWidget {
                                       for (var btn in controller.buttons!)
                                         FormButtonWrapper(
                                           btnText: btn["name"],
-                                          // isEnabled: btn['isDisabled'],
                                           callback: Utils.btnAccessHandler2(
                                               btn['name'],
                                               controller, formPermissions) ==
