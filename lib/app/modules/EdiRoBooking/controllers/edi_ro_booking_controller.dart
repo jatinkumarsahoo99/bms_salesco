@@ -1503,7 +1503,7 @@ class EdiRoBookingController extends GetxController {
     if (intYear.value != 0) {
       var year = DateFormat('yyyy')
           .format(DateFormat('dd-MM-yyyy').parse(dr['acT_DT']));
-      if (colorEvent.cells["acT_DT"]?.value &&
+      if (colorEvent.cells["acT_DT"]?.value != null &&
           int.parse(year) != intYear.value) {
         return const Color.fromRGBO(255, 230, 230, 1);
       }
@@ -1989,16 +1989,19 @@ class EdiRoBookingController extends GetxController {
     var dealEntriesGrid = dgvDealEntriesGrid!.currentRow!.cells;
     var spotGrid = dvgSpotGrid!.currentRow!.cells;
     var intSpotRowIndex = dvgSpotGrid!.currentRow!.sortIdx;
+    var intEntriesGridIndex = dgvDealEntriesGrid!.currentRow!.sortIdx;
     print(intSpotRowIndex);
+    print(intEntriesGridIndex);
+    print(lstDgvDealEntriesList[intEntriesGridIndex]['fromdate'].toString());
     String sponsorTypeName =
         dealEntriesGrid['sponsorTypeName']!.value.toString();
-    intDays[0] = int.parse(dealEntriesGrid['sun']!.value);
-    intDays[1] = int.parse(dealEntriesGrid['mon']!.value);
-    intDays[2] = int.parse(dealEntriesGrid['tue']!.value);
-    intDays[3] = int.parse(dealEntriesGrid['wed']!.value);
-    intDays[4] = int.parse(dealEntriesGrid['thu']!.value);
-    intDays[5] = int.parse(dealEntriesGrid['fri']!.value);
-    intDays[6] = int.parse(dealEntriesGrid['sat']!.value);
+    intDays[0] = int.parse(dealEntriesGrid['sun']!.value.toString());
+    intDays[1] = int.parse(dealEntriesGrid['mon']!.value.toString());
+    intDays[2] = int.parse(dealEntriesGrid['tue']!.value.toString());
+    intDays[3] = int.parse(dealEntriesGrid['wed']!.value.toString());
+    intDays[4] = int.parse(dealEntriesGrid['thu']!.value.toString());
+    intDays[5] = int.parse(dealEntriesGrid['fri']!.value.toString());
+    intDays[6] = int.parse(dealEntriesGrid['sat']!.value.toString());
 
     // for (var _dr in dvgSpotGrid!.refRows) {
     //   if (_dr.cells['spoT_RATE'] == true) {
@@ -2021,7 +2024,6 @@ class EdiRoBookingController extends GetxController {
       var weeksName = DateFormat('EEEE').format(DateFormat('dd-MM-yyyy')
           .parse(lstDgvSpotsList[spotRowIndex]['acT_DT']!.toString() ?? ""));
       int intDayOfWeek = weekCount(weeksName);
-
       var intDealStartTime =
           convertToDouble(dealEntriesGrid['starttime']!.value.toString());
       var intDealEndTime =
@@ -2062,15 +2064,16 @@ class EdiRoBookingController extends GetxController {
       if (actDate.isAfter(toDayDate)) {
         dayTimeSpan = 864000000000;
       }
+
       if (nextDayDeal) {
         timeSpan = 864000000000 + (intSpotEndTime * 2);
       }
-
-      DateTime eFromDate = DateFormat('dd-MM-yyyy')
-          .parse(dealEntriesGrid['fromdate']!.value.toString());
-      DateTime eToDate = DateFormat('dd-MM-yyyy')
-          .parse(dealEntriesGrid['todate']!.value.toString());
-
+      DateTime fromdate = DateFormat('MM/dd/yyyy').parse(
+          lstDgvDealEntriesList[intEntriesGridIndex]['fromdate'].toString());
+      DateTime eFromDate = DateFormat('dd-MM-yyyy').parse(fromdate.toString());
+      DateTime todate = DateFormat('MM/dd/yyyy').parse(
+          lstDgvDealEntriesList[intEntriesGridIndex]['todate'].toString());
+      DateTime eToDate = DateFormat('dd-MM-yyyy').parse(todate.toString());
       if (intDays[intDayOfWeek] == 1) {
         if (sponsorTypeName != "ROS") {
           if (dealEntriesGrid['groupCode']!.value.toString() == "" ||
@@ -3232,7 +3235,7 @@ class EdiRoBookingController extends GetxController {
                             force: true,
                             notify: true,
                           );
-                          print(makeGoodReportList[i]['selectRow'].runtimeType);
+                          // print(makeGoodReportList[i]['selectRow'].runtimeType);
                           // makeGoodReportList.refresh();
                         }
                       },
@@ -3258,6 +3261,18 @@ class EdiRoBookingController extends GetxController {
                         .setSelectingMode(PlutoGridSelectingMode.row);
                     load.stateManager
                         .setCurrentCell(load.stateManager.firstCell, 0);
+                    for (var i = 0; i < makeGoodReportList.length; i++) {
+                      mgSpotTabelGrid!.changeCellValue(
+                        mgSpotTabelGrid!.getRowByIdx(i)!.cells['selectRow']!,
+                        makeGoodReportList
+                            .value[mgSpotTabelGrid!.refRows[i].sortIdx]
+                                ['selectRow']
+                            .toString(),
+                        callOnChangedEvent: false,
+                        force: true,
+                        notify: true,
+                      );
+                    }
                   },
                   colorCallback: (row) => (row.row.cells
                           .containsValue(mgSpotTabelGrid?.currentCell))
@@ -3285,7 +3300,7 @@ class EdiRoBookingController extends GetxController {
                     makeGoodReportList[row.rowIdx]['selectRow'] =
                         (row.value.toString()) == "true";
 
-                    print(makeGoodReportList[0]['selectRow'].runtimeType);
+                    // print(makeGoodReportList[0]['selectRow'].runtimeType);
                   },
                   columnAutoResize: false,
                   widthSpecificColumn: Get.find<HomeController>()
