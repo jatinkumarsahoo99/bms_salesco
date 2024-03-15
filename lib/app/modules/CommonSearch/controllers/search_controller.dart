@@ -1034,7 +1034,8 @@ class SearchController extends GetxController {
                 label: Text("Cancel")),*/
           ],
           radius: 10.0);
-    } else if ((rowvariance.dataType == "varchar" ||
+    }
+    else if ((rowvariance.dataType == "varchar" ||
             rowvariance.dataType == "char") &&
         rowvariance.tableName != "") {
       var allselect = RxBool(false);
@@ -1316,7 +1317,8 @@ class SearchController extends GetxController {
         masterDialogList.value = [];
         checknotcheck.value = false;
       });
-    } else if (rowvariance.dataType == "time" ||
+    }
+    else if (rowvariance.dataType == "time" ||
         rowvariance.dataType == "ime(0)") {
       // var timenow = DateTime.now();
 
@@ -1393,7 +1395,8 @@ class SearchController extends GetxController {
                 btnText: "Cancel"),
           ],
           radius: 10.0);
-    } else if (rowvariance.dataType == "money" ||
+    }
+    else if (rowvariance.dataType == "money" ||
         rowvariance.dataType == "float" ||
         rowvariance.dataType == "int" ||
         rowvariance.dataType == "numeric") {
@@ -1460,7 +1463,8 @@ class SearchController extends GetxController {
                 btnText: "Cancel"),
           ],
           radius: 10.0);
-    } else if ((rowvariance.dataType == "varchar" ||
+    }
+    else if ((rowvariance.dataType == "varchar" ||
             rowvariance.dataType == "char") &&
         rowvariance.tableName == "") {
       var multiValue = RxBool(false);
@@ -1502,7 +1506,7 @@ class SearchController extends GetxController {
                       .searchCriteria = multiValue
                           .value
                       ? "in ${valueText.split(",").map((e) => "'${e.trim()}'")}"
-                      : "like %$valueText%";
+                      : "like \'%$valueText%\'";
                   updateGrid();
                   Get.back();
                 },
@@ -1526,7 +1530,8 @@ class SearchController extends GetxController {
                 btnText: "Cancel"),
           ],
           radius: 10.0);
-    } else if ((rowvariance.dataType!.toLowerCase() == "datetime") &&
+    }
+    else if ((rowvariance.dataType!.toLowerCase() == "datetime") &&
         grid!.type == "P") {
       // String valueText = DateFormat('dd-MMM-yyyy').format(DateTime.now());
       var tempCtr = TextEditingController();
@@ -1579,7 +1584,8 @@ class SearchController extends GetxController {
                 btnText: "Cancel"),
           ],
           radius: 10.0);
-    } else if ((rowvariance.dataType!.toLowerCase() == "date") &&
+    }
+    else if ((rowvariance.dataType!.toLowerCase() == "date") &&
         grid!.type == "P") {
       List dateTypes = [
         "My Dates",
