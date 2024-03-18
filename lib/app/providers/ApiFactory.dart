@@ -236,7 +236,7 @@ class ApiFactory {
     clientCode,
     grpPDC,
   ) =>
-      "$BASE_URL/api/EDIRoBooking/OnLeaveDealNo?EffDate=$effDate&LocationCode=$locationCode&ChannelCode=$channelCode&DealNo=$dealNo&PayRouteCode=$payRouteCode&AgencyCode=$agencyCode&ClientCode=$clientCode&grpPDC=$grpPDC";
+      "$BASE_URL/api/EDIRoBooking/OnLeaveDealNo?EffDate=$effDate&LocationCode=$locationCode&ChannelCode=$channelCode&DealNo=$dealNo&PayRouteCode=${Uri.encodeQueryComponent(payRouteCode)}&AgencyCode=$agencyCode&ClientCode=$clientCode&grpPDC=$grpPDC";
 
   static String EDI_RO_SPOT_FPC_START(
           locationCode, channelCode, telecastDate) =>
@@ -1340,7 +1340,6 @@ class ApiFactory {
       "$BASE_URL/api/AmagiSpotsReplacement/GetPivotOnLocalTable";
   ////////////////////////////////////////////////////////////////////
 
-
 /////////////////////////////// GENERATE BOOKING ACTIVITY AHDM ////////////////////////////////
   static String get GENERATE_BOOKING_REPORT_INIT =>
       "$BASE_URL/api/GenerateBookingReport/GetFromLoad";
@@ -1352,5 +1351,4 @@ class ApiFactory {
       "$BASE_URL/api/GenerateBookingReport/GetRetrieve";
 
 ///////////////////////////////End: GENERATE BOOKING ACTIVITY AHDM ////////////////////////////////
-
 }
