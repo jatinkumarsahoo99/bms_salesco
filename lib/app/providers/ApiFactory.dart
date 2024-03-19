@@ -236,7 +236,7 @@ class ApiFactory {
     clientCode,
     grpPDC,
   ) =>
-      "$BASE_URL/api/EDIRoBooking/OnLeaveDealNo?EffDate=$effDate&LocationCode=$locationCode&ChannelCode=$channelCode&DealNo=$dealNo&PayRouteCode=${Uri.encodeQueryComponent(payRouteCode)}&AgencyCode=$agencyCode&ClientCode=$clientCode&grpPDC=$grpPDC";
+      "$BASE_URL/api/EDIRoBooking/OnLeaveDealNo?EffDate=$effDate&LocationCode=${Uri.encodeQueryComponent(locationCode)}&ChannelCode=${Uri.encodeQueryComponent(channelCode)}&DealNo=$dealNo&PayRouteCode=${Uri.encodeQueryComponent(payRouteCode)}&AgencyCode=${Uri.encodeQueryComponent(agencyCode)}&ClientCode=${Uri.encodeQueryComponent(clientCode)}&grpPDC=$grpPDC";
 
   static String EDI_RO_SPOT_FPC_START(
           locationCode, channelCode, telecastDate) =>
@@ -248,7 +248,7 @@ class ApiFactory {
   static String EDI_RO_COMP_TATE_ID = "$BASE_URL/api/EDIRoBooking/CompTapeId";
   static String EDI_RO_SHOW_MAKE_GOOD(locationName, channelName, brandName,
           clientName, agencyName, dtpMGFromDate, dtpMGToDate, dealNo) =>
-      "$BASE_URL/api/EDIRoBooking/ShowMakeGood?LocationName=$locationName&ChannelName=$channelName&BrandName=$brandName&ClientName=$clientName&AgencyName=$agencyName&dtpMGFromDate=$dtpMGFromDate&dtpMGToDate=$dtpMGToDate&DealNo=$dealNo";
+      "$BASE_URL/api/EDIRoBooking/ShowMakeGood?LocationName=${Uri.encodeQueryComponent(locationName)}&ChannelName=${Uri.encodeQueryComponent(channelName)}&BrandName=${Uri.encodeQueryComponent(brandName)}&ClientName=${Uri.encodeQueryComponent(clientName)}&AgencyName=${Uri.encodeQueryComponent(agencyName)}&dtpMGFromDate=$dtpMGFromDate&dtpMGToDate=$dtpMGToDate&DealNo=$dealNo";
 
   static String EDI_RO_GET_FILL_PDC(
           clientCode, agencyCode, editMode, activityPeriod) =>
