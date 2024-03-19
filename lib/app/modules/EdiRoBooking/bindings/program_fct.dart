@@ -21,8 +21,8 @@ class InfoCheckAllProgramFct {
 }
 
 class InfoCheckAllProgramFct1 {
-  int? totalValAmount;
-  int? totalBookedAmount;
+  num? totalValAmount;
+  num? totalBookedAmount;
   dynamic message;
   GetTimeAvailable? getTimeAvailable;
 
@@ -108,17 +108,17 @@ class LstSpot {
   String? fpcprogram;
   String? tapEId;
   String? commercialcaption;
-  int? dur;
-  int? commercialduration;
+  num? dur;
+  num? commercialduration;
   String? brand;
   String? commCaption;
   String? pmtType;
   String? schDId;
   String? spoTStatus;
   String? dealno;
-  int? dealrow;
-  int? amount;
-  int? spoTRate;
+  num? dealrow;
+  num? amount;
+  num? spoTRate;
   String? fctok;
   String? dealOk;
   String? clienTName;
@@ -131,10 +131,10 @@ class LstSpot {
   String? rODate;
   String? statioNId;
   String? clienTId;
-  int? noProgram;
+  num? noProgram;
   String? brandName;
   String? branDId;
-  int? sEgmentNumber;
+  num? sEgmentNumber;
   String? programCode;
   String? pEndTime;
   dynamic backColor;

@@ -923,7 +923,7 @@ class EdiRoBookingView extends StatelessWidget {
                                           }
                                         },
                                         doPasccal: true,
-                                        columnAutoResize: false,
+                                        // columnAutoResize: false,
                                         widthSpecificColumn:
                                             Get.find<HomeController>()
                                                 .getGridWidthByKey(

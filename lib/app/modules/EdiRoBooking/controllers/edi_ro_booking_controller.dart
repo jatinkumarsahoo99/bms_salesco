@@ -1779,9 +1779,9 @@ class EdiRoBookingController extends GetxController {
         "channelCode": selectedChannel!.key ?? "",
         "clientCode": selectedClient!.key ?? "",
         "agencyCode": selectedAgency!.key ?? "",
-        "txtSpots": spotsBookedTEC.text ?? "",
-        "txtDuration": durBookedTEC.text ?? "",
-        "txtAmount": amtBookedTEC.text ?? "",
+        "txtSpots": "0" ?? "",
+        "txtDuration": "0" ?? "",
+        "txtAmount": "0" ?? "",
         "txtPreviousValAmount": num.parse(preVAmtTEC.text),
         "txtPreviousBookedAmount": num.parse(preBAmtTEC.text),
         "txtValAmount": amtValAmmountTEC.text ?? "",
@@ -1830,17 +1830,27 @@ class EdiRoBookingController extends GetxController {
                   .infoCheckAllProgramFct!.getTimeAvailable!.txtValAmount!
                   .toString();
               //Spot Blance
+              print(spotsAllTEC.text);
+              print(spotsBookedTEC.text);
+              print(spotsBalanceTEC.text);
               var spotBlance =
                   num.parse(spotsAllTEC.text) - num.parse(spotsBookedTEC.text);
               spotsBalanceTEC.text = spotBlance.toString();
+              print(spotBlance);
               //Dur Blance
               var durBlance =
                   num.parse(durAllTEC.text) - num.parse(durBookedTEC.text);
               durBalanceTEC.text = durBlance.toString();
+              print(durBlance);
+              print(durBalanceTEC.text);
+
               //Amt Blance
               var amtBlance =
                   num.parse(amtAllTEC.text) - num.parse(amtBookedTEC.text);
               amtBalanceTEC.text = amtBlance.toString();
+              print(amtBlance);
+              print(amtBalanceTEC.text);
+
               //Val Ammount & Booked Ammount
               num bookedSum = 0;
               num valSum = 0;
