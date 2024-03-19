@@ -1945,16 +1945,14 @@ class EdiRoBookingController extends GetxController {
                   map.containsKey('infoSave')) {
                 if (map['infoSave']['message']
                     .contains('XML Ro entry done successfully.')) {
-                  print("1");
                   bookingNo2TEC.text = map['infoSave']['bookingNo'].toString();
-                  update(["initData"]);
+                  // update(["initData"]);
                   LoadingDialog.callDataSaved(
                       msg: map['infoSave']['message'],
                       callback: () {
                         exportToExcel();
                       });
                 } else {
-                  print("2");
                   LoadingDialog.showErrorDialog(map['infoSave']['message']);
                 }
               }
