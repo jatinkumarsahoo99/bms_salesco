@@ -1102,11 +1102,11 @@ class EdiRoBookingView extends StatelessWidget {
         infoDilogBox();
         break;
       case "Check All":
-        if (maincontroller.isCheckAll) {
-          maincontroller.checkAll();
-        } else {
-          LoadingDialog.callInfoMessage('All spots are booked.');
-        }
+        // if (maincontroller.isCheckAll) {
+        maincontroller.checkAll();
+        // } else {
+        //   LoadingDialog.callInfoMessage('All spots are booked.');
+        // }
         break;
       case "MG Spots":
         maincontroller.mgSpotsDilogBox();
