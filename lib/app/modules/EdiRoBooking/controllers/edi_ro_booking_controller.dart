@@ -3357,10 +3357,46 @@ class EdiRoBookingController extends GetxController {
     if (raw is RawKeyDownEvent &&
         raw.isAltPressed &&
         raw.character?.toLowerCase() == "s") {
-      print("MG Spots Alt + s ");
+      print("Show Link Alt + s ");
       if (selectedDealNo != null) {
         effDateFN.requestFocus();
         showLink();
+      }
+    }
+    if (raw is RawKeyDownEvent &&
+        raw.isAltPressed &&
+        raw.character?.toLowerCase() == "d") {
+      print("Save Alt + d");
+      save();
+    }
+    if (raw is RawKeyDownEvent &&
+        raw.isAltPressed &&
+        raw.character?.toLowerCase() == "b") {
+      print("Back Alt + b ");
+      drgabbleDialog.value = null;
+    }
+    if (raw is RawKeyDownEvent &&
+        raw.isAltPressed &&
+        raw.character?.toLowerCase() == "w") {
+      print("MG Show Alt + w ");
+      showMakeGood();
+    }
+    if (raw is RawKeyDownEvent &&
+        raw.isAltPressed &&
+        raw.character?.toLowerCase() == "a") {
+      print("All Check Alt + a");
+      controllsEnable.value = !(controllsEnable.value);
+
+      for (var i = 0; i < makeGoodReportList.length; i++) {
+        makeGoodReportList.value[mgSpotTabelGrid!.refRows[i].sortIdx]
+            ['selectRow'] = controllsEnable.value;
+        mgSpotTabelGrid!.changeCellValue(
+          mgSpotTabelGrid!.getRowByIdx(i)!.cells['selectRow']!,
+          controllsEnable.value.toString(),
+          callOnChangedEvent: false,
+          force: true,
+          notify: true,
+        );
       }
     }
   }
