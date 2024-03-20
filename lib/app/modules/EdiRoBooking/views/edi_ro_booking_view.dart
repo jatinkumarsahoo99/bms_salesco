@@ -336,7 +336,7 @@ class EdiRoBookingView extends StatelessWidget {
                                             hintTxt: "Booking No",
                                             controller:
                                                 controller.bookingNo1TEC,
-                                            width: 0.054,
+                                            width: 0.045,
                                             titleInLeft: true,
                                           ),
                                         ),
@@ -349,7 +349,7 @@ class EdiRoBookingView extends StatelessWidget {
                                             hintTxt: "",
                                             controller:
                                                 controller.bookingNo2TEC,
-                                            width: 0.02,
+                                            width: 0.045,
                                             titleInLeft: true,
                                           ),
                                         ),
@@ -362,7 +362,7 @@ class EdiRoBookingView extends StatelessWidget {
                                             hintTxt: "",
                                             controller:
                                                 controller.bookingNo3TEC,
-                                            width: 0.055,
+                                            width: 0.039,
                                             titleInLeft: true,
                                           ),
                                         ),
