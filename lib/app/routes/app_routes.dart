@@ -176,5 +176,5 @@ abstract class _Paths {
   static const COMMERCIAL_MASTER_AUTO_ID_DETAILS =
       '/commercial-master-auto-id-details';
   static const GENERATE_BOOKING_AHMD = '/frmGenerateBookingReport';
-  static const R_O_RECIEVED_REPORT_NEW = '/BMS_RORecdVsBooking';
+  static const R_O_RECIEVED_REPORT_NEW = '/frmsearchingKKBMS_RORecdVsBooking';
 }
