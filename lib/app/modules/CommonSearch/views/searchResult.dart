@@ -100,7 +100,15 @@ class SearchResultPage extends StatelessWidget {
                     "ChequeReceivedOn": "yyyy-MM-ddThh:mm:ss",
                     "ModifiedOn": "yyyy-MM-ddThh:mm:ss",
                     "CCDVerifiedOn": "yyyy-MM-ddThh:mm:ss",
+                    "RODate": "yyyy-MM-ddThh:mm:ss",
+                    "Eff.Start Date": "yyyy-MM-ddThh:mm:ss",
+                    "Eff.End Date": "yyyy-MM-ddThh:mm:ss",
+                    "DealDate": "yyyy-MM-ddThh:mm:ss",
+                    "ReferenceDate": "yyyy-MM-ddThh:mm:ss",
+                    "fromdate": "yyyy-MM-ddThh:mm:ss",
+                    "Todate": "yyyy-MM-ddThh:mm:ss",
                   },
+                  dateFromat: "dd-MM-yyyy",
                   // columnAutoResize:
                   //     (controller.searchResult!.length > 5) ? false : true,
                   exportFileName:
@@ -110,15 +118,16 @@ class SearchResultPage extends StatelessWidget {
                               controller.selectVarianceId.toString(),
                         )["varianceName"]} _Search_Result",
                   hideCode: false,
-                  mapData: controller.searchResult!.map((e) {
-                    e['DealDate'] = controller.dateFormate(e['DealDate']);
-                    e['ReferenceDate'] =
-                        controller.dateFormate(e['ReferenceDate']);
-                    e['fromdate'] = controller.dateFormate(e['fromdate']);
-                    e['Todate'] = controller.dateFormate(e['Todate']);
-                    return e;
-                  }).toList(),
-                  formatDate: false,
+                  mapData: controller.searchResult!,
+                  // .map((e) {
+                  //   e['DealDate'] = controller.dateFormate(e['DealDate']);
+                  //   e['ReferenceDate'] =
+                  //       controller.dateFormate(e['ReferenceDate']);
+                  //   e['fromdate'] = controller.dateFormate(e['fromdate']);
+                  //   e['Todate'] = controller.dateFormate(e['Todate']);
+                  //   return e;
+                  // }).toList(),
+                  // formatDate: false,
                   doPasccal: false,
                   onload: (event) {
                     sm = event.stateManager;
