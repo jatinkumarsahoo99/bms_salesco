@@ -1038,14 +1038,8 @@ class EdiRoBookingView extends StatelessWidget {
                                           Colors.white),
                                       colorBox("Revenue Type",
                                           Colors.yellow[700], Colors.white),
-                                      InkWell(
-                                        onTap: () {
-                                          print("Campaign");
-                                          maincontroller.exportToExcel();
-                                        },
-                                        child: colorBox("Campaign",
-                                            Colors.white, Colors.black),
-                                      ),
+                                      colorBox("Campaign", Colors.white,
+                                          Colors.black),
                                       Obx(
                                         () => Visibility(
                                           visible:
