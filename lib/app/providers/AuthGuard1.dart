@@ -283,6 +283,12 @@ class _AuthGuardState extends State<AuthGuard> with WidgetsBindingObserver {
             case Routes.PROGRAM_WISE_REVENUE_REPORT:
               currentWidget = ProgramWiseRevenueReportView();
               break;
+            case Routes.R_O_RECIEVED_REPORT_NEW:
+              currentWidget = SearchPage(
+                  key: const Key("RoRecivedReportNew"),
+                  screenName: "RO Recieved Report New",
+                  strViewName: "BMS_RORecdVsBooking");
+              break;
             default:
               currentWidget = const NoDataFoundPage();
           }

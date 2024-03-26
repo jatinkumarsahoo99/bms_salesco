@@ -286,5 +286,9 @@ class AppPages {
       page: () => AuthGuard(childName: _Paths.GENERATE_BOOKING_AHMD),
       // binding: GenerateBookingAHMDBinding(),
     ),
+    GetPage(
+      name: _Paths.R_O_RECIEVED_REPORT_NEW,
+      page: () => AuthGuard(childName: _Paths.R_O_RECIEVED_REPORT_NEW),
+    ),
   ];
 }
