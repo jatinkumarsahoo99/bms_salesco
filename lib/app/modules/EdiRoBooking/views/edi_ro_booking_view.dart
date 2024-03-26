@@ -922,8 +922,8 @@ class EdiRoBookingView extends StatelessWidget {
                                             controller.tapeIdDilogBox();
                                           }
                                         },
-                                        doPasccal: true,
-                                        // columnAutoResize: false,
+                                        // doPasccal: true,
+                                        columnAutoResize: false,
                                         widthSpecificColumn:
                                             Get.find<HomeController>()
                                                 .getGridWidthByKey(
