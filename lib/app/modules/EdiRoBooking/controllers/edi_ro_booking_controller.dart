@@ -3042,120 +3042,110 @@ class EdiRoBookingController extends GetxController {
   }
 
   showProgramDilogBox() {
-    drgabbleDialog.value = Focus(
-      autofocus: true,
-      onKey: (node, event) {
-        if (event.logicalKey == LogicalKeyboardKey.escape) {
-          drgabbleDialog.value = null;
-        }
+    valueKey = ValueKey("showProgramDilogBox");
 
-        return KeyEventResult.ignored;
-      },
-      child: Card(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
-        margin: EdgeInsets.zero,
-        color: Colors.white,
-        child: Container(
-            height: Get.height * .50,
-            width: Get.width * .20,
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 3),
-                  child: Align(
-                    alignment: Alignment.topRight,
-                    child: IconButton(
-                      onPressed: () {
-                        drgabbleDialog.value = null;
-                      },
-                      icon: const Icon(Icons.close),
-                    ),
+    drgabbleDialog.value = Card(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
+      margin: EdgeInsets.zero,
+      color: Colors.white,
+      child: Container(
+          height: Get.height * .50,
+          width: Get.width * .20,
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 3),
+                child: Align(
+                  alignment: Alignment.topRight,
+                  child: IconButton(
+                    onPressed: () {
+                      drgabbleDialog.value = null;
+                    },
+                    icon: const Icon(Icons.close),
                   ),
                 ),
-                Expanded(
-                  child: Container(
-                    decoration:
-                        BoxDecoration(border: Border.all(color: Colors.grey)),
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: programList.length,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: EdgeInsets.all(8),
-                          child: Obx(
-                            () => GestureDetector(
-                              onTap: () {
-                                selectedIndex.value = index;
-                              },
-                              onDoubleTap: () async {
-                                selectedIndex.value = index;
+              ),
+              Expanded(
+                child: Container(
+                  decoration:
+                      BoxDecoration(border: Border.all(color: Colors.grey)),
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: programList.length,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: EdgeInsets.all(8),
+                        child: Obx(
+                          () => GestureDetector(
+                            onTap: () {
+                              selectedIndex.value = index;
+                            },
+                            onDoubleTap: () async {
+                              selectedIndex.value = index;
 
-                                if (lstDgvSpotsList.isNotEmpty) {
-                                  // Down Grid
-                                  if (Get.find<MainController>()
-                                      .filters1
-                                      .containsKey(
-                                          dvgSpotGrid.hashCode.toString())) {
-                                    await clearFirstDataTableFilter(
-                                        dvgSpotGrid!);
-                                  }
-                                  for (var element in dvgSpotGrid!.rows) {
-                                    dvgSpotGrid?.setCurrentCell(
-                                        element.cells['spoT_RATE'],
-                                        element.sortIdx);
-                                    break;
-                                  }
-
-                                  await doubleClickFilterGrid1(dvgSpotGrid,
-                                      'program', programList[index].toString());
-
-                                  // UP Grid
-                                  if (Get.find<MainController>()
-                                      .filters1
-                                      .containsKey(dgvDealEntriesGrid.hashCode
-                                          .toString())) {
-                                    await clearFirstDataTableFilter(
-                                        dgvDealEntriesGrid!);
-                                  }
-
-                                  for (var element
-                                      in dgvDealEntriesGrid!.rows) {
-                                    dgvDealEntriesGrid?.setCurrentCell(
-                                        element.cells['costPer10Sec'],
-                                        element.sortIdx);
-                                    break;
-                                  }
-                                  await doubleClickFilterGrid1(
-                                      dgvDealEntriesGrid,
-                                      'costPer10Sec',
-                                      num.parse(dvgSpotGrid!
-                                          .rows[0].cells['spoT_RATE']!.value
-                                          .toString()));
-                                } else {
-                                  LoadingDialog.showErrorDialog(
-                                      'Spot not found.');
+                              if (lstDgvSpotsList.isNotEmpty) {
+                                // Down Grid
+                                if (Get.find<MainController>()
+                                    .filters1
+                                    .containsKey(
+                                        dvgSpotGrid.hashCode.toString())) {
+                                  await clearFirstDataTableFilter(dvgSpotGrid!);
                                 }
-                              },
-                              child: Container(
-                                color: (selectedIndex.value == index)
-                                    ? Colors.deepPurpleAccent
-                                    : Colors.white,
-                                child: Text(
-                                  programList[index].toString(),
-                                  style: TextStyle(
-                                      fontSize: SizeDefine.dropDownFontSize),
-                                ),
+                                for (var element in dvgSpotGrid!.rows) {
+                                  dvgSpotGrid?.setCurrentCell(
+                                      element.cells['spoT_RATE'],
+                                      element.sortIdx);
+                                  break;
+                                }
+
+                                await doubleClickFilterGrid1(dvgSpotGrid,
+                                    'program', programList[index].toString());
+
+                                // UP Grid
+                                if (Get.find<MainController>()
+                                    .filters1
+                                    .containsKey(dgvDealEntriesGrid.hashCode
+                                        .toString())) {
+                                  await clearFirstDataTableFilter(
+                                      dgvDealEntriesGrid!);
+                                }
+
+                                for (var element in dgvDealEntriesGrid!.rows) {
+                                  dgvDealEntriesGrid?.setCurrentCell(
+                                      element.cells['costPer10Sec'],
+                                      element.sortIdx);
+                                  break;
+                                }
+                                await doubleClickFilterGrid1(
+                                    dgvDealEntriesGrid,
+                                    'costPer10Sec',
+                                    num.parse(dvgSpotGrid!
+                                        .rows[0].cells['spoT_RATE']!.value
+                                        .toString()));
+                              } else {
+                                LoadingDialog.showErrorDialog(
+                                    'Spot not found.');
+                              }
+                            },
+                            child: Container(
+                              color: (selectedIndex.value == index)
+                                  ? Colors.deepPurpleAccent
+                                  : Colors.white,
+                              child: Text(
+                                programList[index].toString(),
+                                style: TextStyle(
+                                    fontSize: SizeDefine.dropDownFontSize),
                               ),
                             ),
                           ),
-                        );
-                      },
-                    ),
+                        ),
+                      );
+                    },
                   ),
                 ),
-              ],
-            )),
-      ),
+              ),
+            ],
+          )),
     );
   }
 
