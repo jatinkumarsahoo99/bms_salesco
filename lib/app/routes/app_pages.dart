@@ -52,7 +52,7 @@ class AppPages {
 
   static const INITIAL = kReleaseMode
       ? Routes.HOME
-      : (Routes.EDI_RO_BOOKING +
+      : (Routes.ASRUN_DETAILS_REPORT +
           "?personalNo=R9vVPL7er1Os%2FusemWG%2FIw%3D%3D&loginCode=0iGe3vK5h2KGjfSKZTpmsQ%3D%3D&formName=MaVLyYQSV0sP95yVJGhW0vfdaf7cuMlussE5gq0FEi0%3D");
 
   static final routes = [

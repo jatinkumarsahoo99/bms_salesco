@@ -117,7 +117,8 @@ class Generate {
     segno = (json['segno']??"").toString();
     eventType = json['eventType'];
     programname = json['programname'];
-    fpctime = ((json['fpctime'] != null && json['fpctime'] != "")? convertDateFormat(json['fpctime']): "").toString();
+    // fpctime = ((json['fpctime'] != null && json['fpctime'] != "")? convertDateFormat(json['fpctime']): "").toString();
+    fpctime = json['fpctime'];
     bookingNumber = json['bookingNumber'];
     agencyROnumber = json['agencyROnumber'];
     bookingDetailCode = (( json['bookingDetailCode'] == 0)?"":json['bookingDetailCode']).toString();
