@@ -25,6 +25,9 @@ Future<void> main() async {
   PlatformDispatcher.instance.onError = (error, stack) {
     // Logger.sendError(error: error,severity: Severity.warning,stackTrace: stack);
     return true;
+
+
+
   };
 
   await DefaultCacheManager().emptyCache();
